@@ -21,7 +21,7 @@ const data = [
   { id: "TL015", ten: "Hướng dẫn tích hợp API truy xuất bên thứ ba", loai: "Hướng dẫn", phien_ban: "v3.2", ngay_cap_nhat: "20/08/2025", luot_tai: 590, trang_thai: "active" },
 ];
 
-const loaiMap: Record<string, "success" | "info" | "warning" | "neutral"> = {
+const loaiMap: Record<string, "success" | "info" | "warning" | "danger" | "neutral"> = {
   "Quy trình": "success",
   "Hướng dẫn": "info",
   "Tiêu chuẩn": "warning",
