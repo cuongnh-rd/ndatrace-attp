@@ -15,10 +15,10 @@ import {
 } from "recharts";
 
 const statCards = [
-  { label: "Tổng sự kiện vận chuyển", value: "28,430", color: "text-blue-600", sub: "Tháng 3/2026" },
-  { label: "Đang vận chuyển", value: "1,248", color: "text-amber-600", sub: "Thời gian thực" },
+  { label: "Tổng sự kiện ", value: "28,430", color: "text-blue-600", sub: "Tháng 3/2026" },
+  { label: "Đang ", value: "1,248", color: "text-amber-600", sub: "Thời gian thực" },
   { label: "Hoàn thành tháng này", value: "26,890", color: "text-green-600", sub: "94.6% đúng hạn" },
-  { label: "Sự cố vận chuyển", value: "292", color: "text-red-600", sub: "1.03% tổng sự kiện" },
+  { label: "Sự cố ", value: "292", color: "text-red-600", sub: "1.03% tổng sự kiện" },
 ];
 
 const trendData = [
@@ -72,7 +72,7 @@ const columns = [
     render: (row: Record<string, unknown>) => {
       const map: Record<string, { label: string; variant: "success" | "info" | "danger" }> = {
         completed: { label: "Hoàn thành", variant: "success" },
-        in_transit: { label: "Đang vận chuyển", variant: "info" },
+        in_transit: { label: "Đang ", variant: "info" },
         incident: { label: "Sự cố", variant: "danger" },
       };
       const m = map[row.trang_thai as string];
@@ -85,8 +85,8 @@ export default function Page() {
   return (
     <DashboardLayout>
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-gray-900">Sự kiện vận chuyển (VC)</h1>
-        <p className="text-sm text-gray-500 mt-1">Báo cáo sự kiện vận chuyển trong chuỗi cung ứng</p>
+        <h1 className="text-xl font-bold text-gray-900">Sự kiện  (VC)</h1>
+        <p className="text-sm text-gray-500 mt-1">Báo cáo sự kiện  trong chuỗi cung ứng</p>
       </div>
 
       <div className="grid grid-cols-4 gap-4 mb-6">
@@ -100,7 +100,7 @@ export default function Page() {
       </div>
 
       <div className="bg-white rounded-2xl border border-gray-100 p-5 mb-6">
-        <h2 className="text-sm font-semibold text-gray-700 mb-4">Xu hướng sự kiện vận chuyển (10 tuần)</h2>
+        <h2 className="text-sm font-semibold text-gray-700 mb-4">Xu hướng sự kiện  (10 tuần)</h2>
         <ResponsiveContainer width="100%" height={220}>
           <LineChart data={trendData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -116,7 +116,7 @@ export default function Page() {
       </div>
 
       <div className="bg-white rounded-2xl border border-gray-100 p-5">
-        <h2 className="text-sm font-semibold text-gray-700 mb-4">Danh sách sự kiện vận chuyển</h2>
+        <h2 className="text-sm font-semibold text-gray-700 mb-4">Danh sách sự kiện </h2>
         <DataTable columns={columns} data={transportEvents} searchable searchKeys={["id", "ma_lo", "san_pham", "tu", "den"] as never[]} />
       </div>
     </DashboardLayout>

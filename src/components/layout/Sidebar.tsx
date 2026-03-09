@@ -23,7 +23,6 @@ import {
 const sectionIcons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   Dashboard: LayoutDashboard,
   "Truy xuất nguồn gốc": ScanSearch,
-  "Báo cáo & Phân tích": BarChart2,
   
   "Quản trị hệ thống": ShieldCheck,
   "Danh mục hệ thống": BookOpen,

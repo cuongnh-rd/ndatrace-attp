@@ -27,15 +27,6 @@ export const navigation: NavItem[] = [
     ],
   },
   {
-    label: "Báo cáo & Phân tích",
-    href: "/bao-cao",
-    children: [
-      { label: "Hiệu suất", href: "/bao-cao/hoat-dong/hieu-suat" },
-      { label: "Cấp phát UID", href: "/bao-cao/hoat-dong/cap-phat-uid" },
-      { label: "Sự kiện VC", href: "/bao-cao/hoat-dong/su-kien-vc" },
-    ],
-  },
-  {
     label: "Quản trị hệ thống",
     href: "/quan-tri",
     children: [
