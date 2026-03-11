@@ -9,6 +9,7 @@ export function login(email: string, password: string): boolean {
   // Demo credentials
   if (email && password.length >= 6) {
     localStorage.setItem(AUTH_KEY, "true");
+
     return true;
   }
   return false;
