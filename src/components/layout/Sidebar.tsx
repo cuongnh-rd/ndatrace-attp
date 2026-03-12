@@ -7,7 +7,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { navigation, NavItem } from "@/lib/nav";
 import {
   LayoutDashboard,
-  ScanSearch,
   BarChart2,
   BookOpen,
   Plug,
@@ -140,7 +139,7 @@ function SidebarSearch() {
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
           placeholder="Tìm menu..."
-          className="flex-1 bg-transparent text-[14px] text-gray-700 dark:text-gray-300 placeholder-gray-400 outline-none"
+          className="flex-1 bg-transparent text-[15px] text-gray-700 dark:text-gray-300 placeholder-gray-400 outline-none"
         />
         {query && (
           <button
@@ -156,7 +155,7 @@ function SidebarSearch() {
         <div className="absolute left-3 right-3 top-full mt-1 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden z-50">
           {results.length > 0 ? (
             <>
-              <p className="px-3 pt-2.5 pb-1 text-[14px] font-semibold text-gray-400 uppercase tracking-wider">
+              <p className="px-3 pt-2.5 pb-1 text-[15px] font-semibold text-gray-400 uppercase tracking-wider">
                 {results.length} kết quả
               </p>
               <ul>
@@ -180,11 +179,11 @@ function SidebarSearch() {
                           <Icon size={12} className={i === activeIdx ? "text-brand-600" : "text-gray-500"} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[14px] font-medium text-gray-800 dark:text-gray-200 truncate">
+                          <p className="text-[15px] font-medium text-gray-800 dark:text-gray-200 truncate">
                             <Highlight text={item.label} query={query} />
                           </p>
                           {item.parent && (
-                            <p className="text-[14px] text-gray-400 truncate">{item.parent}</p>
+                            <p className="text-[15px] text-gray-400 truncate">{item.parent}</p>
                           )}
                         </div>
                         <ArrowRight
@@ -196,14 +195,14 @@ function SidebarSearch() {
                   );
                 })}
               </ul>
-              <p className="px-3 py-2 text-[14px] text-gray-400 border-t border-gray-50 dark:border-gray-800">
+              <p className="px-3 py-2 text-[15px] text-gray-400 border-t border-gray-50 dark:border-gray-800">
                 ↑↓ điều hướng · Enter chọn · Esc đóng
               </p>
             </>
           ) : (
             <div className="px-4 py-5 text-center">
-              <p className="text-[14px] font-medium text-gray-500">Không tìm thấy kết quả</p>
-              <p className="text-[14px] text-gray-400 mt-0.5">Thử từ khóa khác</p>
+              <p className="text-[15px] font-medium text-gray-500">Không tìm thấy kết quả</p>
+              <p className="text-[15px] text-gray-400 mt-0.5">Thử từ khóa khác</p>
             </div>
           )}
         </div>
@@ -219,7 +218,7 @@ function NavLeaf({ item }: { item: NavItem }) {
   return (
     <Link
       href={item.href}
-      className={`block pl-3 pr-2 py-1.5 rounded-lg text-[14px] transition-all ${
+      className={`block pl-3 pr-2 py-1.5 rounded-lg text-[15px] transition-all ${
         active
           ? "text-brand-600 dark:text-brand-400 font-semibold bg-brand-50 dark:bg-brand-900/20"
           : "text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -234,13 +233,12 @@ function NavLeaf({ item }: { item: NavItem }) {
 function NavChild({ item }: { item: NavItem }) {
   const pathname = usePathname();
   const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
-  const [open, setOpen] = useState(isActive);
 
   if (!item.children?.length) {
     return (
       <Link
         href={item.href}
-        className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-[14px] transition-all ${
+        className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-[15px] transition-all ${
           isActive
             ? "text-brand-600 dark:text-brand-400 font-semibold bg-brand-50 dark:bg-brand-900/20"
             : "text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -258,12 +256,11 @@ function NavChild({ item }: { item: NavItem }) {
 
   return (
     <div>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-[14px] font-medium transition-all ${
+      <div
+        className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-[15px] font-medium ${
           isActive
             ? "text-brand-600 dark:text-brand-400"
-            : "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
+            : "text-gray-600 dark:text-gray-400"
         }`}
       >
         <span
@@ -272,34 +269,31 @@ function NavChild({ item }: { item: NavItem }) {
           }`}
         />
         <span className="flex-1 text-left">{item.label}</span>
-        {open
-          ? <ChevronDown size={11} className="text-gray-400 shrink-0" />
-          : <ChevronRight size={11} className="text-gray-400 shrink-0" />
-        }
-      </button>
-      {open && (
-        <div className="mt-0.5 ml-3.5 space-y-0.5 border-l border-gray-100 dark:border-gray-800 pl-2.5">
-          {item.children.map((child) => (
-            <NavLeaf key={child.href} item={child} />
-          ))}
-        </div>
-      )}
+      </div>
+      <div className="mt-0.5 ml-3.5 space-y-0.5 border-l border-gray-100 dark:border-gray-800 pl-2.5">
+        {item.children.map((child) => (
+          <NavLeaf key={child.href} item={child} />
+        ))}
+      </div>
     </div>
   );
 }
 
 // ── Level-1: section with icon ────────────────────────────────────────────────
-function NavSection({ item }: { item: NavItem }) {
+function NavSection({ item, isOpen, onToggle }: { item: NavItem; isOpen: boolean; onToggle: () => void }) {
   const pathname = usePathname();
-  const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
-  const [open, setOpen] = useState(isActive);
+  const isActive =
+    pathname === item.href ||
+    pathname.startsWith(item.href + "/") ||
+    item.children?.some((c) => pathname === c.href || pathname.startsWith(c.href + "/")) ||
+    false;
   const Icon = sectionIcons[item.label] ?? LayoutDashboard;
 
   return (
     <div>
       <button
-        onClick={() => setOpen((v) => !v)}
-        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group ${
+        onClick={onToggle}
+        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors group ${
           isActive
             ? "bg-brand-50 dark:bg-brand-900/20 text-brand-700 dark:text-brand-300"
             : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
@@ -314,12 +308,12 @@ function NavSection({ item }: { item: NavItem }) {
           }
         />
         <span className="flex-1 text-left leading-tight">{item.label}</span>
-        {open
+        {isOpen
           ? <ChevronDown size={13} className="text-gray-400 shrink-0" />
           : <ChevronRight size={13} className="text-gray-400 shrink-0" />
         }
       </button>
-      {open && item.children && (
+      {isOpen && item.children && (
         <div className="mt-1 ml-8 space-y-0.5 border-l border-gray-100 dark:border-gray-800 pl-3 pb-1">
           {item.children.map((child) => (
             <NavChild key={child.href} item={child} />
@@ -332,8 +326,30 @@ function NavSection({ item }: { item: NavItem }) {
 
 // ── Sidebar shell ─────────────────────────────────────────────────────────────
 export default function Sidebar() {
+  const pathname = usePathname();
+
+  const getActiveHref = () =>
+    navigation.find((item) =>
+      pathname === item.href ||
+      pathname.startsWith(item.href + "/") ||
+      item.children?.some((c) => pathname === c.href || pathname.startsWith(c.href + "/"))
+    )?.href ?? null;
+
+  const [openHref, setOpenHref] = useState<string | null>(getActiveHref);
+
+  // Open the active section when pathname changes
+  useEffect(() => {
+    const active = getActiveHref();
+    if (active) setOpenHref(active);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  const handleToggle = (href: string) => {
+    setOpenHref((v) => (v === href ? null : href));
+  };
+
   return (
-    <aside className="fixed top-0 left-0 h-screen w-60 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col z-30 transition-colors">
+    <aside className="fixed top-0 left-0 h-screen w-[252px] bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col z-30 transition-colors">
       {/* Logo */}
       <div className="flex items-center px-5 py-4 border-b border-gray-100 dark:border-gray-800">
         <Link href="/dashboard">
@@ -355,7 +371,12 @@ export default function Sidebar() {
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto px-3 pb-4 space-y-1">
         {navigation.map((item) => (
-          <NavSection key={item.href} item={item} />
+          <NavSection
+            key={item.href}
+            item={item}
+            isOpen={openHref === item.href}
+            onToggle={() => handleToggle(item.href)}
+          />
         ))}
       </nav>
 

@@ -5,7 +5,7 @@ import UserMenu from "./UserMenu";
 
 export default function Header() {
   return (
-    <header className="fixed top-0 left-60 right-0 h-16 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 flex items-center justify-end px-6 z-20 transition-colors">
+    <header className="fixed top-0 left-[252px] right-0 h-16 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 flex items-center justify-end px-6 z-20 transition-colors">
       {/* Right */}
       <div className="flex items-center gap-4">
         {/* Notification */}

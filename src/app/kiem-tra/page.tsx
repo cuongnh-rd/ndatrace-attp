@@ -5,7 +5,106 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import DataTable from "@/components/ui/DataTable";
 import Badge from "@/components/ui/Badge";
 import PageHeader from "@/components/ui/PageHeader";
-import { Plus, ClipboardList, CheckSquare, AlertOctagon, Gavel } from "lucide-react";
+import Modal from "@/components/ui/Modal";
+import { Plus, ClipboardList, CheckSquare, AlertOctagon, Gavel, FileText, Building2 } from "lucide-react";
+
+// ── Chi tiết kế hoạch (popup) ─────────────────────────────────────────────────
+type CoSo = { ten: string; ngayKiemTra: string; boPhanThucHien: string; ketQua: string };
+type KeHoachDetail = { nghiDinh: string; noiDung: string; coSoCanKiemTra: CoSo[] };
+
+const keHoachDetails: Record<string, KeHoachDetail> = {
+  "KH-2026-001": {
+    nghiDinh: "Nghị định 15/2018/NĐ-CP",
+    noiDung: "Kiểm tra định kỳ điều kiện an toàn thực phẩm tại các cơ sở kinh doanh dịch vụ ăn uống, sản xuất và chế biến thực phẩm trên địa bàn Quận 1 nhằm đảm bảo tuân thủ các quy định về vệ sinh an toàn thực phẩm trong Quý I/2026.",
+    coSoCanKiemTra: [
+      { ten: "Nhà hàng Hải sản Biển Đông", ngayKiemTra: "05/01/2026", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Đạt" },
+      { ten: "Quán ăn Phở Bắc Hà", ngayKiemTra: "07/01/2026", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Đạt" },
+      { ten: "Siêu thị Vinmart Q.1", ngayKiemTra: "10/01/2026", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Đạt có điều kiện" },
+      { ten: "Cơ sở bánh ngọt Hương Quê", ngayKiemTra: "12/01/2026", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Không đạt" },
+      { ten: "Bếp ăn tập thể Công ty Bảo Việt", ngayKiemTra: "15/01/2026", boPhanThucHien: "Đội kiểm tra số 3", ketQua: "Đạt" },
+    ],
+  },
+  "KH-2026-002": {
+    nghiDinh: "Chỉ thị 06/CT-UBND ngày 10/01/2026",
+    noiDung: "Kiểm tra đột xuất điều kiện vệ sinh an toàn thực phẩm tại các bếp ăn tập thể, cơ sở chế biến phục vụ dịp Tết Nguyên Đán 2026 trên toàn địa bàn thành phố, đảm bảo an toàn thực phẩm cho người dân trong dịp lễ.",
+    coSoCanKiemTra: [
+      { ten: "Bếp ăn tập thể Pou Yuen", ngayKiemTra: "20/01/2026", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Đạt có điều kiện" },
+      { ten: "Nhà hàng tiệc cưới Đại Dương", ngayKiemTra: "22/01/2026", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Đạt" },
+      { ten: "Trung tâm tiệc cưới Palace", ngayKiemTra: "25/01/2026", boPhanThucHien: "Đội kiểm tra số 3", ketQua: "Đạt" },
+    ],
+  },
+  "KH-2026-003": {
+    nghiDinh: "Kế hoạch 12/KH-SYT ngày 05/02/2026",
+    noiDung: "Chuyên đề kiểm tra điều kiện vệ sinh an toàn thực phẩm đối với các cơ sở kinh doanh thức ăn đường phố trên địa bàn Quận 3 và Quận 5 trong mùa hè, tập trung vào nguồn gốc nguyên liệu và điều kiện chế biến, bảo quản thực phẩm.",
+    coSoCanKiemTra: [
+      { ten: "Xe bánh tráng trộn Thanh Hiền", ngayKiemTra: "15/02/2026", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Không đạt" },
+      { ten: "Quán chè Hiển Khánh", ngayKiemTra: "16/02/2026", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Đạt" },
+      { ten: "Xe bún bò Huế Mệ Loan", ngayKiemTra: "17/02/2026", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Đạt có điều kiện" },
+      { ten: "Hàng xôi cô Mười", ngayKiemTra: "18/02/2026", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Đạt" },
+    ],
+  },
+  "KH-2026-004": {
+    nghiDinh: "Nghị định 15/2018/NĐ-CP & Thông tư 48/2015/TT-BYT",
+    noiDung: "Kiểm tra định kỳ điều kiện an toàn thực phẩm các cơ sở sản xuất, kinh doanh thực phẩm trên địa bàn quận Bình Thạnh trong Quý II/2026, chú trọng kiểm tra giấy chứng nhận ATTP và hồ sơ tự công bố sản phẩm.",
+    coSoCanKiemTra: [
+      { ten: "Nhà máy chế biến Thủy sản Hùng Vương", ngayKiemTra: "01/04/2026", boPhanThucHien: "Đội kiểm tra số 3", ketQua: "Chưa kiểm tra" },
+      { ten: "Siêu thị Co.opmart Bình Thạnh", ngayKiemTra: "05/04/2026", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Chưa kiểm tra" },
+      { ten: "Chuỗi Cà phê Sáng Việt – CN Bình Thạnh", ngayKiemTra: "10/04/2026", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Chưa kiểm tra" },
+    ],
+  },
+  "KH-2026-005": {
+    nghiDinh: "Công văn 234/SYT-ATTP ngày 08/03/2026",
+    noiDung: "Kiểm tra đột xuất các cơ sở kinh doanh thực phẩm tại Quận 7 và Quận 8 theo phản ánh của người dân về tình trạng mất vệ sinh an toàn thực phẩm, ưu tiên các cơ sở có dấu hiệu vi phạm được phản ánh qua đường dây nóng.",
+    coSoCanKiemTra: [
+      { ten: "Chợ Phú Mỹ Hưng", ngayKiemTra: "10/03/2026", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Đạt" },
+      { ten: "Nhà hàng Sông Sài Gòn", ngayKiemTra: "12/03/2026", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Không đạt" },
+      { ten: "Cơ sở giò chả Hai Thanh", ngayKiemTra: "14/03/2026", boPhanThucHien: "Đội kiểm tra số 3", ketQua: "Đạt có điều kiện" },
+    ],
+  },
+  "KH-2026-006": {
+    nghiDinh: "Quyết định 45/QĐ-SYT ngày 20/04/2026",
+    noiDung: "Chuyên đề kiểm tra điều kiện sản xuất, chất lượng sản phẩm và nguồn gốc nguyên liệu tại các cơ sở sản xuất nước giải khát đóng chai, nước tinh khiết trên địa bàn quận Tân Bình và Tân Phú.",
+    coSoCanKiemTra: [
+      { ten: "Công ty TNHH Nước uống Ánh Dương", ngayKiemTra: "05/05/2026", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Chưa kiểm tra" },
+      { ten: "Nhà máy nước tinh khiết Sao Mai", ngayKiemTra: "10/05/2026", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Chưa kiểm tra" },
+      { ten: "Cơ sở nước ngọt Phương Nam", ngayKiemTra: "15/05/2026", boPhanThucHien: "Đội kiểm tra số 3", ketQua: "Chưa kiểm tra" },
+    ],
+  },
+  "KH-2026-007": {
+    nghiDinh: "Thông tư 30/2012/TT-BYT & Kế hoạch liên ngành Y tế – Giáo dục",
+    noiDung: "Chuyên đề kiểm tra an toàn thực phẩm tại bếp ăn bán trú trường học trên địa bàn Gò Vấp và Bình Thạnh đầu năm học 2026-2027, kiểm tra hợp đồng cung cấp thực phẩm, chứng nhận sức khỏe nhân viên chế biến và điều kiện vệ sinh.",
+    coSoCanKiemTra: [
+      { ten: "Trường Tiểu học Phan Đình Phùng", ngayKiemTra: "01/09/2026", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Chưa kiểm tra" },
+      { ten: "Trường THCS Nguyễn Du", ngayKiemTra: "05/09/2026", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Chưa kiểm tra" },
+      { ten: "Trường Mầm non Họa Mi", ngayKiemTra: "10/09/2026", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Chưa kiểm tra" },
+      { ten: "Trường TH Bình Quới Tây", ngayKiemTra: "15/09/2026", boPhanThucHien: "Đội kiểm tra số 3", ketQua: "Chưa kiểm tra" },
+    ],
+  },
+  "KH-2025-001": {
+    nghiDinh: "Nghị định 15/2018/NĐ-CP",
+    noiDung: "Kiểm tra định kỳ điều kiện an toàn thực phẩm tại các cơ sở kinh doanh trên địa bàn Quận 1 trong Quý I/2025.",
+    coSoCanKiemTra: [
+      { ten: "Nhà hàng Hải sản Biển Đông", ngayKiemTra: "05/01/2025", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Đạt" },
+      { ten: "Quán ăn Phở Bắc Hà", ngayKiemTra: "07/01/2025", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Đạt" },
+    ],
+  },
+  "KH-2025-002": {
+    nghiDinh: "Chỉ thị 06/CT-UBND ngày 10/01/2025",
+    noiDung: "Kiểm tra đột xuất bếp ăn tập thể và cơ sở chế biến phục vụ dịp Tết Nguyên Đán 2025.",
+    coSoCanKiemTra: [
+      { ten: "Bếp ăn tập thể Pou Yuen", ngayKiemTra: "20/01/2025", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Đạt" },
+      { ten: "Nhà hàng tiệc cưới Đại Dương", ngayKiemTra: "22/01/2025", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Đạt có điều kiện" },
+    ],
+  },
+  "KH-2025-003": {
+    nghiDinh: "Kế hoạch 12/KH-SYT ngày 05/02/2025",
+    noiDung: "Chuyên đề kiểm tra thức ăn đường phố tại Quận 3 và Quận 5 năm 2025.",
+    coSoCanKiemTra: [
+      { ten: "Xe bánh tráng trộn Thanh Hiền", ngayKiemTra: "15/02/2025", boPhanThucHien: "Đội kiểm tra số 1", ketQua: "Không đạt" },
+      { ten: "Quán chè Hiển Khánh", ngayKiemTra: "17/02/2025", boPhanThucHien: "Đội kiểm tra số 2", ketQua: "Đạt" },
+    ],
+  },
+};
 
 // ── Kế hoạch kiểm tra ────────────────────────────────────────────────────────
 const keHoachData: Record<string, unknown>[] = [
@@ -119,6 +218,26 @@ const stats = [
 
 export default function KiemTraATTPPage() {
   const [tab, setTab] = useState("ke-hoach");
+  const [selectedKeHoach, setSelectedKeHoach] = useState<(typeof keHoachData)[0] | null>(null);
+
+  const keHoachColumnsWithLink = [
+    ...keHoachColumns.slice(0, 1),
+    {
+      key: "tenKeHoach",
+      label: "Tên kế hoạch",
+      render: (row: Record<string, unknown>) => (
+        <button
+          onClick={() => setSelectedKeHoach(row)}
+          className="text-brand-600 hover:text-brand-800 hover:underline font-medium text-left"
+        >
+          {String(row.tenKeHoach)}
+        </button>
+      ),
+    },
+    ...keHoachColumns.slice(2),
+  ];
+
+  const detail = selectedKeHoach ? keHoachDetails[String(selectedKeHoach.maKH)] : null;
 
   return (
     <DashboardLayout>
@@ -169,7 +288,7 @@ export default function KiemTraATTPPage() {
         </div>
         <div className="p-5">
           {tab === "ke-hoach" && (
-            <DataTable columns={keHoachColumns} data={keHoachData} searchable searchKeys={["maKH", "tenKeHoach", "diaBan"]} />
+            <DataTable columns={keHoachColumnsWithLink} data={keHoachData} searchable searchKeys={["maKH", "tenKeHoach", "diaBan"]} />
           )}
           {tab === "ket-qua" && (
             <DataTable columns={ketQuaColumns} data={ketQuaData} searchable searchKeys={["maKQ", "tenCoSo", "diaBan"]} />
@@ -179,6 +298,79 @@ export default function KiemTraATTPPage() {
           )}
         </div>
       </div>
+      {/* Modal chi tiết kế hoạch */}
+      <Modal
+        isOpen={!!selectedKeHoach}
+        onClose={() => setSelectedKeHoach(null)}
+        title={selectedKeHoach ? String(selectedKeHoach.tenKeHoach) : ""}
+      >
+        {selectedKeHoach && detail && (
+          <div className="flex flex-col gap-6">
+            {/* Phần 1: Nội dung / nghị định */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-7 h-7 rounded-lg bg-brand-50 flex items-center justify-center">
+                  <FileText size={15} className="text-brand-600" />
+                </div>
+                <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide">
+                  Phần 1 — Nội dung hoặc nghị định về kế hoạch triển khai
+                </h3>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4 flex flex-col gap-2">
+                <p className="text-xs font-semibold text-brand-600">{detail.nghiDinh}</p>
+                <p className="text-sm text-gray-700 leading-relaxed">{detail.noiDung}</p>
+              </div>
+            </div>
+
+            {/* Phần 2: Danh sách cơ sở cần kiểm tra */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-7 h-7 rounded-lg bg-green-50 flex items-center justify-center">
+                  <Building2 size={15} className="text-green-600" />
+                </div>
+                <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide">
+                  Phần 2 — Danh sách cơ sở cần kiểm tra
+                </h3>
+                <span className="ml-auto text-xs font-semibold text-white bg-green-500 rounded-full px-2 py-0.5">
+                  {detail.coSoCanKiemTra.length} cơ sở
+                </span>
+              </div>
+              <div className="overflow-x-auto rounded-xl border border-gray-100">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-gray-50 border-b border-gray-100">
+                      <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">#</th>
+                      <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Tên cơ sở</th>
+                      <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">Ngày kiểm tra</th>
+                      <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">Bộ phận thực hiện</th>
+                      <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">Kết quả kiểm tra</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {detail.coSoCanKiemTra.map((cs, idx) => {
+                      const ketQuaVariant =
+                        cs.ketQua === "Đạt" ? "success" :
+                        cs.ketQua === "Không đạt" ? "danger" :
+                        cs.ketQua === "Đạt có điều kiện" ? "warning" : "neutral";
+                      return (
+                        <tr key={idx} className="border-b border-gray-50 last:border-0 hover:bg-gray-50/60 transition-colors">
+                          <td className="px-4 py-3 text-xs font-bold text-gray-400">{idx + 1}</td>
+                          <td className="px-4 py-3 font-medium text-gray-800">{cs.ten}</td>
+                          <td className="px-4 py-3 text-gray-600 whitespace-nowrap">{cs.ngayKiemTra}</td>
+                          <td className="px-4 py-3 text-gray-600 whitespace-nowrap">{cs.boPhanThucHien}</td>
+                          <td className="px-4 py-3">
+                            <Badge variant={ketQuaVariant as "success" | "danger" | "warning" | "neutral"}>{cs.ketQua}</Badge>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </DashboardLayout>
   );
 }
