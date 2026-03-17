@@ -73,7 +73,7 @@ export default function Page() {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={(entry) => `${entry.type}: ${entry.percentage}%`}
+                label={(entry: any) => `${entry.type}: ${entry.percentage}%`}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="count"

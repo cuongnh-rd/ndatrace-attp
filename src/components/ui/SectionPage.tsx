@@ -10,12 +10,13 @@ interface SectionPageProps {
   title: string;
   subtitle?: string;
   stats?: { label: string; value: string | number; variant?: "success" | "warning" | "danger" | "info" | "neutral" }[];
-  tableColumns: { key: string; label: string; render?: (row: Record<string, unknown>) => ReactNode; width?: string }[];
-  tableData: Record<string, unknown>[];
+  tableColumns?: { key: string; label: string; render?: (row: Record<string, any>) => ReactNode; width?: string }[];
+  tableData?: Record<string, any>[];
   addLabel?: string;
   actionButton?: ReactNode;
   searchable?: boolean;
   searchKeys?: string[];
+  children?: ReactNode;
 }
 
 export default function SectionPage({
@@ -28,6 +29,7 @@ export default function SectionPage({
   actionButton,
   searchable,
   searchKeys,
+  children,
 }: SectionPageProps) {
   return (
     <DashboardLayout>
@@ -59,12 +61,16 @@ export default function SectionPage({
         </div>
       )}
 
-      <DataTable
-        columns={tableColumns}
-        data={tableData}
-        searchable={searchable}
-        searchKeys={searchKeys}
-      />
+      {children}
+      
+      {tableColumns && tableData && (
+        <DataTable
+          columns={tableColumns}
+          data={tableData}
+          searchable={searchable}
+          searchKeys={searchKeys as string[] | undefined}
+        />
+      )}
     </DashboardLayout>
   );
 }
