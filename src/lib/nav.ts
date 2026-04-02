@@ -12,14 +12,7 @@ export const navigation: NavItem[] = [
       { label: "Tổng quan", href: "/dashboard" },
       { label: "Chỉ số hoạt động", href: "/dashboard/chi-so" },
       { label: "Cảnh báo", href: "/dashboard/canh-bao" },
-    ],
-  },
-  {
-    label: "Quản lý cơ sở",
-    href: "/co-so",
-    children: [
-      { label: "Phân loại cơ sở", href: "/co-so/phan-loai" },
-      { label: "Danh sách cơ sở", href: "/co-so/danh-sach" },
+      { label: "Bản đồ ATTP", href: "/dashboard/ban-do" },
     ],
   },
   {
@@ -30,13 +23,18 @@ export const navigation: NavItem[] = [
       { label: "Hồ sơ tự công bố", href: "/tu-cong-bo/danh-sach" },
       { label: "Kiểm tra ATTP", href: "/kiem-tra" },
       { label: "Ngộ độc thực phẩm", href: "/ngo-doc/danh-sach" },
+      { label: "Danh sách truyền thông", href: "/truyen-thong/chien-dich" },
     ],
   },
   {
-    label: "Truyền thông ATTP",
-    href: "/truyen-thong",
+    label: "Truy xuất nguồn gốc",
+    href: "/truy-xuat",
     children: [
-      { label: "Danh sách truyền thông", href: "/truyen-thong/chien-dich" },
+      { label: "Doanh nghiệp", href: "/quan-tri/doanh-nghiep" },
+      { label: "Cơ sở", href: "/truy-xuat/co-so" },
+      { label: "Sản phẩm", href: "/truy-xuat/san-pham" },
+      { label: "Lô sản phẩm", href: "/truy-xuat/lo-san-pham" },
+      { label: "Báo cáo sản phẩm", href: "/quan-tri/bao-cao-san-pham" },
     ],
   },
   {
@@ -56,10 +54,8 @@ export const navigation: NavItem[] = [
     children: [
       { label: "Bộ ban ngành", href: "/quan-tri/bo-ban-nganh" },
       { label: "Đối tác", href: "/quan-tri/doi-tac" },
-      { label: "Doanh nghiệp", href: "/quan-tri/doanh-nghiep" },
       { label: "Người dùng", href: "/quan-tri/nguoi-dung" },
-      { label: "Vai trò & Phân quyền", href: "/quan-tri/vai-tro" },
-      { label: "Báo cáo sản phẩm", href: "/quan-tri/bao-cao-san-pham" },
+      { label: "Vai trò", href: "/quan-tri/vai-tro" },
     ],
   },
   {
@@ -70,6 +66,7 @@ export const navigation: NavItem[] = [
       { label: "Nhóm ngành hàng", href: "/danh-muc/nhom-nganh-hang" },
       { label: "Danh sách chứng chỉ", href: "/danh-muc/loai-chung-chi" },
       { label: "Mức độ rủi ro", href: "/danh-muc/muc-do-rui-ro" },
+      { label: "Phân loại cơ sở", href: "/co-so/phan-loai" },
       { label: "Thư viện mẫu sự kiện", href: "/danh-muc/thu-vien-mau-su-kien" },
     ],
   },
