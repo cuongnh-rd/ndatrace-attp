@@ -58,7 +58,7 @@ export const navigation: NavItem[] = [
       { label: "Đối tác", href: "/quan-tri/doi-tac" },
       { label: "Doanh nghiệp", href: "/quan-tri/doanh-nghiep" },
       { label: "Người dùng", href: "/quan-tri/nguoi-dung" },
-      { label: "Phân quyền", href: "/quan-tri/phan-quyen" },
+      { label: "Vai trò & Phân quyền", href: "/quan-tri/vai-tro" },
       { label: "Báo cáo sản phẩm", href: "/quan-tri/bao-cao-san-pham" },
     ],
   },

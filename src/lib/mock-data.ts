@@ -423,10 +423,11 @@ export const reportVerifications: ReportVerification[] = [
 ];
 
 export const phanQuyenRoles = [
-  { id: "quan-tri-vien",       ten: "Quản trị viên",       mo_ta: "Toàn quyền hệ thống",                    so_nguoi: 3,   scope_configured: true  },
-  { id: "quan-ly",             ten: "Quản lý",              mo_ta: "Quản lý đơn vị trực thuộc",             so_nguoi: 45,  scope_configured: false },
-  { id: "kiem-dinh-vien",      ten: "Kiểm định viên",       mo_ta: "Xem xét và phê duyệt sự kiện",          so_nguoi: 128, scope_configured: true  },
-  { id: "nhan-vien-nhap-lieu", ten: "Nhân viên nhập liệu",  mo_ta: "Tạo và cập nhật dữ liệu",               so_nguoi: 67,  scope_configured: false },
-  { id: "doi-tac",             ten: "Đối tác",              mo_ta: "Xem dữ liệu liên quan",                 so_nguoi: 214, scope_configured: true  },
-  { id: "nguoi-xem",           ten: "Người xem",            mo_ta: "Chỉ xem, không thay đổi",               so_nguoi: 89,  scope_configured: false },
+  { id: "super-admin",        ten: "Quản trị viên quốc gia",            mo_ta: "Quản trị toàn bộ hệ thống NDATrace, không giới hạn phạm vi địa lý hay ngành hàng",            so_nguoi: 3,   scope_configured: true,  layer: "national", ngay_tao: "01/01/2024", trang_thai: "Hoạt động"     },
+  { id: "bo-ban-nganh-admin", ten: "Quản trị hệ thống Bộ NN&PTNT",     mo_ta: "Cấu hình và quản trị người dùng cho Bộ Nông nghiệp & Phát triển Nông thôn",                  so_nguoi: 12,  scope_configured: true,  layer: "sector",   ngay_tao: "15/01/2024", trang_thai: "Hoạt động"     },
+  { id: "bo-ban-nganh-ops",   ten: "Vận hành nghiệp vụ Bộ Công Thương", mo_ta: "Xử lý hồ sơ ATTP và theo dõi ngành hàng tiêu dùng trong phạm vi Bộ Công Thương",            so_nguoi: 45,  scope_configured: false, layer: "sector",   ngay_tao: "20/01/2024", trang_thai: "Hoạt động"     },
+  { id: "so-tinh-admin",      ten: "Quản trị hệ thống Sở Y tế TP.HCM", mo_ta: "Quản lý tài khoản và cấu hình phân quyền cho Sở Y tế Thành phố Hồ Chí Minh",               so_nguoi: 63,  scope_configured: false, layer: "sector",   ngay_tao: "01/02/2024", trang_thai: "Hoạt động"     },
+  { id: "so-tinh-ops",        ten: "Vận hành Sở Nông nghiệp Hà Nội",   mo_ta: "Vận hành nghiệp vụ ATTP cho ngành nông sản thực phẩm tại địa bàn thành phố Hà Nội",          so_nguoi: 248, scope_configured: false, layer: "sector",   ngay_tao: "10/02/2024", trang_thai: "Hoạt động"     },
+  { id: "dai-ly-admin",       ten: "Quản trị Đại lý AgriLink Hà Nội",  mo_ta: "Quản lý tài khoản và cấu hình dữ liệu trong phạm vi Đại lý AgriLink Hà Nội",                so_nguoi: 28,  scope_configured: true,  layer: "agency",   ngay_tao: "15/03/2024", trang_thai: "Hoạt động"     },
+  { id: "dai-ly-ops",         ten: "Vận hành Đại lý Phân phối Miền Nam",mo_ta: "Khai báo và vận hành nghiệp vụ truy xuất nguồn gốc cho Đại lý Phân phối khu vực Miền Nam",  so_nguoi: 142, scope_configured: true,  layer: "agency",   ngay_tao: "01/04/2024", trang_thai: "Không hoạt động" },
 ];

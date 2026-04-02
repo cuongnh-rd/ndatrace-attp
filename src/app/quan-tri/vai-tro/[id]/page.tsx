@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 import {
   ArrowLeft, ShieldCheck, Database, AlertTriangle, ChevronDown, ChevronRight,
   Building2, MapPin, Layers, Save, X, Check, Users,
@@ -34,15 +35,105 @@ interface DataScopeState {
 
 // ─── Static permission data ──────────────────────────────────────────────────
 
-const modules = [
-  { name: "Sản phẩm",           roles: { "super-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false }, "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false }, "bo-ban-nganh-ops": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "so-tinh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "so-tinh-ops": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "dai-ly-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false }, "dai-ly-ops": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false } } },
-  { name: "Sự kiện truy xuất",  roles: { "super-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false }, "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "bo-ban-nganh-ops": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false }, "so-tinh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "so-tinh-ops": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false }, "dai-ly-admin": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "dai-ly-ops": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false } } },
-  { name: "Tem nhãn (UID/QR)",  roles: { "super-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false }, "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false }, "bo-ban-nganh-ops": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "so-tinh-admin": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "so-tinh-ops": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "dai-ly-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false }, "dai-ly-ops": { xem:true,  tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false } } },
-  { name: "Chứng chỉ",          roles: { "super-admin": { xem:true,  tao:false, sua:true,  xoa:false, xuat:false, phe_duyet:false }, "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "bo-ban-nganh-ops": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:true  }, "so-tinh-admin": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "so-tinh-ops": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:true  }, "dai-ly-admin": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "dai-ly-ops": { xem:true,  tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false } } },
-  { name: "Báo cáo",            roles: { "super-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "bo-ban-nganh-ops": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "so-tinh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "so-tinh-ops": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "dai-ly-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "dai-ly-ops": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false } } },
-  { name: "Quản trị người dùng",roles: { "super-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false }, "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false }, "bo-ban-nganh-ops": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "so-tinh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false }, "so-tinh-ops": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "dai-ly-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false }, "dai-ly-ops": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false } } },
-  { name: "Tích hợp API",        roles: { "super-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false }, "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false }, "bo-ban-nganh-ops": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "so-tinh-admin": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "so-tinh-ops": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false }, "dai-ly-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false }, "dai-ly-ops": { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false } } },
-  { name: "Báo cáo sản phẩm",   roles: { "super-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:true  }, "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:true  }, "bo-ban-nganh-ops": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "so-tinh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "so-tinh-ops": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "dai-ly-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false }, "dai-ly-ops": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false } } },
+type RolePerm = { xem: boolean; tao: boolean; sua: boolean; xoa: boolean; xuat: boolean; phe_duyet: boolean };
+
+const modules: { name: string; roles: Record<string, RolePerm> }[] = [
+  {
+    name: "Sản phẩm",
+    roles: {
+      "super-admin":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
+      "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
+      "bo-ban-nganh-ops":   { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "so-tinh-admin":      { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "so-tinh-ops":        { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "dai-ly-admin":       { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
+      "dai-ly-ops":         { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+    },
+  },
+  {
+    name: "Sự kiện truy xuất",
+    roles: {
+      "super-admin":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
+      "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "bo-ban-nganh-ops":   { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
+      "so-tinh-admin":      { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "so-tinh-ops":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
+      "dai-ly-admin":       { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "dai-ly-ops":         { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+    },
+  },
+  {
+    name: "Tem nhãn (UID/QR)",
+    roles: {
+      "super-admin":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
+      "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
+      "bo-ban-nganh-ops":   { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "so-tinh-admin":      { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "so-tinh-ops":        { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "dai-ly-admin":       { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
+      "dai-ly-ops":         { xem:true,  tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+    },
+  },
+  {
+    name: "Chứng chỉ",
+    roles: {
+      "super-admin":        { xem:true,  tao:false, sua:true,  xoa:false, xuat:false, phe_duyet:false },
+      "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "bo-ban-nganh-ops":   { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:true  },
+      "so-tinh-admin":      { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "so-tinh-ops":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:true  },
+      "dai-ly-admin":       { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "dai-ly-ops":         { xem:true,  tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+    },
+  },
+  {
+    name: "Báo cáo",
+    roles: {
+      "super-admin":        { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "bo-ban-nganh-ops":   { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "so-tinh-admin":      { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "so-tinh-ops":        { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "dai-ly-admin":       { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "dai-ly-ops":         { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+    },
+  },
+  {
+    name: "Quản trị người dùng",
+    roles: {
+      "super-admin":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
+      "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
+      "bo-ban-nganh-ops":   { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "so-tinh-admin":      { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
+      "so-tinh-ops":        { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "dai-ly-admin":       { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
+      "dai-ly-ops":         { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+    },
+  },
+  {
+    name: "Tích hợp API",
+    roles: {
+      "super-admin":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
+      "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
+      "bo-ban-nganh-ops":   { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "so-tinh-admin":      { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "so-tinh-ops":        { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "dai-ly-admin":       { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
+      "dai-ly-ops":         { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+    },
+  },
+  {
+    name: "Báo cáo sản phẩm",
+    roles: {
+      "super-admin":        { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:true  },
+      "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:true  },
+      "bo-ban-nganh-ops":   { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "so-tinh-admin":      { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "so-tinh-ops":        { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "dai-ly-admin":       { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "dai-ly-ops":         { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+    },
+  },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -53,16 +144,13 @@ function getPartnerCompanies(partnerId: string) {
 
 function computePreviewCount(scope: DataScopeState): number {
   return scopeCompanies.filter((c) => {
-    // Agency filter
     if (scope.agencyType === "specific") {
       const ps = scope.partnerScopes[c.doi_tac_id];
       if (!ps) return false;
       if (ps.mode === "exclude" && ps.excludeList.includes(c.id)) return false;
       if (ps.mode === "allow_only" && !ps.allowList.includes(c.id)) return false;
     }
-    // Region filter
     if (scope.regionType === "specific" && !scope.selectedProvinces.includes(c.province)) return false;
-    // Category filter
     if (scope.categoryType === "specific" && !scope.selectedCategories.includes(c.category_id)) return false;
     return true;
   }).length;
@@ -82,8 +170,6 @@ function ModeDot({ mode }: { mode: AgencyMode }) {
   return <span className={`inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 ${color}`} />;
 }
 
-// ─── Sub-components ───────────────────────────────────────────────────────────
-
 function PermCell({ allowed }: { allowed: boolean }) {
   return (
     <div className="flex justify-center">
@@ -94,12 +180,10 @@ function PermCell({ allowed }: { allowed: boolean }) {
   );
 }
 
-// Partner detail modal: shows DN list with checkbox interactions
+// ─── Partner detail modal ─────────────────────────────────────────────────────
+
 function PartnerDetailModal({
-  partnerId,
-  scope,
-  onScopeChange,
-  onClose,
+  partnerId, scope, onScopeChange, onClose,
 }: {
   partnerId: string;
   scope: DataScopeState;
@@ -112,43 +196,23 @@ function PartnerDetailModal({
   const ps = scope.partnerScopes[partnerId] ?? { mode: "allow_all" as AgencyMode, excludeList: [], allowList: [] };
 
   function updatePs(updated: PartnerScope) {
-    onScopeChange({
-      ...scope,
-      partnerScopes: { ...scope.partnerScopes, [partnerId]: updated },
-    });
+    onScopeChange({ ...scope, partnerScopes: { ...scope.partnerScopes, [partnerId]: updated } });
   }
 
   function handleDnToggle(dnId: string) {
     if (ps.mode === "allow_all") {
-      // Uncheck → switch to exclude, add to excludeList
       updatePs({ ...ps, mode: "exclude", excludeList: [dnId], allowList: [] });
     } else if (ps.mode === "exclude") {
-      const inExclude = ps.excludeList.includes(dnId);
-      const newList = inExclude
+      const newList = ps.excludeList.includes(dnId)
         ? ps.excludeList.filter((id) => id !== dnId)
         : [...ps.excludeList, dnId];
       updatePs({ ...ps, excludeList: newList, mode: newList.length === 0 ? "allow_all" : "exclude" });
     } else {
-      // allow_only
-      const inAllow = ps.allowList.includes(dnId);
-      const newList = inAllow
+      const newList = ps.allowList.includes(dnId)
         ? ps.allowList.filter((id) => id !== dnId)
         : [...ps.allowList, dnId];
       updatePs({ ...ps, allowList: newList });
     }
-  }
-
-  function handleAllowAll() {
-    updatePs({ mode: "allow_all", excludeList: [], allowList: [] });
-  }
-
-  function handleAllowOnly() {
-    setShowConfirm(true);
-  }
-
-  function confirmAllowOnly() {
-    updatePs({ mode: "allow_only", excludeList: [], allowList: [] });
-    setShowConfirm(false);
   }
 
   function isDnChecked(dnId: string): boolean {
@@ -160,29 +224,22 @@ function PartnerDetailModal({
   return (
     <>
       <Modal isOpen title={`Chi tiết: ${partner.ten}`} onClose={onClose}>
-        {/* Mode controls */}
         <div className="flex items-center gap-2 mb-4">
           <button
-            onClick={handleAllowAll}
+            onClick={() => updatePs({ mode: "allow_all", excludeList: [], allowList: [] })}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
-              ps.mode === "allow_all"
-                ? "bg-green-50 border-green-300 text-green-700"
-                : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+              ps.mode === "allow_all" ? "bg-green-50 border-green-300 text-green-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
             }`}
           >
-            <ModeDot mode="allow_all" />
-            Allow all
+            <ModeDot mode="allow_all" /> Allow all
           </button>
           <button
-            onClick={handleAllowOnly}
+            onClick={() => setShowConfirm(true)}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
-              ps.mode === "allow_only"
-                ? "bg-purple-50 border-purple-300 text-purple-700"
-                : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+              ps.mode === "allow_only" ? "bg-purple-50 border-purple-300 text-purple-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
             }`}
           >
-            <ModeDot mode="allow_only" />
-            Allow only
+            <ModeDot mode="allow_only" /> Allow only
           </button>
           <div className="ml-auto flex items-center gap-1.5">
             <ModeDot mode={ps.mode} />
@@ -190,27 +247,16 @@ function PartnerDetailModal({
           </div>
         </div>
 
-        {/* DN list */}
         <div className="space-y-1 max-h-80 overflow-y-auto">
           {dns.map((dn) => {
             const checked = isDnChecked(dn.id);
             const isExcluded = ps.mode === "exclude" && ps.excludeList.includes(dn.id);
             return (
-              <label
-                key={dn.id}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors"
-              >
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onChange={() => handleDnToggle(dn.id)}
-                  className="w-4 h-4 rounded accent-brand-600"
-                />
+              <label key={dn.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors">
+                <input type="checkbox" checked={checked} onChange={() => handleDnToggle(dn.id)} className="w-4 h-4 rounded accent-brand-600" />
                 <Building2 size={14} className={isExcluded ? "text-red-400" : "text-gray-400"} />
                 <div className="flex-1 min-w-0">
-                  <p className={`text-sm font-medium ${isExcluded ? "text-red-500 line-through" : "text-gray-700"}`}>
-                    {dn.ten}
-                  </p>
+                  <p className={`text-sm font-medium ${isExcluded ? "text-red-500 line-through" : "text-gray-700"}`}>{dn.ten}</p>
                   <p className="text-xs text-gray-400">{dn.id}</p>
                 </div>
                 {isExcluded && <Badge variant="danger">Loại trừ</Badge>}
@@ -221,13 +267,12 @@ function PartnerDetailModal({
         </div>
 
         <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-400">
-          {ps.mode === "allow_all" && "Tất cả doanh nghiệp thuộc đối tác này đều trong phạm vi. DN mới tự động vào scope."}
-          {ps.mode === "exclude" && `Tất cả trừ ${ps.excludeList.length} DN đã loại trừ. DN mới tự động vào scope (trừ danh sách loại trừ).`}
-          {ps.mode === "allow_only" && "Chỉ các DN được chỉ định mới trong scope. DN mới sẽ KHÔNG tự động vào scope."}
+          {ps.mode === "allow_all" && "Tất cả doanh nghiệp thuộc đối tác này đều trong phạm vi."}
+          {ps.mode === "exclude" && `Tất cả trừ ${ps.excludeList.length} DN đã loại trừ.`}
+          {ps.mode === "allow_only" && "Chỉ các DN được chỉ định mới trong scope."}
         </div>
       </Modal>
 
-      {/* Confirm switch to Allow only */}
       {showConfirm && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50" onClick={() => setShowConfirm(false)} />
@@ -239,21 +284,15 @@ function PartnerDetailModal({
               <div>
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-1">Chuyển sang chế độ Allow only?</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                  Chế độ <strong>Allow only</strong> tắt cập nhật tự động. Doanh nghiệp mới đăng ký qua đối tác này
-                  sẽ <strong>không tự động vào scope</strong> — bạn cần thêm thủ công mỗi khi có DN mới.
+                  Doanh nghiệp mới sẽ <strong>không tự động vào scope</strong> — cần thêm thủ công.
                 </p>
               </div>
             </div>
             <div className="flex justify-end gap-2">
+              <button onClick={() => setShowConfirm(false)} className="px-4 py-2 text-sm text-gray-600 border border-gray-200 rounded-xl hover:bg-gray-50">Hủy</button>
               <button
-                onClick={() => setShowConfirm(false)}
-                className="px-4 py-2 text-sm text-gray-600 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
-              >
-                Hủy
-              </button>
-              <button
-                onClick={confirmAllowOnly}
-                className="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-xl hover:bg-purple-700 transition-colors"
+                onClick={() => { updatePs({ mode: "allow_only", excludeList: [], allowList: [] }); setShowConfirm(false); }}
+                className="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-xl hover:bg-purple-700"
               >
                 Xác nhận chuyển
               </button>
@@ -265,14 +304,9 @@ function PartnerDetailModal({
   );
 }
 
-// Agency scope column
-function AgencyScopeSection({
-  scope,
-  onScopeChange,
-}: {
-  scope: DataScopeState;
-  onScopeChange: (s: DataScopeState) => void;
-}) {
+// ─── Agency scope section ─────────────────────────────────────────────────────
+
+function AgencyScopeSection({ scope, onScopeChange }: { scope: DataScopeState; onScopeChange: (s: DataScopeState) => void }) {
   const [openPartnerId, setOpenPartnerId] = useState<string | null>(null);
 
   function togglePartner(partnerId: string) {
@@ -282,14 +316,7 @@ function AgencyScopeSection({
       delete rest[partnerId];
       onScopeChange({ ...scope, partnerScopes: rest, agencyType: Object.keys(rest).length === 0 ? "all" : "specific" });
     } else {
-      onScopeChange({
-        ...scope,
-        agencyType: "specific",
-        partnerScopes: {
-          ...scope.partnerScopes,
-          [partnerId]: { mode: "allow_all", excludeList: [], allowList: [] },
-        },
-      });
+      onScopeChange({ ...scope, agencyType: "specific", partnerScopes: { ...scope.partnerScopes, [partnerId]: { mode: "allow_all", excludeList: [], allowList: [] } } });
     }
   }
 
@@ -305,41 +332,25 @@ function AgencyScopeSection({
         <p className="text-xs text-gray-400">Tick đối tác để thêm vào phạm vi. Click tên để cấu hình chi tiết.</p>
       </div>
 
-      {/* All toggle */}
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-        <input
-          type="radio"
-          name="agency-type"
-          checked={scope.agencyType === "all"}
-          onChange={() => onScopeChange({ ...scope, agencyType: "all", partnerScopes: {} })}
-          className="accent-brand-600"
-        />
+        <input type="radio" name="agency-type" checked={scope.agencyType === "all"} onChange={() => onScopeChange({ ...scope, agencyType: "all", partnerScopes: {} })} className="accent-brand-600" />
         <span className="text-sm text-gray-700 dark:text-gray-300">Tất cả đối tác</span>
         {scope.agencyType === "all" && <Badge variant="success">Active</Badge>}
       </label>
 
-      {/* Partner list */}
       <div className="flex-1 overflow-y-auto max-h-96">
         {scopePartners.map((partner) => {
           const ps = scope.partnerScopes[partner.id];
           const isSelected = !!ps;
           const dns = getPartnerCompanies(partner.id);
-
           return (
             <div key={partner.id} className="border-b border-gray-50 dark:border-gray-800 last:border-0">
               <div className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                <input
-                  type="checkbox"
-                  checked={isSelected}
-                  onChange={() => togglePartner(partner.id)}
-                  className="w-4 h-4 rounded accent-brand-600 flex-shrink-0"
-                />
+                <input type="checkbox" checked={isSelected} onChange={() => togglePartner(partner.id)} className="w-4 h-4 rounded accent-brand-600 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <button
                     onClick={() => isSelected && setOpenPartnerId(partner.id)}
-                    className={`text-sm font-medium text-left w-full truncate ${
-                      isSelected ? "text-gray-800 dark:text-gray-200 hover:text-brand-600 cursor-pointer" : "text-gray-400 cursor-default"
-                    }`}
+                    className={`text-sm font-medium text-left w-full truncate ${isSelected ? "text-gray-800 dark:text-gray-200 hover:text-brand-600 cursor-pointer" : "text-gray-400 cursor-default"}`}
                   >
                     {partner.ten}
                   </button>
@@ -359,33 +370,20 @@ function AgencyScopeSection({
 
       {hasAny && (
         <div className="px-4 py-2 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/30 rounded-b-2xl">
-          <p className="text-xs text-gray-400">
-            {Object.keys(scope.partnerScopes).length} đối tác được chọn
-          </p>
+          <p className="text-xs text-gray-400">{Object.keys(scope.partnerScopes).length} đối tác được chọn</p>
         </div>
       )}
 
-      {/* Partner detail modal */}
       {openPartnerId && (
-        <PartnerDetailModal
-          partnerId={openPartnerId}
-          scope={scope}
-          onScopeChange={onScopeChange}
-          onClose={() => setOpenPartnerId(null)}
-        />
+        <PartnerDetailModal partnerId={openPartnerId} scope={scope} onScopeChange={onScopeChange} onClose={() => setOpenPartnerId(null)} />
       )}
     </div>
   );
 }
 
-// Region scope column
-function RegionScopeSection({
-  scope,
-  onScopeChange,
-}: {
-  scope: DataScopeState;
-  onScopeChange: (s: DataScopeState) => void;
-}) {
+// ─── Region scope section ─────────────────────────────────────────────────────
+
+function RegionScopeSection({ scope, onScopeChange }: { scope: DataScopeState; onScopeChange: (s: DataScopeState) => void }) {
   function toggleProvince(id: string) {
     const selected = scope.selectedProvinces.includes(id)
       ? scope.selectedProvinces.filter((p) => p !== id)
@@ -403,47 +401,24 @@ function RegionScopeSection({
         <p className="text-xs text-gray-400">Chọn tỉnh/thành — tự bao gồm toàn bộ quận/huyện.</p>
       </div>
 
-      {/* All */}
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-        <input
-          type="radio"
-          name="region-type"
-          checked={scope.regionType === "all"}
-          onChange={() => onScopeChange({ ...scope, regionType: "all", selectedProvinces: [] })}
-          className="accent-brand-600"
-        />
+        <input type="radio" name="region-type" checked={scope.regionType === "all"} onChange={() => onScopeChange({ ...scope, regionType: "all", selectedProvinces: [] })} className="accent-brand-600" />
         <span className="text-sm text-gray-700 dark:text-gray-300">Tất cả địa phương</span>
         {scope.regionType === "all" && <Badge variant="success">Active</Badge>}
       </label>
 
-      {/* Specific */}
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-        <input
-          type="radio"
-          name="region-type"
-          checked={scope.regionType === "specific"}
-          onChange={() => onScopeChange({ ...scope, regionType: "specific" })}
-          className="accent-brand-600"
-        />
+        <input type="radio" name="region-type" checked={scope.regionType === "specific"} onChange={() => onScopeChange({ ...scope, regionType: "specific" })} className="accent-brand-600" />
         <span className="text-sm text-gray-700 dark:text-gray-300">Chọn cụ thể</span>
       </label>
 
-      {/* Province list */}
       {scope.regionType === "specific" && (
         <div className="flex-1 overflow-y-auto max-h-80">
           {provinceTree.map((prov) => {
             const checked = scope.selectedProvinces.includes(prov.id);
             return (
-              <label
-                key={prov.id}
-                className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 last:border-0 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-              >
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onChange={() => toggleProvince(prov.id)}
-                  className="w-4 h-4 rounded accent-brand-600"
-                />
+              <label key={prov.id} className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 last:border-0 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                <input type="checkbox" checked={checked} onChange={() => toggleProvince(prov.id)} className="w-4 h-4 rounded accent-brand-600" />
                 <div className="flex-1">
                   <p className="text-sm text-gray-700 dark:text-gray-300">{prov.ten}</p>
                   <p className="text-xs text-gray-400">→ {prov.so_quan} quận/huyện</p>
@@ -464,14 +439,9 @@ function RegionScopeSection({
   );
 }
 
-// Category scope column
-function CategoryScopeSection({
-  scope,
-  onScopeChange,
-}: {
-  scope: DataScopeState;
-  onScopeChange: (s: DataScopeState) => void;
-}) {
+// ─── Category scope section ───────────────────────────────────────────────────
+
+function CategoryScopeSection({ scope, onScopeChange }: { scope: DataScopeState; onScopeChange: (s: DataScopeState) => void }) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const parents = categoryTree.filter((c) => c.parent_id === null);
 
@@ -480,10 +450,6 @@ function CategoryScopeSection({
       ? scope.selectedCategories.filter((c) => c !== id)
       : [...scope.selectedCategories, id];
     onScopeChange({ ...scope, selectedCategories: selected });
-  }
-
-  function toggleExpand(id: string) {
-    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
   return (
@@ -496,72 +462,38 @@ function CategoryScopeSection({
         <p className="text-xs text-gray-400">Chọn nhóm cha — tự bao gồm tất cả danh mục con.</p>
       </div>
 
-      {/* All */}
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-        <input
-          type="radio"
-          name="category-type"
-          checked={scope.categoryType === "all"}
-          onChange={() => onScopeChange({ ...scope, categoryType: "all", selectedCategories: [] })}
-          className="accent-brand-600"
-        />
+        <input type="radio" name="category-type" checked={scope.categoryType === "all"} onChange={() => onScopeChange({ ...scope, categoryType: "all", selectedCategories: [] })} className="accent-brand-600" />
         <span className="text-sm text-gray-700 dark:text-gray-300">Tất cả nhóm ngành</span>
         {scope.categoryType === "all" && <Badge variant="success">Active</Badge>}
       </label>
 
-      {/* Specific */}
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-        <input
-          type="radio"
-          name="category-type"
-          checked={scope.categoryType === "specific"}
-          onChange={() => onScopeChange({ ...scope, categoryType: "specific" })}
-          className="accent-brand-600"
-        />
+        <input type="radio" name="category-type" checked={scope.categoryType === "specific"} onChange={() => onScopeChange({ ...scope, categoryType: "specific" })} className="accent-brand-600" />
         <span className="text-sm text-gray-700 dark:text-gray-300">Chọn cụ thể</span>
       </label>
 
-      {/* Category tree */}
       {scope.categoryType === "specific" && (
         <div className="flex-1 overflow-y-auto max-h-80">
           {parents.map((parent) => {
             const children = categoryTree.filter((c) => c.parent_id === parent.id);
             const isChecked = scope.selectedCategories.includes(parent.id);
             const isExpanded = expanded[parent.id] ?? true;
-
             return (
               <div key={parent.id} className="border-b border-gray-50 dark:border-gray-800 last:border-0">
                 <div className="flex items-center gap-2 px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={() => toggleCategory(parent.id)}
-                    className="w-4 h-4 rounded accent-brand-600"
-                  />
-                  <button
-                    onClick={() => toggleExpand(parent.id)}
-                    className="flex items-center gap-1.5 flex-1 text-left"
-                  >
-                    {isExpanded
-                      ? <ChevronDown size={13} className="text-gray-400 flex-shrink-0" />
-                      : <ChevronRight size={13} className="text-gray-400 flex-shrink-0" />}
+                  <input type="checkbox" checked={isChecked} onChange={() => toggleCategory(parent.id)} className="w-4 h-4 rounded accent-brand-600" />
+                  <button onClick={() => setExpanded((prev) => ({ ...prev, [parent.id]: !prev[parent.id] }))} className="flex items-center gap-1.5 flex-1 text-left">
+                    {isExpanded ? <ChevronDown size={13} className="text-gray-400 flex-shrink-0" /> : <ChevronRight size={13} className="text-gray-400 flex-shrink-0" />}
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{parent.ten}</span>
                   </button>
                   {isChecked && <Check size={14} className="text-green-500 flex-shrink-0" />}
                 </div>
-
                 {isExpanded && children.map((child) => (
-                  <div
-                    key={child.id}
-                    className="flex items-center gap-2 pl-10 pr-4 py-2 bg-gray-50/50 dark:bg-gray-800/20"
-                  >
+                  <div key={child.id} className="flex items-center gap-2 pl-10 pr-4 py-2 bg-gray-50/50 dark:bg-gray-800/20">
                     <span className="w-3 h-px bg-gray-200 dark:bg-gray-700 flex-shrink-0" />
-                    <span className={`text-xs ${isChecked ? "text-gray-600 dark:text-gray-400" : "text-gray-400"}`}>
-                      {child.ten}
-                    </span>
-                    {isChecked && (
-                      <span className="ml-auto text-[10px] text-green-600 font-medium">included</span>
-                    )}
+                    <span className={`text-xs ${isChecked ? "text-gray-600 dark:text-gray-400" : "text-gray-400"}`}>{child.ten}</span>
+                    {isChecked && <span className="ml-auto text-[10px] text-green-600 font-medium">included</span>}
                   </div>
                 ))}
               </div>
@@ -585,11 +517,20 @@ function FunctionPermTab({ roleId }: { roleId: string }) {
   const role = phanQuyenRoles.find((r) => r.id === roleId);
   if (!role) return null;
 
+  const permCols: { key: keyof RolePerm; label: string }[] = [
+    { key: "xem",       label: "Xem"       },
+    { key: "tao",       label: "Tạo"       },
+    { key: "sua",       label: "Sửa"       },
+    { key: "xoa",       label: "Xóa"       },
+    { key: "xuat",      label: "Xuất"      },
+    { key: "phe_duyet", label: "Phê duyệt" },
+  ];
+
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
       <div className="p-5 border-b border-gray-100 dark:border-gray-800">
         <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-          Ma trận quyền chức năng — {role.ten}
+          Quyền chức năng — {role.ten}
         </h2>
         <p className="text-xs text-gray-400 mt-0.5">Quyền thao tác trên từng module hệ thống</p>
       </div>
@@ -598,23 +539,22 @@ function FunctionPermTab({ roleId }: { roleId: string }) {
           <thead className="bg-gray-50 dark:bg-gray-800">
             <tr>
               <th className="text-left px-4 py-3 text-[13px] font-semibold text-gray-600 dark:text-gray-400 w-52">Module</th>
-              {["Xem", "Tạo", "Sửa", "Xóa", "Xuất", "Phê duyệt"].map((p) => (
-                <th key={p} className="text-center px-3 py-3 text-[13px] font-semibold text-gray-600 dark:text-gray-400">{p}</th>
+              {permCols.map((col) => (
+                <th key={col.key} className="text-center px-3 py-3 text-[13px] font-semibold text-gray-600 dark:text-gray-400">{col.label}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {modules.map((mod, i) => {
-              const perms = (mod.roles as Record<string, { xem: boolean; tao: boolean; sua: boolean; xoa: boolean; xuat: boolean; phe_duyet: boolean }>)[roleId] ?? { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false };
+              const perms = mod.roles[roleId] ?? { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false };
               return (
                 <tr key={mod.name} className={i % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-800/50"}>
                   <td className="px-4 py-3 font-medium text-gray-700 dark:text-gray-300 text-[13px]">{mod.name}</td>
-                  <td className="px-3 py-3"><PermCell allowed={perms.xem} /></td>
-                  <td className="px-3 py-3"><PermCell allowed={perms.tao} /></td>
-                  <td className="px-3 py-3"><PermCell allowed={perms.sua} /></td>
-                  <td className="px-3 py-3"><PermCell allowed={perms.xoa} /></td>
-                  <td className="px-3 py-3"><PermCell allowed={perms.xuat} /></td>
-                  <td className="px-3 py-3"><PermCell allowed={perms.phe_duyet} /></td>
+                  {permCols.map((col) => (
+                    <td key={col.key} className="px-3 py-3">
+                      <PermCell allowed={perms[col.key]} />
+                    </td>
+                  ))}
                 </tr>
               );
             })}
@@ -625,17 +565,67 @@ function FunctionPermTab({ roleId }: { roleId: string }) {
   );
 }
 
+// ─── Default scopes per role (pre-configured from docx) ──────────────────────
+
+const defaultScopes: Record<string, DataScopeState> = {
+  // Quản trị quốc gia — toàn hệ thống, không giới hạn
+  "super-admin": {
+    agencyType: "all", partnerScopes: {},
+    regionType: "all", selectedProvinces: [],
+    categoryType: "all", selectedCategories: [],
+  },
+  // Bộ ban ngành Admin — toàn quốc, toàn ngành
+  "bo-ban-nganh-admin": {
+    agencyType: "all", partnerScopes: {},
+    regionType: "all", selectedProvinces: [],
+    categoryType: "all", selectedCategories: [],
+  },
+  // Bộ ban ngành Ops — lọc theo ngành hàng được gán (VD: Bộ NN&PTNT → Nông sản thực phẩm)
+  "bo-ban-nganh-ops": {
+    agencyType: "all", partnerScopes: {},
+    regionType: "all", selectedProvinces: [],
+    categoryType: "specific", selectedCategories: ["NS001"],
+  },
+  // Sở tỉnh Admin — lọc theo tỉnh được gán (VD: Sở NN&PTNT Hà Nội)
+  "so-tinh-admin": {
+    agencyType: "all", partnerScopes: {},
+    regionType: "specific", selectedProvinces: ["HN"],
+    categoryType: "all", selectedCategories: [],
+  },
+  // Sở tỉnh Ops — lọc theo tỉnh + ngành hàng (VD: cán bộ Sở HN - nông sản)
+  "so-tinh-ops": {
+    agencyType: "all", partnerScopes: {},
+    regionType: "specific", selectedProvinces: ["HN"],
+    categoryType: "specific", selectedCategories: ["NS001"],
+  },
+  // Đại lý Admin — phạm vi đại lý của mình (VD: Đại lý Hà Nội - AgriLink)
+  "dai-ly-admin": {
+    agencyType: "specific",
+    partnerScopes: { "DT001": { mode: "allow_all", excludeList: [], allowList: [] } },
+    regionType: "all", selectedProvinces: [],
+    categoryType: "specific", selectedCategories: ["NS001"],
+  },
+  // Đại lý Ops — thừa hưởng từ admin đại lý
+  "dai-ly-ops": {
+    agencyType: "specific",
+    partnerScopes: { "DT001": { mode: "allow_all", excludeList: [], allowList: [] } },
+    regionType: "all", selectedProvinces: [],
+    categoryType: "specific", selectedCategories: ["NS001"],
+  },
+};
+
+const emptyScope: DataScopeState = {
+  agencyType: "all", partnerScopes: {},
+  regionType: "all", selectedProvinces: [],
+  categoryType: "all", selectedCategories: [],
+};
+
 // ─── Tab: Phân quyền dữ liệu ─────────────────────────────────────────────────
 
 function DataScopeTab({ roleId }: { roleId: string }) {
-  const [scope, setScope] = useState<DataScopeState>({
-    agencyType: "all",
-    partnerScopes: {},
-    regionType: "all",
-    selectedProvinces: [],
-    categoryType: "all",
-    selectedCategories: [],
-  });
+  const [scope, setScope] = useState<DataScopeState>(
+    defaultScopes[roleId] ?? emptyScope
+  );
   const [saved, setSaved] = useState(false);
 
   const previewCount = useMemo(() => computePreviewCount(scope), [scope]);
@@ -646,12 +636,11 @@ function DataScopeTab({ roleId }: { roleId: string }) {
   }
 
   function handleReset() {
-    setScope({ agencyType: "all", partnerScopes: {}, regionType: "all", selectedProvinces: [], categoryType: "all", selectedCategories: [] });
+    setScope(defaultScopes[roleId] ?? emptyScope);
   }
 
   return (
     <div className="space-y-4">
-      {/* Preview banner */}
       <div className="bg-gradient-to-r from-brand-50 to-blue-50 dark:from-brand-900/20 dark:to-blue-900/20 border border-brand-100 dark:border-brand-800 rounded-2xl px-5 py-4 flex items-center gap-4">
         <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-brand-100 dark:bg-brand-800 flex items-center justify-center">
           <Database size={18} className="text-brand-600 dark:text-brand-400" />
@@ -670,14 +659,12 @@ function DataScopeTab({ roleId }: { roleId: string }) {
         </div>
       </div>
 
-      {/* 3-column grid */}
       <div className="grid grid-cols-3 gap-4">
         <AgencyScopeSection scope={scope} onScopeChange={setScope} />
         <RegionScopeSection scope={scope} onScopeChange={setScope} />
         <CategoryScopeSection scope={scope} onScopeChange={setScope} />
       </div>
 
-      {/* Legend */}
       <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 px-5 py-3">
         <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">Chú thích chế độ đối tác:</p>
         <div className="flex items-center gap-6 text-xs text-gray-500 dark:text-gray-400">
@@ -687,21 +674,13 @@ function DataScopeTab({ roleId }: { roleId: string }) {
         </div>
       </div>
 
-      {/* Footer actions */}
       <div className="flex items-center justify-between pt-2">
-        <button
-          onClick={handleReset}
-          className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-        >
+        <button onClick={handleReset} className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
           Đặt lại về mặc định
         </button>
         <button
           onClick={handleSave}
-          className={`flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-xl transition-colors ${
-            saved
-              ? "bg-green-500 text-white"
-              : "bg-brand-600 hover:bg-brand-700 text-white"
-          }`}
+          className={`flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-xl transition-colors ${saved ? "bg-green-500 text-white" : "bg-brand-600 hover:bg-brand-700 text-white"}`}
         >
           {saved ? <Check size={15} /> : <Save size={15} />}
           {saved ? "Đã lưu!" : "Lưu cấu hình"}
@@ -715,7 +694,6 @@ function DataScopeTab({ roleId }: { roleId: string }) {
 
 export default function Page() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
   const [activeTab, setActiveTab] = useState(0);
 
@@ -727,7 +705,7 @@ export default function Page() {
         <div className="flex flex-col items-center justify-center h-64 gap-3">
           <ShieldCheck size={40} className="text-gray-300" />
           <p className="text-gray-500">Không tìm thấy vai trò</p>
-          <button onClick={() => router.back()} className="text-sm text-brand-600 hover:underline">← Quay lại</button>
+          <Link href="/quan-tri/vai-tro" className="text-sm text-brand-600 hover:underline">← Quay lại danh sách</Link>
         </div>
       </DashboardLayout>
     );
@@ -742,12 +720,12 @@ export default function Page() {
     <DashboardLayout>
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <button
-          onClick={() => router.back()}
+        <Link
+          href="/quan-tri/vai-tro"
           className="flex items-center justify-center w-8 h-8 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
         >
           <ArrowLeft size={16} className="text-gray-600 dark:text-gray-400" />
-        </button>
+        </Link>
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-gray-900 dark:text-white">{role.ten}</h1>
@@ -784,7 +762,6 @@ export default function Page() {
         })}
       </div>
 
-      {/* Tab content */}
       {activeTab === 0 && <FunctionPermTab roleId={id} />}
       {activeTab === 1 && <DataScopeTab roleId={id} />}
     </DashboardLayout>

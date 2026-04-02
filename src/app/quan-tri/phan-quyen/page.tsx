@@ -7,18 +7,23 @@ import Badge from "@/components/ui/Badge";
 import { phanQuyenRoles } from "@/lib/mock-data";
 
 const funcPermSummary: Record<string, { label: string; variant: "success" | "warning" | "danger" | "info" | "neutral" }[]> = {
-  "quan-tri-vien":       [{ label: "Xem", variant: "info" }, { label: "Tạo", variant: "success" }, { label: "Sửa", variant: "warning" }, { label: "Xóa", variant: "danger" }, { label: "Phê duyệt", variant: "neutral" }],
-  "quan-ly":             [{ label: "Xem", variant: "info" }, { label: "Tạo", variant: "success" }, { label: "Sửa", variant: "warning" }, { label: "Phê duyệt", variant: "neutral" }],
-  "kiem-dinh-vien":      [{ label: "Xem", variant: "info" }, { label: "Phê duyệt", variant: "neutral" }],
-  "nhan-vien-nhap-lieu": [{ label: "Xem", variant: "info" }, { label: "Tạo", variant: "success" }, { label: "Sửa", variant: "warning" }],
-  "doi-tac":             [{ label: "Xem", variant: "info" }],
-  "nguoi-xem":           [{ label: "Xem", variant: "info" }],
+  "super-admin":        [{ label: "Xem", variant: "info" }, { label: "Tạo", variant: "success" }, { label: "Sửa", variant: "warning" }, { label: "Xóa", variant: "danger" }, { label: "Xuất", variant: "neutral" }, { label: "Phê duyệt", variant: "neutral" }],
+  "bo-ban-nganh-admin": [{ label: "Xem", variant: "info" }, { label: "Tạo", variant: "success" }, { label: "Sửa", variant: "warning" }, { label: "Xóa", variant: "danger" }, { label: "Xuất", variant: "neutral" }],
+  "bo-ban-nganh-ops":   [{ label: "Xem", variant: "info" }, { label: "Tạo", variant: "success" }, { label: "Sửa", variant: "warning" }, { label: "Xuất", variant: "neutral" }],
+  "so-tinh-admin":      [{ label: "Xem", variant: "info" }, { label: "Tạo", variant: "success" }, { label: "Sửa", variant: "warning" }, { label: "Xóa", variant: "danger" }],
+  "so-tinh-ops":        [{ label: "Xem", variant: "info" }, { label: "Tạo", variant: "success" }, { label: "Sửa", variant: "warning" }, { label: "Xuất", variant: "neutral" }, { label: "Phê duyệt", variant: "neutral" }],
+  "dai-ly-admin":       [{ label: "Xem", variant: "info" }, { label: "Tạo", variant: "success" }, { label: "Sửa", variant: "warning" }, { label: "Xóa", variant: "danger" }],
+  "dai-ly-ops":         [{ label: "Xem", variant: "info" }, { label: "Xuất", variant: "neutral" }, { label: "Phê duyệt", variant: "neutral" }],
 };
 
 const dataScopeSummary: Record<string, string> = {
-  "quan-tri-vien":       "Toàn hệ thống",
-  "kiem-dinh-vien":      "Hà Nội, TP.HCM",
-  "doi-tac":             "Theo đối tác được phân",
+  "super-admin":        "Toàn hệ thống",
+  "bo-ban-nganh-admin": "Toàn quốc",
+  "bo-ban-nganh-ops":   "Theo ngành hàng được gán",
+  "so-tinh-admin":      "Tỉnh/thành được gán",
+  "so-tinh-ops":        "Tỉnh/thành được gán",
+  "dai-ly-admin":       "Đại lý của mình",
+  "dai-ly-ops":         "Thừa hưởng từ admin đại lý",
 };
 
 const configured = phanQuyenRoles.filter((r) => r.scope_configured).length;
