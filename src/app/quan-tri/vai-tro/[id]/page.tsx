@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft, ShieldCheck, Database, AlertTriangle, ChevronDown, ChevronRight,
-  Building2, MapPin, Layers, Save, X, Check, Users,
+  Building2, MapPin, Layers, Save, X, Check, Users, Info,
 } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import Modal from "@/components/ui/Modal";
@@ -39,99 +39,123 @@ type RolePerm = { xem: boolean; tao: boolean; sua: boolean; xoa: boolean; xuat: 
 
 const modules: { name: string; roles: Record<string, RolePerm> }[] = [
   {
+    name: "Doanh nghiệp",
+    roles: {
+      "super-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: true },
+      "bo-ban-nganh-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: false },
+      "bo-ban-nganh-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "so-tinh-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "so-tinh-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "dai-ly-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: false },
+      "dai-ly-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+    },
+  },
+  {
+    name: "Cơ sở",
+    roles: {
+      "super-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: false },
+      "bo-ban-nganh-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: false },
+      "bo-ban-nganh-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "so-tinh-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "so-tinh-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "dai-ly-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: false },
+      "dai-ly-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+    },
+  },
+  {
     name: "Sản phẩm",
     roles: {
-      "super-admin":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
-      "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
-      "bo-ban-nganh-ops":   { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "so-tinh-admin":      { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "so-tinh-ops":        { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "dai-ly-admin":       { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
-      "dai-ly-ops":         { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "super-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: false },
+      "bo-ban-nganh-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: false },
+      "bo-ban-nganh-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "so-tinh-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "so-tinh-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "dai-ly-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: false },
+      "dai-ly-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
     },
   },
   {
     name: "Sự kiện truy xuất",
     roles: {
-      "super-admin":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
-      "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "bo-ban-nganh-ops":   { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
-      "so-tinh-admin":      { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "so-tinh-ops":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:true,  phe_duyet:false },
-      "dai-ly-admin":       { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "dai-ly-ops":         { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "super-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: false },
+      "bo-ban-nganh-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "bo-ban-nganh-ops": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: false },
+      "so-tinh-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "so-tinh-ops": { xem: true, tao: true, sua: true, xoa: true, xuat: true, phe_duyet: false },
+      "dai-ly-admin": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "dai-ly-ops": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
     },
   },
   {
     name: "Tem nhãn (UID/QR)",
     roles: {
-      "super-admin":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
-      "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
-      "bo-ban-nganh-ops":   { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "so-tinh-admin":      { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "so-tinh-ops":        { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "dai-ly-admin":       { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
-      "dai-ly-ops":         { xem:true,  tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "super-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: false },
+      "bo-ban-nganh-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: false },
+      "bo-ban-nganh-ops": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "so-tinh-admin": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "so-tinh-ops": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "dai-ly-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: false },
+      "dai-ly-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
     },
   },
   {
     name: "Chứng chỉ",
     roles: {
-      "super-admin":        { xem:true,  tao:false, sua:true,  xoa:false, xuat:false, phe_duyet:false },
-      "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "bo-ban-nganh-ops":   { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:true  },
-      "so-tinh-admin":      { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "so-tinh-ops":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:true  },
-      "dai-ly-admin":       { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "dai-ly-ops":         { xem:true,  tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "super-admin": { xem: true, tao: false, sua: true, xoa: false, xuat: false, phe_duyet: false },
+      "bo-ban-nganh-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "bo-ban-nganh-ops": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: true },
+      "so-tinh-admin": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "so-tinh-ops": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: true },
+      "dai-ly-admin": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "dai-ly-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
     },
   },
   {
     name: "Báo cáo",
     roles: {
-      "super-admin":        { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "bo-ban-nganh-ops":   { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "so-tinh-admin":      { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "so-tinh-ops":        { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "dai-ly-admin":       { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "dai-ly-ops":         { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "super-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "bo-ban-nganh-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "bo-ban-nganh-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "so-tinh-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "so-tinh-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "dai-ly-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "dai-ly-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
     },
   },
   {
     name: "Quản trị người dùng",
     roles: {
-      "super-admin":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
-      "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
-      "bo-ban-nganh-ops":   { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "so-tinh-admin":      { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
-      "so-tinh-ops":        { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "dai-ly-admin":       { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
-      "dai-ly-ops":         { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "super-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: false },
+      "bo-ban-nganh-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: false },
+      "bo-ban-nganh-ops": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "so-tinh-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: false },
+      "so-tinh-ops": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "dai-ly-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: false },
+      "dai-ly-ops": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
     },
   },
   {
     name: "Tích hợp API",
     roles: {
-      "super-admin":        { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
-      "bo-ban-nganh-admin": { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
-      "bo-ban-nganh-ops":   { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "so-tinh-admin":      { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "so-tinh-ops":        { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
-      "dai-ly-admin":       { xem:true,  tao:true,  sua:true,  xoa:true,  xuat:false, phe_duyet:false },
-      "dai-ly-ops":         { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false },
+      "super-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: false },
+      "bo-ban-nganh-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: false },
+      "bo-ban-nganh-ops": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "so-tinh-admin": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "so-tinh-ops": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
+      "dai-ly-admin": { xem: true, tao: true, sua: true, xoa: true, xuat: false, phe_duyet: false },
+      "dai-ly-ops": { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false },
     },
   },
   {
     name: "Báo cáo sản phẩm",
     roles: {
-      "super-admin":        { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:true  },
-      "bo-ban-nganh-admin": { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:true  },
-      "bo-ban-nganh-ops":   { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "so-tinh-admin":      { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "so-tinh-ops":        { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "dai-ly-admin":       { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
-      "dai-ly-ops":         { xem:true,  tao:false, sua:false, xoa:false, xuat:true,  phe_duyet:false },
+      "super-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: true },
+      "bo-ban-nganh-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: true },
+      "bo-ban-nganh-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "so-tinh-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "so-tinh-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "dai-ly-admin": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
+      "dai-ly-ops": { xem: true, tao: false, sua: false, xoa: false, xuat: true, phe_duyet: false },
     },
   },
 ];
@@ -165,8 +189,8 @@ function getModeLabel(ps: PartnerScope, totalDn: number): string {
 function ModeDot({ mode }: { mode: AgencyMode }) {
   const color =
     mode === "allow_all" ? "bg-green-500" :
-    mode === "exclude"   ? "bg-amber-500" :
-                           "bg-purple-500";
+      mode === "exclude" ? "bg-amber-500" :
+        "bg-purple-500";
   return <span className={`inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 ${color}`} />;
 }
 
@@ -227,19 +251,17 @@ function PartnerDetailModal({
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => updatePs({ mode: "allow_all", excludeList: [], allowList: [] })}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
-              ps.mode === "allow_all" ? "bg-green-50 border-green-300 text-green-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
-            }`}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${ps.mode === "allow_all" ? "bg-green-50 border-green-300 text-green-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+              }`}
           >
-            <ModeDot mode="allow_all" /> Allow all
+            <ModeDot mode="allow_all" /> Chọn toàn bộ
           </button>
           <button
             onClick={() => setShowConfirm(true)}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
-              ps.mode === "allow_only" ? "bg-purple-50 border-purple-300 text-purple-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
-            }`}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${ps.mode === "allow_only" ? "bg-purple-50 border-purple-300 text-purple-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+              }`}
           >
-            <ModeDot mode="allow_only" /> Allow only
+            <ModeDot mode="allow_only" /> Chọn chỉ định
           </button>
           <div className="ml-auto flex items-center gap-1.5">
             <ModeDot mode={ps.mode} />
@@ -267,9 +289,9 @@ function PartnerDetailModal({
         </div>
 
         <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-400">
-          {ps.mode === "allow_all" && "Tất cả doanh nghiệp thuộc đối tác này đều trong phạm vi."}
-          {ps.mode === "exclude" && `Tất cả trừ ${ps.excludeList.length} DN đã loại trừ.`}
-          {ps.mode === "allow_only" && "Chỉ các DN được chỉ định mới trong scope."}
+          {ps.mode === "allow_all" && "Tất cả doanh nghiệp thuộc đối tác này."}
+          {ps.mode === "exclude" && `Tất cả doanh nghiệp thuộc đối tác, loại trừ ${ps.excludeList.length} doanh nghiệp.`}
+          {ps.mode === "allow_only" && "Chỉ các doanh nghiệp được chọn."}
         </div>
       </Modal>
 
@@ -282,7 +304,7 @@ function PartnerDetailModal({
                 <AlertTriangle size={18} className="text-amber-600" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-1">Chuyển sang chế độ Allow only?</h3>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-1">Chuyển sang chế độ Chọn chỉ định?</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                   Doanh nghiệp mới sẽ <strong>không tự động vào scope</strong> — cần thêm thủ công.
                 </p>
@@ -294,7 +316,7 @@ function PartnerDetailModal({
                 onClick={() => { updatePs({ mode: "allow_only", excludeList: [], allowList: [] }); setShowConfirm(false); }}
                 className="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-xl hover:bg-purple-700"
               >
-                Xác nhận chuyển
+                Xác nhận
               </button>
             </div>
           </div>
@@ -335,7 +357,6 @@ function AgencyScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
         <input type="radio" name="agency-type" checked={scope.agencyType === "all"} onChange={() => onScopeChange({ ...scope, agencyType: "all", partnerScopes: {} })} className="accent-brand-600" />
         <span className="text-sm text-gray-700 dark:text-gray-300">Tất cả đối tác</span>
-        {scope.agencyType === "all" && <Badge variant="success">Active</Badge>}
       </label>
 
       <div className="flex-1 overflow-y-auto max-h-96">
@@ -404,7 +425,6 @@ function RegionScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
         <input type="radio" name="region-type" checked={scope.regionType === "all"} onChange={() => onScopeChange({ ...scope, regionType: "all", selectedProvinces: [] })} className="accent-brand-600" />
         <span className="text-sm text-gray-700 dark:text-gray-300">Tất cả địa phương</span>
-        {scope.regionType === "all" && <Badge variant="success">Active</Badge>}
       </label>
 
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
@@ -465,7 +485,6 @@ function CategoryScopeSection({ scope, onScopeChange }: { scope: DataScopeState;
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
         <input type="radio" name="category-type" checked={scope.categoryType === "all"} onChange={() => onScopeChange({ ...scope, categoryType: "all", selectedCategories: [] })} className="accent-brand-600" />
         <span className="text-sm text-gray-700 dark:text-gray-300">Tất cả nhóm ngành</span>
-        {scope.categoryType === "all" && <Badge variant="success">Active</Badge>}
       </label>
 
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
@@ -518,11 +537,11 @@ function FunctionPermTab({ roleId }: { roleId: string }) {
   if (!role) return null;
 
   const permCols: { key: keyof RolePerm; label: string }[] = [
-    { key: "xem",       label: "Xem"       },
-    { key: "tao",       label: "Tạo"       },
-    { key: "sua",       label: "Sửa"       },
-    { key: "xoa",       label: "Xóa"       },
-    { key: "xuat",      label: "Xuất"      },
+    { key: "xem", label: "Xem" },
+    { key: "tao", label: "Tạo" },
+    { key: "sua", label: "Sửa" },
+    { key: "xoa", label: "Xóa" },
+    { key: "xuat", label: "Xuất" },
     { key: "phe_duyet", label: "Phê duyệt" },
   ];
 
@@ -530,15 +549,14 @@ function FunctionPermTab({ roleId }: { roleId: string }) {
     <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
       <div className="p-5 border-b border-gray-100 dark:border-gray-800">
         <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-          Quyền chức năng — {role.ten}
+          Quyền thao tác trên từng chức năng
         </h2>
-        <p className="text-xs text-gray-400 mt-0.5">Quyền thao tác trên từng module hệ thống</p>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 dark:bg-gray-800">
             <tr>
-              <th className="text-left px-4 py-3 text-[13px] font-semibold text-gray-600 dark:text-gray-400 w-52">Module</th>
+              <th className="text-left px-4 py-3 text-[13px] font-semibold text-gray-600 dark:text-gray-400 w-52">Chức năng</th>
               {permCols.map((col) => (
                 <th key={col.key} className="text-center px-3 py-3 text-[13px] font-semibold text-gray-600 dark:text-gray-400">{col.label}</th>
               ))}
@@ -546,7 +564,7 @@ function FunctionPermTab({ roleId }: { roleId: string }) {
           </thead>
           <tbody>
             {modules.map((mod, i) => {
-              const perms = mod.roles[roleId] ?? { xem:false, tao:false, sua:false, xoa:false, xuat:false, phe_duyet:false };
+              const perms = mod.roles[roleId] ?? { xem: false, tao: false, sua: false, xoa: false, xuat: false, phe_duyet: false };
               return (
                 <tr key={mod.name} className={i % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-800/50"}>
                   <td className="px-4 py-3 font-medium text-gray-700 dark:text-gray-300 text-[13px]">{mod.name}</td>
@@ -668,9 +686,9 @@ function DataScopeTab({ roleId }: { roleId: string }) {
       <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 px-5 py-3">
         <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">Chú thích chế độ đối tác:</p>
         <div className="flex items-center gap-6 text-xs text-gray-500 dark:text-gray-400">
-          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block" /> Allow all — DN mới tự vào scope</span>
-          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" /> Exclude — Trừ danh sách loại trừ, DN mới tự vào scope</span>
-          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block" /> Allow only — Chỉ DN chỉ định, DN mới KHÔNG tự vào scope</span>
+          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block" /> Chọn toàn bộ — Tự động cập nhật Doanh nghiệp mới</span>
+          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" /> Loại trừ — Trừ danh sách loại trừ, tự động cập nhật doanh nghiệp mới</span>
+          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block" /> Chọn chỉ định — Chỉ doanh nghiệp chỉ định, KHÔNG cập nhật doanh nghiệp mới</span>
         </div>
       </div>
 
@@ -684,6 +702,117 @@ function DataScopeTab({ roleId }: { roleId: string }) {
         >
           {saved ? <Check size={15} /> : <Save size={15} />}
           {saved ? "Đã lưu!" : "Lưu cấu hình"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Tab: Thông tin vai trò ───────────────────────────────────────────────────
+
+function RoleInfoTab({ role }: { role: { id: string; ten: string; mo_ta: string; so_nguoi: number; scope_configured: boolean } }) {
+  const [ten, setTen] = useState(role.ten);
+  const [moTa, setMoTa] = useState(role.mo_ta);
+  const [trangThai, setTrangThai] = useState(true);
+  const [saved, setSaved] = useState(false);
+
+  function handleSave() {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  }
+
+  return (
+    <div className="space-y-5 max-w-2xl">
+      {/* Card thông tin chính */}
+      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center gap-2">
+          <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Thông tin vai trò</h2>
+        </div>
+
+        <div className="px-5 py-5 space-y-5">
+          {/* Tên vai trò */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+              Tên vai trò <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={ten}
+              onChange={(e) => setTen(e.target.value)}
+              placeholder="Nhập tên vai trò..."
+              className="w-full px-4 py-2.5 text-sm text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-400 transition-colors"
+            />
+          </div>
+
+          {/* Mô tả vai trò */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+              Mô tả vai trò
+            </label>
+            <textarea
+              value={moTa}
+              onChange={(e) => setMoTa(e.target.value)}
+              placeholder="Nhập mô tả cho vai trò này..."
+              rows={4}
+              className="w-full px-4 py-2.5 text-sm text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-400 transition-colors resize-none"
+            />
+          </div>
+
+          {/* Trạng thái */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+              Trạng thái
+            </label>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setTrangThai(!trangThai)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${trangThai ? "bg-green-500" : "bg-gray-300 dark:bg-gray-600"
+                  }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${trangThai ? "translate-x-6" : "translate-x-1"
+                    }`}
+                />
+              </button>
+              <span className={`text-sm font-medium ${trangThai ? "text-green-600" : "text-gray-400"}`}>
+                {trangThai ? "Hoạt động" : "Không hoạt động"}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Card thông tin hệ thống (read-only) */}
+      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-800">
+          <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Thông tin hệ thống</h2>
+          {/* <p className="text-xs text-gray-400 mt-0.5">Chỉ đọc — được quản lý tự động bởi hệ thống</p> */}
+        </div>
+        <div className="px-5 py-4 grid grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <p className="text-xs text-gray-400">Mã vai trò</p>
+            <p className="text-sm font-mono font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 px-3 py-1.5 rounded-lg">{role.id}</p>
+          </div>
+          <div className="space-y-1">
+            <p className="text-xs text-gray-400">Số người dùng</p>
+            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 px-3 py-1.5 rounded-lg">
+              <Users size={13} className="text-gray-400" />
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{role.so_nguoi.toLocaleString()} người</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex justify-end pt-1">
+        <button
+          onClick={handleSave}
+          className={`flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-xl transition-colors ${saved ? "bg-green-500 text-white" : "bg-brand-600 hover:bg-brand-700 text-white"
+            }`}
+        >
+          {saved ? <Check size={15} /> : <Save size={15} />}
+          {saved ? "Đã lưu!" : "Lưu thông tin"}
         </button>
       </div>
     </div>
@@ -712,8 +841,9 @@ export default function Page() {
   }
 
   const tabs = [
+    { label: "Thông tin vai trò", icon: Info },
     { label: "Phân quyền chức năng", icon: ShieldCheck },
-    { label: "Phân quyền dữ liệu",   icon: Database    },
+    { label: "Phân quyền dữ liệu", icon: Database },
   ];
 
   return (
@@ -729,10 +859,6 @@ export default function Page() {
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-gray-900 dark:text-white">{role.ten}</h1>
-            {role.scope_configured
-              ? <Badge variant="success">Phạm vi đã cấu hình</Badge>
-              : <Badge variant="warning">Chưa cấu hình phạm vi</Badge>
-            }
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
             {role.mo_ta} &nbsp;·&nbsp;
@@ -749,11 +875,10 @@ export default function Page() {
             <button
               key={tab.label}
               onClick={() => setActiveTab(i)}
-              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                activeTab === i
-                  ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm"
-                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-              }`}
+              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === i
+                ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm"
+                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                }`}
             >
               <Icon size={15} />
               {tab.label}
@@ -762,8 +887,9 @@ export default function Page() {
         })}
       </div>
 
-      {activeTab === 0 && <FunctionPermTab roleId={id} />}
-      {activeTab === 1 && <DataScopeTab roleId={id} />}
+      {activeTab === 0 && <RoleInfoTab role={role} />}
+      {activeTab === 1 && <FunctionPermTab roleId={id} />}
+      {activeTab === 2 && <DataScopeTab roleId={id} />}
     </DashboardLayout>
   );
 }
