@@ -446,7 +446,7 @@ function RegionScopeSection({
                 />
                 <div className="flex-1">
                   <p className="text-sm text-gray-700 dark:text-gray-300">{prov.ten}</p>
-                  <p className="text-xs text-gray-400">→ {prov.so_quan} quận/huyện</p>
+                  <p className="text-xs text-gray-400">→ {prov.so_xa} xã/phường</p>
                 </div>
                 {checked && <Check size={14} className="text-green-500 flex-shrink-0" />}
               </label>

@@ -5,13 +5,13 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft, ShieldCheck, Database, AlertTriangle, ChevronDown, ChevronRight,
-  Building2, MapPin, Layers, Save, X, Check, Users, Info,
+  Building2, MapPin, Layers, Save, X, Check, Users, Info, Search,
 } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import Modal from "@/components/ui/Modal";
 import Badge from "@/components/ui/Badge";
 import {
-  phanQuyenRoles, scopePartners, scopeCompanies, provinceTree, categoryTree,
+  phanQuyenRoles, scopePartners, scopeCompanies, provinceTree, categoryTree, wardTree,
 } from "@/lib/mock-data";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -29,8 +29,10 @@ interface DataScopeState {
   partnerScopes: Record<string, PartnerScope>;
   regionType: "all" | "specific";
   selectedProvinces: string[];
+  provinceScopes: Record<string, string[]>;   // province_id → [] = all wards | [wardId,...] = specific
   categoryType: "all" | "specific";
   selectedCategories: string[];
+  categoryScopes: Record<string, string[]>;   // parent_id → [] = all children | [childId,...] = specific
 }
 
 // ─── Static permission data ──────────────────────────────────────────────────
@@ -326,23 +328,185 @@ function PartnerDetailModal({
   );
 }
 
+// ─── Province detail modal ────────────────────────────────────────────────────
+
+function ProvinceDetailModal({
+  provinceId, scope, onScopeChange, onClose,
+}: {
+  provinceId: string;
+  scope: DataScopeState;
+  onScopeChange: (s: DataScopeState) => void;
+  onClose: () => void;
+}) {
+  const province = provinceTree.find((p) => p.id === provinceId)!;
+  const wards = wardTree.filter((w) => w.province_id === provinceId);
+  const selectedWards = scope.provinceScopes[provinceId] ?? [];
+  const isAllMode = selectedWards.length === 0;
+
+  function updateProvinceScope(ids: string[]) {
+    const next = { ...scope.provinceScopes };
+    if (ids.length === 0) {
+      delete next[provinceId];
+    } else {
+      next[provinceId] = ids;
+    }
+    onScopeChange({ ...scope, provinceScopes: next });
+  }
+
+  function handleWardToggle(wardId: string) {
+    if (isAllMode) {
+      updateProvinceScope(wards.map((w) => w.id).filter((id) => id !== wardId));
+    } else {
+      const next = selectedWards.includes(wardId)
+        ? selectedWards.filter((id) => id !== wardId)
+        : [...selectedWards, wardId];
+      updateProvinceScope(next);
+    }
+  }
+
+  function isWardChecked(wardId: string) {
+    return isAllMode ? true : selectedWards.includes(wardId);
+  }
+
+  return (
+    <Modal isOpen title={`Chi tiết: ${province.ten}`} onClose={onClose}>
+      <div className="flex items-center gap-2 mb-4">
+        <button
+          onClick={() => updateProvinceScope([])}
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${isAllMode ? "bg-green-50 border-green-300 text-green-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+        >
+          <span className="inline-block w-2.5 h-2.5 rounded-full bg-green-500 flex-shrink-0" /> Tất cả xã/phường
+        </button>
+        <button
+          onClick={() => { if (isAllMode) updateProvinceScope(wards.map((w) => w.id)); }}
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${!isAllMode ? "bg-blue-50 border-blue-300 text-blue-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+        >
+          <span className="inline-block w-2.5 h-2.5 rounded-full bg-blue-500 flex-shrink-0" /> Chọn cụ thể
+        </button>
+      </div>
+
+      <div className="space-y-1 max-h-80 overflow-y-auto">
+        {wards.map((ward) => {
+          const checked = isWardChecked(ward.id);
+          return (
+            <label key={ward.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors">
+              <input type="checkbox" checked={checked} onChange={() => handleWardToggle(ward.id)} className="w-4 h-4 rounded accent-brand-600" />
+              <MapPin size={14} className="text-gray-400 flex-shrink-0" />
+              <span className="text-sm text-gray-700 dark:text-gray-300 flex-1">{ward.ten}</span>
+              {checked && !isAllMode && <Badge variant="info">Chọn</Badge>}
+            </label>
+          );
+        })}
+      </div>
+
+      <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-400">
+        {isAllMode
+          ? `Tất cả ${wards.length} xã/phường thuộc ${province.ten}.`
+          : `${selectedWards.length}/${wards.length} xã/phường được chọn.`}
+      </div>
+    </Modal>
+  );
+}
+
+// ─── Category detail modal ────────────────────────────────────────────────────
+
+function CategoryDetailModal({
+  categoryId, scope, onScopeChange, onClose,
+}: {
+  categoryId: string;
+  scope: DataScopeState;
+  onScopeChange: (s: DataScopeState) => void;
+  onClose: () => void;
+}) {
+  const parent = categoryTree.find((c) => c.id === categoryId)!;
+  const children = categoryTree.filter((c) => c.parent_id === categoryId);
+  const selectedChildren = scope.categoryScopes[categoryId] ?? [];
+  const isAllMode = selectedChildren.length === 0;
+
+  function updateCategoryScope(ids: string[]) {
+    const next = { ...scope.categoryScopes };
+    if (ids.length === 0) {
+      delete next[categoryId];
+    } else {
+      next[categoryId] = ids;
+    }
+    onScopeChange({ ...scope, categoryScopes: next });
+  }
+
+  function handleChildToggle(childId: string) {
+    if (isAllMode) {
+      updateCategoryScope(children.map((c) => c.id).filter((id) => id !== childId));
+    } else {
+      const next = selectedChildren.includes(childId)
+        ? selectedChildren.filter((id) => id !== childId)
+        : [...selectedChildren, childId];
+      updateCategoryScope(next);
+    }
+  }
+
+  function isChildChecked(childId: string) {
+    return isAllMode ? true : selectedChildren.includes(childId);
+  }
+
+  return (
+    <Modal isOpen title={`Chi tiết: ${parent.ten}`} onClose={onClose}>
+      <div className="flex items-center gap-2 mb-4">
+        <button
+          onClick={() => updateCategoryScope([])}
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${isAllMode ? "bg-green-50 border-green-300 text-green-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+        >
+          <span className="inline-block w-2.5 h-2.5 rounded-full bg-green-500 flex-shrink-0" /> Tất cả danh mục con
+        </button>
+        <button
+          onClick={() => { if (isAllMode) updateCategoryScope(children.map((c) => c.id)); }}
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${!isAllMode ? "bg-blue-50 border-blue-300 text-blue-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+        >
+          <span className="inline-block w-2.5 h-2.5 rounded-full bg-blue-500 flex-shrink-0" /> Chọn cụ thể
+        </button>
+      </div>
+
+      <div className="space-y-1 max-h-80 overflow-y-auto">
+        {children.map((child) => {
+          const checked = isChildChecked(child.id);
+          return (
+            <label key={child.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors">
+              <input type="checkbox" checked={checked} onChange={() => handleChildToggle(child.id)} className="w-4 h-4 rounded accent-brand-600" />
+              <Layers size={14} className="text-gray-400 flex-shrink-0" />
+              <span className="text-sm text-gray-700 dark:text-gray-300 flex-1">{child.ten}</span>
+              {checked && !isAllMode && <Badge variant="info">Chọn</Badge>}
+            </label>
+          );
+        })}
+      </div>
+
+      <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-400">
+        {isAllMode
+          ? `Tất cả ${children.length} danh mục con thuộc ${parent.ten}.`
+          : `${selectedChildren.length}/${children.length} danh mục con được chọn.`}
+      </div>
+    </Modal>
+  );
+}
+
 // ─── Agency scope section ─────────────────────────────────────────────────────
 
 function AgencyScopeSection({ scope, onScopeChange }: { scope: DataScopeState; onScopeChange: (s: DataScopeState) => void }) {
   const [openPartnerId, setOpenPartnerId] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
 
   function togglePartner(partnerId: string) {
     const isSelected = partnerId in scope.partnerScopes;
     if (isSelected) {
       const rest = { ...scope.partnerScopes };
       delete rest[partnerId];
-      onScopeChange({ ...scope, partnerScopes: rest, agencyType: Object.keys(rest).length === 0 ? "all" : "specific" });
+      onScopeChange({ ...scope, partnerScopes: rest });
     } else {
-      onScopeChange({ ...scope, agencyType: "specific", partnerScopes: { ...scope.partnerScopes, [partnerId]: { mode: "allow_all", excludeList: [], allowList: [] } } });
+      onScopeChange({ ...scope, partnerScopes: { ...scope.partnerScopes, [partnerId]: { mode: "allow_all", excludeList: [], allowList: [] } } });
     }
   }
 
   const hasAny = Object.keys(scope.partnerScopes).length > 0;
+  const filteredPartners = scopePartners.filter((p) => p.ten.toLowerCase().includes(query.toLowerCase()));
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 flex flex-col">
@@ -351,7 +515,7 @@ function AgencyScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
           <Building2 size={15} className="text-brand-500" />
           <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">Theo Đối tác</h3>
         </div>
-        <p className="text-xs text-gray-400">Tick đối tác để thêm vào phạm vi. Click tên để cấu hình chi tiết.</p>
+        <p className="text-xs text-gray-400">Chọn đối tác — click tên để cấu hình chi tiết từng đối tác.</p>
       </div>
 
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
@@ -359,37 +523,66 @@ function AgencyScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
         <span className="text-sm text-gray-700 dark:text-gray-300">Tất cả đối tác</span>
       </label>
 
-      <div className="flex-1 overflow-y-auto max-h-96">
-        {scopePartners.map((partner) => {
-          const ps = scope.partnerScopes[partner.id];
-          const isSelected = !!ps;
-          const dns = getPartnerCompanies(partner.id);
-          return (
-            <div key={partner.id} className="border-b border-gray-50 dark:border-gray-800 last:border-0">
-              <div className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                <input type="checkbox" checked={isSelected} onChange={() => togglePartner(partner.id)} className="w-4 h-4 rounded accent-brand-600 flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <button
-                    onClick={() => isSelected && setOpenPartnerId(partner.id)}
-                    className={`text-sm font-medium text-left w-full truncate ${isSelected ? "text-gray-800 dark:text-gray-200 hover:text-brand-600 cursor-pointer" : "text-gray-400 cursor-default"}`}
-                  >
-                    {partner.ten}
-                  </button>
-                  <p className="text-xs text-gray-400">{partner.tinh}</p>
-                </div>
-                {isSelected && ps && (
-                  <div className="flex items-center gap-1.5 flex-shrink-0">
-                    <ModeDot mode={ps.mode} />
-                    <span className="text-xs text-gray-500">{getModeLabel(ps, dns.length)}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+        <input type="radio" name="agency-type" checked={scope.agencyType === "specific"} onChange={() => onScopeChange({ ...scope, agencyType: "specific" })} className="accent-brand-600" />
+        <span className="text-sm text-gray-700 dark:text-gray-300">Chọn cụ thể</span>
+      </label>
 
-      {hasAny && (
+      {scope.agencyType === "specific" && (
+        <>
+          <div className="px-4 py-2 border-b border-gray-100 dark:border-gray-800">
+            <div className="flex items-center gap-2 rounded-lg bg-gray-50 dark:bg-gray-800 px-3 py-1.5">
+              <Search size={13} className="text-gray-400 flex-shrink-0" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Tìm kiếm đối tác..."
+                className="flex-1 bg-transparent text-sm text-gray-700 dark:text-gray-300 placeholder-gray-400 outline-none"
+              />
+              {query && (
+                <button onClick={() => setQuery("")} className="text-gray-400 hover:text-gray-600">
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-y-auto max-h-80">
+            {filteredPartners.length === 0 ? (
+              <div className="px-4 py-6 text-center text-xs text-gray-400">Không tìm thấy kết quả phù hợp</div>
+            ) : filteredPartners.map((partner) => {
+              const ps = scope.partnerScopes[partner.id];
+              const isSelected = !!ps;
+              const dns = getPartnerCompanies(partner.id);
+              return (
+                <div key={partner.id} className="border-b border-gray-50 dark:border-gray-800 last:border-0">
+                  <div className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <input type="checkbox" checked={isSelected} onChange={() => togglePartner(partner.id)} className="w-4 h-4 rounded accent-brand-600 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <button
+                        onClick={() => isSelected && setOpenPartnerId(partner.id)}
+                        className={`text-sm font-medium text-left w-full truncate ${isSelected ? "text-gray-800 dark:text-gray-200 hover:text-brand-600 cursor-pointer" : "text-gray-400 cursor-default"}`}
+                      >
+                        {partner.ten}
+                      </button>
+                      <p className="text-xs text-gray-400">{partner.tinh}</p>
+                    </div>
+                    {isSelected && ps && (
+                      <div className="flex items-center gap-1.5 flex-shrink-0">
+                        <ModeDot mode={ps.mode} />
+                        <span className="text-xs text-gray-500">{getModeLabel(ps, dns.length)}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {scope.agencyType === "specific" && hasAny && (
         <div className="px-4 py-2 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/30 rounded-b-2xl">
           <p className="text-xs text-gray-400">{Object.keys(scope.partnerScopes).length} đối tác được chọn</p>
         </div>
@@ -405,11 +598,18 @@ function AgencyScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
 // ─── Region scope section ─────────────────────────────────────────────────────
 
 function RegionScopeSection({ scope, onScopeChange }: { scope: DataScopeState; onScopeChange: (s: DataScopeState) => void }) {
+  const [query, setQuery] = useState("");
+  const [openProvinceId, setOpenProvinceId] = useState<string | null>(null);
+
   function toggleProvince(id: string) {
-    const selected = scope.selectedProvinces.includes(id)
-      ? scope.selectedProvinces.filter((p) => p !== id)
-      : [...scope.selectedProvinces, id];
-    onScopeChange({ ...scope, selectedProvinces: selected });
+    const isChecked = scope.selectedProvinces.includes(id);
+    if (isChecked) {
+      const nextProvinceScopes = { ...scope.provinceScopes };
+      delete nextProvinceScopes[id];
+      onScopeChange({ ...scope, selectedProvinces: scope.selectedProvinces.filter((p) => p !== id), provinceScopes: nextProvinceScopes });
+    } else {
+      onScopeChange({ ...scope, selectedProvinces: [...scope.selectedProvinces, id] });
+    }
   }
 
   return (
@@ -419,11 +619,11 @@ function RegionScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
           <MapPin size={15} className="text-blue-500" />
           <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">Theo Địa phương</h3>
         </div>
-        <p className="text-xs text-gray-400">Chọn tỉnh/thành — tự bao gồm toàn bộ quận/huyện.</p>
+        <p className="text-xs text-gray-400">Chọn tỉnh/thành — click tên để giới hạn đến xã/phường cụ thể.</p>
       </div>
 
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-        <input type="radio" name="region-type" checked={scope.regionType === "all"} onChange={() => onScopeChange({ ...scope, regionType: "all", selectedProvinces: [] })} className="accent-brand-600" />
+        <input type="radio" name="region-type" checked={scope.regionType === "all"} onChange={() => onScopeChange({ ...scope, regionType: "all", selectedProvinces: [], provinceScopes: {} })} className="accent-brand-600" />
         <span className="text-sm text-gray-700 dark:text-gray-300">Tất cả địa phương</span>
       </label>
 
@@ -433,27 +633,64 @@ function RegionScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
       </label>
 
       {scope.regionType === "specific" && (
-        <div className="flex-1 overflow-y-auto max-h-80">
-          {provinceTree.map((prov) => {
-            const checked = scope.selectedProvinces.includes(prov.id);
-            return (
-              <label key={prov.id} className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 last:border-0 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                <input type="checkbox" checked={checked} onChange={() => toggleProvince(prov.id)} className="w-4 h-4 rounded accent-brand-600" />
-                <div className="flex-1">
-                  <p className="text-sm text-gray-700 dark:text-gray-300">{prov.ten}</p>
-                  <p className="text-xs text-gray-400">→ {prov.so_quan} quận/huyện</p>
+        <>
+          <div className="px-4 py-2 border-b border-gray-100 dark:border-gray-800">
+            <div className="flex items-center gap-2 rounded-lg bg-gray-50 dark:bg-gray-800 px-3 py-1.5">
+              <Search size={13} className="text-gray-400 flex-shrink-0" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Tìm kiếm tỉnh/thành..."
+                className="flex-1 bg-transparent text-sm text-gray-700 dark:text-gray-300 placeholder-gray-400 outline-none"
+              />
+              {query && (
+                <button onClick={() => setQuery("")} className="text-gray-400 hover:text-gray-600">
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="flex-1 overflow-y-auto max-h-80">
+            {provinceTree.filter((p) => p.ten.toLowerCase().includes(query.toLowerCase())).length === 0 ? (
+              <div className="px-4 py-6 text-center text-xs text-gray-400">Không tìm thấy kết quả phù hợp</div>
+            ) : provinceTree.filter((p) => p.ten.toLowerCase().includes(query.toLowerCase())).map((prov) => {
+              const checked = scope.selectedProvinces.includes(prov.id);
+              const wardScope = scope.provinceScopes[prov.id];
+              const wardLabel = wardScope && wardScope.length > 0 ? `${wardScope.length} xã/phường` : "Tất cả xã/phường";
+              return (
+                <div key={prov.id} className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                  <input type="checkbox" checked={checked} onChange={() => toggleProvince(prov.id)} className="w-4 h-4 rounded accent-brand-600 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <button
+                      onClick={() => checked && setOpenProvinceId(prov.id)}
+                      className={`text-sm font-medium text-left w-full truncate ${checked ? "text-gray-800 dark:text-gray-200 hover:text-brand-600 cursor-pointer" : "text-gray-400 cursor-default"}`}
+                    >
+                      {prov.ten}
+                    </button>
+                    <p className="text-xs text-gray-400">→ {prov.so_xa} xã/phường</p>
+                  </div>
+                  {checked && (
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      <span className={`inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 ${wardScope && wardScope.length > 0 ? "bg-blue-500" : "bg-green-500"}`} />
+                      <span className="text-xs text-gray-500">{wardLabel}</span>
+                    </div>
+                  )}
                 </div>
-                {checked && <Check size={14} className="text-green-500 flex-shrink-0" />}
-              </label>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        </>
       )}
 
       {scope.regionType === "specific" && scope.selectedProvinces.length > 0 && (
         <div className="px-4 py-2 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/30 rounded-b-2xl">
           <p className="text-xs text-gray-400">{scope.selectedProvinces.length} tỉnh/thành được chọn</p>
         </div>
+      )}
+
+      {openProvinceId && (
+        <ProvinceDetailModal provinceId={openProvinceId} scope={scope} onScopeChange={onScopeChange} onClose={() => setOpenProvinceId(null)} />
       )}
     </div>
   );
@@ -463,13 +700,19 @@ function RegionScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
 
 function CategoryScopeSection({ scope, onScopeChange }: { scope: DataScopeState; onScopeChange: (s: DataScopeState) => void }) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [query, setQuery] = useState("");
+  const [openCategoryId, setOpenCategoryId] = useState<string | null>(null);
   const parents = categoryTree.filter((c) => c.parent_id === null);
 
   function toggleCategory(id: string) {
-    const selected = scope.selectedCategories.includes(id)
-      ? scope.selectedCategories.filter((c) => c !== id)
-      : [...scope.selectedCategories, id];
-    onScopeChange({ ...scope, selectedCategories: selected });
+    const isChecked = scope.selectedCategories.includes(id);
+    if (isChecked) {
+      const nextCategoryScopes = { ...scope.categoryScopes };
+      delete nextCategoryScopes[id];
+      onScopeChange({ ...scope, selectedCategories: scope.selectedCategories.filter((c) => c !== id), categoryScopes: nextCategoryScopes });
+    } else {
+      onScopeChange({ ...scope, selectedCategories: [...scope.selectedCategories, id] });
+    }
   }
 
   return (
@@ -479,11 +722,11 @@ function CategoryScopeSection({ scope, onScopeChange }: { scope: DataScopeState;
           <Layers size={15} className="text-emerald-500" />
           <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">Theo Nhóm ngành</h3>
         </div>
-        <p className="text-xs text-gray-400">Chọn nhóm cha — tự bao gồm tất cả danh mục con.</p>
+        <p className="text-xs text-gray-400">Chọn nhóm cha — click tên để giới hạn đến danh mục con cụ thể.</p>
       </div>
 
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-        <input type="radio" name="category-type" checked={scope.categoryType === "all"} onChange={() => onScopeChange({ ...scope, categoryType: "all", selectedCategories: [] })} className="accent-brand-600" />
+        <input type="radio" name="category-type" checked={scope.categoryType === "all"} onChange={() => onScopeChange({ ...scope, categoryType: "all", selectedCategories: [], categoryScopes: {} })} className="accent-brand-600" />
         <span className="text-sm text-gray-700 dark:text-gray-300">Tất cả nhóm ngành</span>
       </label>
 
@@ -493,38 +736,82 @@ function CategoryScopeSection({ scope, onScopeChange }: { scope: DataScopeState;
       </label>
 
       {scope.categoryType === "specific" && (
-        <div className="flex-1 overflow-y-auto max-h-80">
-          {parents.map((parent) => {
-            const children = categoryTree.filter((c) => c.parent_id === parent.id);
-            const isChecked = scope.selectedCategories.includes(parent.id);
-            const isExpanded = expanded[parent.id] ?? true;
-            return (
-              <div key={parent.id} className="border-b border-gray-50 dark:border-gray-800 last:border-0">
-                <div className="flex items-center gap-2 px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                  <input type="checkbox" checked={isChecked} onChange={() => toggleCategory(parent.id)} className="w-4 h-4 rounded accent-brand-600" />
-                  <button onClick={() => setExpanded((prev) => ({ ...prev, [parent.id]: !prev[parent.id] }))} className="flex items-center gap-1.5 flex-1 text-left">
-                    {isExpanded ? <ChevronDown size={13} className="text-gray-400 flex-shrink-0" /> : <ChevronRight size={13} className="text-gray-400 flex-shrink-0" />}
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{parent.ten}</span>
-                  </button>
-                  {isChecked && <Check size={14} className="text-green-500 flex-shrink-0" />}
-                </div>
-                {isExpanded && children.map((child) => (
-                  <div key={child.id} className="flex items-center gap-2 pl-10 pr-4 py-2 bg-gray-50/50 dark:bg-gray-800/20">
-                    <span className="w-3 h-px bg-gray-200 dark:bg-gray-700 flex-shrink-0" />
-                    <span className={`text-xs ${isChecked ? "text-gray-600 dark:text-gray-400" : "text-gray-400"}`}>{child.ten}</span>
-                    {isChecked && <span className="ml-auto text-[10px] text-green-600 font-medium">included</span>}
+        <>
+          <div className="px-4 py-2 border-b border-gray-100 dark:border-gray-800">
+            <div className="flex items-center gap-2 rounded-lg bg-gray-50 dark:bg-gray-800 px-3 py-1.5">
+              <Search size={13} className="text-gray-400 flex-shrink-0" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Tìm kiếm nhóm ngành..."
+                className="flex-1 bg-transparent text-sm text-gray-700 dark:text-gray-300 placeholder-gray-400 outline-none"
+              />
+              {query && (
+                <button onClick={() => setQuery("")} className="text-gray-400 hover:text-gray-600">
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="flex-1 overflow-y-auto max-h-80">
+            {parents.filter((parent) => {
+              const children = categoryTree.filter((c) => c.parent_id === parent.id);
+              const q = query.toLowerCase();
+              return parent.ten.toLowerCase().includes(q) || children.some((c) => c.ten.toLowerCase().includes(q));
+            }).length === 0 ? (
+              <div className="px-4 py-6 text-center text-xs text-gray-400">Không tìm thấy kết quả phù hợp</div>
+            ) : parents.filter((parent) => {
+              const children = categoryTree.filter((c) => c.parent_id === parent.id);
+              const q = query.toLowerCase();
+              return parent.ten.toLowerCase().includes(q) || children.some((c) => c.ten.toLowerCase().includes(q));
+            }).map((parent) => {
+              const children = categoryTree.filter((c) => c.parent_id === parent.id);
+              const isChecked = scope.selectedCategories.includes(parent.id);
+              const isExpanded = expanded[parent.id] ?? false;
+              const childScope = scope.categoryScopes[parent.id];
+              const childLabel = childScope && childScope.length > 0 ? `${childScope.length}/${children.length} danh mục con` : `Tất cả danh mục con`;
+              return (
+                <div key={parent.id} className="border-b border-gray-50 dark:border-gray-800 last:border-0">
+                  <div className="flex items-center gap-2 px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <input type="checkbox" checked={isChecked} onChange={() => toggleCategory(parent.id)} className="w-4 h-4 rounded accent-brand-600 flex-shrink-0" />
+                    <button onClick={() => setExpanded((prev) => ({ ...prev, [parent.id]: !prev[parent.id] }))} className="flex items-center gap-1.5 text-left">
+                      {isExpanded ? <ChevronDown size={13} className="text-gray-400 flex-shrink-0" /> : <ChevronRight size={13} className="text-gray-400 flex-shrink-0" />}
+                    </button>
+                    <button
+                      onClick={() => isChecked && setOpenCategoryId(parent.id)}
+                      className={`text-sm font-medium text-left flex-1 truncate ${isChecked ? "text-gray-800 dark:text-gray-200 hover:text-brand-600 cursor-pointer" : "text-gray-400 cursor-default"}`}
+                    >
+                      {parent.ten}
+                    </button>
+                    {isChecked && (
+                      <div className="flex items-center gap-1.5 flex-shrink-0">
+                        <span className={`inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 ${childScope && childScope.length > 0 ? "bg-blue-500" : "bg-green-500"}`} />
+                        <span className="text-xs text-gray-500">{childLabel}</span>
+                      </div>
+                    )}
                   </div>
-                ))}
-              </div>
-            );
-          })}
-        </div>
+                  {isExpanded && children.map((child) => (
+                    <div key={child.id} className="flex items-center gap-2 pl-10 pr-4 py-2 bg-gray-50/50 dark:bg-gray-800/20">
+                      <span className="w-3 h-px bg-gray-200 dark:bg-gray-700 flex-shrink-0" />
+                      <span className={`text-xs ${isChecked ? "text-gray-600 dark:text-gray-400" : "text-gray-400"}`}>{child.ten}</span>
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
 
       {scope.categoryType === "specific" && scope.selectedCategories.length > 0 && (
         <div className="px-4 py-2 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/30 rounded-b-2xl">
           <p className="text-xs text-gray-400">{scope.selectedCategories.length} nhóm ngành được chọn</p>
         </div>
+      )}
+
+      {openCategoryId && (
+        <CategoryDetailModal categoryId={openCategoryId} scope={scope} onScopeChange={onScopeChange} onClose={() => setOpenCategoryId(null)} />
       )}
     </div>
   );
@@ -589,53 +876,53 @@ const defaultScopes: Record<string, DataScopeState> = {
   // Quản trị quốc gia — toàn hệ thống, không giới hạn
   "super-admin": {
     agencyType: "all", partnerScopes: {},
-    regionType: "all", selectedProvinces: [],
-    categoryType: "all", selectedCategories: [],
+    regionType: "all", selectedProvinces: [], provinceScopes: {},
+    categoryType: "all", selectedCategories: [], categoryScopes: {},
   },
   // Bộ ban ngành Admin — toàn quốc, toàn ngành
   "bo-ban-nganh-admin": {
     agencyType: "all", partnerScopes: {},
-    regionType: "all", selectedProvinces: [],
-    categoryType: "all", selectedCategories: [],
+    regionType: "all", selectedProvinces: [], provinceScopes: {},
+    categoryType: "all", selectedCategories: [], categoryScopes: {},
   },
   // Bộ ban ngành Ops — lọc theo ngành hàng được gán (VD: Bộ NN&PTNT → Nông sản thực phẩm)
   "bo-ban-nganh-ops": {
     agencyType: "all", partnerScopes: {},
-    regionType: "all", selectedProvinces: [],
-    categoryType: "specific", selectedCategories: ["NS001"],
+    regionType: "all", selectedProvinces: [], provinceScopes: {},
+    categoryType: "specific", selectedCategories: ["NS001"], categoryScopes: {},
   },
   // Sở tỉnh Admin — lọc theo tỉnh được gán (VD: Sở NN&PTNT Hà Nội)
   "so-tinh-admin": {
     agencyType: "all", partnerScopes: {},
-    regionType: "specific", selectedProvinces: ["HN"],
-    categoryType: "all", selectedCategories: [],
+    regionType: "specific", selectedProvinces: ["HN"], provinceScopes: {},
+    categoryType: "all", selectedCategories: [], categoryScopes: {},
   },
   // Sở tỉnh Ops — lọc theo tỉnh + ngành hàng (VD: cán bộ Sở HN - nông sản)
   "so-tinh-ops": {
     agencyType: "all", partnerScopes: {},
-    regionType: "specific", selectedProvinces: ["HN"],
-    categoryType: "specific", selectedCategories: ["NS001"],
+    regionType: "specific", selectedProvinces: ["HN"], provinceScopes: {},
+    categoryType: "specific", selectedCategories: ["NS001"], categoryScopes: {},
   },
   // Đại lý Admin — phạm vi đại lý của mình (VD: Đại lý Hà Nội - AgriLink)
   "dai-ly-admin": {
     agencyType: "specific",
     partnerScopes: { "DT001": { mode: "allow_all", excludeList: [], allowList: [] } },
-    regionType: "all", selectedProvinces: [],
-    categoryType: "specific", selectedCategories: ["NS001"],
+    regionType: "all", selectedProvinces: [], provinceScopes: {},
+    categoryType: "specific", selectedCategories: ["NS001"], categoryScopes: {},
   },
   // Đại lý Ops — thừa hưởng từ admin đại lý
   "dai-ly-ops": {
     agencyType: "specific",
     partnerScopes: { "DT001": { mode: "allow_all", excludeList: [], allowList: [] } },
-    regionType: "all", selectedProvinces: [],
-    categoryType: "specific", selectedCategories: ["NS001"],
+    regionType: "all", selectedProvinces: [], provinceScopes: {},
+    categoryType: "specific", selectedCategories: ["NS001"], categoryScopes: {},
   },
 };
 
 const emptyScope: DataScopeState = {
   agencyType: "all", partnerScopes: {},
-  regionType: "all", selectedProvinces: [],
-  categoryType: "all", selectedCategories: [],
+  regionType: "all", selectedProvinces: [], provinceScopes: {},
+  categoryType: "all", selectedCategories: [], categoryScopes: {},
 };
 
 // ─── Tab: Phân quyền dữ liệu ─────────────────────────────────────────────────
@@ -668,7 +955,7 @@ function DataScopeTab({ roleId }: { roleId: string }) {
           <p className="text-lg font-bold text-gray-900 dark:text-white">
             {previewCount === scopeCompanies.length
               ? `Toàn bộ ${previewCount} doanh nghiệp`
-              : `${previewCount} doanh nghiệp trong scope`}
+              : `${previewCount} doanh nghiệp`}
           </p>
         </div>
         <div className="text-right text-xs text-gray-400">

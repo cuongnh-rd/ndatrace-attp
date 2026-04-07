@@ -122,13 +122,49 @@ export const scopeCompanies = Array.from({ length: 60 }, (_, i) => ({
 }));
 
 export const provinceTree = [
-  { id: "HN",  ten: "Hà Nội",      so_quan: 30 },
-  { id: "HCM", ten: "TP.HCM",      so_quan: 22 },
-  { id: "DN",  ten: "Đà Nẵng",     so_quan: 8  },
-  { id: "CT",  ten: "Cần Thơ",     so_quan: 9  },
-  { id: "LD",  ten: "Lâm Đồng",    so_quan: 12 },
-  { id: "NA",  ten: "Nghệ An",     so_quan: 21 },
-  { id: "BD",  ten: "Bình Dương",  so_quan: 9  },
+  { id: "HN",  ten: "Hà Nội",      so_xa: 30 },
+  { id: "HCM", ten: "TP.HCM",      so_xa: 22 },
+  { id: "DN",  ten: "Đà Nẵng",     so_xa: 8  },
+  { id: "CT",  ten: "Cần Thơ",     so_xa: 9  },
+  { id: "LD",  ten: "Lâm Đồng",    so_xa: 12 },
+  { id: "NA",  ten: "Nghệ An",     so_xa: 21 },
+  { id: "BD",  ten: "Bình Dương",  so_xa: 9  },
+];
+
+export const wardTree = [
+  // Hà Nội
+  { id: "HN-X1",  ten: "Phường Điện Biên",      province_id: "HN" },
+  { id: "HN-X2",  ten: "Phường Quán Thánh",     province_id: "HN" },
+  { id: "HN-X3",  ten: "Phường Hàng Bông",      province_id: "HN" },
+  { id: "HN-X4",  ten: "Phường Văn Miếu",       province_id: "HN" },
+  { id: "HN-X5",  ten: "Xã Đông Anh",           province_id: "HN" },
+  // TP.HCM
+  { id: "HCM-X1", ten: "Phường Bến Nghé",       province_id: "HCM" },
+  { id: "HCM-X2", ten: "Phường Phạm Ngũ Lão",  province_id: "HCM" },
+  { id: "HCM-X3", ten: "Phường Tân Phong",      province_id: "HCM" },
+  { id: "HCM-X4", ten: "Phường 25",             province_id: "HCM" },
+  { id: "HCM-X5", ten: "Xã Trung An",           province_id: "HCM" },
+  // Đà Nẵng
+  { id: "DN-X1",  ten: "Phường Hải Châu 1",     province_id: "DN" },
+  { id: "DN-X2",  ten: "Phường Thạch Thang",    province_id: "DN" },
+  { id: "DN-X3",  ten: "Phường An Hải Bắc",     province_id: "DN" },
+  { id: "DN-X4",  ten: "Xã Hòa Bắc",           province_id: "DN" },
+  // Cần Thơ
+  { id: "CT-X1",  ten: "Phường An Hòa",         province_id: "CT" },
+  { id: "CT-X2",  ten: "Phường Long Hòa",       province_id: "CT" },
+  { id: "CT-X3",  ten: "Xã Nhơn Nghĩa",        province_id: "CT" },
+  // Lâm Đồng
+  { id: "LD-X1",  ten: "Phường 1 (Đà Lạt)",    province_id: "LD" },
+  { id: "LD-X2",  ten: "Phường Lộc Phát",      province_id: "LD" },
+  { id: "LD-X3",  ten: "Xã Đức Trọng",         province_id: "LD" },
+  // Nghệ An
+  { id: "NA-X1",  ten: "Phường Lê Mao",        province_id: "NA" },
+  { id: "NA-X2",  ten: "Phường Thu Thủy",      province_id: "NA" },
+  { id: "NA-X3",  ten: "Xã Diễn Thịnh",       province_id: "NA" },
+  // Bình Dương
+  { id: "BD-X1",  ten: "Phường Phú Cường",     province_id: "BD" },
+  { id: "BD-X2",  ten: "Phường An Bình",       province_id: "BD" },
+  { id: "BD-X3",  ten: "Xã An Tây",            province_id: "BD" },
 ];
 
 export const categoryTree = [
