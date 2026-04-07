@@ -537,7 +537,7 @@ function AgencyScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Tìm kiếm đối tác..."
+                placeholder="Tìm kiếm đối tác"
                 className="flex-1 bg-transparent text-sm text-gray-700 dark:text-gray-300 placeholder-gray-400 outline-none"
               />
               {query && (
@@ -619,7 +619,7 @@ function RegionScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
           <MapPin size={15} className="text-blue-500" />
           <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">Theo Địa phương</h3>
         </div>
-        <p className="text-xs text-gray-400">Chọn tỉnh/thành — click tên để giới hạn đến xã/phường cụ thể.</p>
+        <p className="text-xs text-gray-400">Chọn địa phương — click tên để giới hạn đến xã/phường.</p>
       </div>
 
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
@@ -641,7 +641,7 @@ function RegionScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Tìm kiếm tỉnh/thành..."
+                placeholder="Tìm kiếm địa phương"
                 className="flex-1 bg-transparent text-sm text-gray-700 dark:text-gray-300 placeholder-gray-400 outline-none"
               />
               {query && (
@@ -722,7 +722,7 @@ function CategoryScopeSection({ scope, onScopeChange }: { scope: DataScopeState;
           <Layers size={15} className="text-emerald-500" />
           <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">Theo Nhóm ngành</h3>
         </div>
-        <p className="text-xs text-gray-400">Chọn nhóm cha — click tên để giới hạn đến danh mục con cụ thể.</p>
+        <p className="text-xs text-gray-400">Chọn nhóm ngành — click tên để chọn nhóm ngành cụ thể.</p>
       </div>
 
       <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
@@ -744,7 +744,7 @@ function CategoryScopeSection({ scope, onScopeChange }: { scope: DataScopeState;
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Tìm kiếm nhóm ngành..."
+                placeholder="Tìm kiếm nhóm ngành"
                 className="flex-1 bg-transparent text-sm text-gray-700 dark:text-gray-300 placeholder-gray-400 outline-none"
               />
               {query && (
@@ -927,22 +927,14 @@ const emptyScope: DataScopeState = {
 
 // ─── Tab: Phân quyền dữ liệu ─────────────────────────────────────────────────
 
-function DataScopeTab({ roleId }: { roleId: string }) {
-  const [scope, setScope] = useState<DataScopeState>(
-    defaultScopes[roleId] ?? emptyScope
-  );
-  const [saved, setSaved] = useState(false);
-
+function DataScopeTab({
+  scope,
+  onScopeChange,
+}: {
+  scope: DataScopeState;
+  onScopeChange: (s: DataScopeState) => void;
+}) {
   const previewCount = useMemo(() => computePreviewCount(scope), [scope]);
-
-  function handleSave() {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  }
-
-  function handleReset() {
-    setScope(defaultScopes[roleId] ?? emptyScope);
-  }
 
   return (
     <div className="space-y-4">
@@ -965,9 +957,9 @@ function DataScopeTab({ roleId }: { roleId: string }) {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <AgencyScopeSection scope={scope} onScopeChange={setScope} />
-        <RegionScopeSection scope={scope} onScopeChange={setScope} />
-        <CategoryScopeSection scope={scope} onScopeChange={setScope} />
+        <AgencyScopeSection scope={scope} onScopeChange={onScopeChange} />
+        <RegionScopeSection scope={scope} onScopeChange={onScopeChange} />
+        <CategoryScopeSection scope={scope} onScopeChange={onScopeChange} />
       </div>
 
       <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 px-5 py-3">
@@ -979,18 +971,6 @@ function DataScopeTab({ roleId }: { roleId: string }) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between pt-2">
-        <button onClick={handleReset} className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-          Đặt lại về mặc định
-        </button>
-        <button
-          onClick={handleSave}
-          className={`flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-xl transition-colors ${saved ? "bg-green-500 text-white" : "bg-brand-600 hover:bg-brand-700 text-white"}`}
-        >
-          {saved ? <Check size={15} /> : <Save size={15} />}
-          {saved ? "Đã lưu!" : "Lưu cấu hình"}
-        </button>
-      </div>
     </div>
   );
 }
@@ -1112,6 +1092,17 @@ export default function Page() {
   const params = useParams();
   const id = params.id as string;
   const [activeTab, setActiveTab] = useState(0);
+  const [scope, setScope] = useState<DataScopeState>(() => defaultScopes[id] ?? emptyScope);
+  const [saved, setSaved] = useState(false);
+
+  function handleSave() {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  }
+
+  function handleReset() {
+    setScope(defaultScopes[id] ?? emptyScope);
+  }
 
   const role = phanQuyenRoles.find((r) => r.id === id);
 
@@ -1144,14 +1135,21 @@ export default function Page() {
           <ArrowLeft size={16} className="text-gray-600 dark:text-gray-400" />
         </Link>
         <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">{role.ten}</h1>
-          </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            {role.mo_ta} &nbsp;·&nbsp;
-            <span className="inline-flex items-center gap-1"><Users size={12} /> {role.so_nguoi.toLocaleString()} người dùng</span>
-          </p>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">{role.ten}</h1>
         </div>
+        <button
+          onClick={handleReset}
+          className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+        >
+          Đặt về mặc định
+        </button>
+        <button
+          onClick={handleSave}
+          className={`flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-xl transition-colors ${saved ? "bg-green-500 text-white" : "bg-brand-600 hover:bg-brand-700 text-white"}`}
+        >
+          {saved ? <Check size={15} /> : <Save size={15} />}
+          {saved ? "Đã lưu!" : "Lưu cấu hình"}
+        </button>
       </div>
 
       {/* Tab bar */}
@@ -1176,7 +1174,7 @@ export default function Page() {
 
       {activeTab === 0 && <RoleInfoTab role={role} />}
       {activeTab === 1 && <FunctionPermTab roleId={id} />}
-      {activeTab === 2 && <DataScopeTab roleId={id} />}
+      {activeTab === 2 && <DataScopeTab scope={scope} onScopeChange={setScope} />}
     </DashboardLayout>
   );
 }
