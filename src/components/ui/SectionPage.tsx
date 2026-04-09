@@ -3,6 +3,7 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import Badge from "@/components/ui/Badge";
 import DataTable from "@/components/ui/DataTable";
+import Link from "next/link";
 import { ReactNode } from "react";
 import { Plus, Download } from "lucide-react";
 
@@ -13,6 +14,7 @@ interface SectionPageProps {
   tableColumns?: { key: string; label: string; render?: (row: Record<string, any>) => ReactNode; width?: string }[];
   tableData?: Record<string, any>[];
   addLabel?: string;
+  addLink?: string;
   actionButton?: ReactNode;
   searchable?: boolean;
   searchKeys?: string[];
@@ -26,6 +28,7 @@ export default function SectionPage({
   tableColumns,
   tableData,
   addLabel = "Thêm mới",
+  addLink,
   actionButton,
   searchable,
   searchKeys,
@@ -43,9 +46,15 @@ export default function SectionPage({
             <Download size={14} /> Xuất
           </button>
           {actionButton || (
-            <button className="flex items-center gap-1.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl px-4 py-2 transition-colors">
-              <Plus size={14} /> {addLabel}
-            </button>
+            addLink ? (
+              <Link href={addLink} className="flex items-center gap-1.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl px-4 py-2 transition-colors">
+                <Plus size={14} /> {addLabel}
+              </Link>
+            ) : (
+              <button className="flex items-center gap-1.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl px-4 py-2 transition-colors">
+                <Plus size={14} /> {addLabel}
+              </button>
+            )
           )}
         </div>
       </div>
@@ -62,7 +71,7 @@ export default function SectionPage({
       )}
 
       {children}
-      
+
       {tableColumns && tableData && (
         <DataTable
           columns={tableColumns}

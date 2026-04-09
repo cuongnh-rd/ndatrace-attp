@@ -19,8 +19,8 @@ const columns = [
         <p className="text-[14px] font-semibold text-gray-800 dark:text-gray-200">{row.ten as string}</p>
         <p className="text-xs text-gray-400 mt-0.5 capitalize">{
           (row.layer as string) === "national" ? "National"
-          : (row.layer as string) === "sector"  ? "Sector / Regional"
-          : "Agency"
+            : (row.layer as string) === "sector" ? "Sector / Regional"
+              : "Agency"
         }</p>
       </div>
     ),
@@ -66,12 +66,13 @@ export default function Page() {
   return (
     <SectionPage
       title="Quản lý vai trò"
-      subtitle="Phân quyền và quản lý vai trò người dùng theo 4 cấp quản lý trong hệ thống"
+      subtitle="Phân quyền và quản lý vai trò người dùng trong hệ thống."
       addLabel="Thêm vai trò"
+      addLink="/quan-tri/vai-tro/new"
       stats={[
-        { label: "Tổng vai trò",    value: phanQuyenRoles.length, variant: "info"    },
-        { label: "Đang hoạt động",  value: activeCount,            variant: "success" },
-        { label: "Không hoạt động", value: inactiveCount,          variant: "neutral" },
+        { label: "Tổng vai trò", value: phanQuyenRoles.length, variant: "info" },
+        { label: "Đang hoạt động", value: activeCount, variant: "success" },
+        { label: "Không hoạt động", value: inactiveCount, variant: "neutral" },
         { label: "Tổng người dùng", value: totalUsers.toLocaleString(), variant: "info" },
       ]}
       tableColumns={columns}
