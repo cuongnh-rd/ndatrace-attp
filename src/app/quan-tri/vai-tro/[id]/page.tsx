@@ -45,7 +45,7 @@ export default function Page() {
   const existingRole = phanQuyenRoles.find((r) => r.id === id);
   const role: RoleInfo | null = isNewRole
     ? { id: "new-role", ten: "", mo_ta: "", so_nguoi: 0, scope_configured: false }
-    : existingRole;
+    : (existingRole ?? null);
 
   if (!role && !isNewRole) {
     return (
