@@ -99,10 +99,10 @@ export const batches = Array.from({ length: 25 }, (_, i) => ({
 // --- Scope/ABAC data for phân quyền dữ liệu ---
 
 export const scopePartners = [
-  { id: "DT001", ten: "Công ty AgriLink Hà Nội", tinh: "Hà Nội" },
+  { id: "DT001", ten: "Đối tác AgriLink", tinh: "Hà Nội" },
   { id: "DT002", ten: "Đối tác Phân phối Miền Nam", tinh: "TP.HCM" },
   { id: "DT003", ten: "HTX Nông nghiệp Miền Trung", tinh: "Đà Nẵng" },
-  { id: "DT004", ten: "Công ty CP Nông sản Đồng bằng", tinh: "Cần Thơ" },
+  { id: "DT004", ten: "Nông sản Đồng bằng", tinh: "Cần Thơ" },
   { id: "DT005", ten: "Đối tác Tây Nguyên Xanh", tinh: "Lâm Đồng" },
   { id: "DT006", ten: "Liên minh HTX Hà Nội", tinh: "Hà Nội" },
 ];
@@ -122,62 +122,62 @@ export const scopeCompanies = Array.from({ length: 60 }, (_, i) => ({
 }));
 
 export const provinceTree = [
-  { id: "HN",  ten: "Hà Nội",      so_xa: 30 },
-  { id: "HCM", ten: "TP.HCM",      so_xa: 22 },
-  { id: "DN",  ten: "Đà Nẵng",     so_xa: 8  },
-  { id: "CT",  ten: "Cần Thơ",     so_xa: 9  },
-  { id: "LD",  ten: "Lâm Đồng",    so_xa: 12 },
-  { id: "NA",  ten: "Nghệ An",     so_xa: 21 },
-  { id: "BD",  ten: "Bình Dương",  so_xa: 9  },
+  { id: "HN", ten: "Hà Nội", so_xa: 30 },
+  { id: "HCM", ten: "TP.HCM", so_xa: 22 },
+  { id: "DN", ten: "Đà Nẵng", so_xa: 8 },
+  { id: "CT", ten: "Cần Thơ", so_xa: 9 },
+  { id: "LD", ten: "Lâm Đồng", so_xa: 12 },
+  { id: "NA", ten: "Nghệ An", so_xa: 21 },
+  { id: "BD", ten: "Bình Dương", so_xa: 9 },
 ];
 
 export const wardTree = [
   // Hà Nội
-  { id: "HN-X1",  ten: "Phường Điện Biên",      province_id: "HN" },
-  { id: "HN-X2",  ten: "Phường Quán Thánh",     province_id: "HN" },
-  { id: "HN-X3",  ten: "Phường Hàng Bông",      province_id: "HN" },
-  { id: "HN-X4",  ten: "Phường Văn Miếu",       province_id: "HN" },
-  { id: "HN-X5",  ten: "Xã Đông Anh",           province_id: "HN" },
+  { id: "HN-X1", ten: "Phường Điện Biên", province_id: "HN" },
+  { id: "HN-X2", ten: "Phường Quán Thánh", province_id: "HN" },
+  { id: "HN-X3", ten: "Phường Hàng Bông", province_id: "HN" },
+  { id: "HN-X4", ten: "Phường Văn Miếu", province_id: "HN" },
+  { id: "HN-X5", ten: "Xã Đông Anh", province_id: "HN" },
   // TP.HCM
-  { id: "HCM-X1", ten: "Phường Bến Nghé",       province_id: "HCM" },
-  { id: "HCM-X2", ten: "Phường Phạm Ngũ Lão",  province_id: "HCM" },
-  { id: "HCM-X3", ten: "Phường Tân Phong",      province_id: "HCM" },
-  { id: "HCM-X4", ten: "Phường 25",             province_id: "HCM" },
-  { id: "HCM-X5", ten: "Xã Trung An",           province_id: "HCM" },
+  { id: "HCM-X1", ten: "Phường Bến Nghé", province_id: "HCM" },
+  { id: "HCM-X2", ten: "Phường Phạm Ngũ Lão", province_id: "HCM" },
+  { id: "HCM-X3", ten: "Phường Tân Phong", province_id: "HCM" },
+  { id: "HCM-X4", ten: "Phường 25", province_id: "HCM" },
+  { id: "HCM-X5", ten: "Xã Trung An", province_id: "HCM" },
   // Đà Nẵng
-  { id: "DN-X1",  ten: "Phường Hải Châu 1",     province_id: "DN" },
-  { id: "DN-X2",  ten: "Phường Thạch Thang",    province_id: "DN" },
-  { id: "DN-X3",  ten: "Phường An Hải Bắc",     province_id: "DN" },
-  { id: "DN-X4",  ten: "Xã Hòa Bắc",           province_id: "DN" },
+  { id: "DN-X1", ten: "Phường Hải Châu 1", province_id: "DN" },
+  { id: "DN-X2", ten: "Phường Thạch Thang", province_id: "DN" },
+  { id: "DN-X3", ten: "Phường An Hải Bắc", province_id: "DN" },
+  { id: "DN-X4", ten: "Xã Hòa Bắc", province_id: "DN" },
   // Cần Thơ
-  { id: "CT-X1",  ten: "Phường An Hòa",         province_id: "CT" },
-  { id: "CT-X2",  ten: "Phường Long Hòa",       province_id: "CT" },
-  { id: "CT-X3",  ten: "Xã Nhơn Nghĩa",        province_id: "CT" },
+  { id: "CT-X1", ten: "Phường An Hòa", province_id: "CT" },
+  { id: "CT-X2", ten: "Phường Long Hòa", province_id: "CT" },
+  { id: "CT-X3", ten: "Xã Nhơn Nghĩa", province_id: "CT" },
   // Lâm Đồng
-  { id: "LD-X1",  ten: "Phường 1 (Đà Lạt)",    province_id: "LD" },
-  { id: "LD-X2",  ten: "Phường Lộc Phát",      province_id: "LD" },
-  { id: "LD-X3",  ten: "Xã Đức Trọng",         province_id: "LD" },
+  { id: "LD-X1", ten: "Phường 1 (Đà Lạt)", province_id: "LD" },
+  { id: "LD-X2", ten: "Phường Lộc Phát", province_id: "LD" },
+  { id: "LD-X3", ten: "Xã Đức Trọng", province_id: "LD" },
   // Nghệ An
-  { id: "NA-X1",  ten: "Phường Lê Mao",        province_id: "NA" },
-  { id: "NA-X2",  ten: "Phường Thu Thủy",      province_id: "NA" },
-  { id: "NA-X3",  ten: "Xã Diễn Thịnh",       province_id: "NA" },
+  { id: "NA-X1", ten: "Phường Lê Mao", province_id: "NA" },
+  { id: "NA-X2", ten: "Phường Thu Thủy", province_id: "NA" },
+  { id: "NA-X3", ten: "Xã Diễn Thịnh", province_id: "NA" },
   // Bình Dương
-  { id: "BD-X1",  ten: "Phường Phú Cường",     province_id: "BD" },
-  { id: "BD-X2",  ten: "Phường An Bình",       province_id: "BD" },
-  { id: "BD-X3",  ten: "Xã An Tây",            province_id: "BD" },
+  { id: "BD-X1", ten: "Phường Phú Cường", province_id: "BD" },
+  { id: "BD-X2", ten: "Phường An Bình", province_id: "BD" },
+  { id: "BD-X3", ten: "Xã An Tây", province_id: "BD" },
 ];
 
 export const categoryTree = [
-  { id: "NS001", ten: "Nông sản thực phẩm",     parent_id: null as string | null },
-  { id: "NS002", ten: "Rau củ quả",              parent_id: "NS001" },
-  { id: "NS003", ten: "Ngũ cốc & Lương thực",   parent_id: "NS001" },
-  { id: "NS004", ten: "Gia vị & Thảo dược",     parent_id: "NS001" },
-  { id: "TS001", ten: "Thủy sản",               parent_id: null as string | null },
-  { id: "TS002", ten: "Thủy sản nuôi trồng",    parent_id: "TS001" },
-  { id: "TS003", ten: "Thủy sản khai thác",     parent_id: "TS001" },
-  { id: "CB001", ten: "Thực phẩm chế biến",     parent_id: null as string | null },
-  { id: "CB002", ten: "Đồ hộp & Bảo quản",      parent_id: "CB001" },
-  { id: "CB003", ten: "Thực phẩm đông lạnh",    parent_id: "CB001" },
+  { id: "NS001", ten: "Nông sản thực phẩm", parent_id: null as string | null },
+  { id: "NS002", ten: "Rau củ quả", parent_id: "NS001" },
+  { id: "NS003", ten: "Ngũ cốc & Lương thực", parent_id: "NS001" },
+  { id: "NS004", ten: "Gia vị & Thảo dược", parent_id: "NS001" },
+  { id: "TS001", ten: "Thủy sản", parent_id: null as string | null },
+  { id: "TS002", ten: "Thủy sản nuôi trồng", parent_id: "TS001" },
+  { id: "TS003", ten: "Thủy sản khai thác", parent_id: "TS001" },
+  { id: "CB001", ten: "Thực phẩm chế biến", parent_id: null as string | null },
+  { id: "CB002", ten: "Đồ hộp & Bảo quản", parent_id: "CB001" },
+  { id: "CB003", ten: "Thực phẩm đông lạnh", parent_id: "CB001" },
 ];
 
 // --- ProductReport mock data ---
@@ -220,24 +220,24 @@ export const reportTypeLabels: Record<ReportType, string> = {
 };
 
 export const priorityConfig: Record<ReportPriority, { label: string; variant: "danger" | "warning" | "info" | "neutral" }> = {
-  critical: { label: "Khẩn cấp",  variant: "danger"  },
-  high:     { label: "Cao",       variant: "warning" },
-  medium:   { label: "Trung bình",variant: "info"    },
-  low:      { label: "Thấp",      variant: "neutral" },
+  critical: { label: "Khẩn cấp", variant: "danger" },
+  high: { label: "Cao", variant: "warning" },
+  medium: { label: "Trung bình", variant: "info" },
+  low: { label: "Thấp", variant: "neutral" },
 };
 
 export const reportStatusConfig: Record<ReportStatus, { label: string; variant: "danger" | "warning" | "info" | "neutral" | "success" }> = {
-  submitted:  { label: "Chưa xử lý",  variant: "info"    },
-  resolved:   { label: "Đã xác minh", variant: "warning" },
-  completed:  { label: "Hoàn thành",  variant: "success" },
-  rejected:   { label: "Từ chối",     variant: "neutral" },
+  submitted: { label: "Chưa xử lý", variant: "info" },
+  resolved: { label: "Đã xác minh", variant: "warning" },
+  completed: { label: "Hoàn thành", variant: "success" },
+  rejected: { label: "Từ chối", variant: "neutral" },
 };
 
 export const productReports: ProductReport[] = [
   {
     id: "rpt-001", report_code: "RPT-20260328-0001",
     product_name: "Gạo ST25 túi 5kg", gtin: "8938507512345", sgtin: "8938507512345.000001",
-    partner_name: "Công ty AgriLink Hà Nội", doi_tac_id: "DT001", province: "HN", category_id: "NS001",
+    partner_name: "Đối tác AgriLink", doi_tac_id: "DT001", province: "HN", category_id: "NS001",
     report_type: "counterfeit", status: "submitted", priority: "critical", risk_score: 82,
     scan_result: "fake",
     reporter_phone: "0912***456", reporter_name: "Nguyễn Văn A",
@@ -267,7 +267,7 @@ export const productReports: ProductReport[] = [
   {
     id: "rpt-004", report_code: "RPT-20260325-0002",
     product_name: "Chè Thái Nguyên hộp 200g", gtin: "8931234567890",
-    partner_name: "Công ty AgriLink Hà Nội", doi_tac_id: "DT001", province: "HN", category_id: "NS001",
+    partner_name: "Đối tác AgriLink", doi_tac_id: "DT001", province: "HN", category_id: "NS001",
     report_type: "quality", status: "completed", priority: "medium", risk_score: 18,
     scan_result: "authentic",
     reporter_phone: "0901***234",
@@ -287,7 +287,7 @@ export const productReports: ProductReport[] = [
   {
     id: "rpt-006", report_code: "RPT-20260323-0009",
     product_name: "Gạo ST25 túi 5kg", gtin: "8938507512345", sgtin: "8938507512345.000087",
-    partner_name: "Công ty AgriLink Hà Nội", doi_tac_id: "DT001", province: "HN", category_id: "NS001",
+    partner_name: "Đối tác AgriLink", doi_tac_id: "DT001", province: "HN", category_id: "NS001",
     report_type: "counterfeit", status: "submitted", priority: "critical", risk_score: 78,
     scan_result: "fake",
     reporter_phone: "0912***111",
@@ -297,7 +297,7 @@ export const productReports: ProductReport[] = [
   {
     id: "rpt-007", report_code: "RPT-20260322-0004",
     product_name: "Xoài cát Hòa Lộc thùng 10kg", gtin: "8939876543210",
-    partner_name: "Công ty CP Nông sản Đồng bằng", doi_tac_id: "DT004", province: "CT", category_id: "NS001",
+    partner_name: "Nông sản Đồng bằng", doi_tac_id: "DT004", province: "CT", category_id: "NS001",
     report_type: "packaging", status: "submitted", priority: "medium", risk_score: 32,
     scan_result: "unknown",
     reporter_phone: "0778***900",
@@ -347,7 +347,7 @@ export const productReports: ProductReport[] = [
   {
     id: "rpt-012", report_code: "RPT-20260317-0014",
     product_name: "Gạo ST25 túi 5kg", gtin: "8938507512345",
-    partner_name: "Công ty AgriLink Hà Nội", doi_tac_id: "DT001", province: "HN", category_id: "NS001",
+    partner_name: "Đối tác AgriLink", doi_tac_id: "DT001", province: "HN", category_id: "NS001",
     report_type: "suspicious", status: "submitted", priority: "high", risk_score: 47,
     scan_result: "suspicious",
     reporter_phone: "0974***345",
@@ -459,13 +459,13 @@ export const reportVerifications: ReportVerification[] = [
 ];
 
 export const phanQuyenRoles = [
-  { id: "super-admin",        ten: "Quản trị viên quốc gia",            mo_ta: "Quản trị toàn bộ hệ thống NDATrace, không giới hạn phạm vi địa lý hay ngành hàng",            so_nguoi: 3,   scope_configured: true,  layer: "national", ngay_tao: "01/01/2024", trang_thai: "Hoạt động"     },
-  { id: "bo-ban-nganh-admin", ten: "Quản trị hệ thống Bộ NN&PTNT",     mo_ta: "Cấu hình và quản trị người dùng cho Bộ Nông nghiệp & Phát triển Nông thôn",                  so_nguoi: 12,  scope_configured: true,  layer: "sector",   ngay_tao: "15/01/2024", trang_thai: "Hoạt động"     },
-  { id: "bo-ban-nganh-ops",   ten: "Vận hành nghiệp vụ Bộ Công Thương", mo_ta: "Xử lý hồ sơ ATTP và theo dõi ngành hàng tiêu dùng trong phạm vi Bộ Công Thương",            so_nguoi: 45,  scope_configured: false, layer: "sector",   ngay_tao: "20/01/2024", trang_thai: "Hoạt động"     },
-  { id: "so-tinh-admin",      ten: "Quản trị hệ thống Sở Y tế TP.HCM", mo_ta: "Quản lý tài khoản và cấu hình phân quyền cho Sở Y tế Thành phố Hồ Chí Minh",               so_nguoi: 63,  scope_configured: false, layer: "sector",   ngay_tao: "01/02/2024", trang_thai: "Hoạt động"     },
-  { id: "so-tinh-ops",        ten: "Vận hành Sở Nông nghiệp Hà Nội",   mo_ta: "Vận hành nghiệp vụ ATTP cho ngành nông sản thực phẩm tại địa bàn thành phố Hà Nội",          so_nguoi: 248, scope_configured: false, layer: "sector",   ngay_tao: "10/02/2024", trang_thai: "Hoạt động"     },
-  { id: "dai-ly-admin",       ten: "Quản trị Đại lý AgriLink Hà Nội",  mo_ta: "Quản lý tài khoản và cấu hình dữ liệu trong phạm vi Đại lý AgriLink Hà Nội",                so_nguoi: 28,  scope_configured: true,  layer: "agency",   ngay_tao: "15/03/2024", trang_thai: "Hoạt động"     },
-  { id: "dai-ly-ops",         ten: "Vận hành Đại lý Phân phối Miền Nam",mo_ta: "Khai báo và vận hành nghiệp vụ truy xuất nguồn gốc cho Đại lý Phân phối khu vực Miền Nam",  so_nguoi: 142, scope_configured: true,  layer: "agency",   ngay_tao: "01/04/2024", trang_thai: "Không hoạt động" },
+  { id: "super-admin", ten: "Quản trị viên quốc gia", mo_ta: "Quản trị toàn bộ hệ thống NDATrace, không giới hạn phạm vi địa lý hay ngành hàng", so_nguoi: 3, scope_configured: true, layer: "national", ngay_tao: "01/01/2024", trang_thai: "Hoạt động" },
+  { id: "bo-ban-nganh-admin", ten: "Quản trị hệ thống Bộ NN&PTNT", mo_ta: "Cấu hình và quản trị người dùng cho Bộ Nông nghiệp & Phát triển Nông thôn", so_nguoi: 12, scope_configured: true, layer: "sector", ngay_tao: "15/01/2024", trang_thai: "Hoạt động" },
+  { id: "bo-ban-nganh-ops", ten: "Vận hành nghiệp vụ Bộ Công Thương", mo_ta: "Xử lý hồ sơ ATTP và theo dõi ngành hàng tiêu dùng trong phạm vi Bộ Công Thương", so_nguoi: 45, scope_configured: false, layer: "sector", ngay_tao: "20/01/2024", trang_thai: "Hoạt động" },
+  { id: "so-tinh-admin", ten: "Quản trị hệ thống Sở Y tế TP.HCM", mo_ta: "Quản lý tài khoản và cấu hình phân quyền cho Sở Y tế Thành phố Hồ Chí Minh", so_nguoi: 63, scope_configured: false, layer: "sector", ngay_tao: "01/02/2024", trang_thai: "Hoạt động" },
+  { id: "so-tinh-ops", ten: "Vận hành Sở Nông nghiệp Hà Nội", mo_ta: "Vận hành nghiệp vụ ATTP cho ngành nông sản thực phẩm tại địa bàn thành phố Hà Nội", so_nguoi: 248, scope_configured: false, layer: "sector", ngay_tao: "10/02/2024", trang_thai: "Hoạt động" },
+  { id: "dai-ly-admin", ten: "Quản trị Đại lý AgriLink Hà Nội", mo_ta: "Quản lý tài khoản và cấu hình dữ liệu trong phạm vi Đại lý AgriLink Hà Nội", so_nguoi: 28, scope_configured: true, layer: "agency", ngay_tao: "15/03/2024", trang_thai: "Hoạt động" },
+  { id: "dai-ly-ops", ten: "Vận hành Đại lý Phân phối Miền Nam", mo_ta: "Khai báo và vận hành nghiệp vụ truy xuất nguồn gốc cho Đại lý Phân phối khu vực Miền Nam", so_nguoi: 142, scope_configured: true, layer: "agency", ngay_tao: "01/04/2024", trang_thai: "Không hoạt động" },
 ];
 
 // ─── Permission types & modules mock data ─────────────────────────────────

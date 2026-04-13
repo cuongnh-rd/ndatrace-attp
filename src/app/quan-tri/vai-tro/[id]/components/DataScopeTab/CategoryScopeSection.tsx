@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, ChevronRight, Search, X } from "lucide-react";
+import { ChevronDown, ChevronRight, Search, X, Settings } from "lucide-react";
 import { useState } from "react";
 import { categoryTree } from "@/lib/mock-data";
 import type { DataScopeState } from "../../lib/types";
@@ -37,7 +37,7 @@ function CategoryScopeSection({ scope, onScopeChange }: { scope: DataScopeState;
                     </svg>
                     <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">Theo Nhóm ngành</h3>
                 </div>
-                <p className="text-xs text-gray-400">Chọn nhóm ngành — click tên để chọn nhóm ngành cụ thể.</p>
+                <p className="text-xs text-gray-400">Chọn theo nhóm ngành</p>
             </div>
 
             <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
@@ -112,16 +112,7 @@ function CategoryScopeSection({ scope, onScopeChange }: { scope: DataScopeState;
                                                     onChange={() => toggleCategory(parent.id)}
                                                     className="w-4 h-4 rounded accent-brand-600 flex-shrink-0"
                                                 />
-                                                <button
-                                                    onClick={() => setExpanded((prev) => ({ ...prev, [parent.id]: !prev[parent.id] }))}
-                                                    className="flex items-center gap-1.5 text-left"
-                                                >
-                                                    {isExpanded ? (
-                                                        <ChevronDown size={13} className="text-gray-400 flex-shrink-0" />
-                                                    ) : (
-                                                        <ChevronRight size={13} className="text-gray-400 flex-shrink-0" />
-                                                    )}
-                                                </button>
+
                                                 <button
                                                     onClick={() => isChecked && setOpenCategoryId(parent.id)}
                                                     className={`text-sm font-medium text-left flex-1 truncate ${isChecked ? "text-gray-800 dark:text-gray-200 hover:text-brand-600 cursor-pointer" : "text-gray-400 cursor-default"
@@ -130,12 +121,21 @@ function CategoryScopeSection({ scope, onScopeChange }: { scope: DataScopeState;
                                                     {parent.ten}
                                                 </button>
                                                 {isChecked && (
-                                                    <div className="flex items-center gap-1.5 flex-shrink-0">
-                                                        <span
-                                                            className={`inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 ${childScope && childScope.length > 0 ? "bg-blue-500" : "bg-green-500"
-                                                                }`}
-                                                        />
-                                                        <span className="text-xs text-gray-500">{childLabel}</span>
+                                                    <div className="flex items-center gap-2 flex-shrink-0">
+                                                        <div className="flex items-center gap-1.5">
+                                                            <span
+                                                                className={`inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 ${childScope && childScope.length > 0 ? "bg-blue-500" : "bg-green-500"
+                                                                    }`}
+                                                            />
+                                                            <span className="text-xs text-gray-500">{childLabel}</span>
+                                                        </div>
+                                                        <button
+                                                            onClick={() => setOpenCategoryId(parent.id)}
+                                                            className="p-1.5 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors"
+                                                            title="Cấu hình danh mục con"
+                                                        >
+                                                            <Settings size={16} />
+                                                        </button>
                                                     </div>
                                                 )}
                                             </div>

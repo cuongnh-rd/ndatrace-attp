@@ -71,17 +71,6 @@ function FunctionPermTab({ roleId }: { roleId: string }) {
                         {/* Section header */}
                         <div className="px-5 py-3 bg-gray-50 dark:bg-gray-800/60 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
                             <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{section.label}</h3>
-                            <button
-                                onClick={() =>
-                                    allSectionSelected ? deselectAllInSection(section.moduleNames) : selectAllInSection(section.moduleNames)
-                                }
-                                className={`text-xs font-medium px-3 py-1 rounded-lg transition-colors ${allSectionSelected
-                                    ? "text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
-                                    : "text-brand-600 hover:text-brand-700 bg-brand-50 hover:bg-brand-100 dark:bg-brand-900/30 dark:hover:bg-brand-900/50"
-                                    }`}
-                            >
-                                {allSectionSelected ? "Bỏ chọn tất cả" : "Chọn tất cả"}
-                            </button>
                         </div>
 
                         <div className="overflow-x-auto">

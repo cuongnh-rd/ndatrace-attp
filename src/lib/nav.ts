@@ -34,7 +34,7 @@ export const navigation: NavItem[] = [
       { label: "Cơ sở", href: "/truy-xuat/co-so" },
       { label: "Sản phẩm", href: "/truy-xuat/san-pham" },
       { label: "Lô sản phẩm", href: "/truy-xuat/lo-san-pham" },
-      { label: "Báo cáo sản phẩm", href: "/quan-tri/bao-cao-san-pham" },
+      { label: "Phản ánh sản phẩm", href: "/quan-tri/phan-anh" },
     ],
   },
   {
@@ -66,7 +66,7 @@ export const navigation: NavItem[] = [
       { label: "Nhóm ngành hàng", href: "/danh-muc/nhom-nganh-hang" },
       { label: "Danh sách chứng chỉ", href: "/danh-muc/loai-chung-chi" },
       { label: "Mức độ rủi ro", href: "/danh-muc/muc-do-rui-ro" },
-      { label: "Phân loại cơ sở", href: "/co-so/phan-loai" },
+      { label: "Phân loại cơ sở", href: "/danh-muc/phan-loai" },
       { label: "Thư viện mẫu sự kiện", href: "/danh-muc/thu-vien-mau-su-kien" },
     ],
   },

@@ -48,14 +48,14 @@ function ProvinceDetailModal({
     }
 
     return (
-        <Modal isOpen title={`Chi tiết: ${province.ten}`} onClose={onClose}>
+        <Modal isOpen title={`Danh sách Xã/Phường thuộc: ${province.ten}`} onClose={onClose}>
             <div className="flex items-center gap-2 mb-4">
                 <button
                     onClick={() => updateProvinceScope([])}
                     className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${isAllMode ? "bg-green-50 border-green-300 text-green-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
                         }`}
                 >
-                    <span className="inline-block w-2.5 h-2.5 rounded-full bg-green-500 flex-shrink-0" /> Tất cả xã/phường
+                    <span className="inline-block w-2.5 h-2.5 rounded-full bg-green-500 flex-shrink-0" /> Chọn toàn bộ
                 </button>
                 <button
                     onClick={() => {
@@ -74,18 +74,31 @@ function ProvinceDetailModal({
                     return (
                         <label key={ward.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors">
                             <input type="checkbox" checked={checked} onChange={() => handleWardToggle(ward.id)} className="w-4 h-4 rounded accent-brand-600" />
-                            <MapPin size={14} className="text-gray-400 flex-shrink-0" />
                             <span className="text-sm text-gray-700 dark:text-gray-300 flex-1">{ward.ten}</span>
-                            {checked && !isAllMode && <Badge variant="info">Chọn</Badge>}
                         </label>
                     );
                 })}
             </div>
 
-            <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-400">
+            <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-400 mb-4">
                 {isAllMode
                     ? `Tất cả ${wards.length} xã/phường thuộc ${province.ten}.`
                     : `${selectedWards.length}/${wards.length} xã/phường được chọn.`}
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4 border-t border-gray-100">
+                <button
+                    onClick={onClose}
+                    className="px-4 py-2 text-sm text-gray-600 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                    Hủy
+                </button>
+                <button
+                    onClick={onClose}
+                    className="px-4 py-2 text-sm font-medium text-white bg-brand-600 rounded-xl hover:bg-brand-700 transition-colors"
+                >
+                    Xác nhận
+                </button>
             </div>
         </Modal>
     );

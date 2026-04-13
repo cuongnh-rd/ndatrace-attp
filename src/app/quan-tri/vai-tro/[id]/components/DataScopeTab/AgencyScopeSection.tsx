@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, Search, X } from "lucide-react";
+import { Building2, Search, X, Settings } from "lucide-react";
 import { useState } from "react";
 import { scopePartners } from "@/lib/mock-data";
 import type { DataScopeState } from "../../lib/types";
@@ -36,7 +36,7 @@ function AgencyScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
                     <Building2 size={15} className="text-brand-500" />
                     <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">Theo Đối tác</h3>
                 </div>
-                <p className="text-xs text-gray-400">Chọn đối tác — click tên để cấu hình chi tiết từng đối tác.</p>
+                <p className="text-xs text-gray-400">Chọn theo đối tác / doanh nghiệp cụ thể</p>
             </div>
 
             <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
@@ -106,12 +106,20 @@ function AgencyScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
                                                 >
                                                     {partner.ten}
                                                 </button>
-                                                <p className="text-xs text-gray-400">{partner.tinh}</p>
                                             </div>
                                             {isSelected && ps && (
-                                                <div className="flex items-center gap-1.5 flex-shrink-0">
-                                                    <ModeDot mode={ps.mode} />
-                                                    <span className="text-xs text-gray-500">{getModeLabel(ps, dns.length)}</span>
+                                                <div className="flex items-center gap-2 flex-shrink-0">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <ModeDot mode={ps.mode} />
+                                                        <span className="text-xs text-gray-500">{getModeLabel(ps, dns.length)}</span>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => setOpenPartnerId(partner.id)}
+                                                        className="p-1.5 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors"
+                                                        title="Cấu hình đối tác"
+                                                    >
+                                                        <Settings size={16} />
+                                                    </button>
                                                 </div>
                                             )}
                                         </div>

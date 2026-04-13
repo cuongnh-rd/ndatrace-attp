@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { ChevronLeft, ChevronRight, ArrowUp, ArrowDown, ArrowUpDown, X, ChevronDown, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
+import TableToolbar from "@/components/ui/TableToolbar";
 
 type SortDir = "asc" | "desc" | null;
 
@@ -102,59 +103,17 @@ export default function DataTable<T extends Record<string, unknown>>({
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
-      {/* Toolbar */}
-      <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center gap-3 flex-wrap">
-        {/* Search input */}
-        {searchable && (
-          <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
-              placeholder="Tìm kiếm..."
-              className="pl-8 pr-3 py-2 text-[14px] rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 outline-none focus:border-brand-400 transition-colors w-48"
-            />
-          </div>
-        )}
-        {/* Filter dropdowns - all in one line */}
-        {filterableCols.length > 0 && filterableCols.map((col) => {
-          const key = String(col.key);
-          const options = Array.from(new Set(data.map((r) => String(r[key] ?? "")))).sort((a, b) =>
-            a.localeCompare(b, "vi", { sensitivity: "base" })
-          );
-          const active = filters[key] ?? "";
-
-          return (
-            <div key={key} className="relative">
-              <select
-                value={active}
-                onChange={(e) => setFilter(key, e.target.value)}
-                className="appearance-none pl-3 pr-8 py-2 text-[14px] rounded-xl border outline-none transition-colors cursor-pointer bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 focus:border-brand-400 max-w-[172px]"
-              >
-                <option value="">{col.label}</option>
-                {options.map((o) => (
-                  <option key={o} value={o}>{o}</option>
-                ))}
-              </select>
-              <ChevronDown size={12} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-            </div>
-          );
-        })}
-
-        {/* Clear filters button */}
-        {activeFilterCount > 0 && (
-          <button
-            onClick={clearFilters}
-            className="flex items-center gap-1 text-[14px] text-red-500 hover:text-red-600 transition-colors"
-          >
-            <X size={13} /> Xóa bộ lọc
-          </button>
-        )}
-
-        {/* Record count */}
-        <p className="ml-auto text-[14px] text-gray-400">{total} bản ghi</p>
-      </div>
+      <TableToolbar
+        searchable={searchable}
+        searchQuery={searchQuery}
+        onSearchChange={(v) => { setSearchQuery(v); setPage(1); }}
+        filterableCols={filterableCols.map((col) => ({ key: String(col.key), label: col.label }))}
+        data={data}
+        filters={filters}
+        onFilterChange={setFilter}
+        onClearFilters={clearFilters}
+        total={total}
+      />
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-sm">

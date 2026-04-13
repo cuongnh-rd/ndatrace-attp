@@ -22,5 +22,5 @@ export function computePreviewCount(scope: DataScopeState): number {
 export function getModeLabel(ps: PartnerScope, totalDn: number): string {
     if (ps.mode === "allow_all") return `${totalDn}/${totalDn}`;
     if (ps.mode === "exclude") return `${totalDn - ps.excludeList.length}/${totalDn} (−${ps.excludeList.length})`;
-    return `${ps.allowList.length} chỉ định`;
+    return `${ps.allowList.length}/${totalDn}`;
 }

@@ -20,7 +20,7 @@ function DataScopeTab({
 
     return (
         <div className="space-y-4">
-            <div className="bg-gradient-to-r from-brand-50 to-blue-50 dark:from-brand-900/20 dark:to-blue-900/20 border border-brand-100 dark:border-brand-800 rounded-2xl px-5 py-4 flex items-center gap-4">
+            {/* <div className="bg-gradient-to-r from-brand-50 to-blue-50 dark:from-brand-900/20 dark:to-blue-900/20 border border-brand-100 dark:border-brand-800 rounded-2xl px-5 py-4 flex items-center gap-4">
                 <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-brand-100 dark:bg-brand-800 flex items-center justify-center">
                     <Database size={18} className="text-brand-600 dark:text-brand-400" />
                 </div>
@@ -38,7 +38,7 @@ function DataScopeTab({
                     </p>
                     <p>Cập nhật real-time theo cấu hình</p>
                 </div>
-            </div>
+            </div> */}
 
             <div className="grid grid-cols-3 gap-4">
                 <AgencyScopeSection scope={scope} onScopeChange={onScopeChange} />
@@ -47,17 +47,22 @@ function DataScopeTab({
             </div>
 
             <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 px-5 py-3">
-                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">Chú thích chế độ đối tác:</p>
-                <div className="flex items-center gap-6 text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3">Chú thích:</p>
+                <div className="space-y-2.5 text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center gap-6">
+                        <span className="flex items-center gap-1.5">
+                            <span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block" /> Chọn toàn bộ — Tự động cập nhật Doanh nghiệp mới
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" /> Loại trừ — Trừ danh sách loại trừ, tự động cập nhật doanh nghiệp mới
+                        </span>
+                    </div>
                     <span className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block" /> Chọn toàn bộ — Tự động cập nhật Doanh nghiệp mới
+                        <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block" /> Chọn cụ thể — Chỉ định doanh nghiệp cụ thể, KHÔNG cập nhật doanh nghiệp mới
                     </span>
-                    <span className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" /> Loại trừ — Trừ danh sách loại trừ, tự động cập nhật doanh nghiệp mới
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block" /> Chọn chỉ định — Chỉ doanh nghiệp chỉ định, KHÔNG cập nhật doanh nghiệp mới
-                    </span>
+                    <p className="pt-1 border-t border-gray-100 dark:border-gray-800">
+                        <strong>Logic kết hợp: </strong> Phạm vi dữ liệu phải thỏa mãn <strong>tất cả</strong> điều kiện trên. Cập nhật real-time.
+                    </p>
                 </div>
             </div>
         </div>

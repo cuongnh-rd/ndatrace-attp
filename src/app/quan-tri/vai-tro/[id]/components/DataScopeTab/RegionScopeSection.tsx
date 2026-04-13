@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, Search, X } from "lucide-react";
+import { MapPin, Search, X, Settings } from "lucide-react";
 import { useState } from "react";
 import { provinceTree } from "@/lib/mock-data";
 import type { DataScopeState } from "../../lib/types";
@@ -32,7 +32,7 @@ function RegionScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
                     <MapPin size={15} className="text-blue-500" />
                     <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">Theo Địa phương</h3>
                 </div>
-                <p className="text-xs text-gray-400">Chọn địa phương — click tên để giới hạn đến xã/phường.</p>
+                <p className="text-xs text-gray-400">Chọn theo Tỉnh/thành - Xã/phường</p>
             </div>
 
             <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
@@ -105,15 +105,23 @@ function RegionScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
                                                 >
                                                     {prov.ten}
                                                 </button>
-                                                <p className="text-xs text-gray-400">→ {prov.so_xa} xã/phường</p>
                                             </div>
                                             {checked && (
-                                                <div className="flex items-center gap-1.5 flex-shrink-0">
-                                                    <span
-                                                        className={`inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 ${wardScope && wardScope.length > 0 ? "bg-blue-500" : "bg-green-500"
-                                                            }`}
-                                                    />
-                                                    <span className="text-xs text-gray-500">{wardLabel}</span>
+                                                <div className="flex items-center gap-2 flex-shrink-0">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span
+                                                            className={`inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 ${wardScope && wardScope.length > 0 ? "bg-blue-500" : "bg-green-500"
+                                                                }`}
+                                                        />
+                                                        <span className="text-xs text-gray-500">{wardLabel}</span>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => setOpenProvinceId(prov.id)}
+                                                        className="p-1.5 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors"
+                                                        title="Cấu hình xã/phường"
+                                                    >
+                                                        <Settings size={16} />
+                                                    </button>
                                                 </div>
                                             )}
                                         </div>

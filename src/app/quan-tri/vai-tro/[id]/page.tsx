@@ -89,13 +89,6 @@ export default function Page() {
         >
           Đặt về mặc định
         </button>
-        {visitedTabs.size < 3 && (
-          <span className="flex items-center gap-1 text-xs text-amber-600 font-medium">
-            <AlertTriangle size={12} />
-            {visitedTabs.size}/3 bước đã xem
-
-          </span>
-        )}
         <button
           onClick={handleSave}
           className={`flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-xl transition-colors ${saved ? "bg-green-500 text-white" : "bg-brand-600 hover:bg-brand-700 text-white"
@@ -144,17 +137,6 @@ export default function Page() {
           );
         })}
       </div>
-
-      {/* Warning banner */}
-      {visitedTabs.size < 3 && (
-        <div className="flex items-center gap-2 mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-700">
-          <AlertTriangle size={15} className="flex-shrink-0" />
-          <span>
-            Cần kiểm tra đủ cả 3 bước để hoàn tất cấu hình vai trò.
-            <strong>{visitedTabs.size}/3 bước</strong> đã xem.
-          </span>
-        </div>
-      )}
 
       {/* Tab content */}
       {activeTab === 0 && role && <RoleInfoTab role={role} />}
