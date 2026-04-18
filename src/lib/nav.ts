@@ -34,7 +34,7 @@ export const navigation: NavItem[] = [
       { label: "Cơ sở", href: "/truy-xuat/co-so" },
       { label: "Sản phẩm", href: "/truy-xuat/san-pham" },
       { label: "Lô sản phẩm", href: "/truy-xuat/lo-san-pham" },
-      { label: "Phản ánh sản phẩm", href: "/quan-tri/phan-anh" },
+      { label: "Phản ánh sản phẩm", href: "/quan-tri/bao-cao-san-pham" },
     ],
   },
   {

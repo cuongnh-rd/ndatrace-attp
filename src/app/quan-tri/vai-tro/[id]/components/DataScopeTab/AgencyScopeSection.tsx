@@ -47,7 +47,7 @@ function AgencyScopeSection({ scope, onScopeChange }: { scope: DataScopeState; o
                     onChange={() => onScopeChange({ ...scope, agencyType: "all", partnerScopes: {} })}
                     className="accent-brand-600"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">Tất cả đối tác</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">Tất cả đối tác (bao gồm đối tác được thêm mới)</span>
             </label>
 
             <label className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
