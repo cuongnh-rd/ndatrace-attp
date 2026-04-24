@@ -48,14 +48,14 @@ export default function KdeListTable() {
             <TableToolbar
                 searchable
                 searchQuery={search}
-                onSearchChange={(v) => { setSearch(v); setPage(1); }}
+                onSearchChange={(v: string) => { setSearch(v); setPage(1); }}
                 filterableCols={[
                     { key: "data_type", label: "Tất cả kiểu dữ liệu" },
                     { key: "status", label: "Tất cả trạng thái" },
                 ]}
                 data={tableData}
                 filters={filters}
-                onFilterChange={(key, val) => { setFilters((prev) => ({ ...prev, [key]: val })); setPage(1); }}
+                onFilterChange={(key: string, val: string) => { setFilters((prev) => ({ ...prev, [key]: val })); setPage(1); }}
                 onClearFilters={() => { setFilters({}); setPage(1); }}
                 total={filtered.length}
             />

@@ -62,10 +62,10 @@ export const navigation: NavItem[] = [
     label: "Danh mục hệ thống",
     href: "/danh-muc",
     children: [
-      { label: "Thư viện Trường thông tin", href: "/danh-muc/thu-vien-kde" },
+      { label: "Trường dữ liệu", href: "/danh-muc/thu-vien-kde" },
       { label: "Đơn vị hành chính", href: "/danh-muc/don-vi-hanh-chinh" },
       { label: "Nhóm ngành hàng", href: "/danh-muc/nhom-nganh-hang" },
-      { label: "Danh sách chứng chỉ", href: "/danh-muc/loai-chung-chi" },
+      { label: "Loại chứng chỉ", href: "/danh-muc/loai-chung-chi" },
       { label: "Mức độ rủi ro", href: "/danh-muc/muc-do-rui-ro" },
       { label: "Phân loại cơ sở", href: "/co-so/phan-loai" },
       { label: "Thư viện mẫu sự kiện", href: "/danh-muc/thu-vien-mau-su-kien" },

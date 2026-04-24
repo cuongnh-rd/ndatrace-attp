@@ -28,14 +28,14 @@ export default function CteUsageTab({ kde, usage }: Props) {
                                 <div className="min-w-0">
                                     <p className="text-[14px] font-semibold text-gray-800 dark:text-gray-200">{c.cte_name}</p>
                                     <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-0.5">
-                                        {c.layer} · {c.owner} · <span className="font-mono">{c.used_version}</span> · {c.cte_status === "active" ? "Active" : "Draft"}
+                                        {c.owner} · <span className="font-mono">{c.used_version}</span> · {c.cte_status === "active" ? "Active" : "Draft"}
                                     </p>
                                 </div>
-                                {outdated ? (
+                                {/* {outdated ? (
                                     <Badge variant="warning">Dùng version cũ</Badge>
                                 ) : (
                                     <Badge variant="success">Đúng version</Badge>
-                                )}
+                                )} */}
                             </div>
                         );
                     })}

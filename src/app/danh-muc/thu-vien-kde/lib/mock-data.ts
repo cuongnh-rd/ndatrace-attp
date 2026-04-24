@@ -4,15 +4,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "HARVEST_DATE",
         name: "Ngày thu hoạch",
-        status: "published",
+        status: "Hoạt động",
         current_version: "v2",
-        nhom_nganh_hang: "Nông sản",
+        nhom_thong_tin: ["Nông sản"],
         versions: [
             {
                 version: "v2",
                 nghi_dinh: "NĐ 37/2025",
                 nghi_dinh_full: "37/2025/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "15/03/2026",
                 description: "Ngày thực hiện thu hoạch sản phẩm tại vùng trồng",
                 data_type: "date",
@@ -24,7 +23,6 @@ export const kdeLibrary: Kde[] = [
                 version: "v1",
                 nghi_dinh: "NĐ 12/2023",
                 nghi_dinh_full: "12/2023/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "10/01/2023",
                 description: "Ngày thu hoạch sản phẩm",
                 data_type: "date",
@@ -37,15 +35,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "LOT_NUMBER",
         name: "Số lô sản xuất",
-        status: "published",
+        status: "Hoạt động",
         current_version: "v1",
-        nhom_nganh_hang: "Chung",
+        nhom_thong_tin: ["Chung"],
         versions: [
             {
                 version: "v1",
                 nghi_dinh: "NĐ 12/2023",
                 nghi_dinh_full: "12/2023/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "10/01/2023",
                 description: "Mã định danh lô sản xuất do nhà máy cấp",
                 data_type: "text",
@@ -58,15 +55,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "PRODUCER_ID",
         name: "Mã nhà sản xuất",
-        status: "published",
+        status: "Hoạt động",
         current_version: "v2",
-        nhom_nganh_hang: "Chung",
+        nhom_thong_tin: ["Chung"],
         versions: [
             {
                 version: "v2",
                 nghi_dinh: "NĐ 37/2025",
                 nghi_dinh_full: "37/2025/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "15/03/2026",
                 description: "Mã định danh doanh nghiệp sản xuất trong hệ thống quốc gia",
                 data_type: "text",
@@ -78,7 +74,6 @@ export const kdeLibrary: Kde[] = [
                 version: "v1",
                 nghi_dinh: "NĐ 12/2023",
                 nghi_dinh_full: "12/2023/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "10/01/2023",
                 description: "Mã định danh doanh nghiệp sản xuất",
                 data_type: "text",
@@ -91,15 +86,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "WEIGHT_NET",
         name: "Khối lượng tịnh",
-        status: "published",
+        status: "Hoạt động",
         current_version: "v1",
-        nhom_nganh_hang: "Chung",
+        nhom_thong_tin: ["Chung"],
         versions: [
             {
                 version: "v1",
                 nghi_dinh: "NĐ 12/2023",
                 nghi_dinh_full: "12/2023/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "10/01/2023",
                 description: "Khối lượng thực phẩm không bao bì",
                 data_type: "number",
@@ -112,15 +106,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "STORAGE_METHOD",
         name: "Phương thức bảo quản",
-        status: "published",
+        status: "Hoạt động",
         current_version: "v2",
-        nhom_nganh_hang: "Chung",
+        nhom_thong_tin: ["Chung"],
         versions: [
             {
                 version: "v2",
                 nghi_dinh: "NĐ 37/2025",
                 nghi_dinh_full: "37/2025/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "15/03/2026",
                 description: "Phương pháp bảo quản sản phẩm trong chuỗi cung ứng",
                 data_type: "enum",
@@ -133,7 +126,6 @@ export const kdeLibrary: Kde[] = [
                 version: "v1",
                 nghi_dinh: "NĐ 12/2023",
                 nghi_dinh_full: "12/2023/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "10/01/2023",
                 description: "Phương pháp bảo quản",
                 data_type: "enum",
@@ -147,15 +139,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "EXPIRY_DATE",
         name: "Ngày hết hạn sử dụng",
-        status: "published",
+        status: "Hoạt động",
         current_version: "v1",
-        nhom_nganh_hang: "Chung",
+        nhom_thong_tin: ["Chung"],
         versions: [
             {
                 version: "v1",
                 nghi_dinh: "NĐ 12/2023",
                 nghi_dinh_full: "12/2023/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "10/01/2023",
                 description: "Ngày sản phẩm hết hạn sử dụng ghi trên bao bì",
                 data_type: "date",
@@ -168,15 +159,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "GPS_LOCATION",
         name: "Tọa độ địa lý",
-        status: "published",
+        status: "Hoạt động",
         current_version: "v2",
-        nhom_nganh_hang: "Chung",
+        nhom_thong_tin: ["Chung"],
         versions: [
             {
                 version: "v2",
                 nghi_dinh: "NĐ 37/2025",
                 nghi_dinh_full: "37/2025/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "15/03/2026",
                 description: "Vị trí GPS tại thời điểm khai báo sự kiện",
                 data_type: "gps",
@@ -188,7 +178,6 @@ export const kdeLibrary: Kde[] = [
                 version: "v1",
                 nghi_dinh: "NĐ 12/2023",
                 nghi_dinh_full: "12/2023/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "10/01/2023",
                 description: "Vị trí GPS",
                 data_type: "gps",
@@ -201,15 +190,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "CERTIFICATE_NO",
         name: "Số giấy chứng nhận",
-        status: "deprecated",
+        status: "Ngừng hoạt động",
         current_version: "v1",
-        nhom_nganh_hang: "Chung",
+        nhom_thong_tin: ["Chung"],
         versions: [
             {
                 version: "v1",
                 nghi_dinh: "NĐ 12/2023",
                 nghi_dinh_full: "12/2023/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "10/01/2023",
                 description: "[Deprecated] Đã tách thành VC riêng trong hệ thống",
                 data_type: "text",
@@ -222,15 +210,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "TEMPERATURE",
         name: "Nhiệt độ vận chuyển",
-        status: "published",
+        status: "Hoạt động",
         current_version: "v1",
-        nhom_nganh_hang: "Chuỗi lạnh",
+        nhom_thong_tin: ["Chuỗi lạnh"],
         versions: [
             {
                 version: "v1",
                 nghi_dinh: "NĐ 12/2023",
                 nghi_dinh_full: "12/2023/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "10/01/2023",
                 description: "Nhiệt độ môi trường trong quá trình vận chuyển",
                 data_type: "number",
@@ -243,15 +230,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "BATCH_CODE",
         name: "Mã lô hàng",
-        status: "published",
+        status: "Hoạt động",
         current_version: "v1",
-        nhom_nganh_hang: "Chung",
+        nhom_thong_tin: ["Chung"],
         versions: [
             {
                 version: "v1",
                 nghi_dinh: "NĐ 37/2025",
                 nghi_dinh_full: "37/2025/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "15/03/2026",
                 description: "Mã định danh lô hàng phục vụ truy xuất",
                 data_type: "text",
@@ -264,15 +250,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "STORAGE_TEMP",
         name: "Nhiệt độ bảo quản",
-        status: "published",
+        status: "Hoạt động",
         current_version: "v1",
-        nhom_nganh_hang: "Chuỗi lạnh",
+        nhom_thong_tin: ["Chuỗi lạnh"],
         versions: [
             {
                 version: "v1",
                 nghi_dinh: "NĐ 37/2025",
                 nghi_dinh_full: "37/2025/NĐ-CP",
-                co_quan: "Chính phủ",
                 import_date: "15/03/2026",
                 description: "Nhiệt độ bảo quản sản phẩm tại kho",
                 data_type: "number",
@@ -285,15 +270,14 @@ export const kdeLibrary: Kde[] = [
     {
         code: "ORGANIC_CERT",
         name: "Giấy chứng nhận hữu cơ",
-        status: "draft",
+        status: "Nháp",
         current_version: "v1",
-        nhom_nganh_hang: "Nông sản",
+        nhom_thong_tin: ["Nông sản"],
         versions: [
             {
                 version: "v1",
                 nghi_dinh: "NĐ 37/2025 (dự thảo)",
                 nghi_dinh_full: "37/2025/NĐ-CP",
-                co_quan: "Bộ NN&PTNT",
                 import_date: "01/04/2026",
                 description: "File scan giấy chứng nhận hữu cơ (PDF)",
                 data_type: "file",
@@ -306,21 +290,20 @@ export const kdeLibrary: Kde[] = [
 ];
 
 export const cteUsage: CteUsage[] = [
-    { kde_code: "HARVEST_DATE", cte_id: "CTE-001", cte_name: "CTE Sản xuất — Nhóm Sữa", layer: "Layer 2", owner: "Bộ Y tế", used_version: "v2", cte_status: "active" },
-    { kde_code: "HARVEST_DATE", cte_id: "CTE-002", cte_name: "CTE Thu hoạch — Nhóm Rau củ", layer: "Layer 2", owner: "Bộ NN&PTNT", used_version: "v2", cte_status: "active" },
-    { kde_code: "HARVEST_DATE", cte_id: "CTE-003", cte_name: "CTE Trồng trọt — Nhóm Cà phê", layer: "Layer 2", owner: "Sở NNPTNT Đắk Lắk", used_version: "v1", cte_status: "active" },
-    { kde_code: "LOT_NUMBER", cte_id: "CTE-004", cte_name: "CTE Đóng gói — Nhóm Thủy sản", layer: "Layer 2", owner: "Bộ NN&PTNT", used_version: "v1", cte_status: "active" },
-    { kde_code: "LOT_NUMBER", cte_id: "CTE-005", cte_name: "CTE Chế biến — Nhóm Sữa", layer: "Layer 2", owner: "Bộ Y tế", used_version: "v1", cte_status: "active" },
-    { kde_code: "PRODUCER_ID", cte_id: "CTE-006", cte_name: "CTE Sản xuất — Nhóm Sữa", layer: "Layer 2", owner: "Bộ Y tế", used_version: "v2", cte_status: "active" },
-    { kde_code: "PRODUCER_ID", cte_id: "CTE-007", cte_name: "CTE Xuất khẩu — Lúa gạo", layer: "Layer 2", owner: "Bộ Công Thương", used_version: "v1", cte_status: "active" },
-    { kde_code: "STORAGE_METHOD", cte_id: "CTE-008", cte_name: "CTE Vận chuyển lạnh — Thủy sản", layer: "Layer 2", owner: "Bộ NN&PTNT", used_version: "v2", cte_status: "active" },
-    { kde_code: "STORAGE_METHOD", cte_id: "CTE-009", cte_name: "CTE Lưu kho — Nhóm Rau củ", layer: "Layer 2", owner: "Sở NN Hà Nội", used_version: "v1", cte_status: "active" },
-    { kde_code: "GPS_LOCATION", cte_id: "CTE-010", cte_name: "CTE Thu hoạch — Nhóm Rau củ", layer: "Layer 2", owner: "Bộ NN&PTNT", used_version: "v2", cte_status: "active" },
-    { kde_code: "WEIGHT_NET", cte_id: "CTE-011", cte_name: "CTE Đóng gói — Nhóm Thủy sản", layer: "Layer 2", owner: "Bộ NN&PTNT", used_version: "v1", cte_status: "active" },
-    { kde_code: "EXPIRY_DATE", cte_id: "CTE-012", cte_name: "CTE Chế biến — Nhóm Sữa", layer: "Layer 2", owner: "Bộ Y tế", used_version: "v1", cte_status: "active" },
-    { kde_code: "TEMPERATURE", cte_id: "CTE-013", cte_name: "CTE Vận chuyển lạnh — Thủy sản", layer: "Layer 2", owner: "Bộ NN&PTNT", used_version: "v1", cte_status: "active" },
-];
-
+    { kde_code: "HARVEST_DATE", cte_id: "CTE-001", cte_name: "CTE Sản xuất — Nhóm Sữa", owner: "Bộ Y tế", used_version: "v2", cte_status: "active" },
+    { kde_code: "HARVEST_DATE", cte_id: "CTE-002", cte_name: "CTE Thu hoạch — Nhóm Rau củ", owner: "Bộ NN&PTNT", used_version: "v2", cte_status: "active" },
+    { kde_code: "HARVEST_DATE", cte_id: "CTE-003", cte_name: "CTE Trồng trọt — Nhóm Cà phê", owner: "Sở NNPTNT Đắk Lắk", used_version: "v1", cte_status: "active" },
+    { kde_code: "LOT_NUMBER", cte_id: "CTE-004", cte_name: "CTE Đóng gói — Nhóm Thủy sản", owner: "Bộ NN&PTNT", used_version: "v1", cte_status: "active" },
+    { kde_code: "LOT_NUMBER", cte_id: "CTE-005", cte_name: "CTE Chế biến — Nhóm Sữa", owner: "Bộ Y tế", used_version: "v1", cte_status: "active" },
+    { kde_code: "PRODUCER_ID", cte_id: "CTE-006", cte_name: "CTE Sản xuất — Nhóm Sữa", owner: "Bộ Y tế", used_version: "v2", cte_status: "active" },
+    { kde_code: "PRODUCER_ID", cte_id: "CTE-007", cte_name: "CTE Xuất khẩu — Lúa gạo", owner: "Bộ Công Thương", used_version: "v1", cte_status: "active" },
+    { kde_code: "STORAGE_METHOD", cte_id: "CTE-008", cte_name: "CTE Vận chuyển lạnh — Thủy sản", owner: "Bộ NN&PTNT", used_version: "v2", cte_status: "active" },
+    { kde_code: "STORAGE_METHOD", cte_id: "CTE-009", cte_name: "CTE Lưu kho — Nhóm Rau củ", owner: "Sở NN Hà Nội", used_version: "v1", cte_status: "active" },
+    { kde_code: "GPS_LOCATION", cte_id: "CTE-010", cte_name: "CTE Thu hoạch — Nhóm Rau củ", owner: "Bộ NN&PTNT", used_version: "v2", cte_status: "active" },
+    { kde_code: "WEIGHT_NET", cte_id: "CTE-011", cte_name: "CTE Đóng gói — Nhóm Thủy sản", owner: "Bộ NN&PTNT", used_version: "v1", cte_status: "active" },
+    { kde_code: "EXPIRY_DATE", cte_id: "CTE-012", cte_name: "CTE Chế biến — Nhóm Sữa", owner: "Bộ Y tế", used_version: "v1", cte_status: "active" },
+    { kde_code: "TEMPERATURE", cte_id: "CTE-013", cte_name: "CTE Vận chuyển lạnh — Thủy sản", owner: "Bộ NN&PTNT", used_version: "v1", cte_status: "active" },
+]
 export const importPreview: ImportPreviewRow[] = [
     { code: "HARVEST_DATE", name: "Ngày thu hoạch", data_type: "date", change_type: "updated", change_note: "Cập nhật validation_rule" },
     { code: "BATCH_CODE", name: "Mã lô hàng", data_type: "text", change_type: "new" },

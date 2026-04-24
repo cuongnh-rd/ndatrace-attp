@@ -24,7 +24,7 @@ export default function VersionHistoryTab({ kde }: Props) {
                             {v.version} — {v.nghi_dinh}
                         </p>
                         <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-0.5">
-                            Import {v.import_date} · {v.is_current ? "Đang áp dụng" : "Superseded"} · {v.co_quan}
+                            {v.import_date} · {v.is_current ? "Hoạt động" : "Ngừng hoạt động"}
                         </p>
                     </div>
                     {kde.versions.length > 1 && (

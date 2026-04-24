@@ -15,7 +15,7 @@ const latestImport = kdeLibrary
 export default function Page() {
     return (
         <SectionPage
-            title="Thư viện KDE"
+            title="Trường dữ liệu"
             subtitle="Danh sách trường dữ liệu chuẩn (Key Data Elements) cấu thành mọi sự kiện truy xuất nguồn gốc."
             addLabel="Thêm mới"
         // stats={[

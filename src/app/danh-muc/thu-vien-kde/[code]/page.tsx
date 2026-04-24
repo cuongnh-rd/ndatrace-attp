@@ -54,25 +54,14 @@ export default function Page() {
                 <div className="flex-1">
                     <h1 className="text-xl font-bold text-gray-900 dark:text-white">{kde.name}</h1>
                 </div>
-                {kde.versions.length > 1 && (
+                {/* {kde.versions.length > 1 && (
                     <Link
                         href={`/danh-muc/thu-vien-kde/${kde.code}/so-sanh`}
                         className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                     >
                         <GitCompare size={14} /> So sánh phiên bản
                     </Link>
-                )}
-            </div>
-
-            <div className="flex items-center gap-2.5 mb-6 pb-4 border-b border-gray-100 dark:border-gray-800">
-                <code className="font-mono text-[13px] bg-gray-50 dark:bg-gray-800 px-2.5 py-1 rounded border border-gray-100 dark:border-gray-700">
-                    {kde.code}
-                </code>
-                <Badge variant={statusVariant[kde.status]}>{statusLabel[kde.status]}</Badge>
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[13px] font-mono bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">
-                    {current.data_type}
-                </span>
-                <span className="text-[13px] text-gray-500 dark:text-gray-400 ml-2">Phiên bản hiện tại <span className="font-mono font-semibold text-gray-700 dark:text-gray-300">{kde.current_version}</span> · {current.nghi_dinh}</span>
+                )} */}
             </div>
 
             <DetailTabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
