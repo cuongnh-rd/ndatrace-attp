@@ -32,15 +32,15 @@ export interface CteUsage {
     cte_status: "active" | "draft";
 }
 
-// export type DiffChange = "added" | "removed" | "changed" | "unchanged";
+export type DiffChange = "added" | "removed" | "changed" | "unchanged";
 
-// export interface DiffRow {
-//     field: string;
-//     label: string;
-//     v1: string;
-//     v2: string;
-//     change: DiffChange;
-// }
+export interface DiffRow {
+    field: string;
+    label: string;
+    v1: string;
+    v2: string;
+    change: DiffChange;
+}
 
 export type ImportChangeType = "new" | "updated" | "unchanged";
 
