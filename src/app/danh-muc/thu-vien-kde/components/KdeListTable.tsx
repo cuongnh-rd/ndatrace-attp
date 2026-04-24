@@ -63,12 +63,12 @@ export default function KdeListTable() {
                 <table className="w-full text-sm">
                     <thead>
                         <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50/60 dark:bg-gray-800/40">
-                            <HeaderCell>Code</HeaderCell>
-                            <HeaderCell>Tên KDE</HeaderCell>
+                            <HeaderCell>Mã dữ liệu</HeaderCell>
+                            <HeaderCell>Tên dữ liệu</HeaderCell>
                             <HeaderCell>Kiểu dữ liệu</HeaderCell>
                             <HeaderCell>Phiên bản</HeaderCell>
                             <HeaderCell>Trạng thái</HeaderCell>
-                            <HeaderCell>Ngày import</HeaderCell>
+                            <HeaderCell>Ngày tạo</HeaderCell>
                             <HeaderCell>Thao tác</HeaderCell>
                         </tr>
                     </thead>
@@ -141,11 +141,7 @@ function Row({ kde }: { kde: Kde }) {
                 </code>
             </td>
             <td className="px-5 py-3.5 text-gray-800 dark:text-gray-200 font-medium">{kde.name}</td>
-            <td className="px-5 py-3.5">
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[13px] font-mono bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">
-                    {current.data_type}
-                </span>
-            </td>
+            <td className="px-5 py-3.5 text-gray-800 dark:text-gray-200">{current.data_type}</td>
             <td className="px-5 py-3.5 font-mono text-[13px] text-gray-600 dark:text-gray-400">{kde.current_version}</td>
             <td className="px-5 py-3.5">
                 <Badge variant={statusVariant[kde.status]}>{statusLabel[kde.status]}</Badge>

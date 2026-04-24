@@ -1,5 +1,5 @@
 export type KdeDataType = "text" | "number" | "date" | "boolean" | "enum" | "file" | "gps";
-export type KdeStatus = "published" | "deprecated" | "draft";
+export type KdeStatus = "Hoạt động" | "Ngừng hoạt động" | "Nháp";
 
 export interface KdeField {
     version: string;
@@ -11,7 +11,6 @@ export interface KdeField {
     data_type: KdeDataType;
     unit: string;
     validation_rule: string;
-    enum_options?: string[];
     is_current: boolean;
 }
 
@@ -20,7 +19,7 @@ export interface Kde {
     name: string;
     status: KdeStatus;
     current_version: string;
-    nhom_nganh_hang: string;
+    nhom_thong_tin: string;
     versions: KdeField[];
 }
 
@@ -34,22 +33,22 @@ export interface CteUsage {
     cte_status: "active" | "draft";
 }
 
-export type DiffChange = "added" | "removed" | "changed" | "unchanged";
+// export type DiffChange = "added" | "removed" | "changed" | "unchanged";
 
-export interface DiffRow {
-    field: string;
-    label: string;
-    v1: string;
-    v2: string;
-    change: DiffChange;
-}
+// export interface DiffRow {
+//     field: string;
+//     label: string;
+//     v1: string;
+//     v2: string;
+//     change: DiffChange;
+// }
 
-export type ImportChangeType = "new" | "updated" | "unchanged";
+// export type ImportChangeType = "new" | "updated" | "unchanged";
 
-export interface ImportPreviewRow {
-    code: string;
-    name: string;
-    data_type: KdeDataType;
-    change_type: ImportChangeType;
-    change_note?: string;
-}
+// export interface ImportPreviewRow {
+//     code: string;
+//     name: string;
+//     data_type: KdeDataType;
+//     change_type: ImportChangeType;
+//     change_note?: string;
+// }

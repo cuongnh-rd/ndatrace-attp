@@ -15,18 +15,17 @@ function Mono({ children }: { children: React.ReactNode }) {
 
 export default function KdeInfoTab({ kde, version }: Props) {
     const rows: [string, React.ReactNode][] = [
-        ["Code", <Mono key="c">{kde.code}</Mono>],
-        ["Tên KDE", kde.name],
+        ["Mã dữ liệu", <Mono key="c">{kde.code}</Mono>],
+        ["Tên dữ liệu", kde.name],
         ["Mô tả", version.description],
         ["Kiểu dữ liệu", <Mono key="t">{version.data_type}</Mono>],
         ["Đơn vị", version.unit],
         ["Quy tắc validate", version.validation_rule],
-        ["Enum options", version.enum_options?.length ? <Mono key="e">{version.enum_options.join(" | ")}</Mono> : "—"],
-        ["Nhóm ngành hàng", kde.nhom_nganh_hang],
+        ["Nhóm thông tin", kde.nhom_thong_tin],
         ["Phiên bản hiện tại", <Mono key="v">{kde.current_version}</Mono>],
-        ["Nghị định", version.nghi_dinh_full],
-        ["Cơ quan ban hành", version.co_quan],
-        ["Ngày import", version.import_date],
+        // ["Nghị định", version.nghi_dinh_full],
+        // ["Cơ quan ban hành", version.co_quan],
+        ["Ngày tạo", version.import_date],
     ];
 
     return (
