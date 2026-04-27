@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, Pencil, Trash2 } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 import TableToolbar from "@/components/ui/TableToolbar";
 import { kdeLibrary } from "../lib/mock-data";
@@ -57,7 +57,6 @@ export default function KdeListTable() {
                 filters={filters}
                 onFilterChange={(key: string, val: string) => { setFilters((prev) => ({ ...prev, [key]: val })); setPage(1); }}
                 onClearFilters={() => { setFilters({}); setPage(1); }}
-                total={filtered.length}
             />
             <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -136,9 +135,11 @@ function Row({ kde }: { kde: Kde }) {
     return (
         <tr className="border-b border-gray-50 dark:border-gray-800 hover:bg-gray-50/60 dark:hover:bg-gray-800/40 transition-colors">
             <td className="px-5 py-3.5">
-                <code className="font-mono text-[13px] bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded border border-gray-100 dark:border-gray-700">
-                    {kde.code}
-                </code>
+                <Link href={`/danh-muc/thu-vien-kde/${kde.code}`}>
+                    <code className="font-mono text-[13px] bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded border border-gray-100 dark:border-gray-700 text-brand-600 dark:text-brand-400 hover:underline cursor-pointer">
+                        {kde.code}
+                    </code>
+                </Link>
             </td>
             <td className="px-5 py-3.5 text-gray-800 dark:text-gray-200 font-medium">{kde.name}</td>
             <td className="px-5 py-3.5 text-gray-800 dark:text-gray-200">{current.data_type}</td>
@@ -148,12 +149,28 @@ function Row({ kde }: { kde: Kde }) {
             </td>
             <td className="px-5 py-3.5 text-gray-500 dark:text-gray-400 text-[14px]">{current.import_date}</td>
             <td className="px-5 py-3.5">
-                <Link
-                    href={`/danh-muc/thu-vien-kde/${kde.code}`}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-700 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-colors"
-                >
-                    <Eye size={12} /> Xem
-                </Link>
+                <div className="flex items-center gap-1">
+                    <Link
+                        href={`/danh-muc/thu-vien-kde/${kde.code}`}
+                        className="p-1.5 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                        title="Xem"
+                    >
+                        <Eye size={15} />
+                    </Link>
+                    <Link
+                        href={`/danh-muc/thu-vien-kde/${kde.code}/sua`}
+                        className="p-1.5 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+                        title="Sửa"
+                    >
+                        <Pencil size={15} />
+                    </Link>
+                    <button
+                        className="p-1.5 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                        title="Xóa"
+                    >
+                        <Trash2 size={15} />
+                    </button>
+                </div>
             </td>
         </tr>
     );

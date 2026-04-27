@@ -36,8 +36,6 @@ export default function KdeInfoTab({ kde, version }: Props) {
         ["Tên dữ liệu", kde.name],
         ["Mô tả", version.description],
         ["Kiểu dữ liệu", <Mono key="t">{version.data_type}</Mono>],
-        ["Đơn vị", version.unit],
-        ["Quy tắc validate", version.validation_rule],
         ["Phiên bản hiện tại", <Mono key="v">{kde.current_version} — {version.nghi_dinh_full}</Mono>],
         ["Trạng thái", kde.status],
         ["Ngày tạo", version.import_date],

@@ -1,4 +1,4 @@
-export type KdeDataType = "text" | "number" | "date" | "boolean" | "enum" | "file" | "gps";
+export type KdeDataType = "string" | "boolean" | "array" | "object";
 export type KdeStatus = "Hoạt động" | "Ngừng hoạt động" | "Nháp";
 
 export interface KdeField {

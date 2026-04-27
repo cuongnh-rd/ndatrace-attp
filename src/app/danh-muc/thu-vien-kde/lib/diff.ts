@@ -3,9 +3,6 @@ import type { DiffChange, DiffRow, KdeField } from "./types";
 const DIFF_FIELDS: { field: keyof KdeField; label: string }[] = [
     { field: "description", label: "Mô tả" },
     { field: "data_type", label: "Kiểu dữ liệu" },
-    { field: "unit", label: "Đơn vị" },
-    { field: "validation_rule", label: "Quy tắc validate" },
-    { field: "enum_options", label: "Enum options" },
     { field: "nghi_dinh", label: "Nghị định" },
 ];
 

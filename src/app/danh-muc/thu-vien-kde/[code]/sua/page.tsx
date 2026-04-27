@@ -1,22 +1,25 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { ArrowLeft, Pencil, BookOpen } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import { ArrowLeft, BookOpen } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import DetailTabs from "./components/DetailTabs";
-import KdeInfoTab from "./components/KdeInfoTab";
-import VersionHistoryTab from "./components/VersionHistoryTab";
-import CteUsageTab from "./components/CteUsageTab";
-import { getKdeByCode, getCteUsageByKde } from "../lib/mock-data";
+import DetailTabs from "../components/DetailTabs";
+import KdeFormTab from "../components/KdeFormTab";
+import VersionHistoryTab from "../components/VersionHistoryTab";
+import CteUsageTab from "../components/CteUsageTab";
+import { getKdeByCode, getCteUsageByKde } from "../../lib/mock-data";
+import type { KdeFormData, KdeFormRef } from "../components/KdeFormTab";
 
 export default function Page() {
     const params = useParams();
+    const router = useRouter();
     const code = String(params.code ?? "");
     const kde = getKdeByCode(code);
     const usage = useMemo(() => getCteUsageByKde(code), [code]);
     const [activeTab, setActiveTab] = useState("info");
+    const formRef = useRef<KdeFormRef>(null);
 
     if (!kde) {
         return (
@@ -40,29 +43,50 @@ export default function Page() {
         { id: "cte", label: "Sự kiện đang dùng", badge: usage.length },
     ];
 
+    const initialValues: Partial<KdeFormData> = {
+        code: kde.code,
+        name: kde.name,
+        description: current.description,
+        data_type: current.data_type,
+        status: kde.status === "Nháp" ? "Hoạt động" : kde.status,
+        nhom_thong_tin: kde.nhom_thong_tin,
+    };
+
+    const handleSave = (_data: KdeFormData) => {
+        router.push(`/danh-muc/thu-vien-kde/${code}`);
+    };
+
     return (
         <DashboardLayout>
             <div className="flex items-center gap-3 mb-4">
                 <Link
-                    href="/danh-muc/thu-vien-kde"
+                    href={`/danh-muc/thu-vien-kde/${code}`}
                     className="flex items-center justify-center w-8 h-8 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
                     <ArrowLeft size={16} className="text-gray-600 dark:text-gray-400" />
                 </Link>
                 <div className="flex-1">
-                    <h1 className="text-xl font-bold text-gray-900 dark:text-white">{kde.name}</h1>
+                    <h1 className="text-xl font-bold text-gray-900 dark:text-white">Sửa — {kde.name}</h1>
                 </div>
                 <Link
-                    href={`/danh-muc/thu-vien-kde/${kde.code}/sua`}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    href={`/danh-muc/thu-vien-kde/${code}`}
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
-                    <Pencil size={14} /> Sửa
+                    Hủy
                 </Link>
+                <button
+                    onClick={() => formRef.current?.submit()}
+                    className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl transition-colors"
+                >
+                    Lưu
+                </button>
             </div>
 
             <DetailTabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
 
-            {activeTab === "info" && <KdeInfoTab kde={kde} version={current} />}
+            {activeTab === "info" && (
+                <KdeFormTab ref={formRef} mode="edit" initialValues={initialValues} onSave={handleSave} />
+            )}
             {activeTab === "versions" && <VersionHistoryTab kde={kde} />}
             {activeTab === "cte" && <CteUsageTab kde={kde} usage={usage} />}
         </DashboardLayout>

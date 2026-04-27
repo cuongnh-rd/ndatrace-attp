@@ -16,7 +16,7 @@ interface TableToolbarProps {
     filters: Record<string, string>;
     onFilterChange: (key: string, value: string) => void;
     onClearFilters: () => void;
-    total: number;
+    total?: number;
 }
 
 export default function TableToolbar({
@@ -80,7 +80,9 @@ export default function TableToolbar({
                 </button>
             )}
 
-            <p className="ml-auto text-[14px] text-gray-400">{total} bản ghi</p>
+            {total !== undefined && (
+                <p className="ml-auto text-[14px] text-gray-400">{total} bản ghi</p>
+            )}
         </div>
     );
 }

@@ -1,6 +1,6 @@
 import type { KdeDataType, KdeStatus } from "./types";
 
-export const DATA_TYPES: KdeDataType[] = ["text", "number", "date", "boolean", "enum", "file", "gps"];
+export const DATA_TYPES: KdeDataType[] = ["string", "boolean", "array", "object"];
 
 export const STATUS_OPTIONS: KdeStatus[] = ["Hoạt động", "Ngừng hoạt động", "Nháp"];
 
@@ -17,11 +17,8 @@ export const statusVariant: Record<KdeStatus, "success" | "neutral" | "info"> = 
 };
 
 export const dataTypeLabel: Record<KdeDataType, string> = {
-    text: "text",
-    number: "number",
-    date: "date",
+    string: "string",
     boolean: "boolean",
-    enum: "enum",
-    file: "file",
-    gps: "gps",
+    array: "array",
+    object: "object",
 };

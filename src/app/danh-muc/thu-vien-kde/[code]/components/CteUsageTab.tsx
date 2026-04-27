@@ -10,10 +10,6 @@ interface Props {
 export default function CteUsageTab({ kde, usage }: Props) {
     return (
         <div className="space-y-4">
-            <div className="flex items-start gap-2 px-4 py-3 bg-brand-50 dark:bg-brand-900/20 border border-brand-100 dark:border-brand-800 rounded-xl text-[13px] text-brand-700 dark:text-brand-300">
-                <Info size={15} className="flex-shrink-0 mt-0.5" />
-                <span>Danh sách CTE đang tham chiếu KDE này. CTE dùng version cũ sẽ hiển thị cảnh báo — Layer 2 có thể chủ động cập nhật.</span>
-            </div>
 
             {usage.length === 0 ? (
                 <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 py-12 text-center text-[14px] text-gray-400">
