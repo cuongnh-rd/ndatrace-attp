@@ -5,6 +5,7 @@ import { ChevronDown, Search, X } from "lucide-react";
 interface FilterableCol {
     key: string;
     label: string;
+    options?: string[]; // nếu truyền vào thì dùng cố định, không tự suy từ data
 }
 
 interface TableToolbarProps {
@@ -49,9 +50,10 @@ export default function TableToolbar({
 
             {filterableCols.length > 0 && filterableCols.map((col) => {
                 const key = col.key;
-                const options = Array.from(new Set(data.map((row) => String(row[key] ?? "")))).sort((a, b) =>
-                    a.localeCompare(b, "vi", { sensitivity: "base" })
-                );
+                const options = col.options
+                    ?? Array.from(new Set(data.map((row) => String(row[key] ?? "")))).sort((a, b) =>
+                        a.localeCompare(b, "vi", { sensitivity: "base" })
+                    );
                 const active = filters[key] ?? "";
 
                 return (

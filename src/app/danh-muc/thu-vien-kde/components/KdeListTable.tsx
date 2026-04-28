@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Eye, Pencil, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, Pencil, Trash2, SearchX } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 import TableToolbar from "@/components/ui/TableToolbar";
 import { kdeLibrary } from "../lib/mock-data";
-import { statusLabel, statusVariant } from "../lib/constants";
+import { DATA_TYPES, STATUS_OPTIONS, statusLabel, statusVariant } from "../lib/constants";
 import type { Kde } from "../lib/types";
 
 const PER_PAGE = 10;
@@ -50,8 +50,8 @@ export default function KdeListTable() {
                 searchQuery={search}
                 onSearchChange={(v: string) => { setSearch(v); setPage(1); }}
                 filterableCols={[
-                    { key: "data_type", label: "Tất cả kiểu dữ liệu" },
-                    { key: "status", label: "Tất cả trạng thái" },
+                    { key: "data_type", label: "Tất cả kiểu dữ liệu", options: DATA_TYPES },
+                    { key: "status", label: "Tất cả trạng thái", options: STATUS_OPTIONS },
                 ]}
                 data={tableData}
                 filters={filters}
@@ -77,8 +77,11 @@ export default function KdeListTable() {
                         ))}
                         {slice.length === 0 && (
                             <tr>
-                                <td colSpan={7} className="text-center py-12 text-gray-400 text-[14px]">
-                                    Không có dữ liệu
+                                <td colSpan={7} className="py-16">
+                                    <div className="flex flex-col items-center gap-2 text-gray-400">
+                                        <SearchX size={28} className="text-gray-300" />
+                                        <p className="text-[14px]">Không tìm thấy kết quả phù hợp</p>
+                                    </div>
                                 </td>
                             </tr>
                         )}
