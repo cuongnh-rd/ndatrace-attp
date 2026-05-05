@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, ReactNode } from "react";
 import { ChevronLeft, ChevronRight, ArrowUp, ArrowDown, ArrowUpDown, X, ChevronDown, Search } from "lucide-react";
 
 type SortDir = "asc" | "desc" | null;
@@ -18,6 +18,7 @@ interface DataTableProps<T> {
   data: T[];
   searchable?: boolean;
   searchKeys?: (keyof T | string)[];
+  customToolbar?: ReactNode;
 }
 
 function smartCompare(a: unknown, b: unknown): number {
@@ -33,6 +34,7 @@ export default function DataTable<T extends Record<string, unknown>>({
   data,
   searchable = false,
   searchKeys = [],
+  customToolbar,
 }: DataTableProps<T>) {
   const [page, setPage] = useState(1);
   const [sortKey, setSortKey] = useState<string | null>(null);
@@ -104,6 +106,7 @@ export default function DataTable<T extends Record<string, unknown>>({
     <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
       {/* Toolbar */}
       <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center gap-3 flex-wrap">
+        {customToolbar}
         {/* Search input */}
         {searchable && (
           <div className="relative">
