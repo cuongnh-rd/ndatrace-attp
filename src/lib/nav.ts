@@ -68,6 +68,7 @@ export const navigation: NavItem[] = [
       { label: "Nhóm ngành hàng", href: "/danh-muc/nhom-nganh-hang" },
       { label: "Loại chứng chỉ", href: "/danh-muc/loai-chung-chi" },
       { label: "Mức độ rủi ro", href: "/danh-muc/muc-do-rui-ro" },
+      { label: "Nhóm sản phẩm", href: "/danh-muc/nhom-san-pham" },
       { label: "Phân loại cơ sở", href: "/co-so/phan-loai" },
       { label: "Thư viện mẫu sự kiện", href: "/danh-muc/thu-vien-mau-su-kien" },
     ],
