@@ -9,6 +9,7 @@ import { EMPTY_FORM, NSP_OPTIONS, PhanLoai, generateMaPL, initialData } from "./
 import PhanLoaiTable from "./_PhanLoaiTable";
 import PhanLoaiModal from "./_PhanLoaiModal";
 import DeleteModal from "./_DeleteModal";
+import ViewModal from "./_ViewModal";
 
 type ModalMode = "add" | "edit" | null;
 
@@ -21,6 +22,7 @@ export default function PhanLoaiCoSoPage() {
   const [formData, setFormData] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [deleteTarget, setDeleteTarget] = useState<PhanLoai | null>(null);
+  const [viewTarget, setViewTarget] = useState<PhanLoai | null>(null);
 
   const filteredData = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -132,8 +134,19 @@ export default function PhanLoaiCoSoPage() {
           onClearFilters={() => setFilters({})}
           total={filteredData.length}
         />
-        <PhanLoaiTable data={filteredData} onEdit={openEdit} onDelete={(item) => setDeleteTarget(item)} />
+        <PhanLoaiTable
+          data={filteredData}
+          onView={(item) => setViewTarget(item)}
+          onEdit={openEdit}
+          onDelete={(item) => setDeleteTarget(item)}
+        />
       </div>
+
+      <ViewModal
+        item={viewTarget}
+        onClose={() => setViewTarget(null)}
+        onEdit={(item) => { setViewTarget(null); openEdit(item); }}
+      />
 
       <DeleteModal
         item={deleteTarget}
