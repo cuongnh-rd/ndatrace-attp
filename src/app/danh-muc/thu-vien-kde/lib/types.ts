@@ -1,5 +1,37 @@
 export type KdeDataType = "string" | "boolean" | "array" | "object";
 export type KdeStatus = "Hoạt động" | "Ngừng hoạt động" | "Nháp";
+export type StringFormat = "none" | "date" | "time" | "datetime" | "email";
+
+export interface StringRule {
+    format: StringFormat;
+    min_length?: number;
+    max_length?: number;
+}
+
+export interface ArrayRule {
+    item_type: "string" | "enum";
+    enum_options?: string[];
+}
+
+export interface KdeChild {
+    code: string;
+    name: string;
+    data_type: KdeDataType;
+    required: boolean;
+    string_rule?: StringRule;
+    array_rule?: ArrayRule;
+    object_rule?: ObjectRule;
+}
+
+export interface ObjectRule {
+    children: KdeChild[];
+}
+
+export type KdeDataRule =
+    | { type: "string"; rule: StringRule }
+    | { type: "boolean"; rule: null }
+    | { type: "array"; rule: ArrayRule }
+    | { type: "object"; rule: ObjectRule };
 
 export interface KdeField {
     version: string;
@@ -11,6 +43,7 @@ export interface KdeField {
     unit: string;
     validation_rule: string;
     enum_options?: string[];
+    data_rule?: KdeDataRule;
     is_current: boolean;
 }
 

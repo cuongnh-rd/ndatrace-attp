@@ -1,4 +1,4 @@
-import type { KdeDataType, KdeStatus } from "./types";
+import type { KdeDataType, KdeStatus, StringFormat } from "./types";
 
 export const DATA_TYPES: KdeDataType[] = ["string", "boolean", "array", "object"];
 
@@ -22,3 +22,11 @@ export const dataTypeLabel: Record<KdeDataType, string> = {
     array: "array",
     object: "object",
 };
+
+export const STRING_FORMAT_OPTIONS: { value: StringFormat; label: string }[] = [
+    { value: "none", label: "Không định dạng" },
+    { value: "date", label: "Ngày (date)" },
+    { value: "time", label: "Giờ (time)" },
+    { value: "datetime", label: "Ngày & Giờ (datetime)" },
+    { value: "email", label: "Email" },
+];

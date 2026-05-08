@@ -2,15 +2,17 @@
 
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { Tag, Plus } from "lucide-react";
-import type { KdeDataType } from "../../lib/types";
+import type { KdeDataType, KdeDataRule } from "../../lib/types";
 import { DATA_TYPES } from "../../lib/constants";
 import NhomThongTinModal from "./NhomThongTinModal";
+import KdeDataRuleEditor, { defaultRule } from "./KdeDataRuleEditor";
 
 export interface KdeFormData {
     code: string;
     name: string;
     description: string;
     data_type: KdeDataType;
+    data_rule: KdeDataRule;
     status: "Hoạt động" | "Ngừng hoạt động";
     nhom_thong_tin: string[];
 }
@@ -47,6 +49,7 @@ const KdeFormTab = forwardRef<KdeFormRef, Props>(function KdeFormTab({ mode, ini
         name: initialValues?.name ?? "",
         description: initialValues?.description ?? "",
         data_type: initialValues?.data_type ?? "string",
+        data_rule: initialValues?.data_rule ?? defaultRule(initialValues?.data_type ?? "string"),
         status: initialValues?.status ?? "Hoạt động",
         nhom_thong_tin: initialValues?.nhom_thong_tin ?? [],
     });
@@ -97,17 +100,7 @@ const KdeFormTab = forwardRef<KdeFormRef, Props>(function KdeFormTab({ mode, ini
                     />
                 </FormRow>
 
-                <FormRow label="Kiểu dữ liệu" required>
-                    <select
-                        value={form.data_type}
-                        onChange={(e) => set("data_type", e.target.value as KdeDataType)}
-                        className={inputClass}
-                    >
-                        {DATA_TYPES.map((t) => (
-                            <option key={t} value={t}>{t}</option>
-                        ))}
-                    </select>
-                </FormRow>
+
 
                 <FormRow label="Trạng thái" required>
                     <select
@@ -145,6 +138,27 @@ const KdeFormTab = forwardRef<KdeFormRef, Props>(function KdeFormTab({ mode, ini
                         </button>
                     </div>
                 </div>
+                <FormRow label="Kiểu dữ liệu" required>
+                    <select
+                        value={form.data_type}
+                        onChange={(e) => {
+                            const dt = e.target.value as KdeDataType;
+                            setForm((prev) => ({ ...prev, data_type: dt, data_rule: defaultRule(dt) }));
+                        }}
+                        className={inputClass}
+                    >
+                        {DATA_TYPES.map((t) => (
+                            <option key={t} value={t}>{t}</option>
+                        ))}
+                    </select>
+                </FormRow>
+
+                <KdeDataRuleEditor
+                    embedded
+                    data_type={form.data_type}
+                    data_rule={form.data_rule}
+                    onChange={(rule) => set("data_rule", rule)}
+                />
             </div>
 
             {showModal && (

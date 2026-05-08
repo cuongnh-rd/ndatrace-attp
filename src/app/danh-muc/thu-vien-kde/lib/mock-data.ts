@@ -17,6 +17,7 @@ export const kdeLibrary: Kde[] = [
                 data_type: "string",
                 unit: "—",
                 validation_rule: "Không được sau ngày hiện tại",
+                data_rule: { type: "string", rule: { format: "date", max_length: 10 } },
                 is_current: true,
             },
             {
@@ -28,6 +29,7 @@ export const kdeLibrary: Kde[] = [
                 data_type: "string",
                 unit: "—",
                 validation_rule: "Không rỗng",
+                data_rule: { type: "string", rule: { format: "date" } },
                 is_current: false,
             },
         ],

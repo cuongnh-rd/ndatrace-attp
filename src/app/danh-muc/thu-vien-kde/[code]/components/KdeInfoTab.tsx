@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Tag, Plus } from "lucide-react";
 import type { Kde, KdeField } from "../../lib/types";
 import NhomThongTinModal from "./NhomThongTinModal";
+import { DataRuleView } from "./KdeDataRuleEditor";
 
 interface Props {
     kde: Kde;
@@ -35,7 +36,6 @@ export default function KdeInfoTab({ kde, version }: Props) {
         ["Mã dữ liệu", <Mono key="c">{kde.code}</Mono>],
         ["Tên dữ liệu", kde.name],
         ["Mô tả", version.description],
-        ["Kiểu dữ liệu", <Mono key="t">{version.data_type}</Mono>],
         ["Phiên bản hiện tại", <Mono key="v">{kde.current_version} — {version.nghi_dinh_full}</Mono>],
         ["Trạng thái", kde.status],
         ["Ngày tạo", version.import_date],
@@ -73,6 +73,20 @@ export default function KdeInfoTab({ kde, version }: Props) {
                         </button>
                     </div>
                 </div>
+
+                {/* Kiểu dữ liệu + Quy tắc */}
+                <InfoRow label="Kiểu dữ liệu">
+                    <Mono>{version.data_type}</Mono>
+                </InfoRow>
+
+                {version.data_rule && (
+                    <div className="grid grid-cols-[200px_1fr] gap-4 px-5 py-3">
+                        <div className="text-[14px] text-gray-500 dark:text-gray-400">Quy tắc dữ liệu</div>
+                        <div>
+                            <DataRuleView data_rule={version.data_rule} />
+                        </div>
+                    </div>
+                )}
             </div>
 
             {showModal && (
