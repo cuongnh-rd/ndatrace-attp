@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, KeyboardEvent } from "react";
-import { X, Plus, ChevronDown, ChevronRight, Pencil, Trash2 } from "lucide-react";
-import type { KdeDataType, KdeDataRule, StringRule, ArrayRule, ObjectRule, KdeChild } from "../../lib/types";
+import { useState } from "react";
+import { Plus, ChevronDown, ChevronRight, Pencil, Trash2 } from "lucide-react";
+import type { KdeDataType, KdeDataRule, StringRule, NumberRule, ArrayRule, ObjectRule, KdeChild } from "../../lib/types";
 import { STRING_FORMAT_OPTIONS } from "../../lib/constants";
 
 const inputClass =
@@ -15,16 +15,26 @@ export function defaultRule(type: KdeDataType): KdeDataRule {
     switch (type) {
         case "string":
             return { type: "string", rule: { format: "none" } };
+        case "number":
+            return { type: "number", rule: {} };
         case "boolean":
             return { type: "boolean", rule: null };
         case "array":
-            return { type: "array", rule: { item_type: "string" } };
+            return { type: "array", rule: { item_type: "string", string_rule: { format: "none" } } };
         case "object":
             return { type: "object", rule: { children: [] } };
     }
 }
 
 // ─── String Rule ──────────────────────────────────────────────────────────────
+
+const FORMAT_SAMPLE: Record<StringRule["format"], string> = {
+    none: "Bỏ trống nếu không yêu cầu định dạng",
+    date: "VD: 2024-01-31",
+    time: "VD: 14:30:00",
+    datetime: "VD: 2024-01-31 14:30:00",
+    email: "VD: user@example.com",
+};
 
 function StringRuleEditor({
     rule,
@@ -38,43 +48,61 @@ function StringRuleEditor({
     const labelClass = `text-[${compact ? "12px" : "13px"}] text-gray-500 dark:text-gray-400 mb-1`;
     const grid = compact ? "grid grid-cols-3 gap-2" : "grid grid-cols-3 gap-3";
 
+    const handleFormatChange = (format: StringRule["format"]) => {
+        onChange({ ...rule, format, pattern: undefined });
+    };
+
     return (
-        <div className={grid}>
-            <div>
-                <p className={labelClass}>Định dạng</p>
-                <select
-                    value={rule.format}
-                    onChange={(e) => onChange({ ...rule, format: e.target.value as StringRule["format"] })}
-                    className={compact ? smallInputClass : inputClass}
-                >
-                    {STRING_FORMAT_OPTIONS.map((o) => (
-                        <option key={o.value} value={o.value}>{o.label}</option>
-                    ))}
-                </select>
+        <div className="space-y-2">
+            <div className={grid}>
+                <div>
+                    <p className={labelClass}>Định dạng</p>
+                    <select
+                        value={rule.format}
+                        onChange={(e) => handleFormatChange(e.target.value as StringRule["format"])}
+                        className={compact ? smallInputClass : inputClass}
+                    >
+                        {STRING_FORMAT_OPTIONS.map((o) => (
+                            <option key={o.value} value={o.value}>{o.label}</option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <p className={labelClass}>Số ký tự tối thiểu</p>
+                    <input
+                        type="number"
+                        min={0}
+                        value={rule.min_length ?? ""}
+                        onChange={(e) =>
+                            onChange({ ...rule, min_length: e.target.value === "" ? undefined : Number(e.target.value) })
+                        }
+                        placeholder="Không giới hạn"
+                        className={compact ? smallInputClass : inputClass}
+                    />
+                </div>
+                <div>
+                    <p className={labelClass}>Số ký tự tối đa</p>
+                    <input
+                        type="number"
+                        min={0}
+                        value={rule.max_length ?? ""}
+                        onChange={(e) =>
+                            onChange({ ...rule, max_length: e.target.value === "" ? undefined : Number(e.target.value) })
+                        }
+                        placeholder="Không giới hạn"
+                        className={compact ? smallInputClass : inputClass}
+                    />
+                </div>
             </div>
             <div>
-                <p className={labelClass}>Số ký tự tối thiểu</p>
+                <p className={labelClass}>Mẫu dữ liệu</p>
                 <input
-                    type="number"
-                    min={0}
-                    value={rule.min_length ?? ""}
+                    type="text"
+                    value={rule.pattern ?? ""}
                     onChange={(e) =>
-                        onChange({ ...rule, min_length: e.target.value === "" ? undefined : Number(e.target.value) })
+                        onChange({ ...rule, pattern: e.target.value === "" ? undefined : e.target.value })
                     }
-                    placeholder="Không giới hạn"
-                    className={compact ? smallInputClass : inputClass}
-                />
-            </div>
-            <div>
-                <p className={labelClass}>Số ký tự tối đa</p>
-                <input
-                    type="number"
-                    min={0}
-                    value={rule.max_length ?? ""}
-                    onChange={(e) =>
-                        onChange({ ...rule, max_length: e.target.value === "" ? undefined : Number(e.target.value) })
-                    }
-                    placeholder="Không giới hạn"
+                    placeholder={FORMAT_SAMPLE[rule.format]}
                     className={compact ? smallInputClass : inputClass}
                 />
             </div>
@@ -86,46 +114,81 @@ function StringRuleEditor({
 
 function BooleanRuleEditor({ compact = false }: { compact?: boolean }) {
     return (
-        <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-[${compact ? "12" : "13"}px] text-gray-600 dark:text-gray-400`}>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-green-50 text-green-700 border border-green-200 font-medium text-[12px]">Đúng</span>
-            <span className="text-gray-400">/</span>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-red-50 text-red-700 border border-red-200 font-medium text-[12px]">Sai</span>
-            <span className="ml-1 text-gray-500 dark:text-gray-400">Không có cấu hình thêm</span>
+        <div className={`inline-flex items-center px-3 py-2 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-[${compact ? "12" : "13"}px] text-gray-500 dark:text-gray-400`}>
+            Không có cấu hình thêm
+        </div>
+    );
+}
+
+// ─── Number Rule ──────────────────────────────────────────────────────────────
+
+function NumberRuleEditor({
+    rule,
+    onChange,
+    compact = false,
+}: {
+    rule: NumberRule;
+    onChange: (r: NumberRule) => void;
+    compact?: boolean;
+}) {
+    const labelClass = `text-[${compact ? "12px" : "13px"}] text-gray-500 dark:text-gray-400 mb-1`;
+    const grid = compact ? "grid grid-cols-2 gap-2" : "grid grid-cols-2 gap-3";
+
+    return (
+        <div className={grid}>
+            <div>
+                <p className={labelClass}>Giá trị tối thiểu</p>
+                <input
+                    type="number"
+                    value={rule.min ?? ""}
+                    onChange={(e) =>
+                        onChange({ ...rule, min: e.target.value === "" ? undefined : Number(e.target.value) })
+                    }
+                    placeholder="Không giới hạn"
+                    className={compact ? smallInputClass : inputClass}
+                />
+            </div>
+            <div>
+                <p className={labelClass}>Giá trị tối đa</p>
+                <input
+                    type="number"
+                    value={rule.max ?? ""}
+                    onChange={(e) =>
+                        onChange({ ...rule, max: e.target.value === "" ? undefined : Number(e.target.value) })
+                    }
+                    placeholder="Không giới hạn"
+                    className={compact ? smallInputClass : inputClass}
+                />
+            </div>
         </div>
     );
 }
 
 // ─── Array Rule ───────────────────────────────────────────────────────────────
 
+const ARRAY_ITEM_TYPE_OPTIONS: { value: ArrayRule["item_type"]; label: string }[] = [
+    { value: "string", label: "String" },
+    { value: "number", label: "Number" },
+    { value: "boolean", label: "Boolean" },
+    { value: "object", label: "Object" },
+];
+
 function ArrayRuleEditor({
     rule,
     onChange,
     compact = false,
+    depth = 0,
 }: {
     rule: ArrayRule;
     onChange: (r: ArrayRule) => void;
     compact?: boolean;
+    depth?: number;
 }) {
-    const [tagInput, setTagInput] = useState("");
-
-    const addTag = () => {
-        const val = tagInput.trim();
-        if (!val) return;
-        const current = rule.enum_options ?? [];
-        if (current.includes(val)) return;
-        onChange({ ...rule, enum_options: [...current, val] });
-        setTagInput("");
-    };
-
-    const removeTag = (tag: string) => {
-        onChange({ ...rule, enum_options: (rule.enum_options ?? []).filter((t) => t !== tag) });
-    };
-
-    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            addTag();
-        }
+    const handleItemTypeChange = (item_type: ArrayRule["item_type"]) => {
+        const base: ArrayRule = { item_type };
+        if (item_type === "string") base.string_rule = { format: "none" };
+        if (item_type === "object") base.object_rule = { children: [] };
+        onChange(base);
     };
 
     return (
@@ -134,59 +197,37 @@ function ArrayRuleEditor({
                 <p className={`text-[${compact ? "12" : "13"}px] text-gray-500 dark:text-gray-400 mb-1`}>Kiểu phần tử</p>
                 <select
                     value={rule.item_type}
-                    onChange={(e) =>
-                        onChange({ item_type: e.target.value as ArrayRule["item_type"], enum_options: [] })
-                    }
+                    onChange={(e) => handleItemTypeChange(e.target.value as ArrayRule["item_type"])}
                     className={compact ? smallInputClass : inputClass}
                 >
-                    <option value="string">String — tự nhập chuỗi bất kỳ</option>
-                    <option value="enum">Enum — chọn từ danh sách</option>
+                    {ARRAY_ITEM_TYPE_OPTIONS.map((o) => (
+                        <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
                 </select>
             </div>
 
-            {rule.item_type === "enum" && (
-                <div>
-                    <p className={`text-[${compact ? "12" : "13"}px] text-gray-500 dark:text-gray-400 mb-1.5`}>
-                        Danh sách giá trị cho phép
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 mb-2">
-                        {(rule.enum_options ?? []).map((tag) => (
-                            <span
-                                key={tag}
-                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[12px] bg-brand-50 text-brand-700 border border-brand-100 dark:bg-brand-900/20 dark:text-brand-400 dark:border-brand-800"
-                            >
-                                {tag}
-                                <button
-                                    type="button"
-                                    onClick={() => removeTag(tag)}
-                                    className="hover:text-brand-900 dark:hover:text-brand-200 transition-colors"
-                                >
-                                    <X size={10} />
-                                </button>
-                            </span>
-                        ))}
-                        {(rule.enum_options ?? []).length === 0 && (
-                            <span className="text-[12px] text-gray-400 italic">Chưa có giá trị nào</span>
-                        )}
-                    </div>
-                    <div className="flex gap-2">
-                        <input
-                            type="text"
-                            value={tagInput}
-                            onChange={(e) => setTagInput(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            placeholder="Nhập giá trị rồi nhấn Enter..."
-                            className={compact ? smallInputClass : inputClass}
-                        />
-                        <button
-                            type="button"
-                            onClick={addTag}
-                            className="px-3 py-1.5 rounded-xl text-[13px] font-medium text-brand-600 border border-brand-200 hover:bg-brand-50 dark:text-brand-400 dark:border-brand-700 dark:hover:bg-brand-900/20 transition-colors whitespace-nowrap"
-                        >
-                            <Plus size={14} />
-                        </button>
-                    </div>
-                </div>
+            {rule.item_type === "string" && (
+                <StringRuleEditor
+                    rule={rule.string_rule ?? { format: "none" }}
+                    onChange={(r) => onChange({ ...rule, string_rule: r })}
+                    compact={compact}
+                />
+            )}
+            {rule.item_type === "number" && (
+                <NumberRuleEditor
+                    rule={rule.number_rule ?? {}}
+                    onChange={(r) => onChange({ ...rule, number_rule: r })}
+                    compact={compact}
+                />
+            )}
+            {rule.item_type === "boolean" && <BooleanRuleEditor compact={compact} />}
+            {rule.item_type === "object" && (
+                <ObjectRuleEditor
+                    rule={rule.object_rule ?? { children: [] }}
+                    onChange={(r) => onChange({ ...rule, object_rule: r })}
+                    compact={compact}
+                    depth={depth + 1}
+                />
             )}
         </div>
     );
@@ -218,11 +259,12 @@ function ChildInlinePanel({
             code: "",
             name: "",
             data_type: "string",
-            required: false,
+            required: true,
             string_rule: { format: "none" },
         }
     );
     const [error, setError] = useState("");
+    const [expanded, setExpanded] = useState(true);
 
     const setField = <K extends keyof KdeChild>(key: K, value: KdeChild[K]) =>
         setForm((prev) => ({ ...prev, [key]: value }));
@@ -232,7 +274,8 @@ function ChildInlinePanel({
             ...prev,
             data_type: dt,
             string_rule: dt === "string" ? { format: "none" } : undefined,
-            array_rule: dt === "array" ? { item_type: "string" } : undefined,
+            number_rule: dt === "number" ? {} : undefined,
+            array_rule: dt === "array" ? { item_type: "string", string_rule: { format: "none" } } : undefined,
             object_rule: dt === "object" ? { children: [] } : undefined,
         }));
     };
@@ -247,112 +290,133 @@ function ChildInlinePanel({
     const panelClass = depthPanelStyle[Math.min(depth, depthPanelStyle.length - 1)];
 
     return (
-        <div className={`${panelClass} p-4 space-y-3`}>
-            <p className="text-[13px] font-semibold text-gray-700 dark:text-gray-200">
-                {initialValues ? "Sửa trường con" : "Thêm trường con"}
-            </p>
+        <div className={panelClass}>
+            <button
+                type="button"
+                onClick={() => setExpanded((v) => !v)}
+                className="w-full flex items-center justify-between px-4 py-2.5 text-left"
+            >
+                <span className="text-[13px] font-semibold text-gray-700 dark:text-gray-200">
+                    {initialValues ? "Sửa trường con" : "Thêm trường con"}
+                </span>
+                {expanded
+                    ? <ChevronDown size={14} className="text-gray-400" />
+                    : <ChevronRight size={14} className="text-gray-400" />
+                }
+            </button>
 
-            <div className="grid grid-cols-2 gap-3">
-                <div>
-                    <label className="text-[12px] text-gray-500 dark:text-gray-400 mb-1 block">
-                        Mã dữ liệu <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                        type="text"
-                        value={form.code}
-                        onChange={(e) => setField("code", e.target.value.toUpperCase())}
-                        readOnly={!!initialValues}
-                        placeholder="VD: PRODUCT_NAME"
-                        className={smallInputClass + (initialValues ? " bg-gray-100 dark:bg-gray-700/60 cursor-not-allowed text-gray-500" : "")}
-                    />
-                </div>
-                <div>
-                    <label className="text-[12px] text-gray-500 dark:text-gray-400 mb-1 block">
-                        Tên dữ liệu <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                        type="text"
-                        value={form.name}
-                        onChange={(e) => setField("name", e.target.value)}
-                        placeholder="Nhập tên trường..."
-                        className={smallInputClass}
-                    />
-                </div>
-            </div>
+            {expanded && (
+                <div className="px-4 pb-4 pt-1 border-t border-gray-200/60 dark:border-gray-700/60 space-y-3">
+                    <div className="grid grid-cols-2 gap-3">
+                        <div>
+                            <label className="text-[12px] text-gray-500 dark:text-gray-400 mb-1 block">
+                                Mã dữ liệu <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                value={form.code}
+                                onChange={(e) => setField("code", e.target.value.toUpperCase())}
+                                readOnly={!!initialValues}
+                                placeholder="VD: PRODUCT_NAME"
+                                className={smallInputClass + (initialValues ? " bg-gray-100 dark:bg-gray-700/60 cursor-not-allowed text-gray-500" : "")}
+                            />
+                        </div>
+                        <div>
+                            <label className="text-[12px] text-gray-500 dark:text-gray-400 mb-1 block">
+                                Tên dữ liệu <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                value={form.name}
+                                onChange={(e) => setField("name", e.target.value)}
+                                placeholder="Nhập tên trường..."
+                                className={smallInputClass}
+                            />
+                        </div>
+                    </div>
 
-            <div className="grid grid-cols-2 gap-3">
-                <div>
-                    <label className="text-[12px] text-gray-500 dark:text-gray-400 mb-1 block">Kiểu dữ liệu</label>
-                    <select
-                        value={form.data_type}
-                        onChange={(e) => handleTypeChange(e.target.value as KdeDataType)}
-                        className={smallInputClass}
-                    >
-                        <option value="string">string</option>
-                        <option value="boolean">boolean</option>
-                        <option value="array">array</option>
-                        {depth < 2 && <option value="object">object</option>}
-                    </select>
-                </div>
-                <div>
-                    <label className="text-[12px] text-gray-500 dark:text-gray-400 mb-1 block">Bắt buộc</label>
-                    <div className="flex items-center gap-3 pt-1.5">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" checked={form.required} onChange={() => setField("required", true)} className="accent-brand-500" />
-                            <span className="text-[12px] text-gray-700 dark:text-gray-300">Bắt buộc</span>
-                        </label>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" checked={!form.required} onChange={() => setField("required", false)} className="accent-brand-500" />
-                            <span className="text-[12px] text-gray-700 dark:text-gray-300">Tuỳ chọn</span>
-                        </label>
+                    <div className="grid grid-cols-2 gap-3">
+                        <div>
+                            <label className="text-[12px] text-gray-500 dark:text-gray-400 mb-1 block">Kiểu dữ liệu</label>
+                            <select
+                                value={form.data_type}
+                                onChange={(e) => handleTypeChange(e.target.value as KdeDataType)}
+                                className={smallInputClass}
+                            >
+                                <option value="string">string</option>
+                                <option value="number">number</option>
+                                <option value="boolean">boolean</option>
+                                <option value="array">array</option>
+                                {depth < 2 && <option value="object">object</option>}
+                            </select>
+                        </div>
+                        <div>
+                            <label className="text-[12px] text-gray-500 dark:text-gray-400 mb-1 block">&nbsp;</label>
+                            <label className="flex items-center gap-2 cursor-pointer pt-1.5">
+                                <input
+                                    type="checkbox"
+                                    checked={form.required}
+                                    onChange={(e) => setField("required", e.target.checked)}
+                                    className="accent-brand-500 w-4 h-4"
+                                />
+                                <span className="text-[12px] text-gray-700 dark:text-gray-300">Bắt buộc</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    {form.data_type === "string" && form.string_rule && (
+                        <div>
+                            <p className="text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Quy tắc String</p>
+                            <StringRuleEditor rule={form.string_rule} onChange={(r) => setField("string_rule", r)} compact />
+                        </div>
+                    )}
+
+                    {form.data_type === "number" && (
+                        <div>
+                            <p className="text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Quy tắc Number</p>
+                            <NumberRuleEditor rule={form.number_rule ?? {}} onChange={(r) => setField("number_rule", r)} compact />
+                        </div>
+                    )}
+
+                    {form.data_type === "array" && form.array_rule && (
+                        <div>
+                            <p className="text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Quy tắc Array</p>
+                            <ArrayRuleEditor rule={form.array_rule} onChange={(r) => setField("array_rule", r)} compact depth={depth} />
+                        </div>
+                    )}
+
+                    {form.data_type === "object" && form.object_rule && (
+                        <div>
+                            <p className="text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Trường con</p>
+                            <ObjectRuleEditor
+                                rule={form.object_rule}
+                                onChange={(r) => setField("object_rule", r)}
+                                compact
+                                depth={depth + 1}
+                            />
+                        </div>
+                    )}
+
+                    {error && <p className="text-[12px] text-red-500">{error}</p>}
+
+                    <div className="flex justify-end gap-2 pt-1">
+                        <button
+                            type="button"
+                            onClick={onCancel}
+                            className="px-3 py-1.5 rounded-xl text-[12px] font-medium text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        >
+                            Huỷ
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleSave}
+                            className="px-3 py-1.5 rounded-xl text-[12px] font-medium text-white bg-brand-500 hover:bg-brand-600 transition-colors"
+                        >
+                            Lưu trường
+                        </button>
                     </div>
                 </div>
-            </div>
-
-            {form.data_type === "string" && form.string_rule && (
-                <div>
-                    <p className="text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Quy tắc String</p>
-                    <StringRuleEditor rule={form.string_rule} onChange={(r) => setField("string_rule", r)} compact />
-                </div>
             )}
-
-            {form.data_type === "array" && form.array_rule && (
-                <div>
-                    <p className="text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Quy tắc Array</p>
-                    <ArrayRuleEditor rule={form.array_rule} onChange={(r) => setField("array_rule", r)} compact />
-                </div>
-            )}
-
-            {form.data_type === "object" && form.object_rule && (
-                <div>
-                    <p className="text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Trường con</p>
-                    <ObjectRuleEditor
-                        rule={form.object_rule}
-                        onChange={(r) => setField("object_rule", r)}
-                        compact
-                        depth={depth + 1}
-                    />
-                </div>
-            )}
-
-            {error && <p className="text-[12px] text-red-500">{error}</p>}
-
-            <div className="flex justify-end gap-2 pt-1">
-                <button
-                    type="button"
-                    onClick={onCancel}
-                    className="px-3 py-1.5 rounded-xl text-[12px] font-medium text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                    Huỷ
-                </button>
-                <button
-                    type="button"
-                    onClick={handleSave}
-                    className="px-3 py-1.5 rounded-xl text-[12px] font-medium text-white bg-brand-500 hover:bg-brand-600 transition-colors"
-                >
-                    Lưu trường
-                </button>
-            </div>
         </div>
     );
 }
@@ -553,58 +617,90 @@ function ObjectRuleView({ rule, depth = 0 }: { rule: ObjectRule; depth?: number 
     );
 }
 
+function StringRuleView({ rule }: { rule: StringRule }) {
+    const { format, min_length, max_length, pattern } = rule;
+    const formatLabel = STRING_FORMAT_OPTIONS.find((o) => o.value === format)?.label ?? format;
+    return (
+        <div className="flex flex-wrap gap-3 text-[13px]">
+            <span className="text-gray-500 dark:text-gray-400">
+                Định dạng: <span className="font-medium text-gray-700 dark:text-gray-200">{formatLabel}</span>
+            </span>
+            {format === "none" && pattern && (
+                <span className="text-gray-500 dark:text-gray-400">
+                    Mẫu: <span className="font-medium text-gray-700 dark:text-gray-200 font-mono">{pattern}</span>
+                </span>
+            )}
+            {min_length !== undefined && (
+                <span className="text-gray-500 dark:text-gray-400">
+                    Tối thiểu: <span className="font-medium text-gray-700 dark:text-gray-200">{min_length} ký tự</span>
+                </span>
+            )}
+            {max_length !== undefined && (
+                <span className="text-gray-500 dark:text-gray-400">
+                    Tối đa: <span className="font-medium text-gray-700 dark:text-gray-200">{max_length} ký tự</span>
+                </span>
+            )}
+            {min_length === undefined && max_length === undefined && format === "none" && !pattern && (
+                <span className="text-gray-400 italic">Không có ràng buộc thêm</span>
+            )}
+        </div>
+    );
+}
+
 export function DataRuleView({ data_rule }: { data_rule: KdeDataRule }) {
     switch (data_rule.type) {
-        case "string": {
-            const { format, min_length, max_length } = data_rule.rule;
-            const formatLabel = STRING_FORMAT_OPTIONS.find((o) => o.value === format)?.label ?? format;
+        case "string":
+            return <StringRuleView rule={data_rule.rule} />;
+        case "number": {
+            const { min, max } = data_rule.rule;
+            if (min === undefined && max === undefined) {
+                return <span className="text-gray-400 italic text-[13px]">Không có ràng buộc thêm</span>;
+            }
             return (
                 <div className="flex flex-wrap gap-3 text-[13px]">
-                    <span className="text-gray-500 dark:text-gray-400">
-                        Định dạng: <span className="font-medium text-gray-700 dark:text-gray-200">{formatLabel}</span>
-                    </span>
-                    {min_length !== undefined && (
+                    {min !== undefined && (
                         <span className="text-gray-500 dark:text-gray-400">
-                            Tối thiểu: <span className="font-medium text-gray-700 dark:text-gray-200">{min_length} ký tự</span>
+                            Tối thiểu: <span className="font-medium text-gray-700 dark:text-gray-200">{min}</span>
                         </span>
                     )}
-                    {max_length !== undefined && (
+                    {max !== undefined && (
                         <span className="text-gray-500 dark:text-gray-400">
-                            Tối đa: <span className="font-medium text-gray-700 dark:text-gray-200">{max_length} ký tự</span>
+                            Tối đa: <span className="font-medium text-gray-700 dark:text-gray-200">{max}</span>
                         </span>
-                    )}
-                    {min_length === undefined && max_length === undefined && format === "none" && (
-                        <span className="text-gray-400 italic">Không có ràng buộc thêm</span>
                     )}
                 </div>
             );
         }
         case "boolean":
             return (
-                <div className="flex items-center gap-2 text-[13px]">
-                    <span className="px-2 py-0.5 rounded-md bg-green-50 text-green-700 border border-green-200 font-medium text-[12px]">Đúng</span>
-                    <span className="text-gray-400">/</span>
-                    <span className="px-2 py-0.5 rounded-md bg-red-50 text-red-700 border border-red-200 font-medium text-[12px]">Sai</span>
-                </div>
+                <span className="inline-flex items-center px-3 py-1.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-[13px] text-gray-500 dark:text-gray-400">
+                    Không có cấu hình thêm
+                </span>
             );
         case "array": {
-            const { item_type, enum_options } = data_rule.rule;
+            const { item_type, string_rule, number_rule, object_rule } = data_rule.rule;
+            const itemTypeLabel = ARRAY_ITEM_TYPE_OPTIONS.find((o) => o.value === item_type)?.label ?? item_type;
             return (
                 <div className="space-y-1.5 text-[13px]">
                     <div className="text-gray-500 dark:text-gray-400">
-                        Kiểu phần tử: <span className="font-medium text-gray-700 dark:text-gray-200">
-                            {item_type === "enum" ? "Enum — chọn từ danh sách" : "String — tự nhập"}
-                        </span>
+                        Kiểu phần tử: <span className="font-medium text-gray-700 dark:text-gray-200">{itemTypeLabel}</span>
                     </div>
-                    {item_type === "enum" && enum_options && enum_options.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
-                            {enum_options.map((opt) => (
-                                <span key={opt} className="px-2 py-0.5 rounded-full text-[12px] bg-brand-50 text-brand-700 border border-brand-100 dark:bg-brand-900/20 dark:text-brand-400 dark:border-brand-800">
-                                    {opt}
+                    {item_type === "string" && string_rule && <StringRuleView rule={string_rule} />}
+                    {item_type === "number" && number_rule && (number_rule.min !== undefined || number_rule.max !== undefined) && (
+                        <div className="flex flex-wrap gap-3">
+                            {number_rule.min !== undefined && (
+                                <span className="text-gray-500 dark:text-gray-400">
+                                    Tối thiểu: <span className="font-medium text-gray-700 dark:text-gray-200">{number_rule.min}</span>
                                 </span>
-                            ))}
+                            )}
+                            {number_rule.max !== undefined && (
+                                <span className="text-gray-500 dark:text-gray-400">
+                                    Tối đa: <span className="font-medium text-gray-700 dark:text-gray-200">{number_rule.max}</span>
+                                </span>
+                            )}
                         </div>
                     )}
+                    {item_type === "object" && object_rule && <ObjectRuleView rule={object_rule} />}
                 </div>
             );
         }
@@ -633,6 +729,14 @@ export default function KdeDataRuleEditor({ data_type, data_rule, onChange, embe
                     <StringRuleEditor
                         rule={data_rule.rule}
                         onChange={(r) => onChange({ type: "string", rule: r })}
+                    />
+                );
+            case "number":
+                if (data_rule.type !== "number") return null;
+                return (
+                    <NumberRuleEditor
+                        rule={data_rule.rule}
+                        onChange={(r) => onChange({ type: "number", rule: r })}
                     />
                 );
             case "boolean":
