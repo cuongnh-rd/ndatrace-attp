@@ -17,11 +17,6 @@ const columns = [
     render: (row: Record<string, unknown>) => (
       <div>
         <p className="text-[14px] font-semibold text-gray-800 dark:text-gray-200">{row.ten as string}</p>
-        <p className="text-xs text-gray-400 mt-0.5 capitalize">{
-          (row.layer as string) === "national" ? "National"
-          : (row.layer as string) === "sector"  ? "Sector / Regional"
-          : "Agency"
-        }</p>
       </div>
     ),
   },
@@ -33,15 +28,18 @@ const columns = [
     ),
   },
   {
-    key: "so_nguoi",
-    label: "Số người dùng",
-    render: (row: Record<string, unknown>) => (
-      <span className="font-mono font-semibold text-[14px]">{(row.so_nguoi as number).toLocaleString()}</span>
-    ),
+    key: "trang_thai",
+    label: "Trạng thái",
+    width: "150px",
+    render: (row: Record<string, unknown>) => {
+      const status = (row.trang_thai as string) || "Không hoạt động";
+      const variant = status === "Hoạt động" ? "success" : "neutral";
+
+      return <Badge variant={variant}>{status}</Badge>;
+    },
   },
+
   { key: "ngay_tao", label: "Ngày tạo", width: "110px" },
-  // Raw trang_thai (no render) → DataTable auto-detects for filter dropdown
-  { key: "trang_thai", label: "Trạng thái", width: "150px" },
   {
     key: "_action",
     label: "Thao tác",
@@ -69,9 +67,9 @@ export default function Page() {
       subtitle="Phân quyền và quản lý vai trò người dùng theo 4 cấp quản lý trong hệ thống"
       addLabel="Thêm vai trò"
       stats={[
-        { label: "Tổng vai trò",    value: phanQuyenRoles.length, variant: "info"    },
-        { label: "Đang hoạt động",  value: activeCount,            variant: "success" },
-        { label: "Không hoạt động", value: inactiveCount,          variant: "neutral" },
+        { label: "Tổng vai trò", value: phanQuyenRoles.length, variant: "info" },
+        { label: "Đang hoạt động", value: activeCount, variant: "success" },
+        { label: "Không hoạt động", value: inactiveCount, variant: "neutral" },
         { label: "Tổng người dùng", value: totalUsers.toLocaleString(), variant: "info" },
       ]}
       tableColumns={columns}
