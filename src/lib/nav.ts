@@ -71,6 +71,7 @@ export const navigation: NavItem[] = [
       { label: "Nhóm sản phẩm", href: "/danh-muc/nhom-san-pham" },
       { label: "Phân loại cơ sở", href: "/danh-muc/phan-loai-co-so" },
       { label: "Thư viện mẫu sự kiện", href: "/danh-muc/thu-vien-mau-su-kien" },
+      { label: "Mẫu sự kiện trọng yếu", href: "/danh-muc/mau-su-kien-trong-yeu" },
     ],
   },
   {
