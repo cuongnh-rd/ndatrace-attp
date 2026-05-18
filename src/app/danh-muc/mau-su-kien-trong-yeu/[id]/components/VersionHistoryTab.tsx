@@ -40,7 +40,7 @@ export default function VersionHistoryTab({ templateId }: Props) {
                         {histories.map((h) => (
                             <tr key={h.id} className="border-b border-gray-50 dark:border-gray-800 hover:bg-gray-50/40 dark:hover:bg-gray-800/20 transition-colors">
                                 <td className="px-5 py-3.5 font-mono text-[14px] font-semibold text-gray-700 dark:text-gray-300">
-                                    v{h.version}
+                                    version{h.version}
                                 </td>
                                 <td className="px-5 py-3.5 text-[14px] text-gray-500 dark:text-gray-400">{h.created_at}</td>
                                 <td className="px-5 py-3.5 text-[14px] text-gray-600 dark:text-gray-300">{h.created_by}</td>
@@ -54,7 +54,7 @@ export default function VersionHistoryTab({ templateId }: Props) {
                                         onClick={() => setSnapshot(h)}
                                         className="inline-flex items-center gap-1.5 text-[13px] text-brand-600 hover:text-brand-700 transition-colors"
                                     >
-                                        <Eye size={14} /> Xem snapshot
+                                        <Eye size={14} /> Xem
                                     </button>
                                 </td>
                             </tr>

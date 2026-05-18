@@ -80,16 +80,16 @@ export default function Page() {
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                         <h1 className="text-xl font-bold text-gray-900 dark:text-white">{template.vc_type_name}</h1>
-                        <code className="font-mono text-[13px] text-gray-400">{template.vc_type}</code>
                         <Badge variant={statusVariant[template.status]}>{statusLabel[template.status]}</Badge>
-                        <span className="font-mono text-[13px] text-gray-400">v{template.version}</span>
                     </div>
-                    <p className="text-[13px] text-gray-500 mt-0.5">{template.family_name}</p>
+                    <p className="text-[13px] text-gray-500 mt-0.5">
+                        {template.vc_type} · {template.family_name} · version{template.version}
+                    </p>
                 </div>
                 <button onClick={handleEditClick}
                     className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                     <Pencil size={14} />
-                    {isActive ? `Chỉnh sửa (tạo v${template.version + 1})` : "Chỉnh sửa"}
+                    {isActive ? `Chỉnh sửa (tạo version${template.version + 1})` : "Chỉnh sửa"}
                 </button>
             </div>
 
@@ -110,12 +110,6 @@ export default function Page() {
                 </div>
             )}
 
-            {/* Active CTE read-only notice */}
-            {isActive && (
-                <div className="px-4 py-2.5 mb-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/40 rounded-xl text-[13px] text-blue-700 dark:text-blue-300">
-                    Mẫu đang hoạt động — chỉnh sửa sẽ tạo phiên bản mới và khoá phiên bản hiện tại.
-                </div>
-            )}
 
             <DetailTabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
 

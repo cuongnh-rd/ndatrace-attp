@@ -8,12 +8,13 @@ export default function InfoTab({ template: t }: Props) {
     const rows: { label: string; value: React.ReactNode }[] = [
         { label: "Mã mẫu", value: <code className="font-mono text-[13px] text-brand-600 dark:text-brand-400">{t.vc_type}</code> },
         { label: "Tên mẫu sự kiện", value: t.vc_type_name },
-        { label: "Cấp ban hành", value: t.authority_level === "Provincial" ? "Sở / Tỉnh" : "Bộ / Trung ương" },
+        { label: "Mô tả", value: t.description || "—" },
+
+        // { label: "Cấp ban hành", value: t.authority_level === "Provincial" ? "Sở / Tỉnh" : "Bộ / Trung ương" },
         { label: "Nhóm ngành hàng", value: t.family_name || "—" },
         { label: "Phiên bản hiện tại", value: <span className="font-mono font-semibold">v{t.version}</span> },
         { label: "Người tạo", value: t.created_by },
         { label: "Cập nhật lần cuối", value: t.updated_at },
-        { label: "Mô tả", value: t.description || "—" },
     ];
 
     return (

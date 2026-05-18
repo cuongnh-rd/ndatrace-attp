@@ -68,9 +68,9 @@ export default function EventsKdeTab({ template, highlightOutdated }: Props) {
                                     <thead>
                                         <tr className="bg-gray-50/80 dark:bg-gray-800/40 border-b border-gray-50 dark:border-gray-800">
                                             <th className="text-left px-5 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-gray-500 w-10">#</th>
-                                            <th className="text-left px-3 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Mã KDE</th>
+                                            <th className="text-left px-3 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Mã dữ liệu</th>
                                             <th className="text-left px-3 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Tên trường</th>
-                                            <th className="text-left px-3 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Kiểu DL</th>
+                                            <th className="text-left px-3 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Kiểu dữ liệu</th>
                                             <th className="text-left px-3 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Bắt buộc</th>
                                             <th className="text-left px-3 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Ghi chú</th>
                                             <th className="text-left px-3 py-2.5 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Tình trạng</th>
