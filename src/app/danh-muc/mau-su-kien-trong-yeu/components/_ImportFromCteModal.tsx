@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { X, Search, CheckCircle2, ChevronDown, ChevronUp, ChevronRight, AlertTriangle, Download } from "lucide-react";
+import { X, Search, CheckCircle2, ChevronDown, ChevronUp, AlertTriangle, Download, FileText } from "lucide-react";
 import { mockTemplatesForImport } from "../lib/mock-data";
 import { generateId } from "../lib/mock-data";
 import type { CteEvent, CteTemplate } from "../lib/types";
@@ -14,7 +14,6 @@ interface Props {
 }
 
 export default function ImportFromCteModal({ open, onClose, onImport, existingEventCodes }: Props) {
-    const [step, setStep] = useState<1 | 2 | 3>(1);
     const [selected, setSelected] = useState<CteTemplate | null>(null);
     const [search, setSearch] = useState("");
     const [familyFilter, setFamilyFilter] = useState("");
@@ -45,9 +44,13 @@ export default function ImportFromCteModal({ open, onClose, onImport, existingEv
             .filter((code) => existingEventCodes.includes(code));
     }, [selected, existingEventCodes]);
 
+    const handleSelect = (t: CteTemplate) => {
+        setSelected(t);
+    };
+
     const handleImport = () => {
         if (!selected) return;
-        const cloned: CteEvent[] = selected.events.map((evt, i) => {
+        const cloned: CteEvent[] = selected.events.map((evt) => {
             const newEventId = generateId();
             return {
                 ...evt,
@@ -65,7 +68,6 @@ export default function ImportFromCteModal({ open, onClose, onImport, existingEv
     };
 
     const reset = () => {
-        setStep(1);
         setSelected(null);
         setSearch("");
         setFamilyFilter("");
@@ -81,153 +83,140 @@ export default function ImportFromCteModal({ open, onClose, onImport, existingEv
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={handleClose} />
-            <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-3xl max-h-[88vh] flex flex-col">
+            <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-5xl max-h-[88vh] flex flex-col">
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800 shrink-0">
-                    <div>
-                        <h2 className="text-lg font-bold text-gray-900 dark:text-white">Thêm sự kiện từ mẫu</h2>
-                        <p className="text-[13px] text-gray-500 mt-0.5">Bước {step} / 3</p>
-                    </div>
+                    <h2 className="text-lg font-bold text-gray-900 dark:text-white">Thêm sự kiện từ mẫu</h2>
                     <button onClick={handleClose} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
                         <X size={18} className="text-gray-500" />
                     </button>
                 </div>
 
-                {/* Step indicator */}
-                <div className="flex items-center px-6 py-3 border-b border-gray-50 dark:border-gray-800 shrink-0">
-                    {[["1", "Chọn mẫu"], ["2", "Xem trước"], ["3", "Xác nhận"]].map(([s, label], i) => (
-                        <div key={s} className="flex items-center">
-                            <div className="flex items-center gap-2">
-                                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-semibold transition-colors ${Number(s) < step ? "bg-brand-600 text-white" :
-                                        Number(s) === step ? "bg-brand-600 text-white" :
-                                            "bg-gray-100 dark:bg-gray-800 text-gray-400"
-                                    }`}>
-                                    {Number(s) < step ? <CheckCircle2 size={14} /> : s}
-                                </div>
-                                <span className={`text-[13px] ${Number(s) === step ? "font-semibold text-gray-900 dark:text-white" : "text-gray-400"}`}>{label}</span>
+                {/* Body — 2 columns */}
+                <div className="flex flex-1 min-h-0">
+                    {/* LEFT: template list */}
+                    <div className="w-72 shrink-0 border-r border-gray-100 dark:border-gray-800 flex flex-col">
+                        {/* Search + filter */}
+                        <div className="p-3 space-y-2 border-b border-gray-50 dark:border-gray-800 shrink-0">
+                            <div className="relative">
+                                <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                                <input
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Tìm tên hoặc mã mẫu..."
+                                    className="w-full pl-7 pr-3 py-1.5 text-[13px] border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 outline-none focus:border-brand-400 transition-colors"
+                                />
                             </div>
-                            {i < 2 && <div className="mx-3 h-px w-8 bg-gray-200 dark:bg-gray-700" />}
+                            <select
+                                value={familyFilter}
+                                onChange={(e) => setFamilyFilter(e.target.value)}
+                                className="w-full px-2.5 py-1.5 text-[13px] border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 outline-none focus:border-brand-400 transition-colors"
+                            >
+                                <option value="">Tất cả nhóm ngành</option>
+                                {families.map((f) => <option key={f} value={f}>{f}</option>)}
+                            </select>
                         </div>
-                    ))}
-                </div>
 
-                {/* Content */}
-                <div className="flex-1 overflow-y-auto p-6">
-                    {step === 1 && (
-                        <Step1
-                            templates={filtered}
-                            selected={selected}
-                            onSelect={setSelected}
-                            search={search}
-                            onSearch={setSearch}
-                            families={families}
-                            familyFilter={familyFilter}
-                            onFamilyFilter={setFamilyFilter}
-                        />
-                    )}
-                    {step === 2 && selected && (
-                        <Step2 template={selected} existingEventCodes={existingEventCodes} />
-                    )}
-                    {step === 3 && selected && (
-                        <Step3 template={selected} duplicateCodes={duplicateCodes} />
-                    )}
+                        {/* Template list */}
+                        <div className="flex-1 overflow-y-auto py-1.5">
+                            {filtered.length === 0 ? (
+                                <div className="flex flex-col items-center py-10 text-gray-400 gap-2">
+                                    <Search size={24} className="text-gray-300" />
+                                    <p className="text-[13px]">Không tìm thấy mẫu</p>
+                                </div>
+                            ) : (
+                                filtered.map((t) => {
+                                    const isSelected = selected?.id === t.id;
+                                    const totalKde = t.events.reduce((acc, e) => acc + e.kde_mappings.length, 0);
+                                    return (
+                                        <button
+                                            key={t.id}
+                                            onClick={() => handleSelect(t)}
+                                            className={`w-full text-left px-3 py-2.5 transition-colors border-b border-gray-50 dark:border-gray-800/60 last:border-0 ${
+                                                isSelected
+                                                    ? "bg-brand-50 dark:bg-brand-900/20"
+                                                    : "hover:bg-gray-50 dark:hover:bg-gray-800/40"
+                                            }`}
+                                        >
+                                            <div className="flex items-center justify-between gap-2 mb-0.5">
+                                                <code className="font-mono text-[11px] text-brand-600 dark:text-brand-400">{t.vc_type}</code>
+                                                {isSelected && <CheckCircle2 size={13} className="text-brand-600 shrink-0" />}
+                                            </div>
+                                            <p className={`text-[13px] leading-snug mb-1 ${isSelected ? "font-semibold text-brand-700 dark:text-brand-300" : "text-gray-800 dark:text-gray-200"}`}>
+                                                {t.vc_type_name}
+                                            </p>
+                                            <div className="flex items-center gap-2 text-[11px] text-gray-400">
+                                                <span>{t.events.length} CTE</span>
+                                                <span>·</span>
+                                                <span>{totalKde} KDE</span>
+                                                {t.status === "Nháp" && (
+                                                    <>
+                                                        <span>·</span>
+                                                        <span className="text-amber-500">Nháp</span>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </button>
+                                    );
+                                })
+                            )}
+                        </div>
+                    </div>
+
+                    {/* RIGHT: preview */}
+                    <div className="flex-1 overflow-y-auto">
+                        {selected ? (
+                            <PreviewPane
+                                template={selected}
+                                existingEventCodes={existingEventCodes}
+                                duplicateCodes={duplicateCodes}
+                            />
+                        ) : (
+                            <EmptyState />
+                        )}
+                    </div>
                 </div>
 
                 {/* Footer */}
                 <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100 dark:border-gray-800 shrink-0">
-                    {step > 1 ? (
-                        <button onClick={() => setStep((s) => (s - 1) as 1 | 2 | 3)}
-                            className="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
-                            ← Quay lại
-                        </button>
-                    ) : (
-                        <button onClick={handleClose}
-                            className="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
-                            Huỷ
-                        </button>
-                    )}
-                    {step < 3 ? (
-                        <button
-                            onClick={() => setStep((s) => (s + 1) as 2 | 3)}
-                            disabled={!selected}
-                            className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 disabled:opacity-40 disabled:cursor-not-allowed rounded-xl transition-colors"
-                        >
-                            {step === 1 ? "Xem trước" : "Tiếp tục"} <ChevronRight size={14} />
-                        </button>
-                    ) : (
-                        <button onClick={handleImport}
-                            className="flex items-center gap-1.5 px-5 py-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl transition-colors">
-                            <Download size={14} /> Xác nhận thêm
-                        </button>
-                    )}
+                    <button
+                        onClick={handleClose}
+                        className="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
+                    >
+                        Huỷ
+                    </button>
+                    <button
+                        onClick={handleImport}
+                        disabled={!selected}
+                        className="flex items-center gap-1.5 px-5 py-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 disabled:opacity-40 disabled:cursor-not-allowed rounded-xl transition-colors"
+                    >
+                        <Download size={14} /> Xác nhận thêm
+                    </button>
                 </div>
             </div>
         </div>
     );
 }
 
-function Step1({ templates, selected, onSelect, search, onSearch, families, familyFilter, onFamilyFilter }: {
-    templates: CteTemplate[]; selected: CteTemplate | null; onSelect: (t: CteTemplate) => void;
-    search: string; onSearch: (v: string) => void; families: string[];
-    familyFilter: string; onFamilyFilter: (v: string) => void;
-}) {
+function EmptyState() {
     return (
-        <div>
-            <p className="text-[14px] text-gray-500 mb-4">
-                Chọn một mẫu sự kiện trọng yếu đã tạo. Toàn bộ sự kiện trong mẫu đó sẽ được thêm vào danh sách hiện tại.
+        <div className="flex flex-col items-center justify-center h-full gap-3 text-gray-400 py-16">
+            <div className="w-14 h-14 rounded-2xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center">
+                <FileText size={24} className="text-gray-300 dark:text-gray-600" />
+            </div>
+            <p className="text-[14px] font-medium text-gray-400">Chọn một mẫu để xem trước</p>
+            <p className="text-[13px] text-gray-300 dark:text-gray-600 text-center max-w-52">
+                Nhấp vào tên mẫu bên trái để xem chi tiết các sự kiện trọng yếu
             </p>
-            <div className="flex gap-2 mb-4">
-                <div className="relative flex-1">
-                    <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input value={search} onChange={(e) => onSearch(e.target.value)}
-                        placeholder="Tìm theo tên hoặc mã mẫu..."
-                        className="w-full pl-8 pr-3 py-2 text-[14px] border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 outline-none focus:border-brand-400 transition-colors" />
-                </div>
-                <select value={familyFilter} onChange={(e) => onFamilyFilter(e.target.value)}
-                    className="pl-3 pr-8 py-2 text-[14px] border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 outline-none focus:border-brand-400 transition-colors">
-                    <option value="">Tất cả nhóm ngành</option>
-                    {families.map((f) => <option key={f} value={f}>{f}</option>)}
-                </select>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-                {templates.map((t) => {
-                    const isSelected = selected?.id === t.id;
-                    const totalKde = t.events.reduce((acc, e) => acc + e.kde_mappings.length, 0);
-                    return (
-                        <button key={t.id} onClick={() => onSelect(t)}
-                            className={`text-left p-4 rounded-xl border-2 transition-all ${isSelected ? "border-brand-500 bg-brand-50 dark:bg-brand-900/20" : "border-gray-100 dark:border-gray-800 hover:border-gray-200 dark:hover:border-gray-700"}`}>
-                            <div className="flex items-start justify-between gap-2 mb-1">
-                                <code className="font-mono text-[12px] text-brand-600 dark:text-brand-400">{t.vc_type}</code>
-                                {isSelected && <CheckCircle2 size={16} className="text-brand-600 shrink-0" />}
-                            </div>
-                            <p className="font-semibold text-gray-800 dark:text-gray-200 text-[14px] leading-snug">{t.vc_type_name}</p>
-                            <div className="flex items-center gap-3 mt-2 text-[13px] text-gray-500">
-                                <span>{t.family_name}</span>
-                                <span>·</span>
-                                <span>{t.events.length} CTE</span>
-                                <span>·</span>
-                                <span>{totalKde} KDE</span>
-                            </div>
-                            {t.status === "Nháp" && (
-                                <span className="inline-block mt-2 text-[11px] font-medium text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-2 py-0.5 rounded-full border border-amber-100">
-                                    Nháp
-                                </span>
-                            )}
-                        </button>
-                    );
-                })}
-            </div>
-            {templates.length === 0 && (
-                <div className="flex flex-col items-center py-12 text-gray-400 gap-2">
-                    <Search size={28} className="text-gray-300" />
-                    <p className="text-[14px]">Không tìm thấy mẫu phù hợp</p>
-                </div>
-            )}
         </div>
     );
 }
 
-function Step2({ template, existingEventCodes }: { template: CteTemplate; existingEventCodes: string[] }) {
+function PreviewPane({ template, existingEventCodes, duplicateCodes }: {
+    template: CteTemplate;
+    existingEventCodes: string[];
+    duplicateCodes: string[];
+}) {
     const [expanded, setExpanded] = useState<Set<string>>(new Set(template.events.map((e) => e.id)));
 
     const toggle = (id: string) => {
@@ -239,19 +228,25 @@ function Step2({ template, existingEventCodes }: { template: CteTemplate; existi
     };
 
     return (
-        <div>
-            <p className="text-[14px] text-gray-500 mb-5">
-                Xem trước các sự kiện sẽ được thêm vào. Sau khi import bạn có thể chỉnh sửa từng sự kiện.
-            </p>
-            <div className="bg-gray-50 dark:bg-gray-800/60 rounded-xl p-4 mb-5">
-                <div className="flex items-center gap-3 mb-1">
+        <div className="p-5">
+            {/* Template info */}
+            <div className="bg-gray-50 dark:bg-gray-800/60 rounded-xl p-4 mb-4">
+                <div className="flex items-center gap-2.5 mb-1">
                     <code className="font-mono text-[13px] text-brand-600 dark:text-brand-400">{template.vc_type}</code>
-                    <span className="text-gray-400">·</span>
-                    <span className="text-[13px] text-gray-500">v{template.version}</span>
+                    <span className="text-gray-300 dark:text-gray-600">·</span>
+                    <span className="text-[12px] text-gray-400">v{template.version}</span>
+                    <span className="text-gray-300 dark:text-gray-600">·</span>
+                    <span className="text-[12px] text-gray-400">{template.family_name}</span>
                 </div>
                 <p className="font-semibold text-gray-800 dark:text-gray-200">{template.vc_type_name}</p>
-                <p className="text-[13px] text-gray-500 mt-0.5">{template.family_name}</p>
+                <div className="flex items-center gap-3 mt-1.5 text-[12px] text-gray-400">
+                    <span>{template.events.length} sự kiện trọng yếu</span>
+                    <span>·</span>
+                    <span>{template.events.reduce((acc, e) => acc + e.kde_mappings.length, 0)} trường dữ liệu</span>
+                </div>
             </div>
+
+            {/* Events list */}
             <div className="space-y-2">
                 {template.events.map((evt, eIdx) => {
                     const isDuplicate = existingEventCodes.includes(evt.event_code);
@@ -296,35 +291,8 @@ function Step2({ template, existingEventCodes }: { template: CteTemplate; existi
                     );
                 })}
             </div>
-        </div>
-    );
-}
 
-function Step3({ template, duplicateCodes }: { template: CteTemplate; duplicateCodes: string[] }) {
-    const totalKde = template.events.reduce((acc, e) => acc + e.kde_mappings.length, 0);
-    return (
-        <div>
-            <p className="text-[14px] text-gray-500 mb-5">
-                Xác nhận để thêm tất cả sự kiện từ mẫu đã chọn vào danh sách hiện tại.
-            </p>
-            <div className="bg-brand-50 dark:bg-brand-900/20 border border-brand-100 dark:border-brand-900/40 rounded-xl p-5 space-y-3">
-                <div className="flex items-center justify-between text-[14px]">
-                    <span className="text-gray-500">Mẫu nguồn</span>
-                    <span className="font-semibold text-gray-800 dark:text-gray-200">{template.vc_type_name}</span>
-                </div>
-                <div className="flex items-center justify-between text-[14px]">
-                    <span className="text-gray-500">Nhóm ngành</span>
-                    <span className="text-gray-700 dark:text-gray-300">{template.family_name}</span>
-                </div>
-                <div className="flex items-center justify-between text-[14px]">
-                    <span className="text-gray-500">Số sự kiện sẽ thêm</span>
-                    <span className="font-semibold text-brand-600">{template.events.length} sự kiện</span>
-                </div>
-                <div className="flex items-center justify-between text-[14px]">
-                    <span className="text-gray-500">Tổng số trường dữ liệu</span>
-                    <span className="text-gray-700 dark:text-gray-300">{totalKde} trường dữ liệu</span>
-                </div>
-            </div>
+            {/* Duplicate warning */}
             {duplicateCodes.length > 0 && (
                 <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/40 rounded-xl text-[13px] text-amber-700 dark:text-amber-400">
                     <div className="flex items-start gap-2">
@@ -336,7 +304,8 @@ function Step3({ template, duplicateCodes }: { template: CteTemplate; duplicateC
                     </div>
                 </div>
             )}
-            <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800 rounded-xl text-[13px] text-gray-500">
+
+            <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800 rounded-xl text-[13px] text-gray-500">
                 Sau khi thêm, các sự kiện sẽ được nối tiếp vào danh sách hiện tại. Bạn có thể kéo để sắp xếp lại thứ tự.
             </div>
         </div>
