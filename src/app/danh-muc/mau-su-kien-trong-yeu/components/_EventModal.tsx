@@ -118,9 +118,8 @@ export default function EventModal({ isOpen, onClose, onSave, existingEvent, tem
     const validate = () => {
         const errs: Record<string, string> = {};
         if (!eventName.trim()) errs.eventName = "Tên sự kiện không được để trống";
-        if (!eventCode.trim()) errs.eventCode = "Mã sự kiện không được để trống";
-        if (rows.length === 0) errs.kdes = "Cần thêm ít nhất 1 KDE vào sự kiện";
-        if (hasNoRequired) errs.required = "Cần ít nhất 1 KDE bắt buộc (required)";
+        if (rows.length === 0) errs.kdes = "Cần thêm ít nhất 1 dữ liệu vào sự kiện";
+        if (hasNoRequired) errs.required = "Cần ít nhất 1 dữ liệu bắt buộc";
         setErrors(errs);
         return Object.keys(errs).length === 0;
     };
@@ -131,7 +130,7 @@ export default function EventModal({ isOpen, onClose, onSave, existingEvent, tem
         const event: CteEvent = {
             id: eventId,
             template_id: templateId,
-            event_code: eventCode.trim().toUpperCase(),
+            event_code: eventCode.trim() ? eventCode.trim().toUpperCase() : generateId(),
             event_name: eventName.trim(),
             display_order: existingEvent?.display_order ?? 0,
             kde_mappings: rows.map(({ _drag_id, ...rest }) => ({ ...rest, event_id: eventId })),
@@ -157,25 +156,14 @@ export default function EventModal({ isOpen, onClose, onSave, existingEvent, tem
 
                 <div className="flex-1 overflow-y-auto p-6 space-y-5">
                     {/* Event info */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-[13px] font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
-                                Tên sự kiện <span className="text-red-500">*</span>
-                            </label>
-                            <input value={eventName} onChange={(e) => { setEventName(e.target.value); setErrors((p) => ({ ...p, eventName: "" })); }}
-                                placeholder="VD: Thu hoạch"
-                                className={`w-full px-3 py-2 text-[14px] border rounded-xl outline-none transition-colors bg-white dark:bg-gray-800 ${errors.eventName ? "border-red-300 focus:border-red-400" : "border-gray-200 dark:border-gray-700 focus:border-brand-400"}`} />
-                            {errors.eventName && <p className="text-[12px] text-red-500 mt-1">{errors.eventName}</p>}
-                        </div>
-                        <div>
-                            <label className="block text-[13px] font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
-                                Mã sự kiện <span className="text-red-500">*</span>
-                            </label>
-                            <input value={eventCode} onChange={(e) => { setEventCode(e.target.value); setErrors((p) => ({ ...p, eventCode: "" })); }}
-                                placeholder="VD: EVT-THU-HOACH"
-                                className={`w-full px-3 py-2 text-[14px] font-mono border rounded-xl outline-none transition-colors bg-white dark:bg-gray-800 uppercase ${errors.eventCode ? "border-red-300 focus:border-red-400" : "border-gray-200 dark:border-gray-700 focus:border-brand-400"}`} />
-                            {errors.eventCode && <p className="text-[12px] text-red-500 mt-1">{errors.eventCode}</p>}
-                        </div>
+                    <div>
+                        <label className="block text-[13px] font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
+                            Tên sự kiện <span className="text-red-500">*</span>
+                        </label>
+                        <input value={eventName} onChange={(e) => { setEventName(e.target.value); setErrors((p) => ({ ...p, eventName: "" })); }}
+                            placeholder="VD: Thu hoạch"
+                            className={`w-full px-3 py-2 text-[14px] border rounded-xl outline-none transition-colors bg-white dark:bg-gray-800 ${errors.eventName ? "border-red-300 focus:border-red-400" : "border-gray-200 dark:border-gray-700 focus:border-brand-400"}`} />
+                        {errors.eventName && <p className="text-[12px] text-red-500 mt-1">{errors.eventName}</p>}
                     </div>
 
                     {/* KDE section */}
@@ -183,7 +171,7 @@ export default function EventModal({ isOpen, onClose, onSave, existingEvent, tem
                         <div className="flex items-center justify-between mb-3">
                             <div>
                                 <p className="text-[13px] font-semibold text-gray-700 dark:text-gray-300">
-                                    Trường dữ liệu (KDE)
+                                    Trường dữ liệu
                                     {rows.length > 0 && <span className="ml-2 text-gray-400 font-normal">{rows.length} trường</span>}
                                 </p>
                                 {errors.kdes && <p className="text-[12px] text-red-500 mt-0.5">{errors.kdes}</p>}
@@ -195,7 +183,7 @@ export default function EventModal({ isOpen, onClose, onSave, existingEvent, tem
                             </div>
                             <button onClick={() => setShowPicker((v) => !v)}
                                 className="flex items-center gap-1.5 text-[13px] font-medium text-brand-600 hover:text-brand-700 border border-brand-200 hover:border-brand-300 bg-brand-50 hover:bg-brand-100 rounded-xl px-3 py-1.5 transition-colors">
-                                <Plus size={13} /> Thêm KDE từ thư viện
+                                <Plus size={13} /> Thêm dữ liệu từ thư viện
                                 <ChevronDown size={12} className={`transition-transform ${showPicker ? "rotate-180" : ""}`} />
                             </button>
                         </div>
@@ -207,7 +195,7 @@ export default function EventModal({ isOpen, onClose, onSave, existingEvent, tem
                                     <div className="relative flex-1">
                                         <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
                                         <input value={pickerSearch} onChange={(e) => setPickerSearch(e.target.value)}
-                                            placeholder="Tìm KDE theo tên hoặc mã..."
+                                            placeholder="Tìm dữ liệu theo tên hoặc mã..."
                                             className="w-full pl-7 pr-3 py-1.5 text-[13px] border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 outline-none focus:border-brand-400" />
                                     </div>
                                     <select value={pickerType} onChange={(e) => setPickerType(e.target.value)}
@@ -220,7 +208,7 @@ export default function EventModal({ isOpen, onClose, onSave, existingEvent, tem
                                     {filteredLibrary.length === 0 ? (
                                         <div className="flex flex-col items-center py-6 text-gray-400 gap-1">
                                             <Search size={20} className="text-gray-300" />
-                                            <p className="text-[13px]">Không tìm thấy KDE phù hợp</p>
+                                            <p className="text-[13px]">Không tìm thấy dữ liệu phù hợp</p>
                                         </div>
                                     ) : filteredLibrary.map((item) => (
                                         <button key={item.code} onClick={() => addKde(item)}
@@ -295,7 +283,7 @@ export default function EventModal({ isOpen, onClose, onSave, existingEvent, tem
                             </div>
                         ) : (
                             <div className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl py-10 text-center text-gray-400">
-                                <p className="text-[14px]">Chưa có KDE nào. Nhấn "Thêm KDE từ thư viện" để bắt đầu.</p>
+                                <p className="text-[14px]">Chưa có dữ liệu nào. Nhấn "Thêm dữ liệu từ thư viện" để bắt đầu.</p>
                             </div>
                         )}
 
@@ -303,7 +291,7 @@ export default function EventModal({ isOpen, onClose, onSave, existingEvent, tem
                         {hasNoRequired && rows.length > 0 && (
                             <div className="flex items-center gap-2 mt-2 text-[13px] text-amber-600 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 px-3 py-2 rounded-lg">
                                 <AlertTriangle size={14} />
-                                Cần ít nhất 1 KDE bắt buộc trong sự kiện này.
+                                Cần ít nhất 1 dữ liệu bắt buộc trong sự kiện này.
                             </div>
                         )}
                     </div>

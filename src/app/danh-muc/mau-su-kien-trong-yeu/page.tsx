@@ -3,15 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Plus, Copy } from "lucide-react";
+import { Plus } from "lucide-react";
 import SectionPage from "@/components/ui/SectionPage";
 import CteListTable from "./components/CteListTable";
-import CloneL1Modal from "./components/_CloneL1Modal";
 import type { CteTemplate } from "./lib/types";
 
 export default function Page() {
     const router = useRouter();
-    const [cloneOpen, setCloneOpen] = useState(false);
     const [versionTarget, setVersionTarget] = useState<CteTemplate | null>(null);
 
     const handleEditActive = (template: CteTemplate) => {
@@ -30,26 +28,16 @@ export default function Page() {
                 title="Mẫu sự kiện trọng yếu"
                 subtitle="Quản lý Mẫu sự kiện trọng yếu theo nhóm ngành"
                 actionButton={
-                    <div className="flex items-center gap-2">
-                        <button
-                            onClick={() => setCloneOpen(true)}
-                            className="flex items-center gap-1.5 text-sm font-medium text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                        >
-                            <Copy size={14} /> Tạo từ thư viện mẫu
-                        </button>
-                        <Link
-                            href="/danh-muc/mau-su-kien-trong-yeu/tao-moi"
-                            className="flex items-center gap-1.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl px-4 py-2 transition-colors"
-                        >
-                            <Plus size={14} /> Tạo mẫu mới
-                        </Link>
-                    </div>
+                    <Link
+                        href="/danh-muc/mau-su-kien-trong-yeu/tao-moi"
+                        className="flex items-center gap-1.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl px-4 py-2 transition-colors"
+                    >
+                        <Plus size={14} /> Tạo mẫu mới
+                    </Link>
                 }
             >
                 <CteListTable onEditActive={handleEditActive} />
             </SectionPage>
-
-            <CloneL1Modal isOpen={cloneOpen} onClose={() => setCloneOpen(false)} />
 
             {/* Version confirm modal */}
             {versionTarget && (

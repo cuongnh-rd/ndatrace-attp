@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp, AlertTriangle } from "lucide-react";
-import type { CteTemplate } from "../../lib/types";
+import type { CteTemplate } from "../lib/types";
 
 interface Props {
     template: CteTemplate;
@@ -47,7 +47,6 @@ export default function EventsKdeTab({ template, highlightOutdated }: Props) {
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
                                     <span className="font-semibold text-[15px] text-gray-800 dark:text-gray-200">{ev.event_name}</span>
-                                    <code className="font-mono text-[12px] text-gray-400">{ev.event_code}</code>
                                 </div>
                                 <p className="text-[13px] text-gray-400 mt-0.5">
                                     {ev.kde_mappings.length} KDE &nbsp;·&nbsp; {ev.kde_mappings.filter((m) => m.is_required).length} bắt buộc

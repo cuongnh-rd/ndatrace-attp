@@ -3,9 +3,11 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, Plus, GripVertical, Pencil, Trash2, ChevronDown, ChevronUp, AlertTriangle, BookOpen } from "lucide-react";
+import { ArrowLeft, Plus, Copy, AlertTriangle, BookOpen } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import EventModal from "../../components/_EventModal";
+import ImportFromCteModal from "../../components/_ImportFromCteModal";
+import CteEventRow from "../../components/CteEventRow";
 import VersionConfirmModal from "../components/_VersionConfirmModal";
 import { getTemplateById, cteTemplates, versionHistories, generateId } from "../../lib/mock-data";
 import { FAMILY_OPTIONS } from "../../lib/constants";
@@ -32,6 +34,7 @@ export default function Page() {
     const [expandedEvents, setExpandedEvents] = useState<Set<string>>(new Set());
     const [versionModalOpen, setVersionModalOpen] = useState(false);
     const [pendingAction, setPendingAction] = useState<"draft" | "publish" | null>(null);
+    const [importOpen, setImportOpen] = useState(false);
 
     const dragIdx = useRef(-1);
 
@@ -95,6 +98,21 @@ export default function Page() {
 
     const openAddEvent = () => { setEditingEvent(null); setEventModalOpen(true); };
     const openEditEvent = (ev: CteEvent) => { setEditingEvent(ev); setEventModalOpen(true); };
+
+    const handleImportEvents = (imported: CteEvent[]) => {
+        setEvents((prev) => {
+            const newEvents = imported.map((e, i) => ({
+                ...e,
+                id: generateId(),
+                template_id: original.id,
+                display_order: prev.length + i + 1,
+                kde_mappings: e.kde_mappings.map((m) => ({ ...m, id: generateId() })),
+            }));
+            return [...prev, ...newEvents];
+        });
+        setImportOpen(false);
+    };
+
     const deleteEvent = (id: string) => {
         setEvents((prev) => prev.filter((e) => e.id !== id).map((e, i) => ({ ...e, display_order: i + 1 })));
     };
@@ -254,8 +272,11 @@ export default function Page() {
 
             <div className="space-y-5">
                 {/* General info */}
-                <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6">
-                    <h2 className="text-[15px] font-semibold text-gray-800 dark:text-gray-200 mb-5">Thông tin chung</h2>
+                <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800">
+                        <h2 className="text-[15px] font-semibold text-gray-800 dark:text-gray-200">Thông tin chung</h2>
+                    </div>
+                    <div className="px-6 py-5">
                     <div className="grid grid-cols-2 gap-5">
                         <div>
                             <label className="block text-[13px] font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
@@ -294,6 +315,7 @@ export default function Page() {
                                 className="w-full px-3 py-2 text-[14px] border border-gray-200 dark:border-gray-700 rounded-xl outline-none focus:border-brand-400 transition-colors bg-white dark:bg-gray-800 resize-none" />
                         </div>
                     </div>
+                    </div>
                 </div>
 
                 {/* Events card */}
@@ -307,10 +329,16 @@ export default function Page() {
                             {errors.events && <p className="text-[12px] text-red-500 mt-0.5">{errors.events}</p>}
                             {errors.required && <p className="flex items-center gap-1 text-[12px] text-amber-600 mt-0.5"><AlertTriangle size={11} />{errors.required}</p>}
                         </div>
-                        <button onClick={openAddEvent}
-                            className="flex items-center gap-1.5 text-[13px] font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl px-3 py-2 transition-colors">
-                            <Plus size={14} /> Thêm sự kiện
-                        </button>
+                        <div className="flex items-center gap-2">
+                            <button onClick={() => setImportOpen(true)}
+                                className="flex items-center gap-1.5 text-[13px] font-semibold text-brand-600 border border-brand-200 hover:bg-brand-50 dark:border-brand-800 dark:hover:bg-brand-900/20 rounded-xl px-3 py-2 transition-colors">
+                                <Copy size={14} /> Thêm sự kiện mẫu
+                            </button>
+                            <button onClick={openAddEvent}
+                                className="flex items-center gap-1.5 text-[13px] font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl px-3 py-2 transition-colors">
+                                <Plus size={14} /> Thêm mới sự kiện
+                            </button>
+                        </div>
                     </div>
 
                     {events.length === 0 ? (
@@ -320,7 +348,7 @@ export default function Page() {
                     ) : (
                         <div className="divide-y divide-gray-50 dark:divide-gray-800">
                             {events.map((ev, idx) => (
-                                <SuaEventRow
+                                <CteEventRow
                                     key={ev.id}
                                     event={ev}
                                     index={idx}
@@ -331,39 +359,6 @@ export default function Page() {
                                     onDragStart={() => handleDragStart(idx)}
                                     onDragOver={(e) => handleDragOver(e, idx)}
                                     onDragEnd={() => { dragIdx.current = -1; }}
-                                    onToggleRequired={(kdeId) => {
-                                        setEvents((prev) => prev.map((e) => {
-                                            if (e.id !== ev.id) return e;
-                                            return {
-                                                ...e,
-                                                kde_mappings: e.kde_mappings.map((m) =>
-                                                    m.id === kdeId ? { ...m, is_required: !m.is_required } : m
-                                                ),
-                                            };
-                                        }));
-                                    }}
-                                    onUpdateNote={(kdeId, note) => {
-                                        setEvents((prev) => prev.map((e) => {
-                                            if (e.id !== ev.id) return e;
-                                            return {
-                                                ...e,
-                                                kde_mappings: e.kde_mappings.map((m) =>
-                                                    m.id === kdeId ? { ...m, note } : m
-                                                ),
-                                            };
-                                        }));
-                                    }}
-                                    onDeleteKde={(kdeId) => {
-                                        setEvents((prev) => prev.map((e) => {
-                                            if (e.id !== ev.id) return e;
-                                            return {
-                                                ...e,
-                                                kde_mappings: e.kde_mappings
-                                                    .filter((m) => m.id !== kdeId)
-                                                    .map((m, i) => ({ ...m, display_order: i + 1 })),
-                                            };
-                                        }));
-                                    }}
                                 />
                             ))}
                         </div>
@@ -385,104 +380,13 @@ export default function Page() {
                 onConfirm={handleVersionConfirm}
                 template={original}
             />
+
+            <ImportFromCteModal
+                open={importOpen}
+                onClose={() => setImportOpen(false)}
+                onImport={handleImportEvents}
+                existingEventCodes={events.map((e) => e.event_code)}
+            />
         </DashboardLayout>
-    );
-}
-
-function SuaEventRow({ event: ev, index, expanded, onToggleExpand, onEdit, onDelete, onDragStart, onDragOver, onDragEnd, onToggleRequired, onUpdateNote, onDeleteKde }: {
-    event: CteEvent; index: number; expanded: boolean;
-    onToggleExpand: () => void; onEdit: () => void; onDelete: () => void;
-    onDragStart: () => void; onDragOver: (e: React.DragEvent) => void; onDragEnd: () => void;
-    onToggleRequired: (kdeId: string) => void;
-    onUpdateNote: (kdeId: string, note: string) => void;
-    onDeleteKde: (kdeId: string) => void;
-}) {
-    const requiredCount = ev.kde_mappings.filter((m) => m.is_required).length;
-    const hasNoRequired = ev.kde_mappings.length > 0 && requiredCount === 0;
-
-    return (
-        <div draggable onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
-            <div className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50/60 dark:hover:bg-gray-800/30 cursor-grab active:cursor-grabbing transition-colors">
-                <GripVertical size={16} className="text-gray-300 dark:text-gray-600 shrink-0" />
-                <span className="w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 text-[12px] font-bold flex items-center justify-center shrink-0">
-                    {index + 1}
-                </span>
-                <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-semibold text-[14px] text-gray-800 dark:text-gray-200">{ev.event_name}</span>
-                        <code className="font-mono text-[12px] text-gray-400">{ev.event_code}</code>
-                        {hasNoRequired && (
-                            <span className="inline-flex items-center gap-1 text-[11px] text-amber-600">
-                                <AlertTriangle size={11} /> Thiếu KDE bắt buộc
-                            </span>
-                        )}
-                    </div>
-                    <p className="text-[13px] text-gray-400">{ev.kde_mappings.length} KDE · {requiredCount} bắt buộc</p>
-                </div>
-                <div className="flex items-center gap-1">
-                    <button onClick={onToggleExpand}
-                        className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                        {expanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
-                    </button>
-                    <button onClick={onEdit}
-                        className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-amber-500 transition-colors" title="Sửa">
-                        <Pencil size={15} />
-                    </button>
-                    <button onClick={onDelete}
-                        className="p-1.5 rounded-lg text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 transition-colors" title="Xóa sự kiện">
-                        <Trash2 size={15} />
-                    </button>
-                </div>
-            </div>
-
-            {expanded && ev.kde_mappings.length > 0 && (
-                <div className="px-14 pb-4">
-                    <div className="border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden">
-                        <table className="w-full text-[13px]">
-                            <thead>
-                                <tr className="bg-gray-50/80 dark:bg-gray-800/40 border-b border-gray-100 dark:border-gray-800">
-                                    <th className="text-left px-3 py-2 text-[12px] font-semibold uppercase tracking-wide text-gray-500 w-8">#</th>
-                                    <th className="text-left px-3 py-2 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Mã KDE</th>
-                                    <th className="text-left px-3 py-2 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Tên</th>
-                                    <th className="text-left px-3 py-2 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Kiểu</th>
-                                    <th className="text-left px-3 py-2 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Bắt buộc</th>
-                                    <th className="text-left px-3 py-2 text-[12px] font-semibold uppercase tracking-wide text-gray-500">Ghi chú</th>
-                                    <th className="w-8"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {ev.kde_mappings.map((m, kIdx) => (
-                                    <tr key={m.id} className="border-t border-gray-50 dark:border-gray-800/60 hover:bg-gray-50/40 dark:hover:bg-gray-800/20">
-                                        <td className="px-3 py-2.5 text-gray-400 font-mono text-[12px]">{kIdx + 1}</td>
-                                        <td className="px-3 py-2.5">
-                                            <code className="font-mono text-[12px] text-brand-600 dark:text-brand-400">{m.kde_code}</code>
-                                        </td>
-                                        <td className="px-3 py-2.5 text-gray-700 dark:text-gray-300">{m.kde_name}</td>
-                                        <td className="px-3 py-2.5 text-gray-400">{m.kde_data_type}</td>
-                                        <td className="px-3 py-2.5">
-                                            <button onClick={() => onToggleRequired(m.id)}
-                                                className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-transparent transition-colors ${m.is_required ? "bg-brand-600" : "bg-gray-200 dark:bg-gray-700"}`}>
-                                                <span className={`pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow transform transition-transform ${m.is_required ? "translate-x-4" : "translate-x-0"}`} />
-                                            </button>
-                                        </td>
-                                        <td className="px-3 py-2.5">
-                                            <input value={m.note} onChange={(e) => onUpdateNote(m.id, e.target.value)}
-                                                placeholder="Ghi chú..."
-                                                className="w-full px-2 py-1 text-[12px] border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 outline-none focus:border-brand-400 min-w-[100px]" />
-                                        </td>
-                                        <td className="px-2 py-2.5">
-                                            <button onClick={() => onDeleteKde(m.id)}
-                                                className="p-1 rounded hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors">
-                                                <Trash2 size={13} />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            )}
-        </div>
     );
 }

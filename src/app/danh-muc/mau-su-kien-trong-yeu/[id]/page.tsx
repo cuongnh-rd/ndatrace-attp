@@ -7,7 +7,7 @@ import { ArrowLeft, Pencil, BookOpen, AlertTriangle, X } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import Badge from "@/components/ui/Badge";
 import DetailTabs from "./components/DetailTabs";
-import EventsKdeTab from "./components/EventsKdeTab";
+import EventsKdeTab from "../components/EventsKdeTab";
 import VersionHistoryTab from "./components/VersionHistoryTab";
 import InfoTab from "./components/InfoTab";
 import VersionConfirmModal from "./components/_VersionConfirmModal";
@@ -64,7 +64,7 @@ export default function Page() {
     };
 
     const tabs = [
-        { id: "events", label: "Sự kiện & KDE", badge: template.events.length },
+        { id: "events", label: "Danh sách sự kiện trọng yếu", badge: template.events.length },
         { id: "versions", label: "Lịch sử phiên bản" },
         { id: "info", label: "Thông tin chung" },
     ];

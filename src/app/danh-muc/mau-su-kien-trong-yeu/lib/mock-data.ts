@@ -474,6 +474,227 @@ export let notifications: CteNotification[] = [
 ];
 
 // ---------------------------------------------------------------------------
+// Mock templates dùng cho Import modal (10 mẫu)
+// ---------------------------------------------------------------------------
+export const mockTemplatesForImport: CteTemplate[] = [
+    {
+        id: "imp-001",
+        vc_type: "HN-IMP-001",
+        vc_type_name: "Rau củ sạch VietGAP",
+        family_id: null,
+        family_name: "Nông sản",
+        authority_level: "Provincial",
+        version: 2,
+        status: "Hoạt động",
+        description: "Mẫu chuẩn cho chuỗi rau củ VietGAP",
+        cloned_from_id: null,
+        updated_at: "10/05/2026",
+        created_by: "Nguyễn Hà Cương",
+        events: (() => {
+            const e1 = "imp-e1-01"; const e2 = "imp-e1-02"; const e3 = "imp-e1-03";
+            return [
+                { id: e1, template_id: "imp-001", event_code: "EVT-THU-HOACH", event_name: "Thu hoạch", display_order: 1, kde_mappings: [makeKde("ik-001", e1, k("HARVEST_DATE"), 2, 1, true, ""), makeKde("ik-002", e1, k("LOT_NUMBER"), 1, 2, true, ""), makeKde("ik-003", e1, k("GPS_LOCATION"), 2, 3, false, "")] },
+                { id: e2, template_id: "imp-001", event_code: "EVT-DONG-GOI", event_name: "Đóng gói", display_order: 2, kde_mappings: [makeKde("ik-004", e2, k("WEIGHT_NET"), 1, 1, true, ""), makeKde("ik-005", e2, k("EXPIRY_DATE"), 1, 2, true, ""), makeKde("ik-006", e2, k("PACKAGING_TYPE"), 1, 3, false, "")] },
+                { id: e3, template_id: "imp-001", event_code: "EVT-VAN-CHUYEN", event_name: "Vận chuyển", display_order: 3, kde_mappings: [makeKde("ik-007", e3, k("BATCH_CODE"), 1, 1, true, ""), makeKde("ik-008", e3, k("STORAGE_TEMP"), 1, 2, true, ""), makeKde("ik-009", e3, k("VEHICLE_PLATE"), 1, 3, false, "")] },
+            ];
+        })(),
+    },
+    {
+        id: "imp-002",
+        vc_type: "HN-IMP-002",
+        vc_type_name: "Tôm thẻ chân trắng xuất khẩu",
+        family_id: null,
+        family_name: "Thủy sản",
+        authority_level: "Provincial",
+        version: 1,
+        status: "Hoạt động",
+        description: "Quy trình truy xuất tôm thẻ chân trắng xuất khẩu",
+        cloned_from_id: null,
+        updated_at: "08/05/2026",
+        created_by: "Trần Minh Đức",
+        events: (() => {
+            const e1 = "imp-e2-01"; const e2 = "imp-e2-02"; const e3 = "imp-e2-03";
+            return [
+                { id: e1, template_id: "imp-002", event_code: "EVT-NUOI-TRONG", event_name: "Nuôi trồng", display_order: 1, kde_mappings: [makeKde("ik-011", e1, k("PRODUCER_ID"), 2, 1, true, ""), makeKde("ik-012", e1, k("GPS_LOCATION"), 2, 2, false, "")] },
+                { id: e2, template_id: "imp-002", event_code: "EVT-CHE-BIEN", event_name: "Chế biến & Đông lạnh", display_order: 2, kde_mappings: [makeKde("ik-013", e2, k("LOT_NUMBER"), 1, 1, true, ""), makeKde("ik-014", e2, k("TEMPERATURE"), 1, 2, true, ""), makeKde("ik-015", e2, k("WEIGHT_NET"), 1, 3, true, "")] },
+                { id: e3, template_id: "imp-002", event_code: "EVT-XUAT-KHAU", event_name: "Xuất khẩu", display_order: 3, kde_mappings: [makeKde("ik-016", e3, k("BATCH_CODE"), 1, 1, true, ""), makeKde("ik-017", e3, k("IS_IMPORTED"), 1, 2, false, "")] },
+            ];
+        })(),
+    },
+    {
+        id: "imp-003",
+        vc_type: "HN-IMP-003",
+        vc_type_name: "Gạo ST25 hữu cơ",
+        family_id: null,
+        family_name: "Lúa gạo",
+        authority_level: "Provincial",
+        version: 1,
+        status: "Hoạt động",
+        description: "Mẫu truy xuất gạo ST25 đặc sản",
+        cloned_from_id: null,
+        updated_at: "05/05/2026",
+        created_by: "Nguyễn Hà Cương",
+        events: (() => {
+            const e1 = "imp-e3-01"; const e2 = "imp-e3-02";
+            return [
+                { id: e1, template_id: "imp-003", event_code: "EVT-CANH-TAC", event_name: "Canh tác", display_order: 1, kde_mappings: [makeKde("ik-021", e1, k("HARVEST_DATE"), 2, 1, true, ""), makeKde("ik-022", e1, k("GPS_LOCATION"), 2, 2, false, ""), makeKde("ik-023", e1, k("ORGANIC_CERT"), 1, 3, true, "")] },
+                { id: e2, template_id: "imp-003", event_code: "EVT-DONG-GOI", event_name: "Xay xát & Đóng gói", display_order: 2, kde_mappings: [makeKde("ik-024", e2, k("LOT_NUMBER"), 1, 1, true, ""), makeKde("ik-025", e2, k("WEIGHT_NET"), 1, 2, true, ""), makeKde("ik-026", e2, k("PACKAGING_TYPE"), 1, 3, false, "")] },
+            ];
+        })(),
+    },
+    {
+        id: "imp-004",
+        vc_type: "HN-IMP-004",
+        vc_type_name: "Trái cây tươi xuất khẩu",
+        family_id: null,
+        family_name: "Trái cây",
+        authority_level: "Provincial",
+        version: 1,
+        status: "Hoạt động",
+        description: "Quy trình truy xuất trái cây tươi xuất khẩu",
+        cloned_from_id: null,
+        updated_at: "03/05/2026",
+        created_by: "Lê Văn An",
+        events: (() => {
+            const e1 = "imp-e4-01"; const e2 = "imp-e4-02";
+            return [
+                { id: e1, template_id: "imp-004", event_code: "EVT-THU-HAI", event_name: "Thu hái", display_order: 1, kde_mappings: [makeKde("ik-031", e1, k("HARVEST_DATE"), 2, 1, true, ""), makeKde("ik-032", e1, k("PRODUCER_ID"), 2, 2, true, ""), makeKde("ik-033", e1, k("GPS_LOCATION"), 2, 3, false, "")] },
+                { id: e2, template_id: "imp-004", event_code: "EVT-PHAN-LOAI", event_name: "Phân loại & Đóng gói", display_order: 2, kde_mappings: [makeKde("ik-034", e2, k("WEIGHT_NET"), 1, 1, true, ""), makeKde("ik-035", e2, k("EXPIRY_DATE"), 1, 2, true, ""), makeKde("ik-036", e2, k("BATCH_CODE"), 1, 3, true, "")] },
+            ];
+        })(),
+    },
+    {
+        id: "imp-005",
+        vc_type: "HN-IMP-005",
+        vc_type_name: "Thịt lợn an toàn VietGAP",
+        family_id: null,
+        family_name: "Chăn nuôi",
+        authority_level: "Provincial",
+        version: 2,
+        status: "Hoạt động",
+        description: "Mẫu truy xuất thịt lợn sạch theo tiêu chuẩn VietGAP",
+        cloned_from_id: null,
+        updated_at: "01/05/2026",
+        created_by: "Trần Minh Đức",
+        events: (() => {
+            const e1 = "imp-e5-01"; const e2 = "imp-e5-02"; const e3 = "imp-e5-03";
+            return [
+                { id: e1, template_id: "imp-005", event_code: "EVT-GIET-MO", event_name: "Giết mổ", display_order: 1, kde_mappings: [makeKde("ik-041", e1, k("PRODUCER_ID"), 2, 1, true, ""), makeKde("ik-042", e1, k("LOT_NUMBER"), 1, 2, true, "")] },
+                { id: e2, template_id: "imp-005", event_code: "EVT-CHE-BIEN", event_name: "Chế biến", display_order: 2, kde_mappings: [makeKde("ik-043", e2, k("WEIGHT_NET"), 1, 1, true, ""), makeKde("ik-044", e2, k("TEMPERATURE"), 1, 2, true, ""), makeKde("ik-045", e2, k("STORAGE_METHOD"), 2, 3, false, "")] },
+                { id: e3, template_id: "imp-005", event_code: "EVT-PHAN-PHOI", event_name: "Phân phối", display_order: 3, kde_mappings: [makeKde("ik-046", e3, k("BATCH_CODE"), 1, 1, true, ""), makeKde("ik-047", e3, k("VEHICLE_PLATE"), 1, 2, false, ""), makeKde("ik-048", e3, k("STORAGE_TEMP"), 1, 3, true, "")] },
+            ];
+        })(),
+    },
+    {
+        id: "imp-006",
+        vc_type: "HN-IMP-006",
+        vc_type_name: "Nước mắm truyền thống",
+        family_id: null,
+        family_name: "Thực phẩm chế biến",
+        authority_level: "Provincial",
+        version: 1,
+        status: "Hoạt động",
+        description: "Quy trình truy xuất nước mắm truyền thống",
+        cloned_from_id: null,
+        updated_at: "28/04/2026",
+        created_by: "Nguyễn Hà Cương",
+        events: (() => {
+            const e1 = "imp-e6-01"; const e2 = "imp-e6-02";
+            return [
+                { id: e1, template_id: "imp-006", event_code: "EVT-UY-CHIN", event_name: "Ủ chín", display_order: 1, kde_mappings: [makeKde("ik-051", e1, k("PRODUCER_ID"), 2, 1, true, ""), makeKde("ik-052", e1, k("LOT_NUMBER"), 1, 2, true, "")] },
+                { id: e2, template_id: "imp-006", event_code: "EVT-DONG-GOI", event_name: "Đóng chai & Dán nhãn", display_order: 2, kde_mappings: [makeKde("ik-053", e2, k("EXPIRY_DATE"), 1, 1, true, ""), makeKde("ik-054", e2, k("BATCH_CODE"), 1, 2, true, ""), makeKde("ik-055", e2, k("PACKAGING_TYPE"), 1, 3, false, "")] },
+            ];
+        })(),
+    },
+    {
+        id: "imp-007",
+        vc_type: "HN-IMP-007",
+        vc_type_name: "Bánh kẹo & Thực phẩm khô",
+        family_id: null,
+        family_name: "Thực phẩm chế biến",
+        authority_level: "Provincial",
+        version: 1,
+        status: "Nháp",
+        description: "Mẫu đang xây dựng cho ngành bánh kẹo",
+        cloned_from_id: null,
+        updated_at: "20/04/2026",
+        created_by: "Lê Văn An",
+        events: (() => {
+            const e1 = "imp-e7-01"; const e2 = "imp-e7-02";
+            return [
+                { id: e1, template_id: "imp-007", event_code: "EVT-SAN-XUAT", event_name: "Sản xuất", display_order: 1, kde_mappings: [makeKde("ik-061", e1, k("PRODUCER_ID"), 2, 1, true, ""), makeKde("ik-062", e1, k("LOT_NUMBER"), 1, 2, true, ""), makeKde("ik-063", e1, k("IS_IMPORTED"), 1, 3, false, "")] },
+                { id: e2, template_id: "imp-007", event_code: "EVT-DONG-GOI", event_name: "Đóng gói thành phẩm", display_order: 2, kde_mappings: [makeKde("ik-064", e2, k("WEIGHT_NET"), 1, 1, true, ""), makeKde("ik-065", e2, k("EXPIRY_DATE"), 1, 2, true, "")] },
+            ];
+        })(),
+    },
+    {
+        id: "imp-008",
+        vc_type: "HN-IMP-008",
+        vc_type_name: "Rau mầm & Rau thủy canh",
+        family_id: null,
+        family_name: "Nông sản",
+        authority_level: "Provincial",
+        version: 1,
+        status: "Hoạt động",
+        description: "Quy trình truy xuất rau mầm và rau thủy canh",
+        cloned_from_id: null,
+        updated_at: "15/04/2026",
+        created_by: "Nguyễn Hà Cương",
+        events: (() => {
+            const e1 = "imp-e8-01"; const e2 = "imp-e8-02";
+            return [
+                { id: e1, template_id: "imp-008", event_code: "EVT-GIEO-TRONG", event_name: "Gieo trồng", display_order: 1, kde_mappings: [makeKde("ik-071", e1, k("HARVEST_DATE"), 2, 1, true, ""), makeKde("ik-072", e1, k("GPS_LOCATION"), 2, 2, false, "")] },
+                { id: e2, template_id: "imp-008", event_code: "EVT-THU-HOACH-DONG-GOI", event_name: "Thu hoạch & Đóng gói", display_order: 2, kde_mappings: [makeKde("ik-073", e2, k("LOT_NUMBER"), 1, 1, true, ""), makeKde("ik-074", e2, k("WEIGHT_NET"), 1, 2, true, ""), makeKde("ik-075", e2, k("EXPIRY_DATE"), 1, 3, true, "")] },
+            ];
+        })(),
+    },
+    {
+        id: "imp-009",
+        vc_type: "HN-IMP-009",
+        vc_type_name: "Cá tra & Cá basa fillet",
+        family_id: null,
+        family_name: "Thủy sản",
+        authority_level: "Provincial",
+        version: 1,
+        status: "Hoạt động",
+        description: "Mẫu truy xuất cá tra, cá basa fillet đông lạnh",
+        cloned_from_id: null,
+        updated_at: "10/04/2026",
+        created_by: "Trần Minh Đức",
+        events: (() => {
+            const e1 = "imp-e9-01"; const e2 = "imp-e9-02"; const e3 = "imp-e9-03";
+            return [
+                { id: e1, template_id: "imp-009", event_code: "EVT-NUOI-CA", event_name: "Nuôi cá", display_order: 1, kde_mappings: [makeKde("ik-081", e1, k("PRODUCER_ID"), 2, 1, true, ""), makeKde("ik-082", e1, k("GPS_LOCATION"), 2, 2, false, "")] },
+                { id: e2, template_id: "imp-009", event_code: "EVT-FILLET-DONG-LANH", event_name: "Fillet & Đông lạnh", display_order: 2, kde_mappings: [makeKde("ik-083", e2, k("LOT_NUMBER"), 1, 1, true, ""), makeKde("ik-084", e2, k("WEIGHT_NET"), 1, 2, true, ""), makeKde("ik-085", e2, k("TEMPERATURE"), 1, 3, true, "")] },
+                { id: e3, template_id: "imp-009", event_code: "EVT-XUAT-HANG", event_name: "Xuất hàng", display_order: 3, kde_mappings: [makeKde("ik-086", e3, k("BATCH_CODE"), 1, 1, true, ""), makeKde("ik-087", e3, k("STORAGE_TEMP"), 1, 2, true, ""), makeKde("ik-088", e3, k("VEHICLE_PLATE"), 1, 3, false, "")] },
+            ];
+        })(),
+    },
+    {
+        id: "imp-010",
+        vc_type: "HN-IMP-010",
+        vc_type_name: "Sầu riêng Monthong",
+        family_id: null,
+        family_name: "Trái cây",
+        authority_level: "Provincial",
+        version: 1,
+        status: "Hoạt động",
+        description: "Quy trình truy xuất sầu riêng Monthong xuất khẩu",
+        cloned_from_id: null,
+        updated_at: "05/04/2026",
+        created_by: "Nguyễn Hà Cương",
+        events: (() => {
+            const e1 = "imp-e10-01"; const e2 = "imp-e10-02"; const e3 = "imp-e10-03";
+            return [
+                { id: e1, template_id: "imp-010", event_code: "EVT-CANH-TAC", event_name: "Canh tác & Chăm sóc", display_order: 1, kde_mappings: [makeKde("ik-091", e1, k("PRODUCER_ID"), 2, 1, true, ""), makeKde("ik-092", e1, k("GPS_LOCATION"), 2, 2, false, ""), makeKde("ik-093", e1, k("ORGANIC_CERT"), 1, 3, false, "")] },
+                { id: e2, template_id: "imp-010", event_code: "EVT-THU-HAI", event_name: "Thu hái", display_order: 2, kde_mappings: [makeKde("ik-094", e2, k("HARVEST_DATE"), 2, 1, true, ""), makeKde("ik-095", e2, k("LOT_NUMBER"), 1, 2, true, "")] },
+                { id: e3, template_id: "imp-010", event_code: "EVT-DONG-LANH", event_name: "Làm lạnh & Đóng thùng", display_order: 3, kde_mappings: [makeKde("ik-096", e3, k("STORAGE_TEMP"), 1, 1, true, ""), makeKde("ik-097", e3, k("WEIGHT_NET"), 1, 2, true, ""), makeKde("ik-098", e3, k("BATCH_CODE"), 1, 3, true, "")] },
+            ];
+        })(),
+    },
+];
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 export function getTemplateById(id: string): CteTemplate | undefined {
