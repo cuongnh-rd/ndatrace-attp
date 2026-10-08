@@ -14,9 +14,6 @@ import { MOD_BY_KEY, SEVRANK } from "@/lib/health/format";
 const ALLC: Record<string, Chart> = Object.fromEntries(
   MODS.flatMap((m) => m.charts.map((c) => [c.id, c])),
 );
-const CHART_MOD: Record<string, string> = Object.fromEntries(
-  MODS.flatMap((m) => m.charts.map((c) => [c.id, m.t])),
-);
 const DCARDS: (HCard & { _m: string; _k: string; _h: string })[] = DKEY.map(
   ([k, h], i) => ({
     ...MOD_BY_KEY[k].cards.find((c) => c.id === h)!,
@@ -51,7 +48,6 @@ export default function DashboardOverview() {
             c={c}
             modKey={c._k}
             cardId={c._h}
-            mod={c._m}
             selected={sel === c.id}
             onClick={() => setSel(sel === c.id ? null : c.id)}
           />
@@ -70,13 +66,7 @@ export default function DashboardOverview() {
           />
           <div className="space-y-4">
             {list.map(([id, f]) => (
-              <ChartCard
-                key={id}
-                c={ALLC[id]}
-                mod={CHART_MOD[id]}
-                cards={DCARDS}
-                forIds={f}
-              />
+              <ChartCard key={id} c={ALLC[id]} cards={DCARDS} forIds={f} />
             ))}
           </div>
         </Section>
@@ -89,7 +79,7 @@ export default function DashboardOverview() {
             <div className="space-y-4">
               {selWarns.length ? (
                 selWarns.map((w) => (
-                  <WarnCard key={w.t} w={w} mod={selMod.t} href={selMod.href} />
+                  <WarnCard key={w.t} w={w} href={selMod.href} />
                 ))
               ) : (
                 <p className="text-sm text-gray-500">
