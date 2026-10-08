@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import ModuleTabs from "@/components/health/ModuleTabs";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,7 +9,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <Sidebar />
       <Header />
       <main className="ml-[252px] pt-16 min-h-screen">
-        <div className="p-6">{children}</div>
+        <div className="p-6">
+          <Suspense fallback={null}>
+            <ModuleTabs>{children}</ModuleTabs>
+          </Suspense>
+        </div>
       </main>
     </div>
   );
