@@ -77,6 +77,8 @@ export function StatCard({ label, value, d, bad }: { label: string; value: numbe
 
 export function HealthCard({ c, mod, selected, onClick }: { c: HCard; mod?: string; selected?: boolean; onClick?: () => void }) {
   const isRate = c.d != null;
+  const p = isRate ? pct(Number(c.v), c.d!) : 0;
+  const goal = c.goal && isRate ? { ok: c.bad ? p <= c.goal : p >= c.goal } : null;
   return (
     <button
       type="button"
@@ -103,6 +105,13 @@ export function HealthCard({ c, mod, selected, onClick }: { c: HCard; mod?: stri
       <div className="mt-1">
         <Trend d={c.t} bad={c.bad} rate={isRate} />
       </div>
+      {goal && (
+        <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+          <span className={`text-[12px] font-medium ${goal.ok ? "text-green-600" : "text-red-600"}`}>
+            Mục tiêu {c.bad ? "≤" : "≥"} {c.goal}% · {goal.ok ? "Đạt" : "Chưa đạt"}
+          </span>
+        </div>
+      )}
     </button>
   );
 }
@@ -341,13 +350,13 @@ export function Section({ t, sub, tone, children }: { t: string; sub?: string; t
   );
 }
 
-/** Dải lọc "Đang xem diagnostic cho …" phía trên danh sách biểu đồ */
+/** Dải lọc "Đang xem phân tích cho …" phía trên danh sách biểu đồ */
 export function DiagHead({ cards, selected, onClear }: { cards: HCard[]; selected: string | null; onClear: () => void }) {
-  if (!selected) return <p className="text-[12px] text-gray-500 mb-3">Bấm một health card để chỉ xem diagnostic giải thích cho card đó.</p>;
+  if (!selected) return <p className="text-[12px] text-gray-500 mb-3">Bấm một card để xem phân tích và cảnh báo cần xử lý của chỉ số đó.</p>;
   const cd = cards.find((x) => x.id === selected);
   return (
     <div className="mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm">
-      <span className="text-gray-500">Đang xem diagnostic cho</span>
+      <span className="text-gray-500">Đang xem phân tích cho</span>
       <b>{cd?.l}</b>
       <button type="button" onClick={onClear} className="ml-auto text-brand-600 font-medium hover:underline">
         Bỏ lọc

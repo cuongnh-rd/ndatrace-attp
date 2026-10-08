@@ -15,6 +15,8 @@ export interface HCard {
   f?: string;
   /** Tăng là xấu */
   bad?: number;
+  /** Mục tiêu (%) cho chỉ số tỉ lệ */
+  goal?: number;
 }
 
 export type Series = [string, number[], string?];
@@ -39,6 +41,8 @@ export interface Chart {
 }
 
 export interface Warn {
+  /** Các health card mà cảnh báo này tác động */
+  for?: string[];
   t: string;
   sev: Sev;
   n: number;

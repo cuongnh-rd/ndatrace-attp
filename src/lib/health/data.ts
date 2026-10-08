@@ -17,6 +17,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 436,
         f: "Doanh nghiệp đã khai báo ≥ 1 sản phẩm (mã GTIN) / Tổng số doanh nghiệp.",
+        goal: 90,
       },
       {
         id: "H2",
@@ -26,6 +27,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 436,
         f: "Doanh nghiệp có ≥ 1 chứng chỉ số sự kiện trong 30 ngày / Tổng số doanh nghiệp.",
+        goal: 80,
       },
       {
         id: "H3",
@@ -35,6 +37,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 436,
         f: "Doanh nghiệp có ≥ 1 UID đạt đủ công đoạn theo quy trình tiêu chuẩn TXNG / Tổng số doanh nghiệp.",
+        goal: 80,
       },
       {
         id: "H4",
@@ -44,6 +47,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 375,
         f: "Doanh nghiệp có mọi sản phẩm đủ dữ liệu chủ / Doanh nghiệp có sản phẩm.",
+        goal: 80,
       },
       { id: "H5", l: "Tổng số doanh nghiệp", v: 436, t: 6.2, k: "scale" },
       { id: "H6", l: "Doanh nghiệp mới trong tháng", v: 68, t: 11.5, k: "scale" },
@@ -56,6 +60,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 251,
         f: "Doanh nghiệp hoạt động tháng trước vẫn hoạt động tháng này / Doanh nghiệp hoạt động tháng trước.",
+        goal: 90,
       },
     ],
     charts: [
@@ -177,6 +182,7 @@ export const MODS: Mod[] = [
     ],
     warns: [
       {
+        for: ["H3"],
         t: "Doanh nghiệp có tỉ lệ UID đạt đủ công đoạn giảm quá 10 điểm",
         sev: "critical",
         n: 14,
@@ -188,6 +194,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H4"],
         t: "Doanh nghiệp có trên 50% sản phẩm thiếu dữ liệu chủ",
         sev: "high",
         n: 58,
@@ -200,6 +207,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H1"],
         t: "Doanh nghiệp chưa có sản phẩm sau 30 ngày",
         sev: "medium",
         n: 47,
@@ -211,6 +219,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H2", "H7", "H8"],
         t: "Doanh nghiệp không khai báo sự kiện quá 90 ngày",
         sev: "medium",
         n: 39,
@@ -238,8 +247,9 @@ export const MODS: Mod[] = [
         k: "core",
         d: 720,
         f: "Cơ sở thuộc diện bắt buộc có giấy chứng nhận đủ điều kiện ATTP còn hiệu lực / Cơ sở thuộc diện bắt buộc.",
+        goal: 90,
       },
-      { id: "H2", l: "Tỉ lệ cơ sở có GLN", v: 902, t: 1.1, k: "core", d: 1064, f: "Cơ sở, địa điểm đã có mã GLN / Tổng số cơ sở, địa điểm." },
+      { id: "H2", l: "Tỉ lệ cơ sở có GLN", v: 902, t: 1.1, k: "core", d: 1064, f: "Cơ sở, địa điểm đã có mã GLN / Tổng số cơ sở, địa điểm.", goal: 90 },
       {
         id: "H3",
         l: "Tỉ lệ cơ sở có mã hành chính chuẩn",
@@ -248,8 +258,9 @@ export const MODS: Mod[] = [
         k: "core",
         d: 1064,
         f: "Có đủ mã tỉnh và mã xã theo danh mục hiện hành / Tổng số cơ sở.",
+        goal: 90,
       },
-      { id: "H4", l: "Tỉ lệ cơ sở hoạt động", v: 755, t: 3, k: "core", d: 1064, f: "Là nơi xảy ra ≥ 1 sự kiện trong 30 ngày / Tổng số cơ sở." },
+      { id: "H4", l: "Tỉ lệ cơ sở hoạt động", v: 755, t: 3, k: "core", d: 1064, f: "Là nơi xảy ra ≥ 1 sự kiện trong 30 ngày / Tổng số cơ sở.", goal: 80 },
       { id: "H5", l: "Tổng số cơ sở, địa điểm", v: 1064, t: 3.8, k: "scale" },
       { id: "H6", l: "Cơ sở mới trong tháng", v: 84, t: 9.1, k: "scale" },
       { id: "H7", l: "Chứng nhận ATTP sắp hết hiệu lực", v: 23, t: 27.8, k: "risk", bad: 1 },
@@ -369,6 +380,7 @@ export const MODS: Mod[] = [
     ],
     warns: [
       {
+        for: ["H3"],
         t: "Cơ sở thiếu mã đơn vị hành chính chuẩn",
         sev: "high",
         n: 96,
@@ -381,6 +393,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H1"],
         t: "Cơ sở diện bắt buộc chưa có chứng nhận ATTP",
         sev: "critical",
         n: 187,
@@ -393,6 +406,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H4", "H8"],
         t: "Cơ sở không phát sinh sự kiện quá 90 ngày",
         sev: "medium",
         n: 142,
@@ -420,6 +434,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 5154,
         f: "Sản phẩm tổ chức, cá nhân đã khai báo đủ mọi trường bắt buộc (do Bộ quản lý ngành ban hành) / Tổng sản phẩm.",
+        goal: 85,
       },
       {
         id: "H2",
@@ -429,6 +444,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 5154,
         f: "GTIN đúng độ dài, đúng số kiểm tra, GCP khớp doanh nghiệp / Tổng sản phẩm.",
+        goal: 90,
       },
       {
         id: "H3",
@@ -438,8 +454,9 @@ export const MODS: Mod[] = [
         k: "core",
         d: 3185,
         f: "Sản phẩm thuộc diện công bố đã có hồ sơ công bố / Sản phẩm thuộc diện công bố.",
+        goal: 85,
       },
-      { id: "H4", l: "Tỉ lệ sản phẩm đã cấp UID", v: 1886, t: 7.4, k: "core", d: 5154, f: "Sản phẩm có ≥ 1 UID / Tổng sản phẩm." },
+      { id: "H4", l: "Tỉ lệ sản phẩm đã cấp UID", v: 1886, t: 7.4, k: "core", d: 5154, f: "Sản phẩm có ≥ 1 UID / Tổng sản phẩm.", goal: 80 },
       { id: "H5", l: "Tổng số sản phẩm", v: 5154, t: 4.9, k: "scale" },
       { id: "H6", l: "Sản phẩm mới trong tháng", v: 262, t: 9.2, k: "scale" },
       {
@@ -450,6 +467,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 262,
         f: "Sản phẩm khai báo trong tháng đã đủ dữ liệu chủ ngay khi tạo / Sản phẩm khai báo trong tháng. Đo chất lượng đầu vào.",
+        goal: 85,
       },
       {
         id: "H8",
@@ -459,6 +477,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 5154,
         f: "Sản phẩm đã gán phiên bản quy trình tiêu chuẩn TXNG đang áp dụng / Tổng sản phẩm.",
+        goal: 80,
       },
     ],
     charts: [
@@ -601,6 +620,7 @@ export const MODS: Mod[] = [
     ],
     warns: [
       {
+        for: ["H1", "H7"],
         t: "Sản phẩm chưa đủ dữ liệu chủ",
         sev: "high",
         n: 2168,
@@ -613,6 +633,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H2"],
         t: "GTIN doanh nghiệp khai báo không hợp lệ hoặc GCP không khớp",
         sev: "critical",
         n: 42,
@@ -624,6 +645,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H3"],
         t: "Sản phẩm thuộc diện công bố chưa có hồ sơ công bố",
         sev: "critical",
         n: 1105,
@@ -636,6 +658,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H8"],
         t: "Sản phẩm đã cấp UID nhưng chưa gán quy trình tiêu chuẩn TXNG",
         sev: "high",
         n: 356,
@@ -737,6 +760,7 @@ export const MODS: Mod[] = [
           ["L2602-044", "Xúc xích tiệt trùng", "15/09/2026", 37],
           ["L2601-207", "Bánh quy bơ", "20/09/2026", 12],
         ],
+        for: ["H7", "H8"],
       },
       {
         t: "Lô khai báo thiếu cơ sở sản xuất (GLN)",
@@ -747,6 +771,7 @@ export const MODS: Mod[] = [
           ["L2609-031", "Cà phê rang xay", "Cty CP Cà phê Lâm Đồng", "22/09/2026"],
           ["L2609-012", "Mật ong rừng", "HTX Ong mật Kon Tum", "18/09/2026"],
         ],
+        for: ["H1"],
       },
       {
         t: "Lô chưa gán UID sau 14 ngày",
@@ -757,6 +782,7 @@ export const MODS: Mod[] = [
           ["L2609-004", "Nước mắm 40N", "Cty TNHH Hưng Thành", 21],
           ["L2608-118", "Gạo ST25", "HTX Sóc Trăng", 33],
         ],
+        for: ["H2"],
       },
     ],
     href: "/truy-xuat/lo-san-pham",
@@ -775,8 +801,9 @@ export const MODS: Mod[] = [
         k: "core",
         d: 112950,
         f: "UID có đủ mọi sự kiện bắt buộc của quy trình tiêu chuẩn TXNG được gán / UID đã kích hoạt.",
+        goal: 85,
       },
-      { id: "H2", l: "Tỉ lệ UID đã kích hoạt", v: 112950, t: 0.6, k: "core", d: 128400, f: "UID có sự kiện Kích hoạt mã UID / Tổng UID đã cấp." },
+      { id: "H2", l: "Tỉ lệ UID đã kích hoạt", v: 112950, t: 0.6, k: "core", d: 128400, f: "UID có sự kiện Kích hoạt mã UID / Tổng UID đã cấp.", goal: 90 },
       { id: "H3", l: "Tỉ lệ UID bị thu hồi", v: 1240, t: 4.1, k: "core", d: 112950, bad: 1, f: "UID chuyển trạng thái Đã thu hồi / UID đã kích hoạt." },
       {
         id: "H4",
@@ -797,6 +824,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 112950,
         f: "UID đã kích hoạt thuộc sản phẩm đã gán quy trình / UID đã kích hoạt.",
+        goal: 90,
       },
       {
         id: "H8",
@@ -936,6 +964,7 @@ export const MODS: Mod[] = [
     ],
     warns: [
       {
+        for: ["H3"],
         t: "Lô UID bị thu hồi",
         sev: "critical",
         n: 27,
@@ -947,6 +976,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H2", "H8"],
         t: "UID cấp quá 30 ngày chưa kích hoạt",
         sev: "medium",
         n: 3550,
@@ -958,6 +988,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H1"],
         t: "UID thiếu công đoạn bắt buộc",
         sev: "high",
         n: 26300,
@@ -969,6 +1000,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H4"],
         t: "UID có lượt quét bất thường, nghi hàng giả",
         sev: "critical",
         n: 64,
@@ -996,6 +1028,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 486200,
         f: "Chứng chỉ số xác minh chữ ký và dữ liệu hợp lệ / Tổng chứng chỉ số.",
+        goal: 90,
       },
       {
         id: "H2",
@@ -1005,6 +1038,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 486200,
         f: "Thời điểm phát hành − thời điểm xảy ra ≤ 24 giờ / Tổng chứng chỉ số.",
+        goal: 90,
       },
       {
         id: "H3",
@@ -1014,6 +1048,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 486200,
         f: "Đủ dữ liệu quan trọng (KDE) bắt buộc của sự kiện trọng yếu / Tổng chứng chỉ số.",
+        goal: 90,
       },
       {
         id: "H4",
@@ -1023,6 +1058,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 486200,
         f: "Chứng chỉ số đã có bằng chứng neo trên NDAChain / Tổng chứng chỉ số.",
+        goal: 90,
       },
       { id: "H5", l: "Tổng số chứng chỉ số sự kiện", v: 486200, t: 22.5, k: "scale" },
       { id: "H6", l: "Phát hành trong tháng", v: 97980, t: 10, k: "scale" },
@@ -1152,6 +1188,7 @@ export const MODS: Mod[] = [
     ],
     warns: [
       {
+        for: ["H1"],
         t: "Chứng chỉ số bị từ chối trong 7 ngày",
         sev: "high",
         n: 1240,
@@ -1164,6 +1201,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H2", "H8"],
         t: "Chứng chỉ số khai báo bù quá 7 ngày",
         sev: "medium",
         n: 5760,
@@ -1175,6 +1213,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H4"],
         t: "Chứng chỉ số chưa neo NDAChain quá 1 giờ",
         sev: "high",
         n: 318,
@@ -1272,6 +1311,7 @@ export const MODS: Mod[] = [
           ["Sữa bột trẻ em 900g", "UID-8F21C9", "TP.HCM", "24/09/2026"],
           ["Thực phẩm bảo vệ sức khỏe Omega", "UID-2B77A0", "Hà Nội", "21/09/2026"],
         ],
+        for: ["H8", "H1"],
       },
       {
         t: "Phản ánh quá hạn chưa có phản hồi doanh nghiệp",
@@ -1282,6 +1322,7 @@ export const MODS: Mod[] = [
           ["PA-2609-018", "Cty TP Hà Thành", "10/09/2026", 19],
           ["PA-2609-007", "Cty CP Tech Brand", "04/09/2026", 25],
         ],
+        for: ["H2", "H7"],
       },
     ],
     href: "/quan-tri/bao-cao-san-pham",
@@ -1304,6 +1345,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 3905,
         f: "(Cơ sở diện bắt buộc có chứng nhận ATTP + Sản phẩm diện công bố có hồ sơ) còn hiệu lực / Tổng đối tượng thuộc diện bắt buộc.",
+        goal: 85,
       },
       { id: "H6", l: "Sắp hết hiệu lực (≤ 30 ngày)", v: 23, t: 27.8, k: "risk", bad: 1 },
       { id: "H7", l: "Đã hết hiệu lực", v: 41, t: 7.9, k: "risk", bad: 1 },
@@ -1409,6 +1451,7 @@ export const MODS: Mod[] = [
     ],
     warns: [
       {
+        for: ["H5", "H6"],
         t: "Giấy tờ, chứng nhận sắp hết hiệu lực trong 30 ngày",
         sev: "high",
         n: 23,
@@ -1420,6 +1463,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H5", "H7"],
         t: "Giấy tờ, chứng nhận đã hết hiệu lực, đối tượng vẫn đang hoạt động",
         sev: "critical",
         n: 38,
@@ -1431,6 +1475,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H1", "H3", "H4"],
         t: "Giấy tờ, chứng nhận thiếu thông tin bắt buộc",
         sev: "medium",
         n: 117,
@@ -1560,6 +1605,7 @@ export const MODS: Mod[] = [
           ["Bánh đậu xanh Rồng Vàng", "Cty CP Bảo Hiên", "07/2025/BH-TCB", "19/07/2025"],
           ["Trà xanh túi lọc", "HTX Chè Tân Cương", "03/2025/TC-TCB", "02/06/2025"],
         ],
+        for: ["H2"],
       },
       {
         t: "Hồ sơ hậu kiểm phát hiện chỉ tiêu không đạt",
@@ -1571,6 +1617,7 @@ export const MODS: Mod[] = [
           ["Nước giải khát có ga", "Tổng số vi sinh vật", "Sở Y tế TP.HCM", "15/09/2026"],
           ["Mì sợi khô", "Chì (Pb)", "Sở Y tế Lâm Đồng", "09/09/2026"],
         ],
+        for: ["H4", "H7"],
       },
       {
         t: "Sản phẩm có mã GTIN lưu hành nhưng chưa có hồ sơ tự công bố",
@@ -1581,6 +1628,7 @@ export const MODS: Mod[] = [
           ["Cà phê rang xay 500g", "8936012345678", "Cty CP Cà phê Lâm Đồng", "11/07/2026"],
           ["Mật ong rừng 250ml", "8936098765432", "HTX Ong mật Kon Tum", "26/07/2026"],
         ],
+        for: ["H3", "H8"],
       },
     ],
     href: "/tu-cong-bo/danh-sach",
@@ -1701,6 +1749,7 @@ export const MODS: Mod[] = [
           ["Cơ sở giò chả Hữu Hòa", "Phụ gia ngoài danh mục", "30/08/2026", 38],
           ["Nhà hàng Hải Đăng", "Không có giấy chứng nhận", "05/09/2026", 32],
         ],
+        for: ["H3", "H7"],
       },
       {
         t: "Đơn vị chậm tiến độ kế hoạch kiểm tra trên 20%",
@@ -1712,6 +1761,7 @@ export const MODS: Mod[] = [
           ["UBND phường Hoàng Mai", 18, 8, "44%"],
           ["Đội QLTT số 7", 30, 16, "53%"],
         ],
+        for: ["H1"],
       },
       {
         t: "Lượt kiểm tra chưa nhập biên bản sau 7 ngày",
@@ -1722,6 +1772,7 @@ export const MODS: Mod[] = [
           ["KT liên ngành Tết Trung thu", "Chi cục ATVSTP", "12/09/2026", 46],
           ["Kiểm tra bếp ăn trường học", "Phòng Y tế quận", "18/09/2026", 21],
         ],
+        for: ["H4"],
       },
     ],
     href: "/kiem-tra",
@@ -1813,6 +1864,7 @@ export const MODS: Mod[] = [
           ["Ngộ độc tiệc cưới", "Long An", 41, "08/09/2026"],
           ["Ngộ độc bánh mì", "TP.HCM", 23, "14/09/2026"],
         ],
+        for: ["H1"],
       },
       {
         t: "Cơ sở cung cấp thực phẩm liên quan vụ ngộ độc chưa bị đình chỉ, kiểm tra",
@@ -1823,6 +1875,7 @@ export const MODS: Mod[] = [
           ["Cty TNHH Suất ăn Minh Phát", "KCN Quang Minh", "Bếp ăn tập thể", "Đang hoạt động"],
           ["Lò bánh mì Hòa Hưng", "Ngộ độc bánh mì", "Kinh doanh", "Đang hoạt động"],
         ],
+        for: ["H2"],
       },
     ],
     href: "/ngo-doc/danh-sach",
@@ -1920,6 +1973,7 @@ export const MODS: Mod[] = [
           ["Tháng hành động vì ATTP 2026", "Sở Y tế Long An", "31/05/2026", 114],
           ["Tết Trung thu an toàn", "Chi cục ATVSTP Cần Thơ", "10/09/2026", 12],
         ],
+        for: ["H1", "H7"],
       },
       {
         t: "Xã, phường không có hoạt động truyền thông 2 quý liên tiếp",
@@ -1931,6 +1985,7 @@ export const MODS: Mod[] = [
           ["Phường Ninh Kiều", "Cần Thơ", "03/03/2026", 112],
           ["Xã Đạ Huoai", "Lâm Đồng", "20/01/2026", 21],
         ],
+        for: ["H3", "H8"],
       },
     ],
     href: "/truyen-thong/chien-dich",
@@ -1941,8 +1996,8 @@ export const MODS: Mod[] = [
     t: "Bộ, ngành, địa phương",
     d: "Mức độ kết nối của 17 bộ, cơ quan ngang bộ và 34 tỉnh, thành; ban hành quy trình tiêu chuẩn TXNG",
     cards: [
-      { id: "H1", l: "Bộ, cơ quan ngang bộ đã kết nối", v: 9, t: 12.5, k: "core", d: 17, f: "Mẫu số cố định: 14 bộ và 3 cơ quan ngang bộ." },
-      { id: "H2", l: "Tỉnh/thành đã kết nối", v: 21, t: 10.5, k: "core", d: 34, f: "Mẫu số cố định: 34 tỉnh, thành sau sắp xếp." },
+      { id: "H1", l: "Bộ, cơ quan ngang bộ đã kết nối", v: 9, t: 12.5, k: "core", d: 17, f: "Mẫu số cố định: 14 bộ và 3 cơ quan ngang bộ.", goal: 80 },
+      { id: "H2", l: "Tỉnh/thành đã kết nối", v: 21, t: 10.5, k: "core", d: 34, f: "Mẫu số cố định: 34 tỉnh, thành sau sắp xếp.", goal: 80 },
       {
         id: "H3",
         l: "Tỉ lệ nhóm hàng bắt buộc có quy trình",
@@ -1951,6 +2006,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 22,
         f: "Nhóm hàng thuộc diện bắt buộc truy xuất đã có ≥ 1 quy trình tiêu chuẩn TXNG đang áp dụng / Tổng nhóm hàng bắt buộc.",
+        goal: 85,
       },
       {
         id: "H4",
@@ -1960,6 +2016,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 106950,
         f: "UID đạt đủ công đoạn / UID đã kích hoạt được gán quy trình do các bộ ban hành. Đo hiệu quả thực thi tiêu chuẩn.",
+        goal: 85,
       },
       { id: "H5", l: "Quy trình tiêu chuẩn TXNG đã ban hành", v: 64, t: 6.7, k: "scale" },
       { id: "H6", l: "Tỉnh/thành có Sở đầu mối", v: 18, t: 12.5, k: "scale" },
@@ -2096,6 +2153,7 @@ export const MODS: Mod[] = [
     ],
     warns: [
       {
+        for: ["H1", "H7"],
         t: "Bộ, cơ quan ngang bộ chưa kết nối",
         sev: "high",
         n: 8,
@@ -2108,6 +2166,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H3", "H5"],
         t: "Đã kết nối nhưng chưa ban hành quy trình tiêu chuẩn TXNG",
         sev: "medium",
         n: 4,
@@ -2119,6 +2178,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H3"],
         t: "Nhóm hàng bắt buộc chưa có quy trình tiêu chuẩn TXNG",
         sev: "critical",
         n: 8,
@@ -2131,6 +2191,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H4", "H5"],
         t: "Quy trình tiêu chuẩn TXNG quá 12 tháng chưa rà soát",
         sev: "medium",
         n: 5,
@@ -2141,6 +2202,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H2", "H8"],
         t: "Tỉnh/thành chưa kết nối",
         sev: "high",
         n: 13,
@@ -2153,6 +2215,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H4"],
         t: "Tỉnh/thành có tỉ lệ UID đạt giảm quá 5 điểm so tháng trước",
         sev: "critical",
         n: 3,
@@ -2180,9 +2243,19 @@ export const MODS: Mod[] = [
         k: "core",
         d: 436,
         f: "Doanh nghiệp đã phát sinh chứng chỉ số sự kiện / Doanh nghiệp đã onboard qua đơn vị.",
+        goal: 80,
       },
-      { id: "H2", l: "Tỉ lệ đơn vị có doanh nghiệp hoạt động", v: 9, t: 12.5, k: "core", d: 23, f: "Đơn vị có ≥ 1 doanh nghiệp hoạt động / Tổng đơn vị." },
-      { id: "H3", l: "Tỉ lệ đơn vị gửi đúng chuẩn EPCIS 2.0", v: 14, t: 16.7, k: "core", d: 23 },
+      {
+        id: "H2",
+        l: "Tỉ lệ đơn vị có doanh nghiệp hoạt động",
+        v: 9,
+        t: 12.5,
+        k: "core",
+        d: 23,
+        f: "Đơn vị có ≥ 1 doanh nghiệp hoạt động / Tổng đơn vị.",
+        goal: 80,
+      },
+      { id: "H3", l: "Tỉ lệ đơn vị gửi đúng chuẩn EPCIS 2.0", v: 14, t: 16.7, k: "core", d: 23, goal: 85 },
       {
         id: "H4",
         l: "Tỉ lệ chứng chỉ số bị từ chối",
@@ -2297,6 +2370,7 @@ export const MODS: Mod[] = [
     ],
     warns: [
       {
+        for: ["H8", "H1"],
         t: "Đơn vị chưa onboard doanh nghiệp quá 60 ngày",
         sev: "medium",
         n: 7,
@@ -2308,6 +2382,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H4", "H3"],
         t: "Đơn vị có tỉ lệ sự kiện bị từ chối trên 5%",
         sev: "high",
         n: 3,
@@ -2319,6 +2394,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H2", "H7"],
         t: "Đơn vị có trên 50% doanh nghiệp không hoạt động",
         sev: "medium",
         n: 2,
@@ -2405,6 +2481,7 @@ export const MODS: Mod[] = [
           ["admin.hn", "Quản trị hệ thống", "Sở KH&CN Hà Nội", "29/09/2026"],
           ["qt.bonnmt", "Quản trị đơn vị", "Bộ NN&MT", "27/09/2026"],
         ],
+        for: ["H2"],
       },
       {
         t: "Tài khoản không đăng nhập quá 90 ngày chưa bị khóa",
@@ -2415,6 +2492,7 @@ export const MODS: Mod[] = [
           ["dn.vietxanh", "Doanh nghiệp", "Cty TNHH Nông sản Việt Xanh", "12/05/2026"],
           ["cb.longan02", "Cán bộ", "Sở Y tế Long An", "03/06/2026"],
         ],
+        for: ["H1", "H7"],
       },
     ],
     href: "/quan-tri/nguoi-dung",
@@ -2492,6 +2570,7 @@ export const MODS: Mod[] = [
           ["Quản trị danh mục", "cb.qlnn05", "Sở Y tế Cần Thơ", "14/08/2026"],
           ["Quản trị doanh nghiệp", "dt.trangntt", "TrangNTT", "02/09/2026"],
         ],
+        for: ["H2", "H7"],
       },
       {
         t: "Vai trò chưa rà soát quyền quá 6 tháng",
@@ -2502,6 +2581,7 @@ export const MODS: Mod[] = [
           ["Cán bộ quản lý cấp xã", 142, "10/01/2026", "admin"],
           ["Đơn vị giải pháp", 112, "22/02/2026", "admin"],
         ],
+        for: ["H3"],
       },
     ],
     href: "/quan-tri/vai-tro",
@@ -2512,10 +2592,10 @@ export const MODS: Mod[] = [
     t: "Quy trình tiêu chuẩn TXNG",
     d: "Chất lượng thư viện quy trình và mức độ tuân thủ theo quy trình",
     cards: [
-      { id: "H1", l: "Tỉ lệ nhóm hàng bắt buộc có quy trình", v: 14, t: 7.7, k: "core", d: 22 },
-      { id: "H2", l: "Tỉ lệ quy trình đạt chuẩn tối thiểu", v: 39, t: 8.3, k: "core", d: 64, f: "Quy trình có ≥ 3 công đoạn / Tổng quy trình." },
-      { id: "H3", l: "Tỉ lệ UID đạt đủ công đoạn", v: 80650, t: 3.2, k: "core", d: 112950 },
-      { id: "H4", l: "Tỉ lệ quy trình được áp dụng", v: 51, t: 1.6, k: "core", d: 64, f: "Quy trình có ≥ 1 sản phẩm gán / Tổng quy trình." },
+      { id: "H1", l: "Tỉ lệ nhóm hàng bắt buộc có quy trình", v: 14, t: 7.7, k: "core", d: 22, goal: 85 },
+      { id: "H2", l: "Tỉ lệ quy trình đạt chuẩn tối thiểu", v: 39, t: 8.3, k: "core", d: 64, f: "Quy trình có ≥ 3 công đoạn / Tổng quy trình.", goal: 80 },
+      { id: "H3", l: "Tỉ lệ UID đạt đủ công đoạn", v: 80650, t: 3.2, k: "core", d: 112950, goal: 85 },
+      { id: "H4", l: "Tỉ lệ quy trình được áp dụng", v: 51, t: 1.6, k: "core", d: 64, f: "Quy trình có ≥ 1 sản phẩm gán / Tổng quy trình.", goal: 80 },
       { id: "H5", l: "Tổng số quy trình", v: 64, t: 6.7, k: "scale" },
       { id: "H6", l: "Quy trình dự thảo", v: 17, t: 13.3, k: "scale" },
       { id: "H7", l: "Phiên bản cập nhật trong tháng", v: 9, t: 28.6, k: "scale" },
@@ -2625,6 +2705,7 @@ export const MODS: Mod[] = [
     ],
     warns: [
       {
+        for: ["H2"],
         t: "Quy trình dưới chuẩn tối thiểu (dưới 3 công đoạn)",
         sev: "high",
         n: 25,
@@ -2637,6 +2718,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H3"],
         t: "Quy trình có tỉ lệ đạt dưới 50%",
         sev: "critical",
         n: 4,
@@ -2648,6 +2730,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H8", "H4"],
         t: "Sản phẩm đang dùng phiên bản quy trình đã thay thế",
         sev: "medium",
         n: 212,
@@ -2731,6 +2814,7 @@ export const MODS: Mod[] = [
           ["Xuất hàng thủy sản", "v3.1", "Bộ NN&MT", "08/09/2026"],
           ["Tiếp nhận sữa tươi", "v2.0", "Bộ Công Thương", "11/09/2026"],
         ],
+        for: ["H3", "H7"],
       },
     ],
     href: "/danh-muc/thu-vien-mau-su-kien",
@@ -2826,6 +2910,7 @@ export const MODS: Mod[] = [
           ["ngay_san_xuat", "production_date", 14, "Hợp nhất"],
           ["ma_lo", "batch_no", 11, "Hợp nhất"],
         ],
+        for: ["H7"],
       },
       {
         t: "Trường đang dùng nhưng chưa có quy tắc kiểm tra",
@@ -2836,6 +2921,7 @@ export const MODS: Mod[] = [
           ["nhiet_do_bao_quan", "Sản phẩm", 6, "Văn bản"],
           ["vung_trong", "Địa điểm", 4, "Văn bản"],
         ],
+        for: ["H2"],
       },
     ],
     href: "/danh-muc/thu-vien-kde",
@@ -2854,9 +2940,10 @@ export const MODS: Mod[] = [
         k: "core",
         d: 26,
         f: "Có mã nghiệp vụ, cơ quan có thẩm quyền cấp, thời hạn chuẩn / Tổng loại.",
+        goal: 80,
       },
-      { id: "H2", l: "Tỉ lệ loại được sử dụng", v: 12, t: 9.1, k: "core", d: 26 },
-      { id: "H3", l: "Tỉ lệ loại có nguồn cấp", v: 19, t: 5.6, k: "core", d: 26 },
+      { id: "H2", l: "Tỉ lệ loại được sử dụng", v: 12, t: 9.1, k: "core", d: 26, goal: 80 },
+      { id: "H3", l: "Tỉ lệ loại có nguồn cấp", v: 19, t: 5.6, k: "core", d: 26, goal: 85 },
       {
         id: "H4",
         l: "Tỉ lệ hết hiệu lực, thu hồi",
@@ -2934,6 +3021,7 @@ export const MODS: Mod[] = [
     ],
     warns: [
       {
+        for: ["H2", "H8"],
         t: "Loại giấy tờ, chứng nhận chưa từng được sử dụng",
         sev: "medium",
         n: 14,
@@ -2945,6 +3033,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H1", "H3"],
         t: "Loại giấy tờ, chứng nhận thiếu thông tin danh mục",
         sev: "high",
         n: 22,
@@ -2956,6 +3045,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H7"],
         t: "Loại giấy tờ, chứng nhận nghi trùng lặp",
         sev: "medium",
         n: 3,
@@ -2974,9 +3064,18 @@ export const MODS: Mod[] = [
     t: "Đơn vị hành chính",
     d: "Chất lượng danh mục đơn vị hành chính 2 cấp dùng chung cho địa chỉ cơ sở, phạm vi dữ liệu và thống kê theo địa phương",
     cards: [
-      { id: "H1", l: "Tỉ lệ cơ sở có mã hành chính chuẩn", v: 968, t: 0.9, k: "core", d: 1064 },
-      { id: "H2", l: "Tỉ lệ cơ sở không dùng mã cũ", v: 1027, t: 2.4, k: "core", d: 1064, f: "Cơ sở không dùng mã tỉnh, xã trước sắp xếp / Tổng cơ sở." },
-      { id: "H3", l: "Tỉ lệ mã đồng bộ từ danh mục quốc gia", v: 3355, t: 0, k: "core", d: 3355 },
+      { id: "H1", l: "Tỉ lệ cơ sở có mã hành chính chuẩn", v: 968, t: 0.9, k: "core", d: 1064, goal: 90 },
+      {
+        id: "H2",
+        l: "Tỉ lệ cơ sở không dùng mã cũ",
+        v: 1027,
+        t: 2.4,
+        k: "core",
+        d: 1064,
+        f: "Cơ sở không dùng mã tỉnh, xã trước sắp xếp / Tổng cơ sở.",
+        goal: 90,
+      },
+      { id: "H3", l: "Tỉ lệ mã đồng bộ từ danh mục quốc gia", v: 3355, t: 0, k: "core", d: 3355, goal: 90 },
       {
         id: "H4",
         l: "Tỉ lệ thay đổi đã đồng bộ xuống cơ sở",
@@ -2985,6 +3084,7 @@ export const MODS: Mod[] = [
         k: "core",
         d: 12,
         f: "Thay đổi danh mục trong tháng đã cập nhật xong cho cơ sở bị ảnh hưởng / Thay đổi trong tháng.",
+        goal: 80,
       },
       { id: "H5", l: "Tổng số tỉnh/thành", v: 34, t: 0, k: "scale" },
       { id: "H6", l: "Tổng số xã, phường, đặc khu", v: 3321, t: 0, k: "scale" },
@@ -3059,6 +3159,7 @@ export const MODS: Mod[] = [
     ],
     warns: [
       {
+        for: ["H2"],
         t: "Mã cũ chưa chuyển đổi đang được sử dụng",
         sev: "high",
         n: 37,
@@ -3070,6 +3171,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H1", "H8"],
         t: "Tỉnh/thành có trên 20% cơ sở thiếu mã hành chính",
         sev: "medium",
         n: 4,
@@ -3081,6 +3183,7 @@ export const MODS: Mod[] = [
         ],
       },
       {
+        for: ["H4"],
         t: "Thay đổi danh mục chưa đồng bộ xuống cơ sở, địa điểm",
         sev: "medium",
         n: 5,
@@ -3157,6 +3260,7 @@ export const MODS: Mod[] = [
           ["Gia vị", "64", "Bộ Công Thương", 22],
           ["Bánh kẹo", "58", "Bộ Công Thương", 19],
         ],
+        for: ["H3", "H7"],
       },
     ],
     href: "/danh-muc/nhom-nganh-hang",
@@ -3209,6 +3313,7 @@ export const MODS: Mod[] = [
           ["Tổ yến chưng", "Cty CP Yến Việt", "8936011122334", "Thực phẩm chế biến"],
           ["Muối tôm Tây Ninh", "HTX Gia vị Tây Ninh", "8936055566677", "Gia vị"],
         ],
+        for: ["H1", "H8"],
       },
     ],
     href: "/danh-muc/nhom-san-pham",
@@ -3274,6 +3379,7 @@ export const MODS: Mod[] = [
           ["Cơ sở bún tươi Phú Đô", "Kinh doanh, bán lẻ", "Sản xuất thực phẩm", "Hà Nội"],
           ["Xưởng đá viên Hòa Bình", "Kho, trung chuyển", "Sản xuất thực phẩm", "Đà Nẵng"],
         ],
+        for: ["H8"],
       },
     ],
     href: "/danh-muc/phan-loai-co-so",
@@ -3352,6 +3458,7 @@ export const MODS: Mod[] = [
           ["Bếp ăn KCN Quang Minh", "Bếp ăn tập thể", "Hà Nội", "12/02/2026"],
           ["Cơ sở giết mổ Bình Chánh", "Giết mổ", "TP.HCM", "04/03/2026"],
         ],
+        for: ["H2"],
       },
       {
         t: "Cơ sở tăng mức rủi ro trong tháng",
@@ -3362,6 +3469,7 @@ export const MODS: Mod[] = [
           ["Nhà hàng Hải Đăng", "Trung bình", "Cao", "Vi phạm khi kiểm tra"],
           ["Cty TNHH Suất ăn Minh Phát", "Cao", "Rất cao", "Liên quan vụ ngộ độc"],
         ],
+        for: ["H6", "H7"],
       },
     ],
     href: "/danh-muc/muc-do-rui-ro",
@@ -3450,6 +3558,7 @@ export const MODS: Mod[] = [
           ["/hooks/p6-thanh/events", "P6_Thanh", "503", "29/09/2026 22:14"],
           ["/hooks/daily01/scan", "Test Đại Lý 01", "401", "30/09/2026 03:40"],
         ],
+        for: ["H3", "H8"],
       },
       {
         t: "Đơn vị có tỉ lệ lỗi tích hợp trên 5%",
@@ -3460,6 +3569,7 @@ export const MODS: Mod[] = [
           ["P6_Thanh", 21480, 2446, "11,4%"],
           ["Test Đại Lý 01", 18210, 1202, "6,6%"],
         ],
+        for: ["H1", "H7"],
       },
     ],
     href: "/tich-hop/webhook",
@@ -3533,6 +3643,7 @@ export const MODS: Mod[] = [
           ["0x8fa2…c91e", "Chứng chỉ số sự kiện", "28/09/2026 10:21", "Đang điều tra"],
           ["0x1b07…4ad3", "Kích hoạt UID", "29/09/2026 15:02", "Đang điều tra"],
         ],
+        for: ["H3", "H8"],
       },
       {
         t: "Giao dịch chờ xác nhận quá 10 phút",
@@ -3543,6 +3654,7 @@ export const MODS: Mod[] = [
           ["0x44c1…09bf", "TrangNTT", "30/09/2026 09:12", 3],
           ["0xa3e0…77d1", "Checkee", "30/09/2026 09:40", 2],
         ],
+        for: ["H2", "H7"],
       },
     ],
     href: "/tich-hop/transaction",

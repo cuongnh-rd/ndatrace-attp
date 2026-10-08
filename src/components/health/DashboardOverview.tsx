@@ -3,24 +3,30 @@
 import { useState } from "react";
 import { DKEY, DMAP, LB, MODS } from "@/lib/health/data";
 import type { Chart, HCard } from "@/lib/health/types";
-import { ChartCard, DiagHead, HealthCard, Leaderboard, MOD_BY_KEY, Section } from "./widgets";
+import { ChartCard, DiagHead, HealthCard, Leaderboard, MOD_BY_KEY, SEVRANK, Section, WarnCard } from "./widgets";
 
 const ALLC: Record<string, Chart> = Object.fromEntries(MODS.flatMap((m) => m.charts.map((c) => [c.id, c])));
 const CHART_MOD: Record<string, string> = Object.fromEntries(MODS.flatMap((m) => m.charts.map((c) => [c.id, m.t])));
-const DCARDS: (HCard & { _m: string })[] = DKEY.map(([k, h], i) => ({
+const DCARDS: (HCard & { _m: string; _k: string; _h: string })[] = DKEY.map(([k, h], i) => ({
   ...MOD_BY_KEY[k].cards.find((c) => c.id === h)!,
   id: "D" + (i + 1),
   _m: MOD_BY_KEY[k].t,
+  _k: k,
+  _h: h,
 }));
 
 export default function DashboardOverview() {
   const [sel, setSel] = useState<string | null>(null);
   const list = DMAP.filter(([, f]) => !sel || f.includes(sel));
+  const selCard = DCARDS.find((c) => c.id === sel);
+  const selMod = selCard && MOD_BY_KEY[selCard._k];
+  const selWarns = selMod
+    ? selMod.warns.filter((w) => (w.for ?? []).includes(selCard._h)).sort((a, b) => SEVRANK[a.sev] - SEVRANK[b.sev])
+    : [];
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Dashboard</h1>
-        <p className="text-sm text-gray-500 mt-1">Health metric quan trọng nhất của toàn nền tảng, tháng 9/2026</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {DCARDS.map((c) => (
@@ -28,7 +34,7 @@ export default function DashboardOverview() {
         ))}
       </div>
       <div className="grid gap-6 lg:grid-cols-2 items-start">
-        <Section tone="blue" t="Diagnostic metric" sub={`${list.length}/${DMAP.length} biểu đồ · lấy từ các module`}>
+        <Section tone="blue" t="Phân tích chỉ số" sub={`${list.length}/${DMAP.length} biểu đồ · lấy từ các module`}>
           <DiagHead cards={DCARDS} selected={sel} onClear={() => setSel(null)} />
           <div className="space-y-4">
             {list.map(([id, f]) => (
@@ -36,13 +42,25 @@ export default function DashboardOverview() {
             ))}
           </div>
         </Section>
-        <Section tone="gold" t="Bảng xếp hạng" sub="tháng 9/2026">
-          <div className="space-y-4">
-            {LB.map((b) => (
-              <Leaderboard key={b.t} b={b} />
-            ))}
-          </div>
-        </Section>
+        {selCard && selMod ? (
+          <Section tone="warn" t="Cảnh báo" sub={`Nhóm cảnh báo cần xử lý để cải thiện “${selCard.l}”`}>
+            <div className="space-y-4">
+              {selWarns.length ? (
+                selWarns.map((w) => <WarnCard key={w.t} w={w} mod={selMod.t} href={selMod.href} />)
+              ) : (
+                <p className="text-sm text-gray-500">Không có cảnh báo cần xử lý cho chỉ số này.</p>
+              )}
+            </div>
+          </Section>
+        ) : (
+          <Section tone="gold" t="Bảng xếp hạng" sub="tháng 9/2026 · bấm một card để xem cảnh báo cần xử lý">
+            <div className="space-y-4">
+              {LB.map((b) => (
+                <Leaderboard key={b.t} b={b} />
+              ))}
+            </div>
+          </Section>
+        )}
       </div>
     </div>
   );
