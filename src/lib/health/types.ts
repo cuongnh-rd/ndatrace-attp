@@ -15,8 +15,10 @@ export interface HCard {
   f?: string;
   /** Tăng là xấu */
   bad?: number;
-  /** Mục tiêu (%) cho chỉ số tỉ lệ */
+  /** Mục tiêu mặc định (%) cho chỉ số tỉ lệ */
   goal?: number;
+  /** Mục tiêu mặc định (số lượng) cho chỉ số quy mô */
+  goalN?: number;
 }
 
 export type Series = [string, number[], string?];
@@ -25,7 +27,17 @@ export interface Chart {
   id: string;
   t: string;
   f: string;
-  type: "ratio" | "hbar" | "bar" | "line" | "pie" | "doughnut" | "stack" | "combo" | "waterfall" | "cohort";
+  type:
+    | "ratio"
+    | "hbar"
+    | "bar"
+    | "line"
+    | "pie"
+    | "doughnut"
+    | "stack"
+    | "combo"
+    | "waterfall"
+    | "cohort";
   for?: string[];
   labels?: string[];
   ds?: Series[];
