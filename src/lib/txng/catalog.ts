@@ -1,0 +1,188 @@
+/**
+ * Danh mục tham chiếu cho CTE Builder (F-M5) — mock dữ liệu C1:
+ * Event Type (F-M1), bizStep / disposition / bizTransactionType (F-M4), KDE theo ET (F-M3).
+ */
+
+export type EtCode = "ET-01" | "ET-02" | "ET-03" | "ET-04" | "ET-05";
+export type Action = "ADD" | "OBSERVE" | "DELETE";
+export type Fit = "ok" | "warn";
+
+export interface EventType {
+    code: EtCode;
+    epcis: string;
+    name: string;
+    desc: string;
+    active: boolean;
+}
+
+export const EVENT_TYPES: EventType[] = [
+    { code: "ET-01", epcis: "ObjectEvent", name: "Sự kiện trên đối tượng", desc: "Ghi nhận việc xảy ra với sản phẩm / lô: tạo định danh, thu hoạch, vận chuyển, kiểm tra…", active: true },
+    { code: "ET-02", epcis: "AggregationEvent", name: "Sự kiện gộp / tách", desc: "Đóng gói sản phẩm vào thùng, pallet hoặc tách ra", active: true },
+    { code: "ET-03", epcis: "TransformationEvent", name: "Sự kiện chế biến", desc: "Đầu vào bị tiêu thụ để tạo ra đầu ra mới (sơ chế, chế biến, phối trộn)", active: true },
+    { code: "ET-04", epcis: "TransactionEvent", name: "Sự kiện giao dịch", desc: "Gắn sản phẩm với chứng từ giao dịch: đơn hàng, hoá đơn, vận đơn", active: true },
+    { code: "ET-05", epcis: "AssociationEvent", name: "Sự kiện gắn kết", desc: "Gắn thiết bị (cảm biến, tag) với đối tượng", active: true },
+];
+export const etOf = (code: EtCode) => EVENT_TYPES.find((e) => e.code === code)!;
+
+export const ACTIONS: { code: Action; desc: string }[] = [
+    { code: "ADD", desc: "Đối tượng bắt đầu tồn tại / được thêm vào (tạo định danh, thu hoạch, đóng gói)" },
+    { code: "OBSERVE", desc: "Quan sát đối tượng đã tồn tại, không thay đổi (vận chuyển, kiểm tra)" },
+    { code: "DELETE", desc: "Đối tượng kết thúc vòng đời / bị gỡ ra (tiêu huỷ, tách gói)" },
+];
+
+/** Bảng 3.3 — bizStep × ET. Không có trong map = ❌ (ẩn). */
+export interface BizStep { code: string; name: string; fit: Partial<Record<EtCode, Fit>> }
+export const BIZ_STEPS: BizStep[] = [
+    { code: "commissioning", name: "Kích hoạt định danh", fit: { "ET-01": "ok", "ET-03": "ok", "ET-05": "warn" } },
+    { code: "harvesting", name: "Thu hoạch", fit: { "ET-01": "ok" } },
+    { code: "creating_class_instance", name: "Tạo lô sản phẩm", fit: { "ET-01": "ok", "ET-03": "ok" } },
+    { code: "transforming", name: "Chế biến / sơ chế", fit: { "ET-03": "ok" } },
+    { code: "packing", name: "Đóng gói", fit: { "ET-01": "ok", "ET-02": "ok", "ET-03": "warn" } },
+    { code: "unpacking", name: "Mở gói / tách", fit: { "ET-02": "ok", "ET-01": "warn" } },
+    { code: "loading", name: "Xếp hàng lên phương tiện", fit: { "ET-01": "ok", "ET-02": "ok" } },
+    { code: "shipping", name: "Xuất hàng / vận chuyển", fit: { "ET-01": "ok", "ET-02": "ok", "ET-04": "ok" } },
+    { code: "receiving", name: "Tiếp nhận", fit: { "ET-01": "ok", "ET-02": "ok", "ET-04": "ok" } },
+    { code: "storing", name: "Lưu kho / bảo quản", fit: { "ET-01": "ok", "ET-02": "warn" } },
+    { code: "inspecting", name: "Kiểm tra chất lượng", fit: { "ET-01": "ok", "ET-02": "warn" } },
+    { code: "collecting", name: "Thu gom", fit: { "ET-01": "ok", "ET-02": "warn" } },
+    { code: "accepting", name: "Chấp nhận giao dịch", fit: { "ET-04": "ok", "ET-01": "warn" } },
+    { code: "retail_selling", name: "Bán lẻ", fit: { "ET-01": "ok", "ET-04": "ok" } },
+    { code: "destroying", name: "Tiêu huỷ", fit: { "ET-01": "ok" } },
+    { code: "installing", name: "Gắn thiết bị", fit: { "ET-05": "ok" } },
+    { code: "sensor_reporting", name: "Ghi nhận cảm biến", fit: { "ET-01": "ok", "ET-05": "ok" } },
+];
+export const bizStepOf = (code: string) => BIZ_STEPS.find((b) => b.code === code);
+
+/** Danh mục disposition — persistent = dùng được cho persistentDisposition. */
+export const DISPOSITIONS: { code: string; name: string; persistent?: boolean }[] = [
+    { code: "active", name: "Đang lưu hành" },
+    { code: "in_progress", name: "Đang xử lý" },
+    { code: "in_transit", name: "Đang vận chuyển" },
+    { code: "sellable_accessible", name: "Sẵn sàng bán" },
+    { code: "conformant", name: "Đạt yêu cầu", persistent: true },
+    { code: "non_conformant", name: "Không đạt yêu cầu", persistent: true },
+    { code: "damaged", name: "Hư hỏng" },
+    { code: "expired", name: "Hết hạn" },
+    { code: "recalled", name: "Bị thu hồi", persistent: true },
+    { code: "destroyed", name: "Đã tiêu huỷ" },
+    { code: "disposed", name: "Đã thải bỏ" },
+    { code: "container_closed", name: "Đã niêm phong" },
+];
+
+/** Bảng 4.4 — gợi ý disposition theo ET + bizStep (🔵 gợi ý chính, ⚪ gợi ý thêm). */
+const DISP_SUGGEST: Record<string, string[]> = {
+    "ET-01|commissioning": ["active"],
+    "ET-01|harvesting": ["active", "in_progress"],
+    "ET-01|creating_class_instance": ["active"],
+    "ET-01|packing": ["active", "container_closed"],
+    "ET-02|packing": ["in_progress", "container_closed"],
+    "ET-02|unpacking": ["active"],
+    "ET-01|loading": ["in_transit"],
+    "ET-01|shipping": ["in_transit", "active"],
+    "ET-02|shipping": ["in_transit"],
+    "ET-04|shipping": ["in_transit"],
+    "ET-01|receiving": ["active", "sellable_accessible"],
+    "ET-04|receiving": ["active"],
+    "ET-01|storing": ["active", "sellable_accessible"],
+    "ET-01|inspecting": ["conformant", "non_conformant"],
+    "ET-01|collecting": ["in_progress"],
+    "ET-04|accepting": ["active"],
+    "ET-01|retail_selling": ["sellable_accessible"],
+    "ET-04|retail_selling": ["sellable_accessible"],
+    "ET-01|destroying": ["destroyed", "disposed"],
+    "ET-03|transforming": ["active", "disposed", "destroyed"],
+    "ET-03|commissioning": ["active"],
+    "ET-03|creating_class_instance": ["active"],
+};
+export const suggestDisp = (et: EtCode, bizStep: string) => DISP_SUGGEST[`${et}|${bizStep}`] ?? [];
+
+export const BIZ_TX_TYPES: { code: string; name: string }[] = [
+    { code: "po", name: "Purchase Order — Đơn đặt hàng" },
+    { code: "poc", name: "Purchase Order Confirmation — Xác nhận đơn hàng" },
+    { code: "desadv", name: "Despatch Advice — Thông báo giao hàng" },
+    { code: "recadv", name: "Receiving Advice — Thông báo nhận hàng" },
+    { code: "inv", name: "Invoice — Hoá đơn" },
+    { code: "bol", name: "Bill of Lading — Vận đơn" },
+    { code: "prodorder", name: "Production Order — Lệnh sản xuất" },
+    { code: "pedigree", name: "Pedigree — Hồ sơ phả hệ" },
+    { code: "rma", name: "Return Authorization — Phiếu trả hàng" },
+];
+
+/** KDE của sự kiện (F-M3) — allow: ET dùng được; auto: ET tự động bắt buộc. */
+export interface EventKde { code: string; name: string; allow: EtCode[]; auto?: EtCode[] }
+const ALL: EtCode[] = ["ET-01", "ET-02", "ET-03", "ET-04", "ET-05"];
+export const EVENT_KDES: EventKde[] = [
+    { code: "eventTime", name: "Thời điểm sự kiện", allow: ALL, auto: ALL },
+    { code: "eventTimeZoneOffset", name: "Múi giờ", allow: ALL, auto: ALL },
+    { code: "epcList", name: "Định danh đối tượng (mã sản phẩm / lô)", allow: ["ET-01", "ET-04"], auto: ["ET-01"] },
+    { code: "quantityList", name: "Số lượng theo lớp sản phẩm", allow: ["ET-01", "ET-02", "ET-04"] },
+    { code: "parentID", name: "Đơn vị đóng gói cha (thùng / pallet)", allow: ["ET-02", "ET-04", "ET-05"], auto: ["ET-02", "ET-05"] },
+    { code: "childEPCs", name: "Đối tượng con được gộp / tách", allow: ["ET-02"] },
+    { code: "inputEPCList", name: "Đầu vào bị tiêu thụ", allow: ["ET-03"], auto: ["ET-03"] },
+    { code: "inputQuantityList", name: "Số lượng đầu vào", allow: ["ET-03"] },
+    { code: "outputEPCList", name: "Đầu ra được tạo mới", allow: ["ET-03"], auto: ["ET-03"] },
+    { code: "outputQuantityList", name: "Số lượng đầu ra", allow: ["ET-03"] },
+    { code: "readPoint", name: "Điểm ghi nhận", allow: ALL },
+    { code: "bizLocation", name: "Địa điểm diễn ra sự kiện", allow: ALL },
+    { code: "sourceList", name: "Nơi gửi", allow: ["ET-01", "ET-02", "ET-03", "ET-04"] },
+    { code: "destinationList", name: "Nơi nhận", allow: ["ET-01", "ET-02", "ET-03", "ET-04"] },
+    { code: "bizTransactionList", name: "Chứng từ giao dịch (PO, hoá đơn, vận đơn)", allow: ALL, auto: ["ET-04"] },
+    { code: "sensorElementList", name: "Dữ liệu cảm biến nhiệt độ / độ ẩm", allow: ALL },
+    { code: "certificationInfo", name: "Chứng nhận áp dụng (VietGAP, HACCP…)", allow: ALL },
+    { code: "gs1:growingArea", name: "Mã vùng trồng / vùng nuôi", allow: ["ET-01", "ET-03"] },
+    { code: "gs1:performedBy", name: "Người thực hiện", allow: ALL },
+    { code: "gs1:dispositionReason", name: "Lý do xử lý", allow: ["ET-01", "ET-02"] },
+];
+export const kdeOf = (code: string) => EVENT_KDES.find((k) => k.code === code) ?? ILMD_FIELDS.find((k) => k.code === code);
+
+/** Trường ilmd (thông tin cấp lô) — chỉ ET-01 + ADD hoặc ET-03. */
+export const ILMD_FIELDS: { code: string; name: string }[] = [
+    { code: "lotNumber", name: "Số lô sản xuất" },
+    { code: "productionDate", name: "Ngày sản xuất" },
+    { code: "bestBeforeDate", name: "Sử dụng tốt nhất trước" },
+    { code: "itemExpirationDate", name: "Hạn sử dụng" },
+    { code: "harvestDate", name: "Ngày thu hoạch" },
+    { code: "countryOfOrigin", name: "Xuất xứ" },
+];
+export const ilmdAllowed = (et: EtCode, action: Action | null) => et === "ET-03" || (et === "ET-01" && action === "ADD");
+
+export const CERT_TYPES = ["VietGAP", "GlobalGAP", "HACCP", "ISO 22000", "Hữu cơ (TCVN 11041)", "Chứng nhận kiểm dịch"];
+export const SENSOR_TYPES: { code: string; name: string; uom: string }[] = [
+    { code: "temperature", name: "Nhiệt độ", uom: "CEL" },
+    { code: "relative_humidity", name: "Độ ẩm tương đối", uom: "A93" },
+];
+
+export interface Family { id: string; name: string; bo: string[] }
+export const ME_BO = "Bộ Nông nghiệp và Môi trường";
+export const FAMILIES: Family[] = [
+    { id: "rau", name: "Rau ăn lá", bo: [ME_BO] },
+    { id: "ts", name: "Thủy sản nuôi", bo: [ME_BO, "Bộ Y tế"] },
+    { id: "gao", name: "Gạo", bo: [ME_BO] },
+    { id: "che", name: "Chè", bo: [ME_BO] },
+    { id: "qua", name: "Trái cây tươi", bo: [ME_BO, "Bộ Công Thương"] },
+    { id: "thit", name: "Thịt gia súc, gia cầm", bo: [ME_BO, "Bộ Y tế"] },
+];
+export const famOf = (id: string) => FAMILIES.find((f) => f.id === id)!;
+
+/** Thư viện KDE bổ sung — Bộ thêm vào công đoạn của quy trình. */
+export interface LibKde { code: string; name: string; map?: string; ilmd?: boolean; gdsn?: boolean }
+export const LIB_KDES: LibKde[] = [
+    { code: "ndatrace:growingArea", name: "Mã vùng trồng / vùng nuôi", map: "gs1:growingArea" },
+    { code: "ndatrace:phiInterval", name: "Số ngày cách ly thuốc BVTV" },
+    { code: "ndatrace:vehiclePlate", name: "Biển số phương tiện vận chuyển" },
+    { code: "ndatrace:storageTemp", name: "Nhiệt độ bảo quản yêu cầu" },
+    { code: "ndatrace:harvestMethod", name: "Phương thức thu hoạch / đánh bắt" },
+    { code: "ndatrace:pondId", name: "Mã ao / lồng nuôi" },
+    { code: "ndatrace:labResult", name: "Kết quả kiểm nghiệm" },
+    { code: "ndatrace:feedLot", name: "Lô thức ăn chăn nuôi / thủy sản đã dùng" },
+    { code: "ndatrace:quarantineCert", name: "Số giấy chứng nhận kiểm dịch" },
+    { code: "ndatrace:harvestTime", name: "Thời gian thu hoạch", map: "eventTime" },
+    { code: "gs1:hasBatchLotNumber", name: "Số lô sản xuất", map: "lotNumber", ilmd: true },
+    { code: "gs1:itemExpirationDate", name: "Hạn sử dụng", map: "itemExpirationDate", ilmd: true },
+    { code: "gs1:productionDate", name: "Ngày sản xuất", map: "productionDate", ilmd: true },
+    { code: "gdsn:ingredientStatement", name: "Thành phần sản phẩm", gdsn: true },
+    { code: "gdsn:brandName", name: "Thương hiệu", gdsn: true },
+    { code: "sensorElementList", name: "Dữ liệu cảm biến nhiệt độ / độ ẩm", map: "sensorElementList" },
+];
+export const libOf = (code: string) => LIB_KDES.find((k) => k.code === code);
+export const fieldName = (code: string) => kdeOf(code)?.name ?? libOf(code)?.name ?? code;
