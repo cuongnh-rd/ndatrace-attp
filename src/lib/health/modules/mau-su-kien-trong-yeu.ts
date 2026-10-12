@@ -1,12 +1,12 @@
 import type { Mod } from "../types";
 
-/** Danh mục hệ thống › Quy trình tiêu chuẩn TXNG (/danh-muc/mau-su-kien-trong-yeu) */
+/** Danh mục hệ thống › Quy trình tiêu chuẩn TXNG (/danh-muc/quy-trinh-tieu-chuan) */
 export const mauSuKienTrongYeu: Mod = {
   k: "cte",
   g: "Danh mục hệ thống",
   t: "Quy trình tiêu chuẩn TXNG",
   d: "Chất lượng thư viện quy trình và mức độ tuân thủ theo quy trình",
-  href: "/danh-muc/mau-su-kien-trong-yeu",
+  href: "/danh-muc/quy-trinh-tieu-chuan",
   cards: [
     {
       id: "H1",
