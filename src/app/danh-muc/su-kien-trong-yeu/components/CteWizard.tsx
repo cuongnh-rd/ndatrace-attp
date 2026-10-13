@@ -4,18 +4,27 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Check, Lock, AlertTriangle } from "lucide-react";
+import DispositionLayer from "./DispositionLayer";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { Banner, IssueList, Seg, Tag, T, btn, btnP, card, inp, label } from "@/components/txng/ui";
+import { Banner, Dialog, IssueList, Seg, Tag, T, btn, btnP, card, inp, label } from "@/components/txng/ui";
 import {
-    ACTIONS, BIZ_STEPS, BIZ_TX_TYPES, CERT_TYPES, DISPOSITIONS, EVENT_KDES, EVENT_TYPES, ILMD_FIELDS, SENSOR_TYPES,
-    type Action, type EtCode, etOf, ilmdAllowed, suggestDisp,
+    ACTIONS, BIZ_STEPS, BIZ_TX_TYPES, CERT_TYPES, EVENT_KDES, EVENT_TYPES, ILMD_FIELDS, SENSOR_TYPES,
+    type Action, type EtCode, etOf, ilmdAllowed, suggestAction,
 } from "@/lib/txng/catalog";
 import {
-    type Cte, type CteConfig, type KdeCfg, autoKdes, clone, ctes, emptyConfig, ME_USER, myOrg, nextCteCode, nextCteId,
+    type Cte, type CteConfig, type KdeCfg, autoKdes, clone, ctes, derivedFromBizStep, emptyConfig, ME_USER, myOrg, nextCteCode, nextCteId,
     patch, session, TODAY, validateCte, vDraft,
 } from "@/lib/txng/cte";
 
-const LAYERS = ["Event Type", "action mặc định", "bizStep", "disposition", "bizTransactionType", "KDE + ilmd", "Cấu hình bổ sung"];
+const LAYERS = ["Event Type", "bizStep", "action", "disposition", "bizTransactionType", "KDE + ilmd", "Cấu hình bổ sung"];
+
+/** Đồng bộ KDE tự động bắt buộc theo ET + action (AC-17: ET-02 OBSERVE → parentID chuyển optional) */
+function syncAuto(et: EtCode, c: CteConfig): CteConfig {
+    const auto = autoKdes(et, c.action);
+    const prevAuto = autoKdes(et, null);
+    const rest = c.kdes.filter((x) => !auto.includes(x.code)).map((x) => (prevAuto.includes(x.code) && !auto.includes(x.code) ? { ...x, required: false } : x));
+    return { ...c, kdes: [...auto.map((code) => ({ code, required: true, note: c.kdes.find((x) => x.code === code)?.note ?? "" })), ...rest] };
+}
 
 export default function CteWizard({ cte }: { cte?: Cte }) {
     const router = useRouter();
@@ -27,23 +36,24 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
     const [code] = useState(cte?.code ?? nextCteCode());
     const [et, setEt] = useState<EtCode | null>(cte?.et ?? null);
     const [cfg, setCfg] = useState<CteConfig>(() => (draft ? clone(draft.config) : emptyConfig()));
-    const [step, setStep] = useState(editing ? 3 : 1);
+    const [step, setStep] = useState(editing ? 2 : 1);
     const [reached, setReached] = useState(editing ? 7 : 1);
     const [err, setErr] = useState("");
     const [saveIssues, setSaveIssues] = useState<string[]>([]);
     const [warnStep, setWarnStep] = useState("");
+    const [pendingBiz, setPendingBiz] = useState<string | null>(null);
 
     const etLocked = editing || reached > 1;
-    const skipL2 = et === "ET-03";
+    const skipL3 = et === "ET-03";
     const up = (p: Partial<CteConfig>) => setCfg((c) => ({ ...c, ...p }));
-    const auto = et ? autoKdes(et) : [];
+    const auto = et ? autoKdes(et, cfg.action) : [];
 
     /** Kiểm tra lớp hiện tại trước khi sang lớp sau */
     const layerError = (n: number): string => {
         if (n === 1 && !et) return "Chọn Event Type.";
-        if (n === 2 && !skipL2 && !cfg.action) return "Chọn action mặc định.";
-        if (n === 3 && !cfg.bizStep) return "Chọn bizStep.";
-        if (n === 4 && !cfg.disposition) return "Chọn disposition.";
+        if (n === 2 && !cfg.bizStep) return "Chọn bizStep.";
+        if (n === 3 && !skipL3 && !cfg.action) return "Chưa có action.";
+        if (n === 4 && cfg.legacyDisposition !== undefined) return "Disposition đang ở cấu trúc cũ — rà soát lại danh sách.";
         if (n === 5 && et === "ET-04" && !cfg.bizTxTypes.length) return "TransactionEvent yêu cầu chọn ≥1 loại giao dịch.";
         if (n === 6 && !cfg.kdes.some((x) => !auto.includes(x.code))) return "Cần chọn ít nhất 1 KDE ngoài các trường tự động bắt buộc.";
         return "";
@@ -53,32 +63,36 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
         const e = layerError(step);
         if (e) return setErr(e);
         setErr("");
-        if (step === 1 && et) {
-            // khởi tạo KDE tự động bắt buộc theo ET
-            setCfg((c) => ({
-                ...c,
-                action: et === "ET-03" ? null : c.action,
-                kdes: [...autoKdes(et).map((code) => ({ code, required: true, note: "" })), ...c.kdes.filter((x) => !autoKdes(et).includes(x.code))],
-            }));
-        }
+        if (step === 1 && et) setCfg((c) => syncAuto(et, { ...c, action: et === "ET-03" ? null : c.action }));
         let n = step + 1;
-        if (n === 2 && skipL2) n = 3;
+        if (n === 3 && skipL3) n = 4;
         setStep(n);
         setReached((r) => Math.max(r, n));
     };
     const goBack = () => {
         setErr("");
         let n = step - 1;
-        if (n === 2 && skipL2) n = 1;
+        if (n === 3 && skipL3) n = 2;
         setStep(Math.max(1, n));
     };
 
-    const pickBizStep = (b: string) => {
+    /** BR-M5-14: chọn bizStep → tính action + preselect disposition. Đã cấu hình lớp 3–4 thì hỏi xác nhận. */
+    const applyBizStep = (b: string) => {
         if (!et) return;
         const fit = BIZ_STEPS.find((x) => x.code === b)?.fit[et];
         setWarnStep(fit === "warn" ? `bizStep '${b}' ít dùng với ${etOf(et).epcis}. Bạn có chắc?` : "");
-        const sug = suggestDisp(et, b);
-        up({ bizStep: b, disposition: sug[0] ?? cfg.disposition });
+        setCfg((c) => syncAuto(et, { ...c, bizStep: b, ...derivedFromBizStep(et, b), action: et === "ET-03" ? null : derivedFromBizStep(et, b).action }));
+        setPendingBiz(null);
+    };
+    const pickBizStep = (b: string) => {
+        if (!et || b === cfg.bizStep) return;
+        if (cfg.bizStep && reached > 2) return setPendingBiz(b);
+        applyBizStep(b);
+    };
+    const setAction = (a: Action) => {
+        if (!et) return;
+        const rec = suggestAction(et, cfg.bizStep);
+        setCfg((c) => syncAuto(et, { ...c, action: a, actionManual: !rec.includes(a), ilmd: ilmdAllowed(et, a) ? c.ilmd : [] }));
     };
 
     const save = () => {
@@ -94,7 +108,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
         const issues = parent ? validateCte({ et: et!, parentConfig: parent }, cfg).filter((x) => x.level === "error" && x.msg.includes("AD-06")) : [];
         if (issues.length) return setSaveIssues(issues.map((x) => x.msg));
         if (editing && draft) {
-            patch(cte!, { name: name.trim() });
+            patch(cte!, { name: name.trim(), migrated: false });
             patch(draft, { config: cfg });
             router.push(`/danh-muc/su-kien-trong-yeu/${cte!.id}`);
         } else {
@@ -108,9 +122,9 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
     };
 
     const layerState = (n: number) => {
-        if (n === 2 && skipL2 && reached > 1) return "skip";
+        if (n === 3 && skipL3 && reached > 1) return "skip";
         if (n === step) return "cur";
-        if (n < reached || (n <= reached && n !== step)) return layerError(n) ? "todo" : "done";
+        if (n <= reached) return layerError(n) ? "todo" : "done";
         return "lock";
     };
 
@@ -131,9 +145,10 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
 
             {parent && (
                 <Banner kind="info">
-                    CTE kế thừa từ cấp Bộ (AD-06): không đổi được ET, action, bizStep; không hạ KDE bắt buộc thành tuỳ chọn. Cấp Sở chỉ được thêm yêu cầu chặt hơn (KDE bắt buộc, ngưỡng cảm biến, chứng nhận).
+                    CTE kế thừa từ cấp Bộ (AD-06): không đổi được ET, bizStep, action; không hạ KDE bắt buộc thành tuỳ chọn; không bỏ disposition persistent và chỉ được thu hẹp danh sách disposition thường. Cấp Sở chỉ được thêm yêu cầu chặt hơn (KDE bắt buộc, ngưỡng cảm biến, chứng nhận).
                 </Banner>
             )}
+            {cte?.migrated && <Banner kind="warn">Lớp 4 đã chuyển sang cấu trúc danh sách — vui lòng rà soát. (QĐ-06)</Banner>}
             {saveIssues.length > 0 && <div className="mt-3"><IssueList items={saveIssues.map((m) => ({ level: "error", msg: m }))} /></div>}
 
             <div className={`${card} mt-4 grid grid-cols-1 gap-4 px-5 py-4 md:grid-cols-[1fr_200px]`}>
@@ -162,6 +177,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                                     <span className="flex-1">
                                         Lớp {n} · {l}
                                         {s === "skip" && <span className="block text-[11.5px] font-normal text-gray-400">Bỏ qua — ET-03 không có action</span>}
+                                        {n === 3 && s === "done" && cfg.actionManual && <span className="block text-[11.5px] font-normal text-amber-600">Đã sửa tay</span>}
                                         {s === "todo" && <span className="block text-[11.5px] font-normal text-red-500">Chưa hoàn thành</span>}
                                     </span>
                                 </button>
@@ -191,22 +207,10 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                         </div>
                     )}
 
-                    {step === 2 && (
-                        <div className="flex flex-col gap-2">
-                            {ACTIONS.map((a) => (
-                                <label key={a.code} className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 ${cfg.action === a.code ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"}`}>
-                                    <input type="radio" name="act" className="mt-1 accent-brand-600" checked={cfg.action === a.code} disabled={!!parent}
-                                        onChange={() => up({ action: a.code as Action, ilmd: ilmdAllowed(et!, a.code) ? cfg.ilmd : [] })} />
-                                    <div><div className="font-mono font-semibold">{a.code}</div><div className="text-[12.5px] text-gray-500">{a.desc}</div></div>
-                                </label>
-                            ))}
-                            {et === "ET-01" && cfg.action && cfg.action !== "ADD" && <Banner kind="info">ilmd (thông tin cấp lô) chỉ dùng khi action = ADD. Action hiện tại: {cfg.action}.</Banner>}
-                        </div>
-                    )}
-
-                    {step === 3 && et && (
+                    {step === 2 && et && (
                         <div>
-                            <p className="mb-2 text-[13px] text-gray-500">Danh sách lọc theo {et}: ✅ khuyến nghị, ⚠️ ít dùng (vẫn cho chọn). bizStep không tương thích đã ẩn.</p>
+                            {et === "ET-03" && <Banner kind="info">TransformationEvent không có trường action — lớp 3 sẽ tự bỏ qua.</Banner>}
+                            <p className="mb-2 mt-2 text-[13px] text-gray-500">Danh sách lọc theo {et}: ✅ khuyến nghị, ⚠️ ít dùng (vẫn cho chọn). bizStep không tương thích đã ẩn. bizStep quyết định action (lớp 3) và danh sách disposition gợi ý (lớp 4).</p>
                             <div className="grid grid-cols-1 gap-1.5 md:grid-cols-2">
                                 {BIZ_STEPS.filter((b) => b.fit[et]).sort((a, b) => (a.fit[et] === "ok" ? 0 : 1) - (b.fit[et] === "ok" ? 0 : 1)).map((b) => (
                                     <label key={b.code} className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2 ${cfg.bizStep === b.code ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"} ${parent ? "cursor-not-allowed opacity-70" : ""}`}>
@@ -220,33 +224,39 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                         </div>
                     )}
 
-                    {step === 4 && et && (() => {
-                        const sug = suggestDisp(et, cfg.bizStep);
+                    {step === 3 && et && (() => {
+                        const rec = suggestAction(et, cfg.bizStep);
                         return (
-                            <div className="flex flex-col gap-4">
-                                <div>
-                                    <label className={label}>disposition <span className="text-red-500">*</span></label>
-                                    <p className="mb-2 text-[12.5px] text-gray-500">Gợi ý theo {et} + {cfg.bizStep} — chỉ là gợi ý, có thể chọn giá trị khác (BR-D-09).{et === "ET-03" && " Disposition áp dụng cho output products."}</p>
-                                    <div className="flex flex-wrap gap-1.5">
-                                        {[...DISPOSITIONS].sort((a, b) => (sug.includes(b.code) ? 1 : 0) - (sug.includes(a.code) ? 1 : 0)).map((d) => (
-                                            <button key={d.code} type="button" onClick={() => up({ disposition: d.code })}
-                                                className={`rounded-full border px-3 py-1 text-[12.5px] ${cfg.disposition === d.code ? "border-brand-600 bg-brand-600 text-white" : sug[0] === d.code ? "border-blue-300 bg-blue-50 text-blue-700" : sug.includes(d.code) ? "border-gray-300 bg-gray-50" : "border-gray-200 text-gray-500"}`}>
-                                                {sug[0] === d.code && "🔵 "}{sug.includes(d.code) && sug[0] !== d.code && "⚪ "}{d.code}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className={label}>persistentDisposition (tuỳ chọn)</label>
-                                    <p className="mb-2 text-[12.5px] text-gray-500">Trạng thái giữ nguyên cho các sự kiện sau. Chỉ hiện giá trị hỗ trợ persistent.</p>
-                                    <select className={`${inp} !w-72`} value={cfg.persistentDisposition} onChange={(e) => up({ persistentDisposition: e.target.value })}>
-                                        <option value="">— Không đặt —</option>
-                                        {DISPOSITIONS.filter((d) => d.persistent).map((d) => <option key={d.code} value={d.code}>Set persistent: {d.code}</option>)}
-                                    </select>
-                                </div>
+                            <div className="flex flex-col gap-2">
+                                <p className="text-[13px] text-gray-500">
+                                    Tự điền theo bizStep <span className="font-mono">{cfg.bizStep}</span> × {et} (bảng 3.4).
+                                    {rec.length > 1 && <> Giá trị hợp lệ khác: <span className="font-mono">{rec.slice(1).join(", ")}</span>.</>}
+                                </p>
+                                {ACTIONS.map((a) => (
+                                    <label key={a.code} title={a.desc} className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 ${cfg.action === a.code ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"} ${parent ? "cursor-not-allowed opacity-70" : ""}`}>
+                                        <input type="radio" name="act" className="mt-1 accent-brand-600" checked={cfg.action === a.code} disabled={!!parent} onChange={() => setAction(a.code)} />
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-mono font-semibold">{a.code}</span>
+                                                {rec[0] === a.code && <Tag cls={T.ok}>Khuyến nghị theo bizStep {cfg.bizStep}</Tag>}
+                                                {rec[0] !== a.code && rec.includes(a.code) && <Tag cls={T.mute}>Hợp lệ</Tag>}
+                                            </div>
+                                            <div className="text-[12.5px] text-gray-500">{a.desc}</div>
+                                        </div>
+                                    </label>
+                                ))}
+                                {cfg.action && !rec.includes(cfg.action) && (
+                                    <Banner kind="info" action={<button className={`${btn} !px-2.5 !py-1 !text-[12px]`} onClick={() => setAction(rec[0])}>Dùng giá trị khuyến nghị</button>}>
+                                        Tổ hợp {cfg.bizStep} + {cfg.action} ít dùng. Khuyến nghị: {rec.join(" / ")}. action được gắn cờ “Đã sửa tay”.
+                                    </Banner>
+                                )}
+                                {et === "ET-01" && cfg.action && cfg.action !== "ADD" && <Banner kind="info">ilmd (thông tin cấp lô) chỉ dùng khi action = ADD. Action hiện tại: {cfg.action}.</Banner>}
+                                {et === "ET-02" && <Banner kind="info">parentID {cfg.action === "OBSERVE" ? "chuyển tuỳ chọn khi action = OBSERVE." : "tự động bắt buộc khi action = ADD/DELETE."}</Banner>}
                             </div>
                         );
                     })()}
+
+                    {step === 4 && et && <DispositionLayer et={et} cfg={cfg} up={up} parent={parent} />}
 
                     {step === 5 && (
                         <div>
@@ -281,13 +291,17 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                     </div>
                 </section>
             </div>
+            <Dialog open={!!pendingBiz} onClose={() => setPendingBiz(null)} title="Đổi bizStep"
+                footer={<><button className={btn} onClick={() => setPendingBiz(null)}>Huỷ — giữ {cfg.bizStep}</button><button className={btnP} onClick={() => applyBizStep(pendingBiz!)}>Xác nhận đổi</button></>}>
+                Đổi bizStep sang <b className="font-mono">{pendingBiz}</b> sẽ tính lại action và danh sách disposition. Cấu hình lớp 3–4 hiện tại sẽ bị thay thế. (BR-M5-14)
+            </Dialog>
         </DashboardLayout>
     );
 }
 
 /* ---------- Lớp 6: KDE + ilmd ---------- */
 function KdeLayer({ et, cfg, up, parent }: { et: EtCode; cfg: CteConfig; up: (p: Partial<CteConfig>) => void; parent?: CteConfig }) {
-    const auto = autoKdes(et);
+    const auto = autoKdes(et, cfg.action);
     const allowed = useMemo(() => EVENT_KDES.filter((k) => k.allow.includes(et)), [et]);
     const forbidden = EVENT_KDES.filter((k) => !k.allow.includes(et)).map((k) => k.code);
     const parentReq = (code: string) => !!parent?.kdes.find((x) => x.code === code && x.required);

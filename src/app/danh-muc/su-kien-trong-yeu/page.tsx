@@ -8,7 +8,7 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Tag, T, btn, btnP, btnSm, inp, card } from "@/components/txng/ui";
 import { EVENT_TYPES, BIZ_STEPS, etOf } from "@/lib/txng/catalog";
 import {
-    ctes, session, vMain, vActive, STATUS_META, fmtDate, cloneCte,
+    ctes, dispSummary, session, vMain, vActive, STATUS_META, fmtDate, cloneCte,
     type Cte, type CteStatus, type C2Level,
 } from "@/lib/txng/cte";
 import { norm } from "@/lib/txng/process";
@@ -86,7 +86,7 @@ export default function Page() {
                                 </td>
                                 <td className="px-4 py-3 font-mono text-[12.5px]">{cfg.bizStep || "—"}</td>
                                 <td className="px-4 py-3 font-mono text-[12.5px]">{c.et === "ET-03" ? <span className="text-gray-400">không có</span> : cfg.action ?? "—"}</td>
-                                <td className="px-4 py-3 font-mono text-[12.5px]">{cfg.disposition || "—"}</td>
+                                <td className="whitespace-nowrap px-4 py-3 text-[12.5px]">{dispSummary(cfg)}</td>
                                 <td className="px-4 py-3"><StatusCell c={c} /></td>
                                 <td className="px-4 py-3">v{m.v}</td>
                                 <td className="px-4 py-3 text-gray-500">{fmtDate(c.createdAt)}</td>

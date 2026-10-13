@@ -53,38 +53,69 @@ export const BIZ_STEPS: BizStep[] = [
 ];
 export const bizStepOf = (code: string) => BIZ_STEPS.find((b) => b.code === code);
 
-/** Danh mục disposition — persistent = dùng được cho persistentDisposition. */
-export const DISPOSITIONS: { code: string; name: string; persistent?: boolean }[] = [
+/** Bảng 3.4 — action khuyến nghị theo bizStep × ET (giá trị đầu là mặc định) */
+const ACTION_BY: Record<string, Action[]> = {
+    commissioning: ["ADD"], harvesting: ["ADD"], creating_class_instance: ["ADD"], installing: ["ADD"],
+    packing: ["ADD", "OBSERVE"], unpacking: ["DELETE"], loading: ["OBSERVE", "ADD"],
+    shipping: ["OBSERVE"], receiving: ["OBSERVE"], storing: ["OBSERVE"], inspecting: ["OBSERVE"],
+    collecting: ["OBSERVE", "ADD"], accepting: ["ADD", "OBSERVE"], retail_selling: ["OBSERVE"],
+    destroying: ["DELETE", "OBSERVE"], sensor_reporting: ["OBSERVE"],
+};
+/** ET-01 packing là đóng gói tại chỗ → OBSERVE; ET-02 packing gộp vào thùng → ADD */
+const ACTION_BY_ET: Record<string, Action[]> = { "ET-01|packing": ["OBSERVE"], "ET-04|shipping": ["ADD", "OBSERVE"], "ET-04|receiving": ["ADD", "OBSERVE"] };
+export const suggestAction = (et: EtCode, bizStep: string): Action[] =>
+    et === "ET-03" ? [] : ACTION_BY_ET[`${et}|${bizStep}`] ?? ACTION_BY[bizStep] ?? ["OBSERVE"];
+
+/** Danh mục disposition CBV 2.0 (chỉ giá trị chuẩn — BR-M5-19). group = nhóm persistent loại trừ nhau. */
+export interface Disposition { code: string; name: string; group?: string }
+export const DISPOSITIONS: Disposition[] = [
     { code: "active", name: "Đang lưu hành" },
     { code: "in_progress", name: "Đang xử lý" },
     { code: "in_transit", name: "Đang vận chuyển" },
     { code: "sellable_accessible", name: "Sẵn sàng bán" },
-    { code: "conformant", name: "Đạt yêu cầu", persistent: true },
-    { code: "non_conformant", name: "Không đạt yêu cầu", persistent: true },
+    { code: "sellable_not_accessible", name: "Bán được nhưng chưa tiếp cận" },
+    { code: "non_sellable_other", name: "Không bán được (khác)" },
+    { code: "container_closed", name: "Đã niêm phong" },
+    { code: "container_open", name: "Đã mở niêm phong" },
+    { code: "encoded", name: "Đã mã hoá định danh" },
     { code: "damaged", name: "Hư hỏng" },
     { code: "expired", name: "Hết hạn" },
-    { code: "recalled", name: "Bị thu hồi", persistent: true },
+    { code: "needs_replacement", name: "Cần thay thế" },
+    { code: "returned", name: "Bị trả lại" },
+    { code: "recalled", name: "Bị thu hồi" },
+    { code: "stolen", name: "Bị mất cắp" },
+    { code: "unknown", name: "Không xác định" },
     { code: "destroyed", name: "Đã tiêu huỷ" },
     { code: "disposed", name: "Đã thải bỏ" },
-    { code: "container_closed", name: "Đã niêm phong" },
+    { code: "conformant", name: "Đạt", group: "inspection" },
+    { code: "non_conformant", name: "Không đạt", group: "inspection" },
+    { code: "completeness_verified", name: "Đủ hàng — đã kiểm đếm", group: "completeness" },
+    { code: "completeness_inferred", name: "Đủ hàng — suy luận", group: "completeness" },
 ];
+export const dispOf = (code: string) => DISPOSITIONS.find((d) => d.code === code);
+export const PERSIST_GROUPS: Record<string, string> = { inspection: "Kết quả kiểm định", completeness: "Kiểm tra đủ hàng" };
+export const groupCodes = (g: string) => DISPOSITIONS.filter((d) => d.group === g).map((d) => d.code);
 
-/** Bảng 4.4 — gợi ý disposition theo ET + bizStep (🔵 gợi ý chính, ⚪ gợi ý thêm). */
+/** Bảng 4.4 — disposition thường gợi ý theo ET + bizStep (phần tử đầu = 🔵 mặc định, còn lại ⚪). */
 const DISP_SUGGEST: Record<string, string[]> = {
-    "ET-01|commissioning": ["active"],
+    "ET-01|commissioning": ["active", "encoded"],
     "ET-01|harvesting": ["active", "in_progress"],
     "ET-01|creating_class_instance": ["active"],
     "ET-01|packing": ["active", "container_closed"],
     "ET-02|packing": ["in_progress", "container_closed"],
-    "ET-02|unpacking": ["active"],
+    "ET-03|packing": ["active"],
+    "ET-02|unpacking": ["active", "container_open"],
     "ET-01|loading": ["in_transit"],
+    "ET-02|loading": ["in_transit"],
     "ET-01|shipping": ["in_transit", "active"],
     "ET-02|shipping": ["in_transit"],
     "ET-04|shipping": ["in_transit"],
-    "ET-01|receiving": ["active", "sellable_accessible"],
+    "ET-01|receiving": ["active", "sellable_accessible", "damaged"],
+    "ET-02|receiving": ["active"],
     "ET-04|receiving": ["active"],
     "ET-01|storing": ["active", "sellable_accessible"],
-    "ET-01|inspecting": ["conformant", "non_conformant"],
+    "ET-01|inspecting": ["damaged", "expired"],
+    "ET-02|inspecting": ["damaged"],
     "ET-01|collecting": ["in_progress"],
     "ET-04|accepting": ["active"],
     "ET-01|retail_selling": ["sellable_accessible"],
@@ -95,6 +126,9 @@ const DISP_SUGGEST: Record<string, string[]> = {
     "ET-03|creating_class_instance": ["active"],
 };
 export const suggestDisp = (et: EtCode, bizStep: string) => DISP_SUGGEST[`${et}|${bizStep}`] ?? [];
+/** Bảng 4.4 — nhóm persistent bắt buộc theo ET + bizStep (BR-M5-16) */
+const PERSIST_REQ: Record<string, string[]> = { "ET-01|inspecting": ["inspection"], "ET-02|inspecting": ["inspection"] };
+export const persistGroups = (et: EtCode, bizStep: string) => PERSIST_REQ[`${et}|${bizStep}`] ?? [];
 
 export const BIZ_TX_TYPES: { code: string; name: string }[] = [
     { code: "po", name: "Purchase Order — Đơn đặt hàng" },
@@ -116,7 +150,7 @@ export const EVENT_KDES: EventKde[] = [
     { code: "eventTimeZoneOffset", name: "Múi giờ", allow: ALL, auto: ALL },
     { code: "epcList", name: "Định danh đối tượng (mã sản phẩm / lô)", allow: ["ET-01", "ET-04"], auto: ["ET-01"] },
     { code: "quantityList", name: "Số lượng theo lớp sản phẩm", allow: ["ET-01", "ET-02", "ET-04"] },
-    { code: "parentID", name: "Đơn vị đóng gói cha (thùng / pallet)", allow: ["ET-02", "ET-04", "ET-05"], auto: ["ET-02", "ET-05"] },
+    { code: "parentID", name: "Đơn vị đóng gói cha (thùng / pallet)", allow: ["ET-02", "ET-04", "ET-05"], auto: ["ET-02", "ET-05"] }, // ET-02: chỉ auto khi action ≠ OBSERVE
     { code: "childEPCs", name: "Đối tượng con được gộp / tách", allow: ["ET-02"] },
     { code: "inputEPCList", name: "Đầu vào bị tiêu thụ", allow: ["ET-03"], auto: ["ET-03"] },
     { code: "inputQuantityList", name: "Số lượng đầu vào", allow: ["ET-03"] },

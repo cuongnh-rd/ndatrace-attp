@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Copy, Lock } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Banner, Dialog, IssueList, Tag, T, btn, btnD, btnP, btnSm, card, inp, label, useToast } from "@/components/txng/ui";
-import { BIZ_TX_TYPES, SENSOR_TYPES, bizStepOf, etOf, fieldName } from "@/lib/txng/catalog";
+import { BIZ_TX_TYPES, SENSOR_TYPES, bizStepOf, etOf, fieldName, suggestAction } from "@/lib/txng/catalog";
 import {
     STATUS_META, TODAY, applyScheduled, canEdit, cancelScheduled, cloneCte, cteById, ctes, fmtDate, newVersion,
-    publishVersion, vActive, vDraft, vMain, vScheduled, validateCte, type Cte, type CteVersion,
+    autoFixPersist, groupLabel, publishVersion, vActive, vDraft, vMain, vScheduled, validateCte, type Cte, type CteVersion,
 } from "@/lib/txng/cte";
 import { procsUsingCte, pMain, PROC_STATUS } from "@/lib/txng/process";
 
@@ -123,7 +123,7 @@ function Detail({ cte }: { cte: Cte }) {
                 {v.status === "draft" && issues.length > 0 && (
                     <div className="mt-3">
                         <p className="mb-1.5 text-[13px] font-semibold text-gray-700">Kiểm tra trước khi công bố</p>
-                        <IssueList items={issues.map((x) => ({ level: x.level, msg: x.msg }))} />
+                        <IssueList items={issues.map((x) => ({ level: x.level, msg: x.msg, action: x.fix && mine && <button className="whitespace-nowrap text-[12.5px] font-semibold underline" onClick={() => { autoFixPersist(cte, v); bump(); }}>Bổ sung tự động</button> }))} />
                     </div>
                 )}
             </div>
@@ -185,7 +185,7 @@ function Detail({ cte }: { cte: Cte }) {
                 {issues.some((x) => x.level === "error") ? (
                     <div className="flex flex-col gap-2">
                         <p className="text-[13px]">Có {issues.filter((x) => x.level === "error").length} lỗi phải sửa trước khi công bố{issues.some((x) => x.level === "warn") ? ` và ${issues.filter((x) => x.level === "warn").length} cảnh báo (không chặn)` : ""}.</p>
-                        <IssueList items={issues.map((x) => ({ level: x.level, msg: x.msg }))} />
+                        <IssueList items={issues.map((x) => ({ level: x.level, msg: x.msg, action: x.fix && mine && <button className="whitespace-nowrap text-[12.5px] font-semibold underline" onClick={() => { autoFixPersist(cte, v); bump(); }}>Bổ sung tự động</button> }))} />
                         <Link className={`${btn} self-start`} href={`/danh-muc/su-kien-trong-yeu/${cte.id}/sua`}>Mở để sửa</Link>
                     </div>
                 ) : (
@@ -266,9 +266,26 @@ function ConfigView({ cte, v }: { cte: Cte; v: CteVersion }) {
     return (
         <div className={card}>
             <Row n={1} title="Event Type">{cte.et} · {etOf(cte.et).epcis} — {etOf(cte.et).name}</Row>
-            <Row n={2} title="action mặc định">{cte.et === "ET-03" ? <span className="text-gray-500">Không có trường action (TransformationEvent).</span> : <span className="font-mono">{c.action ?? "—"}</span>}</Row>
-            <Row n={3} title="bizStep"><span className="font-mono">{c.bizStep || "—"}</span>{bs && <span className="text-gray-500"> — {bs.name}</span>}</Row>
-            <Row n={4} title="disposition"><span className="font-mono">{c.disposition || "—"}</span>{c.persistentDisposition && <span className="text-gray-500"> · persistent: <span className="font-mono">{c.persistentDisposition}</span></span>}</Row>
+            <Row n={2} title="bizStep"><span className="font-mono">{c.bizStep || "—"}</span>{bs && <span className="text-gray-500"> — {bs.name}</span>}</Row>
+            <Row n={3} title="action">
+                {cte.et === "ET-03" ? <span className="text-gray-500">Không có trường action (TransformationEvent).</span> : (
+                    <span className="flex flex-wrap items-center gap-2">
+                        <span className="font-mono">{c.action ?? "—"}</span>
+                        {c.action && suggestAction(cte.et, c.bizStep).includes(c.action) ? <Tag cls={T.ok}>Khuyến nghị</Tag> : c.action && <Tag cls={T.warn}>Đã sửa tay — khuyến nghị {suggestAction(cte.et, c.bizStep).join(" / ")}</Tag>}
+                    </span>
+                )}
+            </Row>
+            <Row n={4} title="Danh sách disposition">
+                {c.legacyDisposition !== undefined ? (
+                    <span><span className="font-mono">{c.legacyDisposition}</span> <Tag cls={T.warn}>Cấu trúc cũ (1 giá trị) — chuyển thành danh sách khi clone / tạo phiên bản mới</Tag></span>
+                ) : (
+                    <div className="flex flex-col gap-1.5">
+                        <div><span className="text-gray-500">Persistent: </span>{c.dispPersist.length ? c.dispPersist.map((g) => <Tag key={g} cls={T.gs1}><Lock size={11} /> {groupLabel(g)}</Tag>) : <span className="text-gray-400">không có</span>}</div>
+                        <div className="flex flex-wrap items-center gap-1.5"><span className="text-gray-500">Thường: </span>{c.dispNormal.length ? c.dispNormal.map((d) => <Tag key={d}><span className="font-mono">{d}</span></Tag>) : <span className="text-gray-400">không có</span>}</div>
+                        {cte.et === "ET-03" && <span className="text-[12px] text-gray-400">Disposition áp dụng cho output products.</span>}
+                    </div>
+                )}
+            </Row>
             <Row n={5} title="bizTransactionType">
                 {c.bizTxTypes.length ? <div className="flex flex-wrap gap-1.5">{c.bizTxTypes.map((b) => <Tag key={b}>{BIZ_TX_TYPES.find((x) => x.code === b)?.name ?? b}</Tag>)}</div> : <span className="text-gray-400">Không yêu cầu</span>}
                 {c.bizTxTypes.length > 0 && cte.et !== "ET-04" && <span className="ml-2 text-[12px] text-gray-400">(tuỳ chọn)</span>}
