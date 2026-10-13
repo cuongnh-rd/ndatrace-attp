@@ -119,7 +119,6 @@ function Detail({ cte }: { cte: Cte }) {
                         {v.replacedBy && ` Thay thế bởi v${v.replacedBy}.`} Chỉ xem.
                     </Banner>
                 )}
-                {cte.parentConfig && <Banner kind="info">Kế thừa CTE cấp Bộ — áp dụng AD-06: Sở chỉ thêm yêu cầu chặt hơn, không bớt KDE bắt buộc, không đổi ET / action / bizStep.</Banner>}
                 {v.status === "draft" && issues.length > 0 && (
                     <div className="mt-3">
                         <p className="mb-1.5 text-[13px] font-semibold text-gray-700">Kiểm tra trước khi công bố</p>
@@ -157,7 +156,7 @@ function Detail({ cte }: { cte: Cte }) {
             )}
             {tab === "use" && (
                 <div className={`${card} p-5`}>
-                    <p className="mb-3 text-[13px] text-gray-500">Quy trình tiêu chuẩn TXNG đang tham chiếu CTE này. CTE đang được tham chiếu không xoá được (BR-D-07).</p>
+                    <p className="mb-3 text-[13px] text-gray-500">Quy trình tiêu chuẩn TXNG đang sử dụng sự kiện này.</p>
                     {users.length ? (
                         <ul className="flex flex-col gap-2">
                             {users.map((p) => {
@@ -209,7 +208,7 @@ function Detail({ cte }: { cte: Cte }) {
                     cte.versions.splice(cte.versions.indexOf(v), 1); setVi(cte.versions.indexOf(vMain(cte))); close(); toast.show("Đã xoá bản nháp");
                 }}>Xoá</button>}</>}>
                 {v.v === 1 && users.length
-                    ? <IssueList items={[{ level: "error", msg: `CTE đang được tham chiếu bởi quy trình ${users.map((p) => `"${p.name}"`).join(", ")}. (BR-D-07)` }]} />
+                    ? <IssueList items={[{ level: "error", msg: `CTE đang được tham chiếu bởi quy trình ${users.map((p) => `"${p.name}"`).join(", ")}.` }]} />
                     : v.v === 1 ? `CTE "${cte.name}" chưa từng công bố và sẽ bị xoá hẳn. Thao tác được ghi audit log.` : `Bản nháp v${v.v} sẽ bị xoá. Các phiên bản khác không thay đổi.`}
             </Dialog>
 

@@ -222,7 +222,7 @@ export const dispSummary = (cfg: CteConfig) =>
 export const groupLabel = (g: string) => `${PERSIST_GROUPS[g] ?? g} (${groupCodes(g).join(" / ")})`;
 
 /* ---------- Cross-layer validation (F-M5-F6 AC-02 → AC-07) ---------- */
-export interface Issue { level: "error" | "warn"; layer: number; msg: string; fix?: "persist" }
+export interface Issue { level: "error" | "warn"; layer: number; msg: string; fix?: "persist"; inherit?: boolean }
 export function validateCte(c: Pick<Cte, "et" | "parentConfig">, cfg: CteConfig): Issue[] {
     const out: Issue[] = [];
     const et = c.et;
@@ -238,7 +238,7 @@ export function validateCte(c: Pick<Cte, "et" | "parentConfig">, cfg: CteConfig)
     if (cfg.legacyDisposition !== undefined) out.push({ level: "error", layer: 4, msg: "Lớp 4 — disposition đang ở cấu trúc cũ, cần rà soát lại theo dạng danh sách." });
     else {
         const missing = persistGroups(et, cfg.bizStep).filter((g) => !cfg.dispPersist.includes(g));
-        missing.forEach((g) => out.push({ level: "error", layer: 4, fix: "persist", msg: `Lớp 4 — bizStep ${cfg.bizStep} yêu cầu nhóm persistent ${groupLabel(g)}. (BR-M5-16)` }));
+        missing.forEach((g) => out.push({ level: "error", layer: 4, fix: "persist", msg: `Lớp 4 — bizStep ${cfg.bizStep} yêu cầu nhóm persistent ${groupLabel(g)}.` }));
         if (!cfg.dispNormal.length && !cfg.dispPersist.length) out.push({ level: "warn", layer: 4, msg: "CTE không có disposition — doanh nghiệp sẽ không khai báo trạng thái ở sự kiện này." });
     }
     if (et === "ET-04" && cfg.bizTxTypes.length === 0) out.push({ level: "error", layer: 5, msg: "TransactionEvent yêu cầu chọn ≥1 loại giao dịch ở lớp 5." });
@@ -257,13 +257,13 @@ export function validateCte(c: Pick<Cte, "et" | "parentConfig">, cfg: CteConfig)
     if (c.parentConfig) {
         const p = c.parentConfig;
         if (p.action !== cfg.action || p.bizStep !== cfg.bizStep)
-            out.push({ level: "error", layer: 2, msg: "Không được phép thay đổi ET, action hoặc bizStep của CTE kế thừa từ Bộ (AD-06)." });
+            out.push({ level: "error", inherit: true, layer: 2, msg: "Không được phép thay đổi ET, action hoặc bizStep của CTE kế thừa từ Bộ." });
         const extra = cfg.dispNormal.filter((d) => !p.dispNormal.includes(d));
-        if (extra.length) out.push({ level: "error", layer: 4, msg: `Cấp Sở chỉ được thu hẹp danh sách disposition của CTE cấp Bộ — không thêm ${extra.join(", ")}. (AD-06)` });
-        if (p.dispPersist.some((g) => !cfg.dispPersist.includes(g))) out.push({ level: "error", layer: 4, msg: "Không thể bỏ disposition persistent. (AD-06, BR-M5-16)" });
+        if (extra.length) out.push({ level: "error", inherit: true, layer: 4, msg: `Cấp Sở chỉ được thu hẹp danh sách disposition của CTE cấp Bộ — không thêm ${extra.join(", ")}.` });
+        if (p.dispPersist.some((g) => !cfg.dispPersist.includes(g))) out.push({ level: "error", inherit: true, layer: 4, msg: "Không thể bỏ disposition persistent." });
         p.kdes.filter((x) => x.required).forEach((x) => {
             const mine = cfg.kdes.find((y) => y.code === x.code);
-            if (!mine || !mine.required) out.push({ level: "error", layer: 6, msg: `KDE '${x.code}' là required theo CTE cấp Bộ. Cấp Sở chỉ thêm, không bớt (AD-06).` });
+            if (!mine || !mine.required) out.push({ level: "error", inherit: true, layer: 6, msg: `KDE '${x.code}' là required theo CTE cấp Bộ. Cấp Sở chỉ thêm, không bớt.` });
         });
     }
     return out;

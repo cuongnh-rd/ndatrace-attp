@@ -23,9 +23,6 @@ export default function DispositionLayer({ et, cfg, up, parent }: {
 
     return (
         <div className="flex flex-col gap-5">
-            <p className="text-[12.5px] text-gray-500">
-                CTE quy định danh sách trạng thái doanh nghiệp được chọn. Mỗi sự kiện thực tế chỉ ghi đúng 1 disposition (EPCIS 2.0). Chỉ dùng giá trị CBV 2.0 chuẩn. (BR-M5-15, BR-M5-19)
-            </p>
 
             <section>
                 <div className="mb-2 flex items-center gap-2">
@@ -43,13 +40,12 @@ export default function DispositionLayer({ et, cfg, up, parent }: {
                                 </div>
                                 <div className="flex flex-wrap gap-3">
                                     {groupCodes(g).map((c) => (
-                                        <label key={c} className="flex cursor-not-allowed items-center gap-1.5 text-[13px]" title="Không thể bỏ disposition persistent (BR-M5-16).">
+                                        <label key={c} className="flex cursor-not-allowed items-center gap-1.5 text-[13px]" title="Không thể bỏ disposition persistent.">
                                             <input type="checkbox" checked disabled className="accent-brand-600" />
                                             <span className="font-mono">{c}</span> <span className="text-gray-500">— {dispOf(c)?.name}</span>
                                         </label>
                                     ))}
                                 </div>
-                                <p className="mt-1.5 text-[12px] text-gray-500">Các giá trị trong nhóm loại trừ nhau: ghi giá trị này sẽ gỡ giá trị đối lập. Tái kiểm định = sự kiện mới cùng nhóm, ghi đè trạng thái cũ. (BR-M5-17)</p>
                             </div>
                         ))}
                     </div>
@@ -67,7 +63,7 @@ export default function DispositionLayer({ et, cfg, up, parent }: {
                     <button type="button" className={btn} onClick={() => setPreview(true)}><Eye size={14} /> Xem trước khi khai báo</button>
                 </div>
                 {et === "ET-03" && <p className="mb-2 text-[12.5px] text-gray-500">Disposition áp dụng cho output products.</p>}
-                {parent && <p className="mb-2 text-[12.5px] text-gray-500">Cấp Sở chỉ được bỏ bớt giá trị trong danh sách của CTE cấp Bộ, không thêm mới. (AD-06)</p>}
+                {parent && <p className="mb-2 text-[12.5px] text-gray-500">Cấp Sở chỉ được bỏ bớt giá trị trong danh sách của CTE cấp Bộ, không thêm mới.</p>}
                 <div className="flex flex-col gap-1.5">
                     {shown.map((c) => {
                         const on = cfg.dispNormal.includes(c);
@@ -92,7 +88,7 @@ export default function DispositionLayer({ et, cfg, up, parent }: {
                     </div>
                 )}
                 {!cfg.dispNormal.length && !groups.length && (
-                    <Banner kind="warn">CTE không có disposition — doanh nghiệp sẽ không khai báo trạng thái ở sự kiện này. (QĐ-03)</Banner>
+                    <Banner kind="warn">CTE không có disposition — doanh nghiệp sẽ không khai báo trạng thái ở sự kiện này.</Banner>
                 )}
             </section>
 

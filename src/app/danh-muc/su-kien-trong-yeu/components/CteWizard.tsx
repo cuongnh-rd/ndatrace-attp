@@ -105,7 +105,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
             }
         }
         if (!name.trim()) return setSaveIssues(["Nhập tên sự kiện trọng yếu."]);
-        const issues = parent ? validateCte({ et: et!, parentConfig: parent }, cfg).filter((x) => x.level === "error" && x.msg.includes("AD-06")) : [];
+        const issues = parent ? validateCte({ et: et!, parentConfig: parent }, cfg).filter((x) => x.level === "error" && x.inherit) : [];
         if (issues.length) return setSaveIssues(issues.map((x) => x.msg));
         if (editing && draft) {
             patch(cte!, { name: name.trim(), migrated: false });
@@ -145,10 +145,9 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
 
             {parent && (
                 <Banner kind="info">
-                    CTE kế thừa từ cấp Bộ (AD-06): không đổi được ET, bizStep, action; không hạ KDE bắt buộc thành tuỳ chọn; không bỏ disposition persistent và chỉ được thu hẹp danh sách disposition thường. Cấp Sở chỉ được thêm yêu cầu chặt hơn (KDE bắt buộc, ngưỡng cảm biến, chứng nhận).
+                    CTE kế thừa từ cấp Bộ: không đổi được ET, bizStep, action; không hạ KDE bắt buộc thành tuỳ chọn; không bỏ disposition persistent và chỉ được thu hẹp danh sách disposition thường. Cấp Sở chỉ được thêm yêu cầu chặt hơn (KDE bắt buộc, ngưỡng cảm biến, chứng nhận).
                 </Banner>
             )}
-            {cte?.migrated && <Banner kind="warn">Lớp 4 đã chuyển sang cấu trúc danh sách — vui lòng rà soát. (QĐ-06)</Banner>}
             {saveIssues.length > 0 && <div className="mt-3"><IssueList items={saveIssues.map((m) => ({ level: "error", msg: m }))} /></div>}
 
             <div className={`${card} mt-4 grid grid-cols-1 gap-4 px-5 py-4 md:grid-cols-[1fr_200px]`}>
@@ -194,7 +193,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
 
                     {step === 1 && (
                         <div className="flex flex-col gap-2">
-                            {etLocked && <Banner kind="warn">Event Type không thể thay đổi. Tạo CTE mới nếu cần ET khác. (BR-D-06)</Banner>}
+                            {etLocked && <Banner kind="warn">Event Type không thể thay đổi. Tạo CTE mới nếu cần ET khác.</Banner>}
                             {EVENT_TYPES.filter((e) => e.active).map((e) => (
                                 <label key={e.code} className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 ${et === e.code ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"} ${etLocked ? "cursor-not-allowed opacity-70" : ""}`}>
                                     <input type="radio" name="et" className="mt-1 accent-brand-600" checked={et === e.code} disabled={etLocked} onChange={() => setEt(e.code)} />
@@ -209,8 +208,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
 
                     {step === 2 && et && (
                         <div>
-                            {et === "ET-03" && <Banner kind="info">TransformationEvent không có trường action — lớp 3 sẽ tự bỏ qua.</Banner>}
-                            <p className="mb-2 mt-2 text-[13px] text-gray-500">Danh sách lọc theo {et}: ✅ khuyến nghị, ⚠️ ít dùng (vẫn cho chọn). bizStep không tương thích đã ẩn. bizStep quyết định action (lớp 3) và danh sách disposition gợi ý (lớp 4).</p>
+                            <p className="mb-2 mt-2 text-[13px] text-gray-500">Danh sách lọc theo {et}: ✅ khuyến nghị, ⚠️ ít dùng (vẫn cho chọn). bizStep không tương thích đã ẩn. </p>
                             <div className="grid grid-cols-1 gap-1.5 md:grid-cols-2">
                                 {BIZ_STEPS.filter((b) => b.fit[et]).sort((a, b) => (a.fit[et] === "ok" ? 0 : 1) - (b.fit[et] === "ok" ? 0 : 1)).map((b) => (
                                     <label key={b.code} className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2 ${cfg.bizStep === b.code ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"} ${parent ? "cursor-not-allowed opacity-70" : ""}`}>
@@ -229,7 +227,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                         return (
                             <div className="flex flex-col gap-2">
                                 <p className="text-[13px] text-gray-500">
-                                    Tự điền theo bizStep <span className="font-mono">{cfg.bizStep}</span> × {et} (bảng 3.4).
+                                    Tự điền theo bizStep <span className="font-mono">{cfg.bizStep}</span> × {et}.
                                     {rec.length > 1 && <> Giá trị hợp lệ khác: <span className="font-mono">{rec.slice(1).join(", ")}</span>.</>}
                                 </p>
                                 {ACTIONS.map((a) => (
@@ -247,11 +245,9 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                                 ))}
                                 {cfg.action && !rec.includes(cfg.action) && (
                                     <Banner kind="info" action={<button className={`${btn} !px-2.5 !py-1 !text-[12px]`} onClick={() => setAction(rec[0])}>Dùng giá trị khuyến nghị</button>}>
-                                        Tổ hợp {cfg.bizStep} + {cfg.action} ít dùng. Khuyến nghị: {rec.join(" / ")}. action được gắn cờ “Đã sửa tay”.
+                                        Tổ hợp {cfg.bizStep} + {cfg.action} ít dùng. Khuyến nghị: {rec.join(" / ")}.
                                     </Banner>
                                 )}
-                                {et === "ET-01" && cfg.action && cfg.action !== "ADD" && <Banner kind="info">ilmd (thông tin cấp lô) chỉ dùng khi action = ADD. Action hiện tại: {cfg.action}.</Banner>}
-                                {et === "ET-02" && <Banner kind="info">parentID {cfg.action === "OBSERVE" ? "chuyển tuỳ chọn khi action = OBSERVE." : "tự động bắt buộc khi action = ADD/DELETE."}</Banner>}
                             </div>
                         );
                     })()}
@@ -293,7 +289,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
             </div>
             <Dialog open={!!pendingBiz} onClose={() => setPendingBiz(null)} title="Đổi bizStep"
                 footer={<><button className={btn} onClick={() => setPendingBiz(null)}>Huỷ — giữ {cfg.bizStep}</button><button className={btnP} onClick={() => applyBizStep(pendingBiz!)}>Xác nhận đổi</button></>}>
-                Đổi bizStep sang <b className="font-mono">{pendingBiz}</b> sẽ tính lại action và danh sách disposition. Cấu hình lớp 3–4 hiện tại sẽ bị thay thế. (BR-M5-14)
+                Đổi bizStep sang <b className="font-mono">{pendingBiz}</b> sẽ tính lại action và danh sách disposition. Cấu hình lớp 3–4 hiện tại sẽ bị thay thế.
             </Dialog>
         </DashboardLayout>
     );
