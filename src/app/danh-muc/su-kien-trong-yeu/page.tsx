@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 import { Plus, Search, Copy } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Tag, T, btn, btnP, btnSm, inp, card } from "@/components/txng/ui";
-import { EVENT_TYPES, BIZ_STEPS, etOf } from "@/lib/txng/catalog";
+import { EVENT_TYPES, BIZ_STEPS, bizLabel, etLabel } from "@/lib/txng/catalog";
 import {
-    ctes, dispSummary, session, vMain, vActive, STATUS_META, fmtDate, cloneCte,
+    ctes, session, vMain, vActive, STATUS_META, fmtDate, cloneCte,
     type Cte, type CteStatus, type C2Level,
 } from "@/lib/txng/cte";
 import { norm } from "@/lib/txng/process";
@@ -54,12 +54,11 @@ export default function Page() {
             <table className="w-full text-[13.5px]">
                 <thead>
                     <tr className="border-b border-gray-100 bg-gray-50/60 text-left text-[12.5px] font-semibold text-gray-500 dark:border-gray-800 dark:bg-gray-800/40">
-                        <th className="px-4 py-2.5">Mã</th>
+                        <th className="px-4 py-2.5">Mã sự kiện</th>
                         <th className="px-4 py-2.5">Tên sự kiện</th>
-                        <th className="px-4 py-2.5">Event Type</th>
-                        <th className="px-4 py-2.5">bizStep</th>
-                        <th className="px-4 py-2.5">action</th>
-                        <th className="px-4 py-2.5">disposition</th>
+                        <th className="px-4 py-2.5">Cơ quan quản lý</th>
+                        <th className="px-4 py-2.5">Loại sự kiện</th>
+                        <th className="px-4 py-2.5">Công đoạn nghiệp vụ</th>
                         <th className="px-4 py-2.5">Trạng thái</th>
                         <th className="px-4 py-2.5">Phiên bản</th>
                         <th className="px-4 py-2.5">Ngày tạo</th>
@@ -75,18 +74,10 @@ export default function Page() {
                                 <td className="whitespace-nowrap px-4 py-3 font-mono text-[12.5px] text-gray-500">{c.code}</td>
                                 <td className="px-4 py-3">
                                     <div className="font-semibold text-gray-900 dark:text-white">{c.name}</div>
-                                    <div className="text-[12px] text-gray-400">
-                                        {c.org}
-                                        {c.source !== "NEW" && " · Clone"}
-                                    </div>
                                 </td>
-                                <td className="px-4 py-3">
-                                    <div>{c.et}</div>
-                                    <div className="text-[12px] text-gray-400">{etOf(c.et).epcis}</div>
-                                </td>
-                                <td className="px-4 py-3 font-mono text-[12.5px]">{cfg.bizStep || "—"}</td>
-                                <td className="px-4 py-3 font-mono text-[12.5px]">{c.et === "ET-03" ? <span className="text-gray-400">không có</span> : cfg.action ?? "—"}</td>
-                                <td className="whitespace-nowrap px-4 py-3 text-[12.5px]">{dispSummary(cfg)}</td>
+                                <td className="min-w-[180px] px-4 py-3 text-gray-600 dark:text-gray-300">{c.org}</td>
+                                <td className="px-4 py-3">{etLabel(c.et)}</td>
+                                <td className="px-4 py-3">{cfg.bizStep ? bizLabel(cfg.bizStep) : "—"}</td>
                                 <td className="px-4 py-3"><StatusCell c={c} /></td>
                                 <td className="px-4 py-3">v{m.v}</td>
                                 <td className="px-4 py-3 text-gray-500">{fmtDate(c.createdAt)}</td>
@@ -100,7 +91,7 @@ export default function Page() {
                             </tr>
                         );
                     }) : (
-                        <tr><td colSpan={10} className="px-4 py-10 text-center text-gray-400">Không có sự kiện trọng yếu phù hợp bộ lọc.</td></tr>
+                        <tr><td colSpan={9} className="px-4 py-10 text-center text-gray-400">Không có sự kiện trọng yếu phù hợp bộ lọc.</td></tr>
                     )}
                 </tbody>
             </table>
@@ -109,43 +100,42 @@ export default function Page() {
 
     return (
         <DashboardLayout>
-            <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
-                <div>
+            <div className="mb-5">
+                <div className="flex flex-wrap items-center justify-between gap-3">
                     <h1 className="text-xl font-bold text-gray-900 dark:text-white">Sự kiện trọng yếu</h1>
-                    <p className="text-[13px] text-gray-500">CTE Builder — xây dựng sự kiện truy xuất theo chuẩn EPCIS 2.0 qua 7 lớp cấu hình. Quy trình tiêu chuẩn TXNG chỉ dùng được CTE Đang áp dụng.</p>
+                    <div className="flex items-center gap-2">
+                        <select id="role" aria-label="Vai trò mô phỏng" title="Mô phỏng vai trò người dùng" className={`${inp} !w-auto !py-1.5 text-[13px]`} value={session.level}
+                            onChange={(e) => { session.level = e.target.value as C2Level; bump(); }}>
+                            <option value="Bộ">Mô phỏng: Cấp Bộ — Bộ NN&MT</option>
+                            <option value="Sở">Mô phỏng: Cấp Sở — Sở KHCN Hà Nội</option>
+                        </select>
+                        <Link href="/danh-muc/su-kien-trong-yeu/tao-moi" className={btnP}>
+                            <Plus size={14} /> Tạo sự kiện mới
+                        </Link>
+                    </div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <label className="text-[12.5px] text-gray-500" htmlFor="role">Vai trò (mô phỏng)</label>
-                    <select id="role" className={`${inp} !w-auto !py-1.5 text-[13px]`} value={session.level}
-                        onChange={(e) => { session.level = e.target.value as C2Level; bump(); }}>
-                        <option value="Bộ">C2 cấp Bộ — Bộ NN&MT</option>
-                        <option value="Sở">C2 cấp Sở — Sở KHCN Hà Nội</option>
-                    </select>
-                    <Link href="/danh-muc/su-kien-trong-yeu/tao-moi" className={btnP}>
-                        <Plus size={14} /> Tạo CTE mới
-                    </Link>
-                </div>
+                <p className="mt-1 text-[13px] text-gray-500">Xây dựng sự kiện truy xuất theo chuẩn EPCIS 2.0. Quy trình tiêu chuẩn TXNG chỉ dùng được CTE Đang áp dụng.</p>
             </div>
 
             <div className="mb-4 flex flex-wrap gap-2.5">
                 <div className="relative">
                     <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input className={`${inp} !w-72 pl-8`} placeholder="Tìm theo tên hoặc mã CTE" value={q} onChange={(e) => setQ(e.target.value)} />
+                    <input className={`${inp} !w-72 pl-8`} placeholder="Tìm theo tên hoặc mã sự kiện" value={q} onChange={(e) => setQ(e.target.value)} />
                 </div>
                 <select className={`${inp} !w-auto`} value={fEt} onChange={(e) => setEt(e.target.value)}>
-                    <option value="">Tất cả Event Type</option>
-                    {EVENT_TYPES.map((e) => <option key={e.code} value={e.code}>{e.code} · {e.epcis}</option>)}
+                    <option value="">Tất cả loại sự kiện</option>
+                    {EVENT_TYPES.map((e) => <option key={e.code} value={e.code}>{etLabel(e.code)}</option>)}
                 </select>
                 <select className={`${inp} !w-auto`} value={fStep} onChange={(e) => setStep(e.target.value)}>
-                    <option value="">Tất cả bizStep</option>
-                    {BIZ_STEPS.map((b) => <option key={b.code} value={b.code}>{b.code}</option>)}
+                    <option value="">Tất cả công đoạn nghiệp vụ</option>
+                    {BIZ_STEPS.map((b) => <option key={b.code} value={b.code}>{bizLabel(b.code)}</option>)}
                 </select>
                 <select className={`${inp} !w-auto`} value={fStatus} onChange={(e) => setStatus(e.target.value)}>
                     <option value="">Tất cả trạng thái</option>
                     {STATUS_FILTER.map((s) => <option key={s} value={s}>{STATUS_META[s].label}</option>)}
                 </select>
                 <select className={`${inp} !w-auto`} value={fLevel} onChange={(e) => setLevel(e.target.value)}>
-                    <option value="">Mọi cấp C2</option>
+                    <option value="">Mọi cấp quản lý</option>
                     <option value="Bộ">Cấp Bộ</option>
                     <option value="Sở">Cấp Sở</option>
                 </select>

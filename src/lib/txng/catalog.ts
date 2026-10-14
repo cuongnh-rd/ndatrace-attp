@@ -16,24 +16,26 @@ export interface EventType {
 }
 
 export const EVENT_TYPES: EventType[] = [
-    { code: "ET-01", epcis: "ObjectEvent", name: "Sự kiện trên đối tượng", desc: "Ghi nhận việc xảy ra với sản phẩm / lô: tạo định danh, thu hoạch, vận chuyển, kiểm tra…", active: true },
-    { code: "ET-02", epcis: "AggregationEvent", name: "Sự kiện gộp / tách", desc: "Đóng gói sản phẩm vào thùng, pallet hoặc tách ra", active: true },
-    { code: "ET-03", epcis: "TransformationEvent", name: "Sự kiện chế biến", desc: "Đầu vào bị tiêu thụ để tạo ra đầu ra mới (sơ chế, chế biến, phối trộn)", active: true },
-    { code: "ET-04", epcis: "TransactionEvent", name: "Sự kiện giao dịch", desc: "Gắn sản phẩm với chứng từ giao dịch: đơn hàng, hoá đơn, vận đơn", active: true },
-    { code: "ET-05", epcis: "AssociationEvent", name: "Sự kiện gắn kết", desc: "Gắn thiết bị (cảm biến, tag) với đối tượng", active: true },
+    { code: "ET-01", epcis: "ObjectEvent", name: "Ghi nhận trạng thái", desc: "Ghi nhận việc xảy ra với sản phẩm / lô: tạo định danh, thu hoạch, vận chuyển, kiểm tra…", active: true },
+    { code: "ET-02", epcis: "AggregationEvent", name: "Đóng gói, tách, hợp nhất", desc: "Đóng gói sản phẩm vào thùng, pallet hoặc tách ra", active: true },
+    { code: "ET-03", epcis: "TransformationEvent", name: "Chuyển đổi, chế biến", desc: "Đầu vào bị tiêu thụ để tạo ra đầu ra mới (sơ chế, chế biến, phối trộn)", active: true },
+    { code: "ET-04", epcis: "TransactionEvent", name: "Liên kết giao dịch thương mại", desc: "Gắn sản phẩm với chứng từ giao dịch: đơn hàng, hoá đơn, vận đơn", active: true },
+    { code: "ET-05", epcis: "AssociationEvent", name: "Thiết lập quan hệ định danh", desc: "Gắn thiết bị (cảm biến, tag) với đối tượng", active: true },
 ];
 export const etOf = (code: EtCode) => EVENT_TYPES.find((e) => e.code === code)!;
+/** Tên hiển thị theo thuật ngữ NĐ 372: tên Việt trước, thuật ngữ chuẩn trong ngoặc */
+export const etLabel = (code: EtCode) => `${etOf(code).name} (${etOf(code).epcis})`;
 
-export const ACTIONS: { code: Action; desc: string }[] = [
-    { code: "ADD", desc: "Đối tượng bắt đầu tồn tại / được thêm vào (tạo định danh, thu hoạch, đóng gói)" },
-    { code: "OBSERVE", desc: "Quan sát đối tượng đã tồn tại, không thay đổi (vận chuyển, kiểm tra)" },
-    { code: "DELETE", desc: "Đối tượng kết thúc vòng đời / bị gỡ ra (tiêu huỷ, tách gói)" },
+export const ACTIONS: { code: Action; name: string; desc: string }[] = [
+    { code: "ADD", name: "Thêm mới", desc: "Đối tượng bắt đầu tồn tại / được thêm vào (tạo định danh, thu hoạch, đóng gói)" },
+    { code: "OBSERVE", name: "Ghi nhận", desc: "Quan sát đối tượng đã tồn tại, không thay đổi (vận chuyển, kiểm tra)" },
+    { code: "DELETE", name: "Kết thúc", desc: "Đối tượng kết thúc vòng đời / bị gỡ ra (tiêu huỷ, tách gói)" },
 ];
 
 /** Bảng 3.3 — bizStep × ET. Không có trong map = ❌ (ẩn). */
 export interface BizStep { code: string; name: string; fit: Partial<Record<EtCode, Fit>> }
 export const BIZ_STEPS: BizStep[] = [
-    { code: "commissioning", name: "Kích hoạt định danh", fit: { "ET-01": "ok", "ET-03": "ok", "ET-05": "warn" } },
+    { code: "commissioning", name: "Kích hoạt mã UID", fit: { "ET-01": "ok", "ET-03": "ok", "ET-05": "warn" } },
     { code: "harvesting", name: "Thu hoạch", fit: { "ET-01": "ok" } },
     { code: "creating_class_instance", name: "Tạo lô sản phẩm", fit: { "ET-01": "ok", "ET-03": "ok" } },
     { code: "transforming", name: "Chế biến / sơ chế", fit: { "ET-03": "ok" } },
@@ -69,7 +71,7 @@ export const suggestAction = (et: EtCode, bizStep: string): Action[] =>
 /** Danh mục disposition CBV 2.0 (chỉ giá trị chuẩn — BR-M5-19). group = nhóm persistent loại trừ nhau. */
 export interface Disposition { code: string; name: string; group?: string }
 export const DISPOSITIONS: Disposition[] = [
-    { code: "active", name: "Đang lưu hành" },
+    { code: "active", name: "Đang lưu thông" },
     { code: "in_progress", name: "Đang xử lý" },
     { code: "in_transit", name: "Đang vận chuyển" },
     { code: "sellable_accessible", name: "Sẵn sàng bán" },
@@ -131,15 +133,15 @@ const PERSIST_REQ: Record<string, string[]> = { "ET-01|inspecting": ["inspection
 export const persistGroups = (et: EtCode, bizStep: string) => PERSIST_REQ[`${et}|${bizStep}`] ?? [];
 
 export const BIZ_TX_TYPES: { code: string; name: string }[] = [
-    { code: "po", name: "Purchase Order — Đơn đặt hàng" },
-    { code: "poc", name: "Purchase Order Confirmation — Xác nhận đơn hàng" },
-    { code: "desadv", name: "Despatch Advice — Thông báo giao hàng" },
-    { code: "recadv", name: "Receiving Advice — Thông báo nhận hàng" },
-    { code: "inv", name: "Invoice — Hoá đơn" },
-    { code: "bol", name: "Bill of Lading — Vận đơn" },
-    { code: "prodorder", name: "Production Order — Lệnh sản xuất" },
-    { code: "pedigree", name: "Pedigree — Hồ sơ phả hệ" },
-    { code: "rma", name: "Return Authorization — Phiếu trả hàng" },
+    { code: "po", name: "Đơn đặt hàng" },
+    { code: "poc", name: "Xác nhận đơn hàng" },
+    { code: "desadv", name: "Thông báo giao hàng" },
+    { code: "recadv", name: "Thông báo nhận hàng" },
+    { code: "inv", name: "Hóa đơn" },
+    { code: "bol", name: "Vận đơn" },
+    { code: "prodorder", name: "Lệnh sản xuất" },
+    { code: "pedigree", name: "Hồ sơ phả hệ" },
+    { code: "rma", name: "Phiếu trả hàng" },
 ];
 
 /** KDE của sự kiện (F-M3) — allow: ET dùng được; auto: ET tự động bắt buộc. */
@@ -220,3 +222,13 @@ export const LIB_KDES: LibKde[] = [
 ];
 export const libOf = (code: string) => LIB_KDES.find((k) => k.code === code);
 export const fieldName = (code: string) => kdeOf(code)?.name ?? libOf(code)?.name ?? code;
+
+/* ---------- Nhãn hiển thị: "Tên Việt (thuật ngữ)" ---------- */
+const lbl = (name: string | undefined, code: string) => (name ? `${name} (${code})` : code);
+export const actLabel = (a: Action) => lbl(ACTIONS.find((x) => x.code === a)?.name, a);
+export const bizLabel = (code: string) => lbl(bizStepOf(code)?.name, code);
+export const dispLabel = (code: string) => lbl(dispOf(code)?.name, code);
+export const txLabel = (code: string) => lbl(BIZ_TX_TYPES.find((x) => x.code === code)?.name, code);
+export const fieldLabel = (code: string) => lbl(fieldName(code) === code ? undefined : fieldName(code), code);
+/** Tên các lớp cấu hình theo thuật ngữ NĐ 372 */
+export const LAYER_NAMES = ["Loại sự kiện", "Công đoạn nghiệp vụ (bizStep)", "Tác động lên đối tượng (action)", "Trạng thái sản phẩm (disposition)", "Chứng từ liên quan (bizTransaction)", "Dữ liệu sự kiện (KDE)", "Cấu hình bổ sung"];

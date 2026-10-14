@@ -3,7 +3,7 @@
  * "Sự kiện trọng yếu" và "Quy trình tiêu chuẩn TXNG".
  */
 import {
-    type Action, type EtCode, EVENT_KDES, bizStepOf, ilmdAllowed, etOf, dispOf, groupCodes, persistGroups, suggestAction, suggestDisp, PERSIST_GROUPS,
+    type Action, type EtCode, EVENT_KDES, actLabel, bizLabel, bizStepOf, dispLabel, etLabel, fieldLabel, ilmdAllowed, dispOf, groupCodes, persistGroups, suggestAction, suggestDisp, PERSIST_GROUPS,
 } from "./catalog";
 
 export type CteStatus = "draft" | "active" | "scheduled" | "superseded";
@@ -226,44 +226,44 @@ export interface Issue { level: "error" | "warn"; layer: number; msg: string; fi
 export function validateCte(c: Pick<Cte, "et" | "parentConfig">, cfg: CteConfig): Issue[] {
     const out: Issue[] = [];
     const et = c.et;
-    if (!cfg.bizStep) out.push({ level: "error", layer: 2, msg: "Lớp 2 — chưa chọn bizStep." });
-    if (et !== "ET-03" && !cfg.action) out.push({ level: "error", layer: 3, msg: "Lớp 3 — chưa có action." });
+    if (!cfg.bizStep) out.push({ level: "error", layer: 2, msg: "Chưa chọn công đoạn nghiệp vụ (bizStep)." });
+    if (et !== "ET-03" && !cfg.action) out.push({ level: "error", layer: 3, msg: "Chưa chọn tác động lên đối tượng (action)." });
     else {
         const fit = bizStepOf(cfg.bizStep)?.fit[et];
-        if (!fit) out.push({ level: "error", layer: 2, msg: `bizStep "${cfg.bizStep}" không tương thích ${etOf(et).epcis}.` });
-        else if (fit === "warn") out.push({ level: "warn", layer: 2, msg: `bizStep "${cfg.bizStep}" ít dùng với ${etOf(et).epcis}.` });
+        if (!fit) out.push({ level: "error", layer: 2, msg: `Công đoạn ${bizLabel(cfg.bizStep)} không tương thích với ${etLabel(et)}.` });
+        else if (fit === "warn") out.push({ level: "warn", layer: 2, msg: `Công đoạn ${bizLabel(cfg.bizStep)} ít dùng với ${etLabel(et)}.` });
     }
     if (cfg.bizStep && et !== "ET-03" && cfg.action && !suggestAction(et, cfg.bizStep).includes(cfg.action))
-        out.push({ level: "warn", layer: 3, msg: `action ${cfg.action} lệch khuyến nghị (${suggestAction(et, cfg.bizStep).join(" / ")}) cho bizStep ${cfg.bizStep}.` });
-    if (cfg.legacyDisposition !== undefined) out.push({ level: "error", layer: 4, msg: "Lớp 4 — disposition đang ở cấu trúc cũ, cần rà soát lại theo dạng danh sách." });
+        out.push({ level: "warn", layer: 3, msg: `${actLabel(cfg.action)} lệch khuyến nghị (${suggestAction(et, cfg.bizStep).map(actLabel).join(" / ")}) cho công đoạn ${bizLabel(cfg.bizStep)}.` });
+    if (cfg.legacyDisposition !== undefined) out.push({ level: "error", layer: 4, msg: "Trạng thái sản phẩm (disposition) cần được rà soát lại." });
     else {
         const missing = persistGroups(et, cfg.bizStep).filter((g) => !cfg.dispPersist.includes(g));
-        missing.forEach((g) => out.push({ level: "error", layer: 4, fix: "persist", msg: `Lớp 4 — bizStep ${cfg.bizStep} yêu cầu nhóm persistent ${groupLabel(g)}.` }));
-        if (!cfg.dispNormal.length && !cfg.dispPersist.length) out.push({ level: "warn", layer: 4, msg: "CTE không có disposition — doanh nghiệp sẽ không khai báo trạng thái ở sự kiện này." });
+        missing.forEach((g) => out.push({ level: "error", layer: 4, fix: "persist", msg: `Công đoạn ${bizLabel(cfg.bizStep)} bắt buộc có trạng thái ${groupCodes(g).map(dispLabel).join(" / ")}.` }));
+        if (!cfg.dispNormal.length && !cfg.dispPersist.length) out.push({ level: "warn", layer: 4, msg: "Sự kiện chưa có trạng thái sản phẩm — doanh nghiệp sẽ không khai báo trạng thái ở sự kiện này." });
     }
-    if (et === "ET-04" && cfg.bizTxTypes.length === 0) out.push({ level: "error", layer: 5, msg: "TransactionEvent yêu cầu chọn ≥1 loại giao dịch ở lớp 5." });
+    if (et === "ET-04" && cfg.bizTxTypes.length === 0) out.push({ level: "error", layer: 5, msg: `${etLabel(et)} yêu cầu chọn ít nhất 1 chứng từ liên quan (bizTransaction).` });
     if (et === "ET-01" && !cfg.kdes.some((x) => x.code === "epcList" || x.code === "quantityList"))
-        out.push({ level: "error", layer: 6, msg: "ObjectEvent yêu cầu epcList hoặc quantityList." });
+        out.push({ level: "error", layer: 6, msg: `${etLabel(et)} yêu cầu ${fieldLabel("epcList")} hoặc ${fieldLabel("quantityList")}.` });
     cfg.kdes.forEach((x) => {
         const d = EVENT_KDES.find((e) => e.code === x.code);
-        if (d && !d.allow.includes(et)) out.push({ level: "error", layer: 6, msg: `KDE '${x.code}' không tương thích ${etOf(et).epcis}.` });
+        if (d && !d.allow.includes(et)) out.push({ level: "error", layer: 6, msg: `Trường ${fieldLabel(x.code)} không tương thích với ${etLabel(et)}.` });
     });
     if (cfg.ilmd.length && !ilmdAllowed(et, cfg.action))
-        out.push({ level: "error", layer: 6, msg: `ilmd không được phép khi action = ${cfg.action}. Xoá cấu hình ilmd hoặc đổi action thành ADD.` });
+        out.push({ level: "error", layer: 6, msg: `Thông tin lô/mẻ (ILMD) không áp dụng khi tác động là ${cfg.action ? actLabel(cfg.action) : "—"}. Bỏ thông tin lô/mẻ hoặc đổi sang ${actLabel("ADD")}.` });
     const auto = autoKdes(et, cfg.action);
     if (cfg.kdes.filter((x) => !auto.includes(x.code)).length === 0)
-        out.push({ level: "error", layer: 6, msg: "Cần chọn ít nhất 1 KDE ngoài các trường tự động bắt buộc." });
+        out.push({ level: "error", layer: 6, msg: "Cần chọn ít nhất 1 trường thông tin ngoài các trường bắt buộc tự động." });
     // AD-06: Sở chỉ thêm chặt hơn Bộ
     if (c.parentConfig) {
         const p = c.parentConfig;
         if (p.action !== cfg.action || p.bizStep !== cfg.bizStep)
-            out.push({ level: "error", inherit: true, layer: 2, msg: "Không được phép thay đổi ET, action hoặc bizStep của CTE kế thừa từ Bộ." });
+            out.push({ level: "error", inherit: true, layer: 2, msg: "Không được thay đổi loại sự kiện, công đoạn nghiệp vụ hoặc tác động của sự kiện kế thừa từ cấp Bộ." });
         const extra = cfg.dispNormal.filter((d) => !p.dispNormal.includes(d));
-        if (extra.length) out.push({ level: "error", inherit: true, layer: 4, msg: `Cấp Sở chỉ được thu hẹp danh sách disposition của CTE cấp Bộ — không thêm ${extra.join(", ")}.` });
-        if (p.dispPersist.some((g) => !cfg.dispPersist.includes(g))) out.push({ level: "error", inherit: true, layer: 4, msg: "Không thể bỏ disposition persistent." });
+        if (extra.length) out.push({ level: "error", inherit: true, layer: 4, msg: `Cấp Sở chỉ được thu hẹp danh sách trạng thái sản phẩm của sự kiện cấp Bộ — không thêm ${extra.map(dispLabel).join(", ")}.` });
+        if (p.dispPersist.some((g) => !cfg.dispPersist.includes(g))) out.push({ level: "error", inherit: true, layer: 4, msg: "Không thể bỏ trạng thái bắt buộc theo chuẩn." });
         p.kdes.filter((x) => x.required).forEach((x) => {
             const mine = cfg.kdes.find((y) => y.code === x.code);
-            if (!mine || !mine.required) out.push({ level: "error", inherit: true, layer: 6, msg: `KDE '${x.code}' là required theo CTE cấp Bộ. Cấp Sở chỉ thêm, không bớt.` });
+            if (!mine || !mine.required) out.push({ level: "error", inherit: true, layer: 6, msg: `Trường ${fieldLabel(x.code)} là bắt buộc theo sự kiện cấp Bộ. Cấp Sở chỉ thêm, không bớt.` });
         });
     }
     return out;

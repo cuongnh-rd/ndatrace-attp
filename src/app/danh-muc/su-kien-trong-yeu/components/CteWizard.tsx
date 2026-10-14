@@ -8,15 +8,15 @@ import DispositionLayer from "./DispositionLayer";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Banner, Dialog, IssueList, Seg, Tag, T, btn, btnP, card, inp, label } from "@/components/txng/ui";
 import {
-    ACTIONS, BIZ_STEPS, BIZ_TX_TYPES, CERT_TYPES, EVENT_KDES, EVENT_TYPES, ILMD_FIELDS, SENSOR_TYPES,
-    type Action, type EtCode, etOf, ilmdAllowed, suggestAction,
+    ACTIONS, BIZ_STEPS, BIZ_TX_TYPES, CERT_TYPES, EVENT_KDES, EVENT_TYPES, ILMD_FIELDS, LAYER_NAMES, SENSOR_TYPES,
+    type Action, type EtCode, actLabel, bizLabel, etLabel, etOf, fieldLabel, ilmdAllowed, suggestAction, txLabel,
 } from "@/lib/txng/catalog";
 import {
     type Cte, type CteConfig, type KdeCfg, autoKdes, clone, ctes, derivedFromBizStep, emptyConfig, ME_USER, myOrg, nextCteCode, nextCteId,
     patch, session, TODAY, validateCte, vDraft,
 } from "@/lib/txng/cte";
 
-const LAYERS = ["Event Type", "bizStep", "action", "disposition", "bizTransactionType", "KDE + ilmd", "Cấu hình bổ sung"];
+const LAYERS = LAYER_NAMES;
 
 /** Đồng bộ KDE tự động bắt buộc theo ET + action (AC-17: ET-02 OBSERVE → parentID chuyển optional) */
 function syncAuto(et: EtCode, c: CteConfig): CteConfig {
@@ -50,9 +50,9 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
 
     /** Kiểm tra lớp hiện tại trước khi sang lớp sau */
     const layerError = (n: number): string => {
-        if (n === 1 && !et) return "Chọn Event Type.";
-        if (n === 2 && !cfg.bizStep) return "Chọn bizStep.";
-        if (n === 3 && !skipL3 && !cfg.action) return "Chưa có action.";
+        if (n === 1 && !et) return "Chọn loại sự kiện.";
+        if (n === 2 && !cfg.bizStep) return "Chọn công đoạn nghiệp vụ.";
+        if (n === 3 && !skipL3 && !cfg.action) return "Chưa chọn tác động lên đối tượng.";
         if (n === 4 && cfg.legacyDisposition !== undefined) return "Disposition đang ở cấu trúc cũ — rà soát lại danh sách.";
         if (n === 5 && et === "ET-04" && !cfg.bizTxTypes.length) return "TransactionEvent yêu cầu chọn ≥1 loại giao dịch.";
         if (n === 6 && !cfg.kdes.some((x) => !auto.includes(x.code))) return "Cần chọn ít nhất 1 KDE ngoài các trường tự động bắt buộc.";
@@ -80,7 +80,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
     const applyBizStep = (b: string) => {
         if (!et) return;
         const fit = BIZ_STEPS.find((x) => x.code === b)?.fit[et];
-        setWarnStep(fit === "warn" ? `bizStep '${b}' ít dùng với ${etOf(et).epcis}. Bạn có chắc?` : "");
+        setWarnStep(fit === "warn" ? `Công đoạn ${bizLabel(b)} ít dùng với loại sự kiện ${etLabel(et)}. Bạn có chắc?` : "");
         setCfg((c) => syncAuto(et, { ...c, bizStep: b, ...derivedFromBizStep(et, b), action: et === "ET-03" ? null : derivedFromBizStep(et, b).action }));
         setPendingBiz(null);
     };
@@ -99,7 +99,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
         for (let i = 1; i <= 6; i++) {
             const e = layerError(i);
             if (e) {
-                setSaveIssues([`Lớp ${i} — ${e}`]);
+                setSaveIssues([`${LAYERS[i - 1]} — ${e}`]);
                 setStep(i);
                 return;
             }
@@ -137,7 +137,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                 </Link>
                 <div className="flex-1">
                     <h1 className="text-xl font-bold text-gray-900 dark:text-white">{editing ? `Sửa ${cte!.name} — v${draft?.v} (Nháp)` : "Tạo sự kiện trọng yếu mới"}</h1>
-                    <p className="text-[13px] text-gray-500">Cấu hình tuần tự 7 lớp. Lớp sau chỉ mở khi lớp trước hoàn thành.</p>
+                    <p className="text-[13px] text-gray-500">Cấu hình tuần tự từng bước. Bước sau chỉ mở khi bước trước hoàn thành.</p>
                 </div>
                 <Link href={editing ? `/danh-muc/su-kien-trong-yeu/${cte!.id}` : "/danh-muc/su-kien-trong-yeu"} className={btn}>Huỷ</Link>
                 <button className={btnP} onClick={save}>Lưu nháp</button>
@@ -174,7 +174,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                                         {s === "done" ? <Check size={13} /> : s === "lock" ? <Lock size={11} /> : n}
                                     </span>
                                     <span className="flex-1">
-                                        Lớp {n} · {l}
+                                        {l}
                                         {s === "skip" && <span className="block text-[11.5px] font-normal text-gray-400">Bỏ qua — ET-03 không có action</span>}
                                         {n === 3 && s === "done" && cfg.actionManual && <span className="block text-[11.5px] font-normal text-amber-600">Đã sửa tay</span>}
                                         {s === "todo" && <span className="block text-[11.5px] font-normal text-red-500">Chưa hoàn thành</span>}
@@ -187,18 +187,18 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
 
                 <section className={`${card} p-5`}>
                     <div className="mb-4 flex items-center justify-between gap-3">
-                        <h2 className="text-[16px] font-semibold text-gray-900 dark:text-white">Lớp {step} · {LAYERS[step - 1]}</h2>
-                        {et && step > 1 && <Tag cls={T.info}>{et} · {etOf(et).epcis}</Tag>}
+                        <h2 className="text-[16px] font-semibold text-gray-900 dark:text-white">{LAYERS[step - 1]}</h2>
+                        {et && step > 1 && <Tag cls={T.info}>{etLabel(et)}</Tag>}
                     </div>
 
                     {step === 1 && (
                         <div className="flex flex-col gap-2">
-                            {etLocked && <Banner kind="warn">Event Type không thể thay đổi. Tạo CTE mới nếu cần ET khác.</Banner>}
+                            {etLocked && <Banner kind="warn">Loại sự kiện không thể thay đổi. Tạo sự kiện mới nếu cần loại khác.</Banner>}
                             {EVENT_TYPES.filter((e) => e.active).map((e) => (
                                 <label key={e.code} className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 ${et === e.code ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"} ${etLocked ? "cursor-not-allowed opacity-70" : ""}`}>
                                     <input type="radio" name="et" className="mt-1 accent-brand-600" checked={et === e.code} disabled={etLocked} onChange={() => setEt(e.code)} />
                                     <div>
-                                        <div className="font-semibold">{e.code} · {e.epcis} <span className="font-normal text-gray-500">— {e.name}</span></div>
+                                        <div className="font-semibold">{etLabel(e.code)}</div>
                                         <div className="text-[12.5px] text-gray-500">{e.desc}</div>
                                     </div>
                                 </label>
@@ -208,12 +208,12 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
 
                     {step === 2 && et && (
                         <div>
-                            <p className="mb-2 mt-2 text-[13px] text-gray-500">Danh sách lọc theo {et}: ✅ khuyến nghị, ⚠️ ít dùng (vẫn cho chọn). bizStep không tương thích đã ẩn. </p>
+                            <p className="mb-2 mt-2 text-[13px] text-gray-500">Danh sách công đoạn phù hợp với {etOf(et).name}: ✅ khuyến nghị, ⚠️ ít dùng (vẫn cho chọn).</p>
                             <div className="grid grid-cols-1 gap-1.5 md:grid-cols-2">
                                 {BIZ_STEPS.filter((b) => b.fit[et]).sort((a, b) => (a.fit[et] === "ok" ? 0 : 1) - (b.fit[et] === "ok" ? 0 : 1)).map((b) => (
                                     <label key={b.code} className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2 ${cfg.bizStep === b.code ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"} ${parent ? "cursor-not-allowed opacity-70" : ""}`}>
                                         <input type="radio" name="bs" className="accent-brand-600" checked={cfg.bizStep === b.code} disabled={!!parent} onChange={() => pickBizStep(b.code)} />
-                                        <span className="flex-1"><span className="font-mono text-[13px]">{b.code}</span> <span className="text-[12.5px] text-gray-500">— {b.name}</span></span>
+                                        <span className="flex-1 text-[13.5px]">{bizLabel(b.code)}</span>
                                         {b.fit[et] === "warn" ? <Tag cls={T.warn}><AlertTriangle size={11} /> ít dùng</Tag> : <Tag cls={T.ok}>✓</Tag>}
                                     </label>
                                 ))}
@@ -227,16 +227,16 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                         return (
                             <div className="flex flex-col gap-2">
                                 <p className="text-[13px] text-gray-500">
-                                    Tự điền theo bizStep <span className="font-mono">{cfg.bizStep}</span> × {et}.
-                                    {rec.length > 1 && <> Giá trị hợp lệ khác: <span className="font-mono">{rec.slice(1).join(", ")}</span>.</>}
+                                    Tự điền theo công đoạn {bizLabel(cfg.bizStep)} và loại sự kiện {etLabel(et)}.
+                                    {rec.length > 1 && <> Giá trị hợp lệ khác: {rec.slice(1).map(actLabel).join(", ")}.</>}
                                 </p>
                                 {ACTIONS.map((a) => (
                                     <label key={a.code} title={a.desc} className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 ${cfg.action === a.code ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"} ${parent ? "cursor-not-allowed opacity-70" : ""}`}>
                                         <input type="radio" name="act" className="mt-1 accent-brand-600" checked={cfg.action === a.code} disabled={!!parent} onChange={() => setAction(a.code)} />
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2">
-                                                <span className="font-mono font-semibold">{a.code}</span>
-                                                {rec[0] === a.code && <Tag cls={T.ok}>Khuyến nghị theo bizStep {cfg.bizStep}</Tag>}
+                                                <span className="font-semibold">{actLabel(a.code)}</span>
+                                                {rec[0] === a.code && <Tag cls={T.ok}>Khuyến nghị theo công đoạn {bizLabel(cfg.bizStep)}</Tag>}
                                                 {rec[0] !== a.code && rec.includes(a.code) && <Tag cls={T.mute}>Hợp lệ</Tag>}
                                             </div>
                                             <div className="text-[12.5px] text-gray-500">{a.desc}</div>
@@ -245,7 +245,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                                 ))}
                                 {cfg.action && !rec.includes(cfg.action) && (
                                     <Banner kind="info" action={<button className={`${btn} !px-2.5 !py-1 !text-[12px]`} onClick={() => setAction(rec[0])}>Dùng giá trị khuyến nghị</button>}>
-                                        Tổ hợp {cfg.bizStep} + {cfg.action} ít dùng. Khuyến nghị: {rec.join(" / ")}.
+                                        {actLabel(cfg.action)} ít dùng với công đoạn {bizLabel(cfg.bizStep)}. Khuyến nghị: {rec.map(actLabel).join(" / ")}.
                                     </Banner>
                                 )}
                             </div>
@@ -267,7 +267,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                                         <label key={b.code} className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2 ${on ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"}`}>
                                             <input type="checkbox" className="accent-brand-600" checked={on}
                                                 onChange={() => up({ bizTxTypes: on ? cfg.bizTxTypes.filter((x) => x !== b.code) : [...cfg.bizTxTypes, b.code] })} />
-                                            <span><span className="font-mono text-[13px]">{b.code}</span> <span className="text-[12.5px] text-gray-500">— {b.name}</span></span>
+                                            <span className="text-[13.5px]">{txLabel(b.code)}</span>
                                         </label>
                                     );
                                 })}
@@ -289,7 +289,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
             </div>
             <Dialog open={!!pendingBiz} onClose={() => setPendingBiz(null)} title="Đổi bizStep"
                 footer={<><button className={btn} onClick={() => setPendingBiz(null)}>Huỷ — giữ {cfg.bizStep}</button><button className={btnP} onClick={() => applyBizStep(pendingBiz!)}>Xác nhận đổi</button></>}>
-                Đổi bizStep sang <b className="font-mono">{pendingBiz}</b> sẽ tính lại action và danh sách disposition. Cấu hình lớp 3–4 hiện tại sẽ bị thay thế.
+                Đổi công đoạn nghiệp vụ sang <b>{pendingBiz && bizLabel(pendingBiz)}</b> sẽ tính lại tác động lên đối tượng (action) và trạng thái sản phẩm (disposition). Cấu hình hiện tại của 2 bước này sẽ bị thay thế.
             </Dialog>
         </DashboardLayout>
     );
@@ -299,7 +299,6 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
 function KdeLayer({ et, cfg, up, parent }: { et: EtCode; cfg: CteConfig; up: (p: Partial<CteConfig>) => void; parent?: CteConfig }) {
     const auto = autoKdes(et, cfg.action);
     const allowed = useMemo(() => EVENT_KDES.filter((k) => k.allow.includes(et)), [et]);
-    const forbidden = EVENT_KDES.filter((k) => !k.allow.includes(et)).map((k) => k.code);
     const parentReq = (code: string) => !!parent?.kdes.find((x) => x.code === code && x.required);
     const ilmdOk = ilmdAllowed(et, cfg.action);
 
@@ -319,11 +318,10 @@ function KdeLayer({ et, cfg, up, parent }: { et: EtCode; cfg: CteConfig; up: (p:
                 <div className="flex flex-wrap items-center gap-2.5">
                     <input type="checkbox" className="accent-brand-600" checked={!!sel} disabled={lockedReq} onChange={() => toggle(list, code)} />
                     <div className="min-w-0 flex-1">
-                        <div className="text-[13.5px] font-medium">{name}</div>
-                        <div className="font-mono text-[12px] text-gray-400">{code}</div>
+                        <div className="text-[13.5px] font-medium">{name} <span className="font-normal text-gray-400">({code})</span></div>
                     </div>
-                    {isAuto && <Tag cls={T.gs1}><Lock size={11} /> Auto-required</Tag>}
-                    {!isAuto && parentReq(code) && <Tag cls={T.info}>Required theo CTE cấp Bộ</Tag>}
+                    {isAuto && <Tag cls={T.gs1}><Lock size={11} /> Bắt buộc tự động</Tag>}
+                    {!isAuto && parentReq(code) && <Tag cls={T.info}>Bắt buộc theo sự kiện cấp Bộ</Tag>}
                     {sel && !lockedReq && (
                         <Seg xs value={sel.required ? "r" : "o"} options={[["o", "Tuỳ chọn"], ["r", "Bắt buộc"]]} onChange={(v) => patch(list, code, { required: v === "r" })} />
                     )}
@@ -340,19 +338,19 @@ function KdeLayer({ et, cfg, up, parent }: { et: EtCode; cfg: CteConfig; up: (p:
     return (
         <div className="flex flex-col gap-5">
             <div>
-                <h3 className="mb-1 text-[14px] font-semibold">KDE của sự kiện</h3>
-                <p className="mb-2 text-[12.5px] text-gray-500">Danh sách lọc theo {et}. Không hiển thị KDE không tương thích: <span className="font-mono">{forbidden.join(", ") || "—"}</span>.</p>
+                <h3 className="mb-1 text-[14px] font-semibold">Trường thông tin của sự kiện</h3>
+                <p className="mb-2 text-[12.5px] text-gray-500">Danh sách trường thông tin tương thích với {etOf(et).name}.</p>
                 <div className="flex flex-col gap-1.5">{ordered.map((k) => row("kdes", k.code, k.name))}</div>
             </div>
             <div>
-                <h3 className="mb-1 text-[14px] font-semibold">ilmd — thông tin cấp lô</h3>
+                <h3 className="mb-1 text-[14px] font-semibold">Thông tin lô/mẻ (ILMD)</h3>
                 {ilmdOk ? (
                     <>
-                        <p className="mb-2 text-[12.5px] text-gray-500">{et === "ET-03" ? "ilmd cho output products." : "Áp dụng vì ObjectEvent + action ADD."}</p>
+                        <p className="mb-2 text-[12.5px] text-gray-500">{et === "ET-03" ? "Áp dụng cho thành phẩm đầu ra." : "Áp dụng khi tạo mới đối tượng."}</p>
                         <div className="grid grid-cols-1 gap-1.5 md:grid-cols-2">{ILMD_FIELDS.map((f) => row("ilmd", f.code, f.name))}</div>
                     </>
                 ) : (
-                    <Banner kind="info">ilmd chỉ dùng khi ET-01 với action = ADD, hoặc ET-03.{cfg.action ? ` Action hiện tại: ${cfg.action}.` : ""}</Banner>
+                    <Banner kind="info">Thông tin lô/mẻ chỉ khai báo khi tạo mới đối tượng ({actLabel("ADD")}) hoặc khi chuyển đổi, chế biến.</Banner>
                 )}
             </div>
         </div>
@@ -366,7 +364,7 @@ function ExtraLayer({ cfg, up }: { cfg: CteConfig; up: (p: Partial<CteConfig>) =
     const s = cfg.sensor ?? { type: "temperature", min: "", max: "", uom: "CEL" };
     return (
         <div className="flex flex-col gap-5">
-            <p className="text-[12.5px] text-gray-500">Lớp tuỳ chọn — có thể để trống và lưu nháp.</p>
+            <p className="text-[12.5px] text-gray-500">Bước tuỳ chọn — có thể để trống và lưu nháp.</p>
             <div>
                 <h3 className="mb-2 text-[14px] font-semibold">Ngưỡng cảm biến</h3>
                 {hasSensor ? (
@@ -380,7 +378,7 @@ function ExtraLayer({ cfg, up }: { cfg: CteConfig; up: (p: Partial<CteConfig>) =
                         <div><label className={label}>Đơn vị</label><input className={`${inp} font-mono`} value={s.uom} disabled /></div>
                         <p className="col-span-full text-[12.5px] text-gray-500">Rule: vượt ngưỡng → ALARM_CONDITION.</p>
                     </div>
-                ) : <p className="text-[13px] text-gray-400">Chọn KDE <span className="font-mono">sensorElementList</span> ở lớp 6 để cấu hình.</p>}
+                ) : <p className="text-[13px] text-gray-400">Chọn trường {fieldLabel("sensorElementList")} ở bước Dữ liệu sự kiện để cấu hình.</p>}
             </div>
             <div>
                 <h3 className="mb-2 text-[14px] font-semibold">Chứng nhận</h3>
@@ -399,7 +397,7 @@ function ExtraLayer({ cfg, up }: { cfg: CteConfig; up: (p: Partial<CteConfig>) =
                             );
                         })}
                     </div>
-                ) : <p className="text-[13px] text-gray-400">Chọn KDE <span className="font-mono">certificationInfo</span> ở lớp 6 để cấu hình.</p>}
+                ) : <p className="text-[13px] text-gray-400">Chọn trường {fieldLabel("certificationInfo")} ở bước Dữ liệu sự kiện để cấu hình.</p>}
             </div>
             <div>
                 <label className={label} htmlFor="trg">Khi nào dùng (trigger)</label>

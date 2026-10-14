@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Copy, Lock } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Banner, Dialog, IssueList, Tag, T, btn, btnD, btnP, btnSm, card, inp, label, useToast } from "@/components/txng/ui";
-import { BIZ_TX_TYPES, SENSOR_TYPES, bizStepOf, etOf, fieldName, suggestAction } from "@/lib/txng/catalog";
+import { LAYER_NAMES, SENSOR_TYPES, actLabel, bizLabel, dispLabel, etLabel, etOf, fieldLabel, groupCodes, suggestAction, txLabel } from "@/lib/txng/catalog";
 import {
     STATUS_META, TODAY, applyScheduled, canEdit, cancelScheduled, cloneCte, cteById, ctes, fmtDate, newVersion,
-    autoFixPersist, groupLabel, publishVersion, vActive, vDraft, vMain, vScheduled, validateCte, type Cte, type CteVersion,
+    autoFixPersist, publishVersion, vActive, vDraft, vMain, vScheduled, validateCte, type Cte, type CteVersion,
 } from "@/lib/txng/cte";
 import { procsUsingCte, pMain, PROC_STATUS } from "@/lib/txng/process";
 
@@ -96,7 +96,7 @@ function Detail({ cte }: { cte: Cte }) {
                         </div>
                         <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-[13px] text-gray-500">
                             <span>Mã <b className="font-mono text-gray-800 dark:text-gray-200">{cte.code}</b></span>
-                            <span>Event Type <b className="text-gray-800 dark:text-gray-200">{cte.et} · {etOf(cte.et).epcis}</b></span>
+                            <span>Loại sự kiện <b className="text-gray-800 dark:text-gray-200">{etLabel(cte.et)}</b></span>
                             <span>Cấp <b className="text-gray-800 dark:text-gray-200">{cte.level} — {cte.org}</b></span>
                             {cte.cloneSourceId && <span>Clone từ <Link className="font-medium text-brand-700 underline" href={`/danh-muc/su-kien-trong-yeu/${cte.cloneSourceId}`}>{cteById(cte.cloneSourceId)?.name ?? cte.cloneSourceId}</Link></span>}
                             <span className="flex items-center gap-1.5">Phiên bản
@@ -128,7 +128,7 @@ function Detail({ cte }: { cte: Cte }) {
             </div>
 
             <div className="mb-4 flex gap-1 border-b border-gray-200 dark:border-gray-800">
-                {([["cfg", "Cấu hình 7 lớp"], ["hist", "Lịch sử phiên bản"], ["use", `Quy trình sử dụng (${users.length})`]] as [Tab, string][]).map(([k, l]) => (
+                {([["cfg", "Cấu hình"], ["hist", "Lịch sử phiên bản"], ["use", "Quy trình sử dụng"]] as [Tab, string][]).map(([k, l]) => (
                     <button key={k} onClick={() => setTab(k)} className={`-mb-px border-b-2 px-3.5 py-2.5 text-[13.5px] font-medium ${tab === k ? "border-brand-600 text-brand-700" : "border-transparent text-gray-500"}`}>{l}</button>
                 ))}
             </div>
@@ -226,7 +226,7 @@ function Detail({ cte }: { cte: Cte }) {
                 footer={<><button className={btn} onClick={close}>Huỷ</button>{!dr && <button className={btnP} onClick={() => { newVersion(cte); router.push(`/danh-muc/su-kien-trong-yeu/${cte.id}/sua`); }}>Tạo v{Math.max(...cte.versions.map((x) => x.v)) + 1}</button>}</>}>
                 {dr
                     ? <IssueList items={[{ level: "error", msg: <>Đã tồn tại version Nháp (v{dr.v}). Hoàn thành hoặc xoá v{dr.v} trước. <button className="font-semibold underline" onClick={() => { sel(dr); close(); }}>Mở v{dr.v}</button></> }]} />
-                    : <>Phiên bản mới ở trạng thái Nháp, sao chép 7 lớp từ v{act?.v}. Event Type giữ nguyên ({cte.et}). v{act?.v} vẫn Đang áp dụng cho tới khi phiên bản mới tới ngày áp dụng.</>}
+                    : <>Phiên bản mới ở trạng thái Nháp, sao chép toàn bộ cấu hình từ v{act?.v}. Loại sự kiện giữ nguyên ({etLabel(cte.et)}). v{act?.v} vẫn Đang áp dụng cho tới khi phiên bản mới tới ngày áp dụng.</>}
             </Dialog>
 
             {toast.node}
@@ -235,10 +235,10 @@ function Detail({ cte }: { cte: Cte }) {
 }
 
 /* ---------- Xem chi tiết 7 lớp ---------- */
-function Row({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
+function Row({ n, children }: { n: number; children: React.ReactNode }) {
     return (
         <div className="grid grid-cols-1 gap-2 border-b border-gray-100 px-5 py-3.5 last:border-0 dark:border-gray-800 md:grid-cols-[220px_1fr]">
-            <div className="text-[13px] font-semibold text-gray-500">L{n} · {title}</div>
+            <div className="text-[13px] font-semibold text-gray-500">{LAYER_NAMES[n - 1]}</div>
             <div className="text-[13.5px] text-gray-800 dark:text-gray-200">{children}</div>
         </div>
     );
@@ -246,14 +246,13 @@ function Row({ n, title, children }: { n: number; title: string; children: React
 
 function ConfigView({ cte, v }: { cte: Cte; v: CteVersion }) {
     const c = v.config;
-    const bs = bizStepOf(c.bizStep);
     const kdeTable = (list: typeof c.kdes) => (
         <div className="overflow-x-auto rounded-xl border border-gray-100 dark:border-gray-800">
             <table className="w-full text-[13px]">
                 <tbody>
                     {list.map((k) => (
                         <tr key={k.code} className="border-b border-gray-50 last:border-0 dark:border-gray-800">
-                            <td className="px-3 py-2"><div className="font-medium">{fieldName(k.code)}</div><div className="font-mono text-[12px] text-gray-400">{k.code}</div></td>
+                            <td className="px-3 py-2 font-medium">{fieldLabel(k.code)}</td>
                             <td className="px-3 py-2">{k.required ? <Tag cls={T.gs1}><Lock size={11} /> Bắt buộc</Tag> : <Tag cls={T.mute}>Tuỳ chọn</Tag>}</td>
                             <td className="px-3 py-2 text-[12.5px] text-gray-500">{k.note || ""}</td>
                         </tr>
@@ -264,41 +263,40 @@ function ConfigView({ cte, v }: { cte: Cte; v: CteVersion }) {
     );
     return (
         <div className={card}>
-            <Row n={1} title="Event Type">{cte.et} · {etOf(cte.et).epcis} — {etOf(cte.et).name}</Row>
-            <Row n={2} title="bizStep"><span className="font-mono">{c.bizStep || "—"}</span>{bs && <span className="text-gray-500"> — {bs.name}</span>}</Row>
-            <Row n={3} title="action">
-                {cte.et === "ET-03" ? <span className="text-gray-500">Không có trường action (TransformationEvent).</span> : (
+            <Row n={1}>{etLabel(cte.et)}</Row>
+            <Row n={2}>{c.bizStep ? bizLabel(c.bizStep) : "—"}</Row>
+            <Row n={3}>
+                {cte.et === "ET-03" ? <span className="text-gray-500">Không áp dụng cho loại sự kiện {etOf(cte.et).name}.</span> : (
                     <span className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono">{c.action ?? "—"}</span>
-                        {c.action && suggestAction(cte.et, c.bizStep).includes(c.action) ? <Tag cls={T.ok}>Khuyến nghị</Tag> : c.action && <Tag cls={T.warn}>Đã sửa tay — khuyến nghị {suggestAction(cte.et, c.bizStep).join(" / ")}</Tag>}
+                        <span>{c.action ? actLabel(c.action) : "—"}</span>
+                        {c.action && suggestAction(cte.et, c.bizStep).includes(c.action) ? <Tag cls={T.ok}>Khuyến nghị</Tag> : c.action && <Tag cls={T.warn}>Đã sửa tay — khuyến nghị {suggestAction(cte.et, c.bizStep).map(actLabel).join(" / ")}</Tag>}
                     </span>
                 )}
             </Row>
-            <Row n={4} title="Danh sách disposition">
-                {c.legacyDisposition !== undefined ? (
-                    <span><span className="font-mono">{c.legacyDisposition}</span> <Tag cls={T.warn}>Cấu trúc cũ (1 giá trị) — chuyển thành danh sách khi clone / tạo phiên bản mới</Tag></span>
-                ) : (
-                    <div className="flex flex-col gap-1.5">
-                        <div><span className="text-gray-500">Persistent: </span>{c.dispPersist.length ? c.dispPersist.map((g) => <Tag key={g} cls={T.gs1}><Lock size={11} /> {groupLabel(g)}</Tag>) : <span className="text-gray-400">không có</span>}</div>
-                        <div className="flex flex-wrap items-center gap-1.5"><span className="text-gray-500">Thường: </span>{c.dispNormal.length ? c.dispNormal.map((d) => <Tag key={d}><span className="font-mono">{d}</span></Tag>) : <span className="text-gray-400">không có</span>}</div>
-                        {cte.et === "ET-03" && <span className="text-[12px] text-gray-400">Disposition áp dụng cho output products.</span>}
-                    </div>
+            <Row n={4}>
+                {c.legacyDisposition !== undefined ? <span>{dispLabel(c.legacyDisposition)}</span> : (
+                    c.dispPersist.length || c.dispNormal.length ? (
+                        <div className="flex flex-wrap items-center gap-1.5">
+                            {c.dispPersist.flatMap(groupCodes).map((d) => <Tag key={d} cls={T.gs1} title="Bắt buộc theo chuẩn, không thể bỏ"><Lock size={11} /> {dispLabel(d)}</Tag>)}
+                            {c.dispNormal.map((d) => <Tag key={d}>{dispLabel(d)}</Tag>)}
+                        </div>
+                    ) : <span className="text-gray-400">Không có</span>
                 )}
             </Row>
-            <Row n={5} title="bizTransactionType">
-                {c.bizTxTypes.length ? <div className="flex flex-wrap gap-1.5">{c.bizTxTypes.map((b) => <Tag key={b}>{BIZ_TX_TYPES.find((x) => x.code === b)?.name ?? b}</Tag>)}</div> : <span className="text-gray-400">Không yêu cầu</span>}
+            <Row n={5}>
+                {c.bizTxTypes.length ? <div className="flex flex-wrap gap-1.5">{c.bizTxTypes.map((b) => <Tag key={b}>{txLabel(b)}</Tag>)}</div> : <span className="text-gray-400">Không yêu cầu</span>}
                 {c.bizTxTypes.length > 0 && cte.et !== "ET-04" && <span className="ml-2 text-[12px] text-gray-400">(tuỳ chọn)</span>}
             </Row>
-            <Row n={6} title="KDE + ilmd">
+            <Row n={6}>
                 <div className="flex flex-col gap-3">
                     <div>
                         <div className="mb-1.5 text-[12.5px] text-gray-500">{c.kdes.filter((k) => k.required).length} bắt buộc · {c.kdes.filter((k) => !k.required).length} tuỳ chọn</div>
                         {kdeTable(c.kdes)}
                     </div>
-                    {c.ilmd.length > 0 && <div><div className="mb-1.5 text-[12.5px] font-semibold text-gray-500">ilmd — thông tin cấp lô{cte.et === "ET-03" ? " (output)" : ""}</div>{kdeTable(c.ilmd)}</div>}
+                    {c.ilmd.length > 0 && <div><div className="mb-1.5 text-[12.5px] font-semibold text-gray-500">Thông tin lô/mẻ (ILMD)</div>{kdeTable(c.ilmd)}</div>}
                 </div>
             </Row>
-            <Row n={7} title="Cấu hình bổ sung">
+            <Row n={7}>
                 <div className="flex flex-col gap-1">
                     <span>Cảm biến: {c.sensor ? `${SENSOR_TYPES.find((s) => s.code === c.sensor!.type)?.name} ${c.sensor.min}–${c.sensor.max} ${c.sensor.uom === "CEL" ? "°C" : c.sensor.uom}` : <span className="text-gray-400">—</span>}</span>
                     <span>Chứng nhận: {c.certs.length ? c.certs.map((x) => `${x.name} (${x.required ? "bắt buộc" : "tuỳ chọn"})`).join(", ") : <span className="text-gray-400">—</span>}</span>

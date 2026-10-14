@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Eye, Lock, Plus } from "lucide-react";
 import { Banner, Dialog, Tag, T, btn, btnP, inp, label } from "@/components/txng/ui";
-import { DISPOSITIONS, PERSIST_GROUPS, type EtCode, dispOf, groupCodes, persistGroups, suggestDisp } from "@/lib/txng/catalog";
+import { DISPOSITIONS, PERSIST_GROUPS, type EtCode, dispLabel, dispOf, groupCodes, persistGroups, suggestDisp } from "@/lib/txng/catalog";
 import type { CteConfig } from "@/lib/txng/cte";
 
 /** Lớp 4 — danh sách disposition: vùng Persistent (khoá theo chuẩn) + vùng Thường (preselect, bỏ bớt / thêm CBV) */
@@ -18,6 +18,7 @@ export default function DispositionLayer({ et, cfg, up, parent }: {
     // Các giá trị hiển thị ở vùng Thường: gợi ý + đã chọn (+ của CTE cấp Bộ khi Sở kế thừa)
     const shown = [...new Set([...(parent ? parent.dispNormal : sug), ...cfg.dispNormal])];
     const addable = DISPOSITIONS.filter((d) => !d.group && !shown.includes(d.code));
+    const persistCodes = groups.flatMap(groupCodes);
     const toggle = (code: string) =>
         up({ dispNormal: cfg.dispNormal.includes(code) ? cfg.dispNormal.filter((x) => x !== code) : [...cfg.dispNormal, code] });
 
@@ -25,70 +26,47 @@ export default function DispositionLayer({ et, cfg, up, parent }: {
         <div className="flex flex-col gap-5">
 
             <section>
-                <div className="mb-2 flex items-center gap-2">
-                    <h3 className="text-[14px] font-semibold">Persistent</h3>
-                    <Tag cls={T.gs1}><Lock size={11} /> Theo chuẩn GS1 — khoá</Tag>
-                </div>
-                {groups.length ? (
-                    <div className="flex flex-col gap-2">
-                        {groups.map((g) => (
-                            <div key={g} className="rounded-xl border border-yellow-200 bg-yellow-50/60 px-3.5 py-2.5"
-                                title="Bắt buộc theo chuẩn — doanh nghiệp phải chọn 1 giá trị khi ghi nhận; trạng thái đi theo lô ở các sự kiện sau.">
-                                <div className="mb-1.5 flex items-center gap-2 text-[13.5px] font-medium">
-                                    <Lock size={13} className="text-yellow-700" /> Nhóm “{PERSIST_GROUPS[g]}”
-                                    {!required.includes(g) && <Tag cls={T.warn}>Không còn yêu cầu theo bizStep hiện tại</Tag>}
-                                </div>
-                                <div className="flex flex-wrap gap-3">
-                                    {groupCodes(g).map((c) => (
-                                        <label key={c} className="flex cursor-not-allowed items-center gap-1.5 text-[13px]" title="Không thể bỏ disposition persistent.">
-                                            <input type="checkbox" checked disabled className="accent-brand-600" />
-                                            <span className="font-mono">{c}</span> <span className="text-gray-500">— {dispOf(c)?.name}</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <p className="text-[13px] text-gray-400">bizStep này không có disposition persistent bắt buộc.</p>
-                )}
-            </section>
-
-            <section>
                 <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                        <h3 className="text-[14px] font-semibold">Thường</h3>
-                        <span className="text-[12.5px] text-gray-500">{cfg.dispNormal.length} giá trị được phép · doanh nghiệp chọn tuỳ chọn 1 giá trị</span>
-                    </div>
+                    <span className="text-[12.5px] text-gray-500">{persistCodes.length + cfg.dispNormal.length} trạng thái được phép · doanh nghiệp chọn 1 trạng thái khi khai báo</span>
                     <button type="button" className={btn} onClick={() => setPreview(true)}><Eye size={14} /> Xem trước khi khai báo</button>
                 </div>
-                {et === "ET-03" && <p className="mb-2 text-[12.5px] text-gray-500">Disposition áp dụng cho output products.</p>}
-                {parent && <p className="mb-2 text-[12.5px] text-gray-500">Cấp Sở chỉ được bỏ bớt giá trị trong danh sách của CTE cấp Bộ, không thêm mới.</p>}
                 <div className="flex flex-col gap-1.5">
+                    {persistCodes.map((c) => (
+                        <div key={c} className="flex items-center gap-2.5 rounded-xl border border-brand-200 px-3 py-2">
+                            <input type="checkbox" checked disabled className="accent-brand-600" aria-label={dispLabel(c)} />
+                            <span className="flex-1 text-[13.5px]">{dispLabel(c)}</span>
+                            <span className="group relative inline-flex">
+                                <Lock size={14} className="cursor-help text-gray-500" aria-label="Không thể bỏ" />
+                                <span role="tooltip" className="pointer-events-none absolute right-full top-1/2 z-10 mr-2 w-64 -translate-y-1/2 rounded-lg bg-gray-900 px-2.5 py-1.5 text-[12px] text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                                    Trạng thái bắt buộc theo chuẩn của công đoạn này, không thể bỏ chọn. Trạng thái được giữ theo lô ở các sự kiện sau.
+                                </span>
+                            </span>
+                        </div>
+                    ))}
                     {shown.map((c) => {
                         const on = cfg.dispNormal.includes(c);
                         return (
-                            <label key={c} className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2 ${on ? "border-brand-200" : "border-gray-200 opacity-70 dark:border-gray-700"}`}>
+                            <label key={c} className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2 ${on ? "border-brand-200" : "border-gray-200 dark:border-gray-700"}`}>
                                 <input type="checkbox" className="accent-brand-600" checked={on} onChange={() => toggle(c)} />
-                                <span className="flex-1"><span className="font-mono text-[13px]">{c}</span> <span className="text-[12.5px] text-gray-500">— {dispOf(c)?.name}</span></span>
-                                {sug[0] === c ? <Tag cls={T.info}>🔵 Mặc định</Tag> : sug.includes(c) ? <Tag cls={T.mute}>⚪ Gợi ý</Tag> : <Tag cls={T.warn}>Ngoài gợi ý</Tag>}
+                                <span className="flex-1 text-[13.5px]">{dispLabel(c)}</span>
+                                {!sug.includes(c) && <Tag cls={T.mute}>Ngoài gợi ý</Tag>}
                             </label>
                         );
                     })}
                 </div>
                 {!parent && (
                     <div className="mt-2 flex items-center gap-2">
-                        <select className={`${inp} !w-80`} value={adding} onChange={(e) => setAdding(e.target.value)} aria-label="Chọn disposition CBV 2.0">
-                            <option value="">— Chọn disposition từ danh mục CBV 2.0 —</option>
-                            {addable.map((d) => <option key={d.code} value={d.code}>{d.code} — {d.name}</option>)}
+                        <select className={`${inp} !w-80`} value={adding} onChange={(e) => setAdding(e.target.value)} aria-label="Chọn trạng thái sản phẩm">
+                            <option value="">— Chọn trạng thái sản phẩm khác —</option>
+                            {addable.map((d) => <option key={d.code} value={d.code}>{dispLabel(d.code)}</option>)}
                         </select>
                         <button type="button" className={btn} disabled={!adding} onClick={() => { up({ dispNormal: [...cfg.dispNormal, adding] }); setAdding(""); }}>
-                            <Plus size={14} /> Thêm disposition
+                            <Plus size={14} /> Thêm trạng thái
                         </button>
                     </div>
                 )}
                 {!cfg.dispNormal.length && !groups.length && (
-                    <Banner kind="warn">CTE không có disposition — doanh nghiệp sẽ không khai báo trạng thái ở sự kiện này.</Banner>
+                    <Banner kind="warn">Sự kiện chưa có trạng thái sản phẩm — doanh nghiệp sẽ không khai báo trạng thái ở sự kiện này.</Banner>
                 )}
             </section>
 
@@ -107,7 +85,7 @@ export default function DispositionLayer({ et, cfg, up, parent }: {
                     {cfg.dispNormal.length > 0 && (
                         <div>
                             <span className={label}>{groups.length ? "Trạng thái khác" : "Trạng thái"} <span className="font-normal text-gray-400">(tuỳ chọn)</span></span>
-                            <select className={inp}><option>— Chọn 1 trạng thái —</option>{cfg.dispNormal.map((c) => <option key={c}>{dispOf(c)?.name} ({c})</option>)}</select>
+                            <select className={inp}><option>— Chọn 1 trạng thái —</option>{cfg.dispNormal.map((c) => <option key={c}>{dispLabel(c)}</option>)}</select>
                         </div>
                     )}
                     {!groups.length && !cfg.dispNormal.length && <p className="text-gray-400">Sự kiện này không yêu cầu khai báo trạng thái.</p>}
