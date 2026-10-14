@@ -3,7 +3,7 @@
  * Mỗi công đoạn tham chiếu 1 CTE Đang áp dụng (theo id + version) trong CTE Builder.
  */
 import { type CteConfig, ctes, cteById, vActive, ME_USER, TODAY, clone } from "./cte";
-import { ME_BO, famOf, libOf, ilmdAllowed } from "./catalog";
+import { ME_BO, famOf, fieldName, libOf, ilmdAllowed } from "./catalog";
 
 export type ProcStatus = "draft" | "sched" | "active" | "super" | "off";
 export type Mode = "keep" | "req" | "hide";
@@ -72,7 +72,7 @@ export function mkStep(cteId: string, ver?: number, name?: string, opt: { uid?: 
     return {
         uid: opt.uid ?? uid(), cteId, cteVer: v, name: name ?? c.name, req: opt.req ?? true, note: "", coreNotes: {},
         rest: [
-            ...optOf(cfg).map((code): RestField => ({ src: "inh", code, mode: opt.modes?.[code] ?? "keep", note: "" })),
+            ...optOf(cfg).filter((code) => opt.modes?.[code] !== "hide").map((code): RestField => ({ src: "inh", code, mode: opt.modes?.[code] ?? "keep", note: "" })),
             ...(opt.ext ?? []).map(([code, req, note]): RestField => ({ src: "ext", code, req, note: note ?? "" })),
         ],
     };
@@ -153,10 +153,11 @@ export function kdeBlock(s: ProcStep, code: string): { why: string; unhide?: str
     const c = cteById(s.cteId)!;
     const cfg = cteCfg(s)!;
     if (s.rest.some((r) => r.src === "ext" && r.code === code)) return { why: "Đã thêm vào công đoạn này." };
-    if (L.map && coreOf(cfg).includes(L.map)) return { why: `Trùng với trường bắt buộc "${L.map}" đã có trong sự kiện trọng yếu.` };
+    if (L.map && coreOf(cfg).includes(L.map)) return { why: `Trùng với trường bắt buộc "${fieldName(L.map)}" đã có trong sự kiện trọng yếu.` };
     if (L.map) {
         const r = s.rest.find((x) => x.src === "inh" && x.code === L.map) as InhField | undefined;
-        if (r) return r.mode === "hide" ? { why: "Trường này có sẵn trong sự kiện trọng yếu và đang bị ẩn.", unhide: L.map } : { why: "Trường này đã có trong sự kiện trọng yếu (nhóm tùy chọn)." };
+        if (r) return { why: "Trường này đã có trong danh sách trường bổ sung." };
+        if (optOf(cfg).includes(L.map)) return { why: `Trùng với trường gợi ý "${fieldName(L.map)}" của sự kiện trọng yếu — chọn ở mục Gợi ý theo sự kiện trọng yếu.` };
     }
     if (L.ilmd && !ilmdAllowed(c.et, cfg.action)) return { why: "Thông tin cấp lô chỉ được ghi tại sự kiện tạo mới định danh (ADD) hoặc chế biến." };
     if (L.gdsn) return { why: "Đây là thông tin sản phẩm, khai một lần tại Quản lý GTIN, không khai theo từng sự kiện." };

@@ -4,16 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { Dialog, IssueList, Tag, T, btn, btnD, btnP, inp, label } from "@/components/txng/ui";
-import { LIB_KDES, etOf, fieldName } from "@/lib/txng/catalog";
+import { LIB_KDES, bizLabel, etLabel, fieldName } from "@/lib/txng/catalog";
 import { cteById, patch, vActive } from "@/lib/txng/cte";
 import {
-    type Proc, type ProcStep, type ProcVersion, NOW, applyVersion, coreOf, countReq, cteCfg, fmtDT, kdeBlock, latestVer, mkStep,
+    type Proc, type ProcStep, type ProcVersion, type RestField, NOW, applyVersion, coreOf, countReq, cteCfg, fmtDT, kdeBlock, latestVer, mkStep,
     norm, optOf, overlapBo, pActive, pPending, procs, updateStepCte, usableCtes, validateProc,
 } from "@/lib/txng/process";
 
 const after1h = (t: string) => new Date(t).getTime() - new Date(NOW.replace(" ", "T")).getTime() >= 3600e3;
 
-/* ---------- Thêm công đoạn: chỉ chọn CTE Đang áp dụng trong CTE Builder ---------- */
+/* ---------- Thêm công đoạn: chỉ chọn sự kiện trọng yếu Đang áp dụng ---------- */
 export function AddStepDialog({ p, v, onClose, onAdded }: { p: Proc; v: ProcVersion; onClose: () => void; onAdded: (s: ProcStep, renamed: boolean) => void }) {
     const [q, setQ] = useState("");
     const [picked, setPicked] = useState<string[]>([]);
@@ -30,7 +30,7 @@ export function AddStepDialog({ p, v, onClose, onAdded }: { p: Proc; v: ProcVers
         if (last) onAdded(last, renamed);
     };
     return (
-        <Dialog open wide onClose={onClose} title="Thêm công đoạn" sub="Chọn sự kiện trọng yếu Đang áp dụng trong CTE Builder. Có thể chọn nhiều."
+        <Dialog open wide onClose={onClose} title="Thêm công đoạn" sub="Chọn sự kiện trọng yếu đang áp dụng. Có thể chọn nhiều."
             footer={<><span className="mr-auto text-[13px] text-gray-500">{picked.length ? `Đã chọn ${picked.length}` : "Chưa chọn"}</span><button className={btn} onClick={onClose}>Huỷ</button><button className={btnP} disabled={!picked.length} onClick={add}>Thêm</button></>}>
             <div className="relative mb-3">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -47,7 +47,7 @@ export function AddStepDialog({ p, v, onClose, onAdded }: { p: Proc; v: ProcVers
                             <input type="checkbox" className="mt-1 accent-brand-600" checked={on} onChange={() => setPicked(on ? picked.filter((x) => x !== c.id) : [...picked, c.id])} />
                             <div>
                                 <div className="flex flex-wrap items-center gap-2"><span className="font-medium">{c.name}</span><span className="font-mono text-[12px] text-gray-400">{c.code}</span><Tag cls={T.ok}>v{a.v} Đang áp dụng</Tag></div>
-                                <div className="text-[12.5px] text-gray-500">{c.et} {etOf(c.et).epcis} · bizStep <span className="font-mono">{cfg.bizStep}</span> · {coreOf(cfg).length} trường bắt buộc · {optOf(cfg).length} tùy chọn</div>
+                                <div className="text-[12.5px] text-gray-500">{etLabel(c.et)} · {bizLabel(cfg.bizStep)} · {coreOf(cfg).length} trường bắt buộc · {optOf(cfg).length} tùy chọn</div>
                                 {used > 0 && <div className="text-[12px] text-gray-500">Đã có {used} công đoạn dùng sự kiện này. Công đoạn mới cần tên khác.</div>}
                                 {ov.length > 0 && <div className="text-[12px] text-amber-700">Cũng có trong quy trình của {ov.join(", ")} cho cùng nhóm ngành.</div>}
                             </div>
@@ -55,7 +55,7 @@ export function AddStepDialog({ p, v, onClose, onAdded }: { p: Proc; v: ProcVers
                     );
                 }) : <p className="py-6 text-center text-[13px] text-gray-400">Không tìm thấy sự kiện trọng yếu Đang áp dụng.</p>}
             </div>
-            <p className="mt-3 text-[12.5px] text-gray-500">Không thấy sự kiện cần dùng? Sự kiện ở trạng thái Nháp / Chờ áp dụng không chọn được. <Link className="font-medium text-brand-700 underline" href="/danh-muc/su-kien-trong-yeu">Mở CTE Builder</Link></p>
+            <p className="mt-3 text-[12.5px] text-gray-500">Không thấy sự kiện cần dùng? Sự kiện ở trạng thái Nháp / Chờ áp dụng không chọn được. <Link className="font-medium text-brand-700 underline" href="/danh-muc/su-kien-trong-yeu">Mở Sự kiện trọng yếu</Link></p>
         </Dialog>
     );
 }
@@ -64,36 +64,41 @@ export function AddStepDialog({ p, v, onClose, onAdded }: { p: Proc; v: ProcVers
 export function AddKdeDialog({ s, onClose, onDone }: { s: ProcStep; onClose: () => void; onDone: (msg: string) => void }) {
     const [q, setQ] = useState("");
     const [picked, setPicked] = useState<string[]>([]);
-    const list = LIB_KDES.filter((k) => !q || norm(k.name).includes(norm(q)) || k.code.toLowerCase().includes(q.toLowerCase()));
+    const match = (name: string, code: string) => !q || norm(name).includes(norm(q)) || code.toLowerCase().includes(q.toLowerCase());
+    // Trường gợi ý của sự kiện trọng yếu chưa có trong công đoạn (đã bị xoá trước đó)
+    const suggested = optOf(cteCfg(s)!).filter((code) => !s.rest.some((r) => r.code === code) && match(fieldName(code), code));
+    const list = LIB_KDES.filter((k) => match(k.name, k.code));
+    const toggle = (code: string) => setPicked(picked.includes(code) ? picked.filter((x) => x !== code) : [...picked, code]);
+    const add = () => {
+        patch(s, { rest: [...s.rest, ...picked.map((code): RestField => (suggested.includes(code) ? { src: "inh", code, mode: "keep", note: "" } : { src: "ext", code, req: false, note: "" }))] });
+        onDone(`Đã thêm ${picked.length} trường`);
+    };
+    const item = (code: string, name: string, extra: string, why?: string) => {
+        const on = picked.includes(code);
+        return (
+            <label key={code} className={`grid grid-cols-[20px_1fr] gap-2.5 rounded-xl border px-3 py-2.5 ${why ? "cursor-not-allowed bg-gray-50 dark:bg-gray-800/40" : on ? "cursor-pointer border-brand-500 bg-brand-50/50" : "cursor-pointer border-gray-200 dark:border-gray-700"}`}>
+                <input type="checkbox" className="mt-1 accent-brand-600" disabled={!!why} checked={on} onChange={() => toggle(code)} />
+                <div>
+                    <div className={`font-medium ${why ? "text-gray-400" : ""}`}>{name} <span className="font-normal text-gray-400">({code})</span>{extra && <span className="ml-1.5 text-[12px] font-normal text-gray-400">· {extra}</span>}</div>
+                    {why && <div className="text-[12px] text-amber-700">{why}</div>}
+                </div>
+            </label>
+        );
+    };
     return (
-        <Dialog open wide onClose={onClose} title="Thêm trường từ Thư viện KDE" sub={`Công đoạn "${s.name}" · ${cteById(s.cteId)?.name}`}
+        <Dialog open wide onClose={onClose} title="Thêm trường bổ sung" sub={`Công đoạn "${s.name}" · ${cteById(s.cteId)?.name}`}
             footer={<><span className="mr-auto text-[13px] text-gray-500">{picked.length ? `Đã chọn ${picked.length}` : "Chưa chọn"}</span><button className={btn} onClick={onClose}>Huỷ</button>
-                <button className={btnP} disabled={!picked.length} onClick={() => { patch(s, { rest: [...s.rest, ...picked.map((code) => ({ src: "ext" as const, code, req: false, note: "" }))] }); onDone(`Đã thêm ${picked.length} trường`); }}>Thêm</button></>}>
+                <button className={btnP} disabled={!picked.length} onClick={add}>Thêm</button></>}>
             <input autoFocus className={`${inp} mb-3`} placeholder="Tìm theo tên hoặc mã trường" value={q} onChange={(e) => setQ(e.target.value)} />
+            {suggested.length > 0 && (
+                <div className="mb-4">
+                    <h3 className="mb-1.5 text-[13px] font-semibold text-gray-600">Gợi ý theo sự kiện trọng yếu</h3>
+                    <div className="flex flex-col gap-1.5">{suggested.map((code) => item(code, fieldName(code), ""))}</div>
+                </div>
+            )}
+            <h3 className="mb-1.5 text-[13px] font-semibold text-gray-600">Thư viện KDE</h3>
             <div className="flex flex-col gap-1.5">
-                {list.map((k) => {
-                    const b = kdeBlock(s, k.code);
-                    const on = picked.includes(k.code);
-                    return (
-                        <label key={k.code} className={`grid grid-cols-[20px_1fr] gap-2.5 rounded-xl border px-3 py-2.5 ${b ? "cursor-not-allowed bg-gray-50 dark:bg-gray-800/40" : on ? "cursor-pointer border-brand-500 bg-brand-50/50" : "cursor-pointer border-gray-200 dark:border-gray-700"}`}>
-                            <input type="checkbox" className="mt-1 accent-brand-600" disabled={!!b} checked={on} onChange={() => setPicked(on ? picked.filter((x) => x !== k.code) : [...picked, k.code])} />
-                            <div>
-                                <div className={`font-medium ${b ? "text-gray-400" : ""}`}>{k.name}</div>
-                                <div className="font-mono text-[12px] text-gray-400">{k.code}{k.ilmd ? " · thông tin cấp lô" : ""}{k.gdsn ? " · thông tin sản phẩm" : ""}</div>
-                                {b && (
-                                    <div className="text-[12px] text-amber-700">{b.why}{" "}
-                                        {b.unhide && <button className="text-brand-700 underline" onClick={(e) => {
-                                            e.preventDefault();
-                                            const r = s.rest.find((x) => x.src === "inh" && x.code === b.unhide);
-                                            if (r && r.src === "inh") patch(r, { mode: "keep" });
-                                            onDone(`Đã hiện lại "${fieldName(b.unhide!)}"`);
-                                        }}>Hiện lại</button>}
-                                    </div>
-                                )}
-                            </div>
-                        </label>
-                    );
-                })}
+                {list.map((k) => item(k.code, k.name, k.ilmd ? "thông tin lô/mẻ" : k.gdsn ? "thông tin sản phẩm" : "", kdeBlock(s, k.code)?.why))}
             </div>
         </Dialog>
     );
@@ -113,7 +118,7 @@ export function CteDiffDialog({ s, editable, onClose, onDone }: { s: ProcStep; e
     const merge = s.rest.filter((r) => r.src === "ext" && LIB_KDES.find((l) => l.code === r.code)?.map && coreOf(b).includes(LIB_KDES.find((l) => l.code === r.code)!.map!));
     const lost = s.rest.filter((r) => r.src === "inh" && dopt.rm.includes(r.code) && r.mode !== "keep");
     return (
-        <Dialog open onClose={onClose} title={`${c.name}: v${s.cteVer} → v${nv}`} sub="Thay đổi của sự kiện trọng yếu trong CTE Builder"
+        <Dialog open onClose={onClose} title={`${c.name}: v${s.cteVer} → v${nv}`} sub="Thay đổi của sự kiện trọng yếu"
             footer={<><button className={btn} onClick={onClose}>Đóng</button>{editable && <button className={btnP} onClick={() => { const m = updateStepCte(s); onDone(`Đã cập nhật "${s.name}" lên v${nv}${m.length ? `. Đã gộp: ${m.join(", ")}` : ""}`); }}>Cập nhật lên v{nv}</button>}</>}>
             <div className="flex flex-col gap-4">
                 <div><h3 className="mb-1.5 text-[14px] font-semibold">Trường bắt buộc</h3>{items(dc).length ? <IssueList items={items(dc)} /> : <p className="text-[13px] text-gray-400">Không thay đổi</p>}</div>

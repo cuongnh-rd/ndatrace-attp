@@ -4,10 +4,10 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowDown, ArrowUp, Copy, GripVertical, Lock, Plus, Trash2 } from "lucide-react";
 import { Banner, NoteSlot, Seg, Tag, T, btn, btnSm, card, inp } from "@/components/txng/ui";
-import { etOf, fieldName, libOf } from "@/lib/txng/catalog";
+import { actLabel, bizLabel, etLabel, fieldName, libOf } from "@/lib/txng/catalog";
 import { cteById, patch } from "@/lib/txng/cte";
 import {
-    type Mode, type Proc, type ProcStep, type ProcVersion, cteCfg, cteInactive, coreOf, isOutdated, latestVer, norm, overlapBo,
+    type Proc, type ProcStep, type ProcVersion, cteCfg, cteInactive, coreOf, isOutdated, latestVer, norm, overlapBo,
     uid, visibleCount,
 } from "@/lib/txng/process";
 
@@ -76,7 +76,7 @@ export default function Builder(props: Props) {
                                             {!s.req && <Tag cls={T.mute}>Tùy chọn</Tag>}
                                             {diffTag(s)}
                                             {isOutdated(s) && <Tag cls={T.warn}>v{s.cteVer} → v{latestVer(s.cteId)}</Tag>}
-                                            {cteInactive(s) && <Tag cls={T.err}>CTE không còn áp dụng</Tag>}
+                                            {cteInactive(s) && <Tag cls={T.err}>Sự kiện trọng yếu không còn áp dụng</Tag>}
                                             {dup && <Tag cls={T.err}>Trùng tên</Tag>}
                                             {ov.length > 0 && <Tag cls={T.warn} title={`Công đoạn này cũng có trong quy trình của ${ov.join(", ")} cho cùng nhóm ngành`}>Trùng với {ov.join(", ")}</Tag>}
                                         </div>
@@ -112,8 +112,6 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
     const cfg = cteCfg(s)!;
     const core = coreOf(cfg);
     const i = v.steps.indexOf(s);
-    const inh = s.rest.filter((r) => r.src === "inh");
-    const ext = s.rest.filter((r) => r.src === "ext");
     const move = (d: number) => { v.steps.splice(i, 1); v.steps.splice(i + d, 0, s); bump(); };
     const dup = () => {
         const cp: ProcStep = { ...JSON.parse(JSON.stringify(s)), uid: uid(), name: s.name + " (bản sao)" };
@@ -125,9 +123,9 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
             onSel(v.steps[Math.min(i, v.steps.length - 1)]?.uid ?? null);
             toast(`Đã xoá công đoạn "${s.name}"`, () => { v.steps.splice(i, 0, s); onSel(s.uid); });
         };
-        const n = ext.length, m = inh.filter((r) => r.mode !== "keep").length;
-        if (!n && !m && !s.note && !Object.values(s.coreNotes).some(Boolean)) return doDel();
-        onConfirm("Xoá công đoạn", `Công đoạn "${s.name}" đã được cấu hình: ${n} trường bổ sung, ${m} trường tùy chọn đã điều chỉnh. Cấu hình này sẽ mất.`, "Xoá công đoạn", doDel);
+        const n = s.rest.filter((r) => r.src === "ext" || r.mode === "req" || r.note).length;
+        if (!n && !s.note && !Object.values(s.coreNotes).some(Boolean)) return doDel();
+        onConfirm("Xoá công đoạn", `Công đoạn "${s.name}" đã được cấu hình: ${n} trường bổ sung đã điều chỉnh. Cấu hình này sẽ mất.`, "Xoá công đoạn", doDel);
     };
     const rename = (val: string) => {
         if (!val.trim()) { setNameErr("Tên công đoạn không được để trống."); return; }
@@ -137,8 +135,7 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
 
     const kdeRow = (idx: number) => {
         const r = s.rest[idx];
-        const hidden = r.src === "inh" && r.mode === "hide";
-        const reqLabel = (r.src === "inh" && r.mode === "req") || (r.src === "ext" && r.req);
+        const isReq = r.src === "inh" ? r.mode === "req" : r.req;
         const lib = r.src === "ext" ? libOf(r.code) : undefined;
         return (
             <div key={r.code + idx} draggable={ed}
@@ -151,21 +148,18 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
                     if (s.rest[f].src !== r.src) { toast("Kéo thả trong cùng nhóm trường"); return; }
                     const [m] = s.rest.splice(f, 1); s.rest.splice(idx, 0, m); bump();
                 }}
-                className={`grid grid-cols-[16px_1fr_auto] items-center gap-2.5 rounded-xl border px-2.5 py-2 ${hidden ? "border-dashed border-gray-300 bg-gray-50 dark:bg-gray-800/40" : "border-gray-200 dark:border-gray-700"}`}>
+                className={`grid grid-cols-[16px_1fr_auto] items-center gap-2.5 rounded-xl border px-2.5 py-2 border-gray-200 dark:border-gray-700`}>
                 <span className="text-gray-300">{ed && <GripVertical size={13} />}</span>
-                <div className={`min-w-0 ${hidden ? "opacity-60" : ""}`}>
+                <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-1.5 text-[13.5px] font-medium">
                         <span>{fieldName(r.code)} <span className="font-normal text-gray-400">({r.code})</span></span>
                         {lib?.ilmd && <Tag cls={T.mute}>Thông tin lô/mẻ</Tag>}
-                        {reqLabel && <Tag cls={T.info}>Bắt buộc (Bộ quy định)</Tag>}
-                        {hidden && <Tag cls={T.mute}>Doanh nghiệp không thấy trường này</Tag>}
                     </div>
                 </div>
-                <NoteSlot key={s.uid + r.code} value={r.note} editable={ed} onChange={(v) => patch(r, { note: v })} actions={r.src === "inh" ? (
-                    <Seg<Mode> xs disabled={!ed} value={r.mode} options={[["keep", "Tùy chọn"], ["req", "Bắt buộc"], ["hide", "Ẩn"]]} onChange={(m) => { patch(r, { mode: m }); bump(); }} />
-                ) : (
+                <NoteSlot key={s.uid + r.code} value={r.note} editable={ed} onChange={(v) => patch(r, { note: v })} actions={(
                     <>
-                        <Seg xs disabled={!ed} value={r.req ? "1" : "0"} options={[["0", "Tùy chọn"], ["1", "Bắt buộc"]]} onChange={(m) => { patch(r, { req: m === "1" }); bump(); }} />
+                        <Seg xs disabled={!ed} value={isReq ? "1" : "0"} options={[["0", "Tùy chọn"], ["1", "Bắt buộc"]]}
+                            onChange={(m) => { if (r.src === "inh") patch(r, { mode: m === "1" ? "req" : "keep" }); else patch(r, { req: m === "1" }); bump(); }} />
                         {ed && (
                             <button className="rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-red-600" title="Xoá trường" onClick={() => {
                                 s.rest.splice(idx, 1); bump();
@@ -183,7 +177,7 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
             <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                        <div className="text-[12.5px] text-gray-500">Công đoạn {i + 1} · {c.et} {etOf(c.et).epcis}{cfg.action ? ` · action ${cfg.action}` : ""} · bizStep <span className="font-mono">{cfg.bizStep}</span></div>
+                        <div className="text-[12.5px] text-gray-500">Công đoạn {i + 1} · {etLabel(c.et)}{cfg.action ? ` · ${actLabel(cfg.action)}` : ""} · {bizLabel(cfg.bizStep)}</div>
                         <h2 className="mt-0.5 text-[16px] font-semibold">{s.name}</h2>
                         <div className="text-[12.5px] text-gray-500">
                             Sự kiện trọng yếu <Link className="font-semibold text-brand-700 hover:underline" href={`/danh-muc/su-kien-trong-yeu/${c.id}`}>{c.name}</Link> phiên bản {s.cteVer}
@@ -223,7 +217,7 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
             <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
                 <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường bắt buộc theo sự kiện trọng yếu</h3><Tag cls={T.gs1}><Lock size={11} /> {core.length} trường</Tag></div>
-                    <span className="text-[12.5px] text-gray-400">Kế thừa từ CTE Builder, không thể thay đổi tại quy trình</span>
+                    <span className="text-[12.5px] text-gray-400">Kế thừa từ sự kiện trọng yếu, không thể thay đổi tại quy trình</span>
                 </div>
                 <div className="flex flex-col gap-1.5">
                     {core.map((k) => (
@@ -237,23 +231,15 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
                 </div>
             </div>
 
-            <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
-                <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường tùy chọn của sự kiện trọng yếu</h3>
-                        <span className="text-[12.5px] text-gray-500">{inh.length} trường · {inh.filter((r) => r.mode === "req").length} bắt buộc · {inh.filter((r) => r.mode === "hide").length} đã ẩn</span></div>
-                    <span className="text-[12.5px] text-gray-400">Giữ tùy chọn, nâng bắt buộc hoặc ẩn khỏi công đoạn</span>
-                </div>
-                {inh.length ? <div className="flex flex-col gap-1.5">{s.rest.map((r, idx) => (r.src === "inh" ? kdeRow(idx) : null))}</div> : <p className="text-[13px] text-gray-400">Sự kiện trọng yếu không có trường tùy chọn.</p>}
-            </div>
-
             <div className="px-5 py-4">
                 <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường bổ sung của Bộ</h3><Tag cls={T.info}>{ext.length} trường</Tag></div>
-                    <span className="text-[12.5px] text-gray-400">Chọn từ Thư viện KDE, áp dụng riêng cho công đoạn này</span>
+                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường bổ sung</h3>
+                        <span className="text-[12.5px] text-gray-500">{s.rest.length} trường · {s.rest.filter((r) => (r.src === "inh" ? r.mode === "req" : r.req)).length} bắt buộc</span></div>
+                    <span className="text-[12.5px] text-gray-400">Gợi ý theo sự kiện trọng yếu hoặc chọn thêm từ Thư viện KDE</span>
                 </div>
-                {ext.length ? <div className="flex flex-col gap-1.5">{s.rest.map((r, idx) => (r.src === "ext" ? kdeRow(idx) : null))}</div> : <p className="text-[13px] text-gray-400">Chưa có trường bổ sung.</p>}
-                {ed && <button className={`${btn} mt-2 w-full justify-center border-dashed text-brand-700`} onClick={() => onAddKde(s)}><Plus size={14} /> Thêm trường từ Thư viện KDE</button>}
-                {visibleCount(s) > 15 && <Banner kind="warn">Công đoạn có {visibleCount(s)} trường hiển thị. Form dài làm tăng tỷ lệ doanh nghiệp khai thiếu; cân nhắc ẩn trường tùy chọn không cần thiết.</Banner>}
+                {s.rest.length ? <div className="flex flex-col gap-1.5">{s.rest.map((_, idx) => kdeRow(idx))}</div> : <p className="text-[13px] text-gray-400">Chưa có trường bổ sung.</p>}
+                {ed && <button className={`${btn} mt-2 w-full justify-center border-dashed text-brand-700`} onClick={() => onAddKde(s)}><Plus size={14} /> Thêm trường bổ sung</button>}
+                {visibleCount(s) > 15 && <Banner kind="warn">Công đoạn có {visibleCount(s)} trường hiển thị. Form dài làm tăng tỷ lệ doanh nghiệp khai thiếu; cân nhắc xoá trường tùy chọn không cần thiết.</Banner>}
             </div>
         </>
     );
