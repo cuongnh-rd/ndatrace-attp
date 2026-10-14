@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, Plus, Search } from "lucide-react";
+import { AlertTriangle, Plus } from "lucide-react";
+import TableToolbar from "@/components/ui/TableToolbar";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Dialog, Tag, T, btn, btnP, card, inp, label } from "@/components/txng/ui";
 import { FAMILIES, ME_BO, famOf } from "@/lib/txng/catalog";
@@ -10,11 +11,17 @@ import {
     PROC_STATUS, createProc, fmtDT, myFamilies, norm, pActive, pMain, pOff, pPending, procWarnings, procs, type ProcStatus,
 } from "@/lib/txng/process";
 
+const FILTER_COLS = [
+    { key: "fam", label: "Nhóm ngành", options: FAMILIES.map((f) => f.name) },
+    { key: "status", label: "Trạng thái", options: (["draft", "sched", "active", "off"] as ProcStatus[]).map((x) => PROC_STATUS[x].label) },
+];
+
 export default function Page() {
     const router = useRouter();
     const [q, setQ] = useState("");
-    const [fFam, setFam] = useState("");
-    const [fStatus, setStatus] = useState("");
+    const [filters, setFilters] = useState<Record<string, string>>({});
+    const fFam = FAMILIES.find((f) => f.name === filters.fam)?.id ?? "";
+    const fStatus = (Object.keys(PROC_STATUS) as ProcStatus[]).find((k) => PROC_STATUS[k].label === filters.status) ?? "";
     const [open, setOpen] = useState(false);
 
     const rows = procs.filter((p) => {
@@ -27,30 +34,14 @@ export default function Page() {
 
     return (
         <DashboardLayout>
-            <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
-                <div>
-                    <h1 className="text-xl font-bold text-gray-900 dark:text-white">Quy trình tiêu chuẩn TXNG</h1>
-                    <p className="text-[13px] text-gray-500">Các công đoạn doanh nghiệp phải ghi nhận cho từng nhóm ngành hàng do Bộ quản lý. Mỗi công đoạn là một sự kiện trọng yếu Đang áp dụng.</p>
+            <div className={`${card} overflow-hidden`}>
+                <div className="flex items-center border-b border-gray-100 dark:border-gray-800 [&>div:first-child]:border-0 [&>div:first-child]:flex-1">
+                    <TableToolbar searchable searchQuery={q} onSearchChange={setQ} data={[]} total={rows.length}
+                        filterableCols={FILTER_COLS} filters={filters}
+                        onFilterChange={(k, v) => setFilters((p) => ({ ...p, [k]: v }))} onClearFilters={() => setFilters({})} />
+                    <button className={`${btnP} mr-4 shrink-0`} onClick={() => setOpen(true)}><Plus size={14} /> Tạo quy trình</button>
                 </div>
-                <button className={btnP} onClick={() => setOpen(true)}><Plus size={14} /> Tạo quy trình</button>
-            </div>
-
-            <div className="mb-4 flex flex-wrap gap-2.5">
-                <div className="relative">
-                    <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input className={`${inp} !w-72 pl-8`} placeholder="Tìm theo mã hoặc tên quy trình" value={q} onChange={(e) => setQ(e.target.value)} />
-                </div>
-                <select className={`${inp} !w-auto`} value={fFam} onChange={(e) => setFam(e.target.value)}>
-                    <option value="">Tất cả nhóm ngành</option>
-                    {FAMILIES.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
-                </select>
-                <select className={`${inp} !w-auto`} value={fStatus} onChange={(e) => setStatus(e.target.value)}>
-                    <option value="">Tất cả trạng thái</option>
-                    {(["draft", "sched", "active", "off"] as ProcStatus[]).map((s) => <option key={s} value={s}>{PROC_STATUS[s].label}</option>)}
-                </select>
-            </div>
-
-            <div className={`${card} overflow-x-auto`}>
+                <div className="overflow-x-auto">
                 <table className="w-full text-[13.5px]">
                     <thead>
                         <tr className="border-b border-gray-100 bg-gray-50/60 text-left text-[12.5px] font-semibold text-gray-500 dark:border-gray-800">
@@ -83,6 +74,7 @@ export default function Page() {
                         }) : <tr><td colSpan={6} className="px-4 py-10 text-center text-gray-400">Không có quy trình phù hợp bộ lọc.</td></tr>}
                     </tbody>
                 </table>
+                </div>
             </div>
 
             {open && <CreateDialog onClose={() => setOpen(false)} onOpen={(id) => router.push(`/danh-muc/quy-trinh-tieu-chuan/${id}`)} />}
