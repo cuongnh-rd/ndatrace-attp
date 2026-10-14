@@ -3,7 +3,7 @@
 import { useMemo, useReducer, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Plus, Search, Copy } from "lucide-react";
+import { Plus, Copy } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Tag, T, btn, btnP, btnSm, inp, card } from "@/components/txng/ui";
 import { EVENT_TYPES, BIZ_STEPS, bizLabel, etLabel } from "@/lib/txng/catalog";
@@ -13,17 +13,22 @@ import {
 } from "@/lib/txng/cte";
 import { norm } from "@/lib/txng/process";
 import StatusCell from "./components/StatusCell";
+import TableToolbar from "@/components/ui/TableToolbar";
 
 const STATUS_FILTER: CteStatus[] = ["active", "scheduled", "draft", "superseded"];
+const FILTER_COLS = [
+    { key: "et", label: "Loại sự kiện", options: EVENT_TYPES.map((e) => etLabel(e.code)) },
+    { key: "step", label: "Công đoạn nghiệp vụ", options: BIZ_STEPS.map((b) => bizLabel(b.code)) },
+    { key: "status", label: "Trạng thái", options: STATUS_FILTER.map((x) => STATUS_META[x].label) },
+    { key: "level", label: "Cấp quản lý", options: ["Cấp Bộ", "Cấp Sở"] },
+];
 
 export default function Page() {
     const router = useRouter();
     const [, bump] = useReducer((x: number) => x + 1, 0);
     const [q, setQ] = useState("");
-    const [fEt, setEt] = useState("");
-    const [fStep, setStep] = useState("");
-    const [fStatus, setStatus] = useState("");
-    const [fLevel, setLevel] = useState("");
+    const [filters, setFilters] = useState<Record<string, string>>({});
+    const { et: fEt = "", step: fStep = "", status: fStatus = "", level: fLevel = "" } = filters;
 
     const filtered = useMemo(
         () =>
@@ -31,10 +36,10 @@ export default function Page() {
                 .filter((c) => {
                     const cfg = vMain(c).config;
                     if (q && !(norm(c.name).includes(norm(q)) || c.code.toLowerCase().includes(q.toLowerCase()))) return false;
-                    if (fEt && c.et !== fEt) return false;
-                    if (fStep && cfg.bizStep !== fStep) return false;
-                    if (fStatus && !c.versions.some((v) => v.status === fStatus)) return false;
-                    if (fLevel && c.level !== fLevel) return false;
+                    if (fEt && etLabel(c.et) !== fEt) return false;
+                    if (fStep && bizLabel(cfg.bizStep) !== fStep) return false;
+                    if (fStatus && !c.versions.some((v) => STATUS_META[v.status].label === fStatus)) return false;
+                    if (fLevel && `Cấp ${c.level}` !== fLevel) return false;
                     return true;
                 })
                 .sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
@@ -50,7 +55,13 @@ export default function Page() {
     };
 
     const table = (rows: Cte[], readonly: boolean) => (
-        <div className={`${card} overflow-x-auto`}>
+        <div className={`${card} overflow-hidden`}>
+            {!readonly && (
+                <TableToolbar searchable searchQuery={q} onSearchChange={setQ} data={[]} total={rows.length}
+                    filterableCols={FILTER_COLS} filters={filters}
+                    onFilterChange={(k, v) => setFilters((p) => ({ ...p, [k]: v }))} onClearFilters={() => setFilters({})} />
+            )}
+            <div className="overflow-x-auto">
             <table className="w-full text-[13.5px]">
                 <thead>
                     <tr className="border-b border-gray-100 bg-gray-50/60 text-left text-[12.5px] font-semibold text-gray-500 dark:border-gray-800 dark:bg-gray-800/40">
@@ -95,6 +106,7 @@ export default function Page() {
                     )}
                 </tbody>
             </table>
+            </div>
         </div>
     );
 
@@ -115,30 +127,6 @@ export default function Page() {
                     </div>
                 </div>
                 <p className="mt-1 text-[13px] text-gray-500">Xây dựng sự kiện truy xuất theo chuẩn EPCIS 2.0. Quy trình tiêu chuẩn TXNG chỉ dùng được CTE Đang áp dụng.</p>
-            </div>
-
-            <div className="mb-4 flex flex-wrap gap-2.5">
-                <div className="relative">
-                    <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input className={`${inp} !w-72 pl-8`} placeholder="Tìm theo tên hoặc mã sự kiện" value={q} onChange={(e) => setQ(e.target.value)} />
-                </div>
-                <select className={`${inp} !w-auto`} value={fEt} onChange={(e) => setEt(e.target.value)}>
-                    <option value="">Tất cả loại sự kiện</option>
-                    {EVENT_TYPES.map((e) => <option key={e.code} value={e.code}>{etLabel(e.code)}</option>)}
-                </select>
-                <select className={`${inp} !w-auto`} value={fStep} onChange={(e) => setStep(e.target.value)}>
-                    <option value="">Tất cả công đoạn nghiệp vụ</option>
-                    {BIZ_STEPS.map((b) => <option key={b.code} value={b.code}>{bizLabel(b.code)}</option>)}
-                </select>
-                <select className={`${inp} !w-auto`} value={fStatus} onChange={(e) => setStatus(e.target.value)}>
-                    <option value="">Tất cả trạng thái</option>
-                    {STATUS_FILTER.map((s) => <option key={s} value={s}>{STATUS_META[s].label}</option>)}
-                </select>
-                <select className={`${inp} !w-auto`} value={fLevel} onChange={(e) => setLevel(e.target.value)}>
-                    <option value="">Mọi cấp quản lý</option>
-                    <option value="Bộ">Cấp Bộ</option>
-                    <option value="Sở">Cấp Sở</option>
-                </select>
             </div>
 
             {session.level === "Sở" && <h2 className="mb-2 text-[15px] font-semibold text-gray-800 dark:text-gray-200">CTE của Sở</h2>}
