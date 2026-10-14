@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Check, Lock, AlertTriangle } from "lucide-react";
 import DispositionLayer from "./DispositionLayer";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { Banner, Dialog, IssueList, Seg, Tag, T, btn, btnP, card, inp, label } from "@/components/txng/ui";
+import { Banner, Dialog, IssueList, NoteSlot, Seg, Tag, T, btn, btnP, card, inp, label } from "@/components/txng/ui";
 import {
     ACTIONS, BIZ_STEPS, BIZ_TX_TYPES, CERT_TYPES, EVENT_KDES, EVENT_TYPES, ILMD_FIELDS, LAYER_NAMES, SENSOR_TYPES,
     type Action, type EtCode, actLabel, bizLabel, etLabel, etOf, fieldLabel, ilmdAllowed, suggestAction, txLabel,
@@ -310,22 +310,16 @@ function KdeLayer({ et, cfg, up, parent }: { et: EtCode; cfg: CteConfig; up: (p:
         const isAuto = list === "kdes" && auto.includes(code);
         const lockedReq = isAuto || parentReq(code);
         return (
-            <div key={code} className={`rounded-xl border px-3 py-2 ${isAuto ? "border-yellow-200 bg-yellow-50/60" : sel ? "border-brand-200" : "border-gray-200 dark:border-gray-700"}`}>
-                <div className="flex flex-wrap items-center gap-2.5">
-                    <input type="checkbox" className="accent-brand-600" checked={!!sel} disabled={lockedReq} onChange={() => toggle(list, code)} />
-                    <div className="min-w-0 flex-1">
-                        <div className="text-[13.5px] font-medium">{name} <span className="font-normal text-gray-400">({code})</span></div>
-                    </div>
-                    {isAuto && <Tag cls={T.gs1}><Lock size={11} /> Bắt buộc</Tag>}
-                    {!isAuto && parentReq(code) && <Tag cls={T.info}>Bắt buộc theo sự kiện cấp Bộ</Tag>}
-                    {sel && !lockedReq && (
-                        <Seg xs value={sel.required ? "r" : "o"} options={[["o", "Tuỳ chọn"], ["r", "Bắt buộc"]]} onChange={(v) => patch(list, code, { required: v === "r" })} />
-                    )}
-                </div>
-                {sel && (
-                    <input className="mt-1.5 w-full rounded-md border border-dashed border-transparent bg-transparent px-1.5 py-0.5 text-[12.5px] text-gray-600 hover:border-gray-200 focus:border-brand-400 focus:bg-white focus:outline-none"
-                        placeholder="+ Ghi chú hướng dẫn cho doanh nghiệp (hiển thị tooltip ở C3)" value={sel.note} onChange={(e) => patch(list, code, { note: e.target.value })} />
-                )}
+            <div key={code} className={`grid grid-cols-[16px_1fr_auto] items-center gap-2.5 rounded-xl border px-3 py-2 ${isAuto ? "border-yellow-200 bg-yellow-50/60" : sel ? "border-brand-200" : "border-gray-200 dark:border-gray-700"}`}>
+                <input type="checkbox" className="accent-brand-600" checked={!!sel} disabled={lockedReq} onChange={() => toggle(list, code)} />
+                <div className="min-w-0 text-[13.5px] font-medium">{name} <span className="font-normal text-gray-400">({code})</span></div>
+                {sel ? (
+                    <NoteSlot value={sel.note} editable onChange={(v) => patch(list, code, { note: v })} actions={<>
+                        {isAuto && <Tag cls={T.gs1}><Lock size={11} /> Bắt buộc</Tag>}
+                        {!isAuto && parentReq(code) && <Tag cls={T.info}>Bắt buộc theo sự kiện cấp Bộ</Tag>}
+                        {!lockedReq && <Seg xs value={sel.required ? "r" : "o"} options={[["o", "Tuỳ chọn"], ["r", "Bắt buộc"]]} onChange={(v) => patch(list, code, { required: v === "r" })} />}
+                    </>} />
+                ) : <span />}
             </div>
         );
     };

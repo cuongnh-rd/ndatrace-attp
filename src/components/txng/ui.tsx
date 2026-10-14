@@ -122,3 +122,31 @@ export function Seg<V extends string>({ value, options, onChange, disabled, xs }
         </div>
     );
 }
+
+/**
+ * Cột hành động + ghi chú của 1 dòng trường dữ liệu (đặt trong grid 3 cột: icon | tên | hành động).
+ * Mặc định chỉ hiện nút "+ Thêm ghi chú"; bấm vào mới mở ô nhập ở dòng dưới.
+ */
+export function NoteSlot({ value, onChange, editable, actions }: {
+    value: string; onChange: (v: string) => void; editable: boolean; actions?: ReactNode;
+}) {
+    const [open, setOpen] = useState(!!value);
+    return (
+        <>
+            <div className="flex items-center justify-end gap-1.5">
+                {editable && !open && (
+                    <button type="button" onClick={() => setOpen(true)} className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-[12px] text-gray-400 hover:bg-gray-100 hover:text-brand-700 dark:hover:bg-gray-800">
+                        + Thêm ghi chú
+                    </button>
+                )}
+                {actions}
+            </div>
+            {open && (
+                <input autoFocus={!value} disabled={!editable} defaultValue={value} onChange={(e) => onChange(e.target.value)}
+                    onBlur={(e) => { if (!e.target.value.trim()) setOpen(false); }}
+                    placeholder="Ghi chú hướng dẫn khai báo cho doanh nghiệp"
+                    className="col-start-2 col-end-4 rounded-md border border-gray-200 bg-white px-2 py-1 text-[12.5px] text-gray-700 focus:border-brand-400 focus:outline-none disabled:border-transparent disabled:bg-transparent disabled:px-0 dark:border-gray-700 dark:bg-gray-800" />
+            )}
+        </>
+    );
+}

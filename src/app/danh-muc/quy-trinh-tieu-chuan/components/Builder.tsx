@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowDown, ArrowUp, Copy, GripVertical, Lock, Plus, Trash2 } from "lucide-react";
-import { Banner, Seg, Tag, T, btn, btnSm, card, inp } from "@/components/txng/ui";
+import { Banner, NoteSlot, Seg, Tag, T, btn, btnSm, card, inp } from "@/components/txng/ui";
 import { etOf, fieldName, libOf } from "@/lib/txng/catalog";
 import { cteById, patch } from "@/lib/txng/cte";
 import {
@@ -153,32 +153,27 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
                 }}
                 className={`grid grid-cols-[16px_1fr_auto] items-center gap-2.5 rounded-xl border px-2.5 py-2 ${hidden ? "border-dashed border-gray-300 bg-gray-50 dark:bg-gray-800/40" : "border-gray-200 dark:border-gray-700"}`}>
                 <span className="text-gray-300">{ed && <GripVertical size={13} />}</span>
-                <div className={hidden ? "opacity-60" : ""}>
+                <div className={`min-w-0 ${hidden ? "opacity-60" : ""}`}>
                     <div className="flex flex-wrap items-center gap-1.5 text-[13.5px] font-medium">
-                        {fieldName(r.code)}
+                        <span>{fieldName(r.code)} <span className="font-normal text-gray-400">({r.code})</span></span>
+                        {lib?.ilmd && <Tag cls={T.mute}>Thông tin lô/mẻ</Tag>}
                         {reqLabel && <Tag cls={T.info}>Bắt buộc (Bộ quy định)</Tag>}
                         {hidden && <Tag cls={T.mute}>Doanh nghiệp không thấy trường này</Tag>}
                     </div>
-                    <div className="font-mono text-[12px] text-gray-400">{r.code}{lib?.ilmd ? " · thông tin cấp lô" : ""}</div>
                 </div>
-                <div className="flex items-center gap-1.5">
-                    {r.src === "inh" ? (
-                        <Seg<Mode> xs disabled={!ed} value={r.mode} options={[["keep", "Tùy chọn"], ["req", "Bắt buộc"], ["hide", "Ẩn"]]} onChange={(m) => { patch(r, { mode: m }); bump(); }} />
-                    ) : (
-                        <>
-                            <Seg xs disabled={!ed} value={r.req ? "1" : "0"} options={[["0", "Tùy chọn"], ["1", "Bắt buộc"]]} onChange={(m) => { patch(r, { req: m === "1" }); bump(); }} />
-                            {ed && (
-                                <button className="rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-red-600" title="Xoá trường" onClick={() => {
-                                    s.rest.splice(idx, 1); bump();
-                                    toast(`Đã xoá trường "${fieldName(r.code)}"`, () => { s.rest.splice(idx, 0, r); bump(); });
-                                }}><Trash2 size={14} /></button>
-                            )}
-                        </>
-                    )}
-                </div>
-                {(ed || r.note) && (<input className="col-start-2 col-end-4 rounded-md border border-dashed border-transparent bg-transparent px-1.5 py-0.5 text-[12.5px] text-gray-600 hover:border-gray-200 focus:border-brand-400 focus:bg-white focus:outline-none disabled:hover:border-transparent"
-                    disabled={!ed} placeholder={ed ? "+ Thêm hướng dẫn khai báo" : ""} defaultValue={r.note} onChange={(e) => patch(r, { note: e.target.value })} />
-                )}
+                <NoteSlot key={s.uid + r.code} value={r.note} editable={ed} onChange={(v) => patch(r, { note: v })} actions={r.src === "inh" ? (
+                    <Seg<Mode> xs disabled={!ed} value={r.mode} options={[["keep", "Tùy chọn"], ["req", "Bắt buộc"], ["hide", "Ẩn"]]} onChange={(m) => { patch(r, { mode: m }); bump(); }} />
+                ) : (
+                    <>
+                        <Seg xs disabled={!ed} value={r.req ? "1" : "0"} options={[["0", "Tùy chọn"], ["1", "Bắt buộc"]]} onChange={(m) => { patch(r, { req: m === "1" }); bump(); }} />
+                        {ed && (
+                            <button className="rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-red-600" title="Xoá trường" onClick={() => {
+                                s.rest.splice(idx, 1); bump();
+                                toast(`Đã xoá trường "${fieldName(r.code)}"`, () => { s.rest.splice(idx, 0, r); bump(); });
+                            }}><Trash2 size={14} /></button>
+                        )}
+                    </>
+                )} />
             </div>
         );
     };
@@ -234,10 +229,9 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
                     {core.map((k) => (
                         <div key={k} className="grid grid-cols-[16px_1fr_auto] items-center gap-2.5 rounded-xl border border-yellow-200 bg-yellow-50/60 px-2.5 py-2">
                             <Lock size={13} className="text-yellow-700" />
-                            <div><div className="text-[13.5px] font-medium">{fieldName(k)}</div><div className="font-mono text-[12px] text-gray-400">{k}</div></div>
-                            <Tag cls={T.gs1}>Bắt buộc</Tag>
-                            {(ed || s.coreNotes[k] || cfg.kdes.find((x) => x.code === k)?.note) && (<input key={s.uid + k} className="col-start-2 col-end-4 rounded-md border border-dashed border-transparent bg-transparent px-1.5 py-0.5 text-[12.5px] text-gray-600 hover:border-yellow-300 focus:border-brand-400 focus:bg-white focus:outline-none"
-                                disabled={!ed} placeholder={ed ? "+ Thêm hướng dẫn khai báo" : ""} defaultValue={s.coreNotes[k] ?? cfg.kdes.find((x) => x.code === k)?.note ?? ""} onChange={(e) => patch(s.coreNotes, { [k]: e.target.value })} />)}
+                            <div className="min-w-0 text-[13.5px] font-medium">{fieldName(k)} <span className="font-normal text-gray-400">({k})</span></div>
+                            <NoteSlot key={s.uid + k} value={s.coreNotes[k] ?? cfg.kdes.find((x) => x.code === k)?.note ?? ""} editable={ed}
+                                onChange={(v) => patch(s.coreNotes, { [k]: v })} actions={<Tag cls={T.gs1}>Bắt buộc</Tag>} />
                         </div>
                     ))}
                 </div>
