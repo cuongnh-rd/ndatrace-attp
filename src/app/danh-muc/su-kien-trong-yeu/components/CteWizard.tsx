@@ -67,7 +67,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
         let n = step + 1;
         if (n === 3 && skipL3) n = 4;
         setStep(n);
-        setReached((r) => Math.max(r, n));
+        setReached((r) => Math.max(r, n >= 3 ? 7 : n));
     };
     const goBack = () => {
         setErr("");
@@ -187,13 +187,12 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
 
                 <section className={`${card} p-5`}>
                     <div className="mb-4 flex items-center justify-between gap-3">
-                        <h2 className="text-[16px] font-semibold text-gray-900 dark:text-white">{LAYERS[step - 1]}</h2>
+                        <div className="flex items-center gap-2"><h2 className="text-[16px] font-semibold text-gray-900 dark:text-white">{LAYERS[step - 1]}</h2>{step === 5 && (et === "ET-04" ? <Tag cls={T.err}>Bắt buộc</Tag> : <Tag cls={T.mute}>Tuỳ chọn</Tag>)}</div>
                         {et && step > 1 && <Tag cls={T.info}>{etLabel(et)}</Tag>}
                     </div>
 
                     {step === 1 && (
                         <div className="flex flex-col gap-2">
-                            {etLocked && <Banner kind="warn">Loại sự kiện không thể thay đổi. Tạo sự kiện mới nếu cần loại khác.</Banner>}
                             {EVENT_TYPES.filter((e) => e.active).map((e) => (
                                 <label key={e.code} className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 ${et === e.code ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"} ${etLocked ? "cursor-not-allowed opacity-70" : ""}`}>
                                     <input type="radio" name="et" className="mt-1 accent-brand-600" checked={et === e.code} disabled={etLocked} onChange={() => setEt(e.code)} />
@@ -214,7 +213,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
                                     <label key={b.code} className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2 ${cfg.bizStep === b.code ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"} ${parent ? "cursor-not-allowed opacity-70" : ""}`}>
                                         <input type="radio" name="bs" className="accent-brand-600" checked={cfg.bizStep === b.code} disabled={!!parent} onChange={() => pickBizStep(b.code)} />
                                         <span className="flex-1 text-[13.5px]">{bizLabel(b.code)}</span>
-                                        {b.fit[et] === "warn" ? <Tag cls={T.warn}><AlertTriangle size={11} /> ít dùng</Tag> : <Tag cls={T.ok}>✓</Tag>}
+                                        {b.fit[et] === "warn" ? <Tag cls={T.warn}><AlertTriangle size={11} /> ít dùng</Tag> : null}
                                     </label>
                                 ))}
                             </div>
@@ -256,10 +255,7 @@ export default function CteWizard({ cte }: { cte?: Cte }) {
 
                     {step === 5 && (
                         <div>
-                            <div className="mb-2 flex items-center gap-2">
-                                {et === "ET-04" ? <Tag cls={T.err}>Bắt buộc</Tag> : <Tag cls={T.mute}>Tuỳ chọn</Tag>}
-                                <span className="text-[12.5px] text-gray-500">{et === "ET-04" ? "TransactionEvent yêu cầu chọn ≥1 loại giao dịch." : "Có thể bỏ qua, hoặc chọn nếu muốn bắt buộc gắn chứng từ."}</span>
-                            </div>
+                            <p className="mb-2 text-[12.5px] text-gray-500">{et === "ET-04" ? "Chọn ít nhất 1 chứng từ liên quan." : "Có thể bỏ qua, hoặc chọn nếu muốn bắt buộc gắn chứng từ."}</p>
                             <div className="grid grid-cols-1 gap-1.5 md:grid-cols-2">
                                 {BIZ_TX_TYPES.map((b) => {
                                     const on = cfg.bizTxTypes.includes(b.code);
@@ -320,7 +316,7 @@ function KdeLayer({ et, cfg, up, parent }: { et: EtCode; cfg: CteConfig; up: (p:
                     <div className="min-w-0 flex-1">
                         <div className="text-[13.5px] font-medium">{name} <span className="font-normal text-gray-400">({code})</span></div>
                     </div>
-                    {isAuto && <Tag cls={T.gs1}><Lock size={11} /> Bắt buộc tự động</Tag>}
+                    {isAuto && <Tag cls={T.gs1}><Lock size={11} /> Bắt buộc</Tag>}
                     {!isAuto && parentReq(code) && <Tag cls={T.info}>Bắt buộc theo sự kiện cấp Bộ</Tag>}
                     {sel && !lockedReq && (
                         <Seg xs value={sel.required ? "r" : "o"} options={[["o", "Tuỳ chọn"], ["r", "Bắt buộc"]]} onChange={(v) => patch(list, code, { required: v === "r" })} />
