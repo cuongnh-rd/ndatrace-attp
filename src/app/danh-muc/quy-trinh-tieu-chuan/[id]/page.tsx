@@ -2,7 +2,7 @@
 
 import { use, useReducer, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Eye } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Banner, Tag, btn, btnD, btnP, btnSm, card, inp, useToast } from "@/components/txng/ui";
@@ -13,6 +13,7 @@ import {
     pPending, procById, procs, updateStepCte, validateProc,
 } from "@/lib/txng/process";
 import Builder from "../components/Builder";
+import ProcInfoCard from "../components/ProcInfoCard";
 import { HistoryTab, OverviewTab } from "../components/ProcTabs";
 import {
     AddKdeDialog, AddStepDialog, ConfirmDialog, CteDiffDialog, DeactivateDialog, PreviewDialog, PublishDialog, ReactivateDialog, ScheduleDialog,
@@ -36,6 +37,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 }
 
 function Detail({ p }: { p: Proc }) {
+    const isNew = useSearchParams().get("new") === "1";
     const router = useRouter();
     const toast = useToast();
     const [, bump] = useReducer((x: number) => x + 1, 0);
@@ -109,7 +111,7 @@ function Detail({ p }: { p: Proc }) {
                 <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
                         <div className="flex flex-wrap items-center gap-2.5">
-                            <h1 className="text-xl font-bold text-gray-900 dark:text-white">{p.name}</h1>
+                            <h1 className="text-xl font-bold text-gray-900 dark:text-white">{p.name || "Quy trình chưa đặt tên"}</h1>
                             <Tag cls={PROC_STATUS[v.status].cls}>{PROC_STATUS[v.status].label}</Tag>
                         </div>
                         <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-[13px] text-gray-500">
@@ -122,7 +124,6 @@ function Detail({ p }: { p: Proc }) {
                                 </select>
                             </span>
                             <span>Hiệu lực <b className="text-gray-800 dark:text-gray-200">{v.from ? fmtDT(v.from) : "—"}{v.to ? ` → ${fmtDT(v.to)}` : ""}</b></span>
-                            {p.law && <span>Căn cứ <b className="text-gray-800 dark:text-gray-200">{p.law}</b></span>}
                         </div>
                     </div>
                     <div className="flex flex-wrap gap-2">{acts}</div>
@@ -144,6 +145,8 @@ function Detail({ p }: { p: Proc }) {
                 {v.status === "off" && <Banner kind="err">Quy trình đã vô hiệu hoá lúc {fmtDT(v.to)}. Lý do: {v.offReason || "—"}. Doanh nghiệp không khai báo sự kiện mới theo quy trình này; dữ liệu đã khai giữ nguyên.</Banner>}
                 {v.status === "super" && <Banner kind="info">Phiên bản đã bị thay thế, chỉ xem. Hiệu lực từ {fmtDT(v.from)} đến {fmtDT(v.to)}.</Banner>}
             </div>
+
+            <ProcInfoCard p={p} editable={editable} startOpen={isNew} onChange={bump} />
 
             <div className="mb-4 flex gap-1 border-b border-gray-200 dark:border-gray-800" role="tablist">
                 {([["steps", "Công đoạn và trường thông tin"], ["hist", "Lịch sử phiên bản"], ["ov", "Toàn cảnh nhóm ngành"]] as [Tab, string][]).map(([k, l]) => (

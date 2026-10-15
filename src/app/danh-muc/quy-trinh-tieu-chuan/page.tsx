@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, Plus } from "lucide-react";
+import { AlertTriangle, Plus, Search } from "lucide-react";
 import TableToolbar from "@/components/ui/TableToolbar";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { Dialog, Tag, T, btn, btnP, card, inp, label } from "@/components/txng/ui";
+import { Dialog, Tag, T, btn, btnP, card, inp } from "@/components/txng/ui";
 import { FAMILIES, ME_BO, famOf } from "@/lib/txng/catalog";
 import {
     PROC_STATUS, createProc, fmtDT, myFamilies, norm, pActive, pMain, pOff, pPending, procWarnings, procs, type ProcStatus,
@@ -77,70 +77,63 @@ export default function Page() {
                 </div>
             </div>
 
-            {open && <CreateDialog onClose={() => setOpen(false)} onOpen={(id) => router.push(`/danh-muc/quy-trinh-tieu-chuan/${id}`)} />}
+            {open && <CreateDialog onClose={() => setOpen(false)} onOpen={(id, isNew) => router.push(`/danh-muc/quy-trinh-tieu-chuan/${id}${isNew ? "?new=1" : ""}`)} />}
         </DashboardLayout>
     );
 }
 
-function CreateDialog({ onClose, onOpen }: { onClose: () => void; onOpen: (id: string) => void }) {
-    const [name, setName] = useState("");
+function CreateDialog({ onClose, onOpen }: { onClose: () => void; onOpen: (id: string, isNew?: boolean) => void }) {
+    const [q, setQ] = useState("");
     const [fam, setFam] = useState("");
-    const [law, setLaw] = useState("");
-    const [desc, setDesc] = useState("");
-    const [eName, setEName] = useState("");
-    const [eFam, setEFam] = useState("");
-
-    const submit = () => {
-        const en = !name.trim() ? "Nhập tên quy trình." : procs.some((p) => norm(p.name) === norm(name)) ? "Tên quy trình đã được sử dụng trong Bộ." : "";
-        setEName(en);
-        setEFam(fam ? "" : "Chọn nhóm ngành hàng.");
-        if (en || !fam) return;
-        onOpen(createProc(fam, name.trim(), law, desc).id);
+    const rows = myFamilies()
+        .filter((f) => !q || norm(f.name).includes(norm(q)))
+        .map((f) => ({
+            f,
+            ex: procs.find((p) => p.fam === f.id && p.versions.some((v) => v.status !== "off" && v.status !== "super")),
+            offp: procs.find((p) => p.fam === f.id && pOff(p) && !pActive(p)),
+        }));
+    const free = rows.filter((r) => !r.ex && !r.offp);
+    const taken = rows.filter((r) => r.ex || r.offp);
+    const create = () => {
+        const f = famOf(fam);
+        onOpen(createProc(fam, `Quy trình TXNG ${f.name.toLowerCase()}`, "", "").id, true);
     };
 
     return (
-        <Dialog open onClose={onClose} title="Tạo quy trình" sub="Quy trình được tạo ở trạng thái Nháp, phiên bản 1"
-            footer={<><button className={btn} onClick={onClose}>Huỷ</button><button className={btnP} onClick={submit}>Tạo quy trình</button></>}>
-            <div className="flex flex-col gap-4">
-                <div>
-                    <label className={label} htmlFor="pn">Tên quy trình <span className="text-red-500">*</span></label>
-                    <input id="pn" autoFocus className={inp} value={name} onChange={(e) => setName(e.target.value)} placeholder="Ví dụ: Quy trình TXNG trái cây tươi" />
-                    {eName && <p className="mt-1 text-[12.5px] text-red-600">{eName}</p>}
-                </div>
-                <div>
-                    <span className={label}>Nhóm ngành hàng <span className="text-red-500">*</span></span>
-                    <div className="flex flex-col gap-1.5">
-                        {myFamilies().map((f) => {
-                            const ex = procs.find((p) => p.fam === f.id && p.versions.some((v) => v.status !== "off" && v.status !== "super"));
-                            const offp = procs.find((p) => p.fam === f.id && pOff(p) && !pActive(p));
-                            const other = f.bo.filter((b) => b !== ME_BO);
-                            if (ex)
-                                return (
-                                    <div key={f.id} className="flex gap-2.5 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 dark:border-gray-700 dark:bg-gray-800/50">
-                                        <input type="radio" disabled className="mt-1" />
-                                        <div>
-                                            <div className="text-gray-400">{f.name}</div>
-                                            <div className="text-[12px] text-amber-700">Bộ đã có quy trình cho nhóm ngành này. <button className="text-brand-700 underline" onClick={() => onOpen(ex.id)}>Mở quy trình</button></div>
-                                        </div>
-                                    </div>
-                                );
-                            return (
-                                <label key={f.id} className={`flex cursor-pointer gap-2.5 rounded-xl border px-3 py-2.5 ${fam === f.id ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"}`}>
-                                    <input type="radio" name="fam" className="mt-1 accent-brand-600" checked={fam === f.id} onChange={() => setFam(f.id)} />
-                                    <div>
-                                        <div className="font-medium">{f.name}</div>
-                                        {offp && <div className="text-[12px] text-amber-700">Bộ có quy trình đã vô hiệu hoá cho nhóm ngành này. <button className="text-brand-700 underline" onClick={(e) => { e.preventDefault(); onOpen(offp.id); }}>Kích hoạt lại thay vì tạo mới</button></div>}
-                                        {other.length > 0 && <div className="text-[12px] text-gray-500">Đồng quản lý với {other.join(", ")}. Chỉ đưa vào các công đoạn thuộc thẩm quyền của Bộ.</div>}
-                                    </div>
-                                </label>
-                            );
-                        })}
-                    </div>
-                    {eFam && <p className="mt-1 text-[12.5px] text-red-600">{eFam}</p>}
-                </div>
-                <div><label className={label} htmlFor="pl">Căn cứ pháp lý</label><input id="pl" className={inp} value={law} onChange={(e) => setLaw(e.target.value)} placeholder="Số hiệu văn bản" /></div>
-                <div><label className={label} htmlFor="pd">Mô tả</label><textarea id="pd" rows={2} className={inp} value={desc} onChange={(e) => setDesc(e.target.value)} /></div>
+        <Dialog open onClose={onClose} title="Tạo quy trình" sub="Chọn nhóm ngành hàng. Thông tin chi tiết và công đoạn được cấu hình ở bước tiếp theo."
+            footer={<><button className={btn} onClick={onClose}>Huỷ</button><button className={btnP} disabled={!fam} onClick={create}>Tiếp tục</button></>}>
+            <div className="relative mb-3">
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input autoFocus className={`${inp} pl-8`} placeholder="Tìm nhóm ngành hàng" value={q} onChange={(e) => setQ(e.target.value)} />
             </div>
+            <h3 className="mb-1.5 text-[13px] font-semibold text-gray-600">Chưa có quy trình <span className="font-normal text-gray-400">({free.length})</span></h3>
+            <div className="mb-4 flex max-h-[44vh] flex-col gap-1.5 overflow-auto pr-1">
+                {free.length ? free.map(({ f }) => {
+                    const other = f.bo.filter((b) => b !== ME_BO);
+                    return (
+                        <label key={f.id} className={`flex cursor-pointer gap-2.5 rounded-xl border px-3 py-2 ${fam === f.id ? "border-brand-500 bg-brand-50/50" : "border-gray-200 dark:border-gray-700"}`}>
+                            <input type="radio" name="fam" className="mt-1 accent-brand-600" checked={fam === f.id} onChange={() => setFam(f.id)} />
+                            <div>
+                                <div className="font-medium">{f.name}</div>
+                                {other.length > 0 && <div className="text-[12px] text-gray-500">Đồng quản lý với {other.join(", ")}. Chỉ đưa vào các công đoạn thuộc thẩm quyền của Bộ.</div>}
+                            </div>
+                        </label>
+                    );
+                }) : <p className="text-[13px] text-gray-400">Không có nhóm ngành phù hợp.</p>}
+            </div>
+            {taken.length > 0 && (
+                <>
+                    <h3 className="mb-1.5 text-[13px] font-semibold text-gray-600">Đã có quy trình <span className="font-normal text-gray-400">({taken.length})</span></h3>
+                    <div className="flex flex-col gap-1.5">
+                        {taken.map(({ f, ex, offp }) => (
+                            <div key={f.id} className="flex items-center justify-between gap-2.5 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 dark:border-gray-700 dark:bg-gray-800/50">
+                                <span className="text-gray-500">{f.name}</span>
+                                <button className="text-[12.5px] text-brand-700 underline" onClick={() => onOpen((ex ?? offp)!.id)}>{ex ? "Mở quy trình" : "Đã vô hiệu hoá — kích hoạt lại"}</button>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
         </Dialog>
     );
 }

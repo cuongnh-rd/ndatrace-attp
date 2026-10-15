@@ -3,7 +3,7 @@
  * Mỗi công đoạn tham chiếu 1 CTE Đang áp dụng (theo id + version) trong CTE Builder.
  */
 import { type CteConfig, ctes, cteById, vActive, ME_USER, TODAY, clone } from "./cte";
-import { ME_BO, famOf, fieldName, libOf, ilmdAllowed } from "./catalog";
+import { FAMILIES, ME_BO, fieldName, libOf, ilmdAllowed } from "./catalog";
 
 export type ProcStatus = "draft" | "sched" | "active" | "super" | "off";
 export type Mode = "keep" | "req" | "hide";
@@ -167,6 +167,7 @@ export function kdeBlock(s: ProcStep, code: string): { why: string; unhide?: str
 export interface PIssue { m: string; uid?: string }
 export function validateProc(p: Proc, v: ProcVersion) {
     const E: PIssue[] = [], W: PIssue[] = [];
+    if (!p.name.trim()) E.push({ m: "Chưa nhập tên quy trình." });
     if (!v.steps.length) E.push({ m: "Quy trình chưa có công đoạn nào." });
     else if (!v.steps.some((s) => s.req)) E.push({ m: "Quy trình cần có ít nhất một công đoạn bắt buộc." });
     const seen: Record<string, 1> = {};
@@ -229,12 +230,12 @@ export function updateStepCte(s: ProcStep) {
 
 export function createProc(fam: string, name: string, law: string, desc: string): Proc {
     const id = "p" + (procs.length + 1 + Math.floor(Math.random() * 999));
-    const p: Proc = { id, code: `QT-NNMT-${fam.toUpperCase()}${Math.floor(Math.random() * 90) + 10}`, fam, name, desc, law, versions: [{ v: 1, status: "draft", from: "", to: "", by: "", note: "", steps: [] }] };
+    const p: Proc = { id, code: `QT-NNMT-${fam.replace(/-/g, "").toUpperCase()}`, fam, name, desc, law, versions: [{ v: 1, status: "draft", from: "", to: "", by: "", note: "", steps: [] }] };
     procs.unshift(p);
     return p;
 }
 
-export const myFamilies = () => ["rau", "ts", "gao", "che", "qua", "thit"].map(famOf).filter((f) => f.bo.includes(ME_BO));
+export const myFamilies = () => FAMILIES.filter((f) => f.bo.includes(ME_BO));
 /** CTE chọn được khi thêm công đoạn: CTE cấp Bộ có version Đang áp dụng */
 export const usableCtes = () => ctes.filter((c) => c.level === "Bộ" && !!vActive(c));
 export { TODAY };
