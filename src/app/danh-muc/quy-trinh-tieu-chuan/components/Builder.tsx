@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowDown, ArrowUp, Copy, Eye, GripVertical, Lock, Plus, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Copy, Eye, GripVertical, Plus, Trash2 } from "lucide-react";
 import { Banner, NoteSlot, Seg, Tag, T, btn, btnSm, card, inp } from "@/components/txng/ui";
 import { actLabel, bizLabel, etLabel, fieldName, libOf } from "@/lib/txng/catalog";
 import { cteById, patch } from "@/lib/txng/cte";
@@ -218,13 +218,13 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
 
             <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
                 <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường bắt buộc theo sự kiện trọng yếu</h3><Tag cls={T.gs1}><Lock size={11} /> {core.length} trường</Tag></div>
-                    <span className="text-[12.5px] text-gray-400">Kế thừa từ sự kiện trọng yếu, không thể thay đổi tại quy trình</span>
+                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường bắt buộc theo sự kiện trọng yếu</h3></div>
+                    <span className="text-[12.5px] text-gray-400">Kế thừa từ sự kiện trọng yếu</span>
                 </div>
                 <div className="flex flex-col gap-1.5">
                     {core.map((k) => (
-                        <div key={k} className="grid grid-cols-[16px_1fr_auto] items-center gap-2.5 rounded-xl border border-yellow-200 bg-yellow-50/60 px-2.5 py-2">
-                            <Lock size={13} className="text-yellow-700" />
+                        <div key={k} className="grid grid-cols-[0px_1fr_auto] items-center gap-x-0 gap-y-2 rounded-xl border border-yellow-200 bg-yellow-50/60 px-3 py-2">
+                            <span />
                             <div className="min-w-0 text-[13.5px] font-medium">{fieldName(k)} <span className="font-normal text-gray-400">({k})</span></div>
                             <NoteSlot key={s.uid + k} value={s.coreNotes[k] ?? cfg.kdes.find((x) => x.code === k)?.note ?? ""} editable={ed}
                                 onChange={(v) => patch(s.coreNotes, { [k]: v })} actions={<Tag cls={T.gs1}>Bắt buộc</Tag>} />
@@ -235,12 +235,12 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
 
             <div className="px-5 py-4">
                 <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường bổ sung</h3>
+                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường dữ liệu bổ sung</h3>
                         <span className="text-[12.5px] text-gray-500">{s.rest.length} trường · {s.rest.filter((r) => (r.src === "inh" ? r.mode === "req" : r.req)).length} bắt buộc</span></div>
-                    <span className="text-[12.5px] text-gray-400">Gợi ý theo sự kiện trọng yếu hoặc chọn thêm từ Thư viện KDE</span>
+                    <span className="text-[12.5px] text-gray-400">Thêm trường dữ liệu phù hợp với nhóm ngành hàng</span>
                 </div>
                 {s.rest.length ? <div className="flex flex-col gap-1.5">{s.rest.map((_, idx) => kdeRow(idx))}</div> : <p className="text-[13px] text-gray-400">Chưa có trường bổ sung.</p>}
-                {ed && <button className={`${btn} mt-2 w-full justify-center border-dashed text-brand-700`} onClick={() => onAddKde(s)}><Plus size={14} /> Thêm trường bổ sung</button>}
+                {ed && <button className={`${btn} mt-2 w-full justify-center border-dashed text-brand-700`} onClick={() => onAddKde(s)}><Plus size={14} /> Thêm trường dữ liệu</button>}
                 {visibleCount(s) > 15 && <Banner kind="warn">Công đoạn có {visibleCount(s)} trường hiển thị. Form dài làm tăng tỷ lệ doanh nghiệp khai thiếu; cân nhắc xoá trường tùy chọn không cần thiết.</Banner>}
             </div>
         </>
