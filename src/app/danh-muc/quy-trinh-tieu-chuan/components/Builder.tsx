@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowDown, ArrowUp, Copy, GripVertical, Lock, Plus, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Copy, Eye, GripVertical, Lock, Plus, Trash2 } from "lucide-react";
 import { Banner, NoteSlot, Seg, Tag, T, btn, btnSm, card, inp } from "@/components/txng/ui";
 import { actLabel, bizLabel, etLabel, fieldName, libOf } from "@/lib/txng/catalog";
 import { cteById, patch } from "@/lib/txng/cte";
@@ -23,6 +23,7 @@ interface Props {
     toast: (m: string, undo?: () => void) => void;
     onAddStep: () => void;
     onAddKde: (s: ProcStep) => void;
+    onPreview: (uid: string) => void;
     onDiff: (s: ProcStep) => void;
     onConfirm: (title: string, msg: string, btn: string, fn: () => void) => void;
 }
@@ -102,7 +103,7 @@ export default function Builder(props: Props) {
     );
 }
 
-function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onConfirm }: Props) {
+function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onConfirm, onPreview }: Props) {
     const s = v.steps.find((x) => x.uid === sel);
     const [nameErr, setNameErr] = useState("");
     const kdrag = useRef<number | null>(null);
@@ -185,6 +186,7 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
                         </div>
                     </div>
                     <div className="flex items-center gap-1">
+                        <button className={`${btn} ${btnSm}`} onClick={() => onPreview(s.uid)}><Eye size={13} /> Xem trước</button>
                         {isOutdated(s) && <button className={`${btn} ${btnSm}`} onClick={() => onDiff(s)}>Xem thay đổi v{s.cteVer} → v{latestVer(s.cteId)}</button>}
                         {ed && (
                             <>

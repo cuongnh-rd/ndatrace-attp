@@ -3,9 +3,9 @@
 import { use, useReducer, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft, Eye } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { Banner, Tag, btn, btnD, btnP, btnSm, card, inp, useToast } from "@/components/txng/ui";
+import { Banner, Tag, btn, btnD, btnP, btnSm, inp, useToast } from "@/components/txng/ui";
 import { famOf } from "@/lib/txng/catalog";
 import { cteById, patch } from "@/lib/txng/cte";
 import {
@@ -73,7 +73,6 @@ function Detail({ p }: { p: Proc }) {
     let acts = null;
     if (v.status === "draft")
         acts = (<>
-            <button className={btn} onClick={() => setDlg({ k: "preview" })}><Eye size={14} /> Xem trước</button>
             {v.v > 1
                 ? <button className={btnD} onClick={() => confirm("Huỷ bản nháp", `Bản nháp phiên bản ${v.v} và mọi thay đổi trong đó sẽ bị xoá. Phiên bản đang áp dụng không thay đổi.`, "Huỷ bản nháp", () => { p.versions.splice(vi, 1); openV(p.versions.indexOf(pMain(p))); toast.show("Đã huỷ bản nháp"); })}>Huỷ bản nháp</button>
                 : <button className={btnD} onClick={() => confirm("Xoá quy trình", `Quy trình "${p.name}" chưa từng áp dụng và sẽ bị xoá hẳn. Nhóm ngành ${f.name} có thể tạo quy trình mới.`, "Xoá quy trình", () => { procs.splice(procs.indexOf(p), 1); router.push("/danh-muc/quy-trinh-tieu-chuan"); })}>Xoá</button>}
@@ -91,12 +90,11 @@ function Detail({ p }: { p: Proc }) {
         </>);
     else if (v.status === "active")
         acts = (<>
-            <button className={btn} onClick={() => setDlg({ k: "preview" })}><Eye size={14} /> Xem trước</button>
             <button className={btnD} onClick={() => setDlg({ k: "off" })}>Vô hiệu hoá</button>
             <button className={btnP} onClick={toEdit}>{pe ? `Mở v${pe.v} ${pe.status === "sched" ? "(chờ áp dụng)" : "(nháp)"}` : "Chỉnh sửa"}</button>
         </>);
     else if (v.status === "off") acts = <button className={btnP} onClick={() => setDlg({ k: "reon" })}>Kích hoạt lại</button>;
-    else acts = <button className={btn} onClick={() => setDlg({ k: "preview" })}><Eye size={14} /> Xem trước</button>;
+    else acts = null;
 
     return (
         <DashboardLayout>
@@ -107,8 +105,7 @@ function Detail({ p }: { p: Proc }) {
                 <span className="text-[13px] text-gray-500">Quy trình tiêu chuẩn TXNG / <b className="text-gray-800 dark:text-gray-200">{p.name || "Quy trình mới"}</b></span>
             </div>
 
-            <div className={`${card} mb-4 px-5 py-4`}>
-                <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
                     <div>
                         <div className="flex flex-wrap items-center gap-2.5">
                             <h1 className="text-xl font-bold text-gray-900 dark:text-white">{p.name || "Quy trình mới"}</h1>
@@ -121,8 +118,9 @@ function Detail({ p }: { p: Proc }) {
                         </div>
                     </div>
                     <div className="flex flex-wrap gap-2">{acts}</div>
-                </div>
+            </div>
 
+            <div className="mb-4">
                 {v.status === "sched" && <Banner kind="info">Phiên bản {v.v} sẽ tự động áp dụng lúc <b>{fmtDT(v.from)}</b>{a ? ` và thay thế phiên bản ${a.v}` : ""}. Cấu hình đã khoá; huỷ lịch để chỉnh sửa.</Banner>}
                 {v.status === "draft" && v.v > 1 && a && <Banner kind="info">Đang soạn phiên bản {v.v}. Phiên bản {a.v} vẫn đang áp dụng cho doanh nghiệp cho tới khi bạn publish bản này.</Banner>}
                 {outdated.length > 0 && v.status !== "super" && v.status !== "off" && (
@@ -150,7 +148,7 @@ function Detail({ p }: { p: Proc }) {
 
             {tab === "steps" && (
                 <Builder p={p} v={v} prev={prev} editable={editable} sel={sel} errSteps={errSteps} onSel={(u) => { setSel(u); bump(); }} bump={bump}
-                    toast={toast.show} onAddStep={() => setDlg({ k: "addStep" })} onAddKde={(s) => setDlg({ k: "addKde", s })} onDiff={(s) => setDlg({ k: "diff", s })}
+                    toast={toast.show} onPreview={(u) => { setSel(u); setDlg({ k: "preview" }); }} onAddStep={() => setDlg({ k: "addStep" })} onAddKde={(s) => setDlg({ k: "addKde", s })} onDiff={(s) => setDlg({ k: "diff", s })}
                     onConfirm={(t, m, b, fn) => confirm(t, m, b, fn)} />
             )}
             {tab === "hist" && <HistoryTab p={p} onOpen={(i) => { openV(i); setTab("steps"); }} />}
