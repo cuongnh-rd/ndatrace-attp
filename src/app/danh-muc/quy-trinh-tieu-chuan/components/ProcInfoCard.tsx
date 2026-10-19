@@ -13,6 +13,7 @@ export default function ProcInfoCard({ p, v, editable, startOpen, onChange }: {
 }) {
     const complete = !!p.name.trim() && !!p.fam;
     const [open, setOpen] = useState(startOpen || !complete);
+    const [touched, setTouched] = useState(false);
     const f = famOf(p.fam);
     const dupName = !!p.name.trim() && procs.some((x) => x !== p && norm(x.name) === norm(p.name));
     const other = f.bo.filter((b) => b !== ME_BO);
@@ -48,8 +49,8 @@ export default function ProcInfoCard({ p, v, editable, startOpen, onChange }: {
                     </div>
                     <div>
                         <label className={label} htmlFor="pi-name">Tên quy trình <span className="text-red-500">*</span></label>
-                        <input id="pi-name" key={p.fam} className={inp} disabled={!editable} defaultValue={p.name} onChange={(e) => set("name", e.target.value)} placeholder="Ví dụ: Quy trình TXNG trái cây tươi" />
-                        {!p.name.trim() && <p className="mt-1 text-[12.5px] text-red-600">Nhập tên quy trình.</p>}
+                        <input id="pi-name" key={p.fam} className={inp} disabled={!editable} defaultValue={p.name} onChange={(e) => set("name", e.target.value)} onBlur={() => setTouched(true)} placeholder="Ví dụ: Quy trình TXNG trái cây tươi" />
+                        {touched && !p.name.trim() && <p className="mt-1 text-[12.5px] text-red-600">Nhập tên quy trình.</p>}
                         {dupName && <p className="mt-1 text-[12.5px] text-red-600">Tên quy trình đã được sử dụng trong Bộ.</p>}
                     </div>
                     <div>
