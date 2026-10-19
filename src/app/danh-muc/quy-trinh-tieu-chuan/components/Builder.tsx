@@ -218,7 +218,7 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
 
             <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
                 <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường bắt buộc theo sự kiện trọng yếu</h3></div>
+                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường dữ liệu bắt buộc</h3></div>
                     <span className="text-[12.5px] text-gray-400">Kế thừa từ sự kiện trọng yếu</span>
                 </div>
                 <div className="flex flex-col gap-1.5">
