@@ -6,8 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Eye } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Banner, Tag, btn, btnD, btnP, btnSm, card, inp, useToast } from "@/components/txng/ui";
-import { ME_BO, famOf } from "@/lib/txng/catalog";
-import { cteById } from "@/lib/txng/cte";
+import { famOf } from "@/lib/txng/catalog";
+import { cteById, patch } from "@/lib/txng/cte";
 import {
     type Proc, type ProcStep, NOW, PROC_STATUS, applyVersion, cteInactive, fmtDT, isOutdated, newProcVersion, pActive, pMain,
     pPending, procById, procs, updateStepCte, validateProc,
@@ -104,26 +104,20 @@ function Detail({ p }: { p: Proc }) {
                 <Link href="/danh-muc/quy-trinh-tieu-chuan" className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
                     <ArrowLeft size={16} className="text-gray-600" />
                 </Link>
-                <span className="text-[13px] text-gray-500">Quy trình tiêu chuẩn TXNG / <b className="text-gray-800 dark:text-gray-200">{p.name}</b></span>
+                <span className="text-[13px] text-gray-500">Quy trình tiêu chuẩn TXNG / <b className="text-gray-800 dark:text-gray-200">{p.name || "Quy trình mới"}</b></span>
             </div>
 
             <div className={`${card} mb-4 px-5 py-4`}>
                 <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
                         <div className="flex flex-wrap items-center gap-2.5">
-                            <h1 className="text-xl font-bold text-gray-900 dark:text-white">{p.name || "Quy trình chưa đặt tên"}</h1>
+                            <h1 className="text-xl font-bold text-gray-900 dark:text-white">{p.name || "Quy trình mới"}</h1>
                             <Tag cls={PROC_STATUS[v.status].cls}>{PROC_STATUS[v.status].label}</Tag>
-                        </div>
-                        <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-[13px] text-gray-500">
-                            <span>Mã <b className="font-mono text-gray-800 dark:text-gray-200">{p.code}</b></span>
-                            <span>Nhóm ngành <b className="text-gray-800 dark:text-gray-200">{f.name}</b></span>
-                            <span>Bộ <b className="text-gray-800 dark:text-gray-200">{ME_BO}</b></span>
-                            <span className="flex items-center gap-1.5">Phiên bản
-                                <select className={`${inp} !w-auto !py-0.5 text-[13px]`} value={vi} onChange={(e) => openV(+e.target.value)}>
+                            {p.versions.length > 1 && (
+                                <select aria-label="Phiên bản" className={`${inp} !w-auto !py-0.5 text-[13px]`} value={vi} onChange={(e) => openV(+e.target.value)}>
                                     {p.versions.map((x, i) => <option key={x.v} value={i}>v{x.v} · {PROC_STATUS[x.status].label}</option>)}
                                 </select>
-                            </span>
-                            <span>Hiệu lực <b className="text-gray-800 dark:text-gray-200">{v.from ? fmtDT(v.from) : "—"}{v.to ? ` → ${fmtDT(v.to)}` : ""}</b></span>
+                            )}
                         </div>
                     </div>
                     <div className="flex flex-wrap gap-2">{acts}</div>
@@ -146,7 +140,7 @@ function Detail({ p }: { p: Proc }) {
                 {v.status === "super" && <Banner kind="info">Phiên bản đã bị thay thế, chỉ xem. Hiệu lực từ {fmtDT(v.from)} đến {fmtDT(v.to)}.</Banner>}
             </div>
 
-            <ProcInfoCard p={p} editable={editable} startOpen={isNew} onChange={bump} />
+            <ProcInfoCard p={p} v={v} editable={editable} startOpen={isNew} onChange={bump} />
 
             <div className="mb-4 flex gap-1 border-b border-gray-200 dark:border-gray-800" role="tablist">
                 {([["steps", "Công đoạn và trường thông tin"], ["hist", "Lịch sử phiên bản"], ["ov", "Toàn cảnh nhóm ngành"]] as [Tab, string][]).map(([k, l]) => (
@@ -171,7 +165,7 @@ function Detail({ p }: { p: Proc }) {
             {dlg?.k === "sched" && <ScheduleDialog v={v} onClose={close} onDone={done} />}
             {dlg?.k === "off" && <DeactivateDialog p={p} v={v} onClose={close} onDone={done} />}
             {dlg?.k === "reon" && <ReactivateDialog p={p} v={v} onClose={close} onDone={done} onNewVersion={() => {
-                close(); v.status = "active"; const nv = newProcVersion(p); v.status = "off"; openV(p.versions.indexOf(nv));
+                close(); patch(v, { status: "active" }); const nv = newProcVersion(p); patch(v, { status: "off" }); openV(p.versions.indexOf(nv));
             }} />}
             {dlg?.k === "preview" && <PreviewDialog v={v} start={sel} onClose={close} />}
             {dlg?.k === "confirm" && <ConfirmDialog title={dlg.title} msg={dlg.msg} btnLabel={dlg.btn} danger={dlg.danger} onClose={close} onOk={dlg.fn} />}

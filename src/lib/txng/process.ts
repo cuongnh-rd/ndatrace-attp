@@ -167,6 +167,7 @@ export function kdeBlock(s: ProcStep, code: string): { why: string; unhide?: str
 export interface PIssue { m: string; uid?: string }
 export function validateProc(p: Proc, v: ProcVersion) {
     const E: PIssue[] = [], W: PIssue[] = [];
+    if (!p.fam) E.push({ m: "Chưa chọn nhóm ngành hàng." });
     if (!p.name.trim()) E.push({ m: "Chưa nhập tên quy trình." });
     if (!v.steps.length) E.push({ m: "Quy trình chưa có công đoạn nào." });
     else if (!v.steps.some((s) => s.req)) E.push({ m: "Quy trình cần có ít nhất một công đoạn bắt buộc." });
@@ -228,9 +229,12 @@ export function updateStepCte(s: ProcStep) {
     return merged;
 }
 
-export function createProc(fam: string, name: string, law: string, desc: string): Proc {
+export const procCode = (fam: string) => (fam ? `QT-NNMT-${fam.replace(/-/g, "").toUpperCase()}` : "");
+/** Quy trình có hiệu lực (không tính bản đã thay thế / vô hiệu hoá) của nhóm ngành */
+export const procOfFam = (fam: string, except?: Proc) => procs.find((p) => p !== except && p.fam === fam && p.versions.some((v) => v.status !== "super"));
+export function createProc(fam = "", name = "", law = "", desc = ""): Proc {
     const id = "p" + (procs.length + 1 + Math.floor(Math.random() * 999));
-    const p: Proc = { id, code: `QT-NNMT-${fam.replace(/-/g, "").toUpperCase()}`, fam, name, desc, law, versions: [{ v: 1, status: "draft", from: "", to: "", by: "", note: "", steps: [] }] };
+    const p: Proc = { id, code: procCode(fam), fam, name, desc, law, versions: [{ v: 1, status: "draft", from: "", to: "", by: "", note: "", steps: [] }] };
     procs.unshift(p);
     return p;
 }

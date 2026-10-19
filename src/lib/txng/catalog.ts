@@ -223,7 +223,7 @@ export const FAMILIES: Family[] = [
     { id: "san", name: "Sắn và sản phẩm từ sắn", bo: [ME_BO] },
     { id: "muoi", name: "Muối", bo: [ME_BO] },
 ];
-export const famOf = (id: string) => FAMILIES.find((f) => f.id === id)!;
+export const famOf = (id: string): Family => FAMILIES.find((f) => f.id === id) ?? { id: "", name: "—", bo: [ME_BO] };
 
 /** Thư viện KDE bổ sung — Bộ thêm vào công đoạn của quy trình. */
 export interface LibKde { code: string; name: string; map?: string; ilmd?: boolean; gdsn?: boolean }
