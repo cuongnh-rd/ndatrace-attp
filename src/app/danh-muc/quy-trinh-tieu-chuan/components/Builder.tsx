@@ -4,10 +4,10 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowDown, ArrowUp, Copy, Eye, GripVertical, Plus, Trash2 } from "lucide-react";
 import { Banner, NoteSlot, Seg, Tag, T, btn, btnSm, card, inp } from "@/components/txng/ui";
-import { actLabel, bizLabel, etLabel, fieldName, libOf } from "@/lib/txng/catalog";
+import { fieldName, libOf } from "@/lib/txng/catalog";
 import { cteById, patch } from "@/lib/txng/cte";
 import {
-    type Proc, type ProcStep, type ProcVersion, cteCfg, cteInactive, coreOf, isOutdated, latestVer, norm, overlapBo,
+    type Proc, type ProcStep, type ProcVersion, cteCfg, cteInactive, coreOf, isOutdated, norm, overlapBo,
     uid, visibleCount,
 } from "@/lib/txng/process";
 
@@ -76,7 +76,7 @@ export default function Builder(props: Props) {
                                         <div className="mt-1 flex flex-wrap gap-1">
                                             {!s.req && <Tag cls={T.mute}>Tùy chọn</Tag>}
                                             {diffTag(s)}
-                                            {isOutdated(s) && <Tag cls={T.warn}>v{s.cteVer} → v{latestVer(s.cteId)}</Tag>}
+                                            {isOutdated(s) && <Tag cls={T.warn}>Có phiên bản mới</Tag>}
                                             {cteInactive(s) && <Tag cls={T.err}>Sự kiện trọng yếu không còn áp dụng</Tag>}
                                             {dup && <Tag cls={T.err}>Trùng tên</Tag>}
                                             {ov.length > 0 && <Tag cls={T.warn} title={`Công đoạn này cũng có trong quy trình của ${ov.join(", ")} cho cùng nhóm ngành`}>Trùng với {ov.join(", ")}</Tag>}
@@ -178,16 +178,15 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
             <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                        <div className="text-[12.5px] text-gray-500">Công đoạn {i + 1} · {etLabel(c.et)}{cfg.action ? ` · ${actLabel(cfg.action)}` : ""} · {bizLabel(cfg.bizStep)}</div>
                         <h2 className="mt-0.5 text-[16px] font-semibold">{s.name}</h2>
                         <div className="text-[12.5px] text-gray-500">
-                            Sự kiện trọng yếu <Link className="font-semibold text-brand-700 hover:underline" href={`/danh-muc/su-kien-trong-yeu/${c.id}`}>{c.name}</Link> phiên bản {s.cteVer}
-                            {isOutdated(s) && <> <Tag cls={T.warn}>Đã có v{latestVer(s.cteId)}</Tag></>}
+                            Sự kiện trọng yếu <Link className="font-semibold text-brand-700 hover:underline" href={`/danh-muc/su-kien-trong-yeu/${c.id}`}>{c.name}</Link>
+                            {isOutdated(s) && <> <Tag cls={T.warn}>Có phiên bản mới</Tag></>}
                         </div>
                     </div>
                     <div className="flex items-center gap-1">
                         <button className={`${btn} ${btnSm}`} onClick={() => onPreview(s.uid)}><Eye size={13} /> Xem trước</button>
-                        {isOutdated(s) && <button className={`${btn} ${btnSm}`} onClick={() => onDiff(s)}>Xem thay đổi v{s.cteVer} → v{latestVer(s.cteId)}</button>}
+                        {isOutdated(s) && <button className={`${btn} ${btnSm}`} onClick={() => onDiff(s)}>Xem phiên bản mới</button>}
                         {ed && (
                             <>
                                 <button className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-30" title="Lên" disabled={i === 0} onClick={() => move(-1)}><ArrowUp size={15} /></button>
@@ -210,10 +209,7 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
                     </div>
                 </div>
                 {!s.req && <p className="mt-1.5 text-[12.5px] text-gray-500">Doanh nghiệp có thể bỏ qua công đoạn này.</p>}
-                <div className="mt-3">
-                    <label className="mb-1 block text-[12.5px] font-medium text-gray-500" htmlFor="sNote">Hướng dẫn cho doanh nghiệp</label>
-                    <input key={s.uid} id="sNote" className={inp} defaultValue={s.note} disabled={!ed} placeholder="Ví dụ: Áp dụng với cơ sở có kho lạnh" onChange={(e) => patch(s, { note: e.target.value })} />
-                </div>
+                <StepNote key={s.uid} value={s.note} editable={ed} onChange={(v) => patch(s, { note: v })} />
             </div>
 
             <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
@@ -244,5 +240,22 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
                 {visibleCount(s) > 15 && <Banner kind="warn">Công đoạn có {visibleCount(s)} trường hiển thị. Form dài làm tăng tỷ lệ doanh nghiệp khai thiếu; cân nhắc xoá trường tùy chọn không cần thiết.</Banner>}
             </div>
         </>
+    );
+}
+
+/** Hướng dẫn cho doanh nghiệp (tuỳ chọn) — chỉ mở ô nhập khi bấm "+ Thêm ghi chú" */
+function StepNote({ value, editable, onChange }: { value: string; editable: boolean; onChange: (v: string) => void }) {
+    const [open, setOpen] = useState(!!value);
+    if (!open) return editable ? (
+        <button type="button" onClick={() => setOpen(true)} className="mt-2 rounded-md px-1.5 py-0.5 text-[12.5px] text-gray-400 hover:bg-gray-100 hover:text-brand-700 dark:hover:bg-gray-800">
+            + Thêm ghi chú
+        </button>
+    ) : null;
+    return (
+        <div className="mt-3">
+            <label className="mb-1 block text-[12.5px] font-medium text-gray-500" htmlFor="sNote">Hướng dẫn cho doanh nghiệp</label>
+            <input id="sNote" autoFocus={!value} className={inp} defaultValue={value} disabled={!editable} placeholder="Ví dụ: Áp dụng với cơ sở có kho lạnh"
+                onChange={(e) => onChange(e.target.value)} onBlur={(e) => { if (!e.target.value.trim()) setOpen(false); }} />
+        </div>
     );
 }
