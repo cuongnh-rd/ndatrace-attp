@@ -274,9 +274,12 @@ export function PreviewDialog({ v, start, onClose }: { v: ProcVersion; start: st
         ...s.rest.filter((r) => !(r.src === "inh" && r.mode === "hide")).map((r) => ({ k: r.code, req: r.src === "inh" ? r.mode === "req" : r.req, note: r.note })),
     ];
     return (
-        <Dialog open wide onClose={onClose} title={s.name} sub={<>Xem trước — doanh nghiệp sẽ thấy{s.note && <> · {s.note}</>}{!s.req && <> · <Tag cls={T.mute}>Có thể bỏ qua</Tag></>}</>}
+        <Dialog open wide onClose={onClose} title={
+                <select aria-label="Chọn công đoạn xem trước" className="-ml-1 max-w-full cursor-pointer rounded-md bg-transparent px-1 py-0.5 font-semibold hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:hover:bg-gray-800" value={s.uid} onChange={(e) => setUid(e.target.value)}>
+                    {v.steps.map((x) => <option key={x.uid} value={x.uid}>{x.name}</option>)}
+                </select>
+            } sub={<>Doanh nghiệp cần khai báo{s.note && <> · {s.note}</>}{!s.req && <> · <Tag cls={T.mute}>Có thể bỏ qua</Tag></>}</>}
             footer={<><span className="mr-auto text-[13px] text-gray-500">{fields.length} trường · {fields.filter((f) => f.req).length} bắt buộc</span>
-                <select className={`${inp} !w-auto`} value={s.uid} onChange={(e) => setUid(e.target.value)}>{v.steps.map((x) => <option key={x.uid} value={x.uid}>{x.name}</option>)}</select>
                 <button className={btnP} onClick={onClose}>Đóng</button></>}>
             <div className="flex flex-col gap-3">
                 {fields.map((f) => (
