@@ -86,7 +86,7 @@ export function AddKdeDialog({ s, onClose, onDone }: { s: ProcStep; onClose: () 
         );
     };
     return (
-        <Dialog open wide onClose={onClose} title="Thêm trường dữ liệu" sub={`Công đoạn "${s.name}" · ${cteById(s.cteId)?.name}`}
+        <Dialog open wide onClose={onClose} title="Thêm trường thông tin" sub={`Công đoạn "${s.name}" · ${cteById(s.cteId)?.name}`}
             footer={<><span className="mr-auto text-[13px] text-gray-500">{picked.length ? `Đã chọn ${picked.length}` : "Chưa chọn"}</span><button className={btn} onClick={onClose}>Huỷ</button>
                 <button className={btnP} disabled={!picked.length} onClick={add}>Thêm</button></>}>
             <input autoFocus className={`${inp} mb-3`} placeholder="Tìm theo tên hoặc mã trường" value={q} onChange={(e) => setQ(e.target.value)} />

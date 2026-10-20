@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowDown, ArrowUp, Copy, Eye, GripVertical, Plus, Trash2 } from "lucide-react";
+import { Copy, Eye, GripVertical, Plus, Trash2 } from "lucide-react";
 import { Banner, NoteSlot, Seg, Tag, T, btn, btnSm, card, inp } from "@/components/txng/ui";
 import { fieldName, libOf } from "@/lib/txng/catalog";
 import { cteById, patch } from "@/lib/txng/cte";
@@ -113,7 +113,6 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
     const cfg = cteCfg(s)!;
     const core = coreOf(cfg);
     const i = v.steps.indexOf(s);
-    const move = (d: number) => { v.steps.splice(i, 1); v.steps.splice(i + d, 0, s); bump(); };
     const dup = () => {
         const cp: ProcStep = { ...JSON.parse(JSON.stringify(s)), uid: uid(), name: s.name + " (bản sao)" };
         v.steps.splice(i + 1, 0, cp); onSel(cp.uid);
@@ -173,8 +172,14 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
         );
     };
 
+    const reqF = core.length + s.rest.filter((r) => (r.src === "inh" ? r.mode === "req" : r.req)).length;
+
     return (
         <>
+            <div className="border-b border-gray-100 px-4 py-3 dark:border-gray-800">
+                <h2 className="text-[15px] font-semibold">Trường thông tin</h2>
+                <p className="text-[12.5px] text-gray-500">{core.length + s.rest.length} trường · {reqF} bắt buộc</p>
+            </div>
             <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
@@ -189,8 +194,6 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
                         {isOutdated(s) && <button className={`${btn} ${btnSm}`} onClick={() => onDiff(s)}>Xem phiên bản mới</button>}
                         {ed && (
                             <>
-                                <button className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-30" title="Lên" disabled={i === 0} onClick={() => move(-1)}><ArrowUp size={15} /></button>
-                                <button className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-30" title="Xuống" disabled={i === v.steps.length - 1} onClick={() => move(1)}><ArrowDown size={15} /></button>
                                 <button className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100" title="Nhân bản" onClick={dup}><Copy size={15} /></button>
                                 <button className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100 hover:text-red-600" title="Xoá công đoạn" onClick={del}><Trash2 size={15} /></button>
                             </>
@@ -214,7 +217,7 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
 
             <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
                 <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường dữ liệu bắt buộc</h3></div>
+                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường thông tin bắt buộc</h3></div>
                     <span className="text-[12.5px] text-gray-400">Kế thừa từ sự kiện trọng yếu</span>
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -231,12 +234,12 @@ function Panel({ v, editable: ed, sel, onSel, bump, toast, onAddKde, onDiff, onC
 
             <div className="px-5 py-4">
                 <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường dữ liệu bổ sung</h3>
+                    <div className="flex items-center gap-2"><h3 className="text-[14px] font-semibold">Trường thông tin bổ sung</h3>
                         <span className="text-[12.5px] text-gray-500">{s.rest.length} trường · {s.rest.filter((r) => (r.src === "inh" ? r.mode === "req" : r.req)).length} bắt buộc</span></div>
-                    <span className="text-[12.5px] text-gray-400">Thêm trường dữ liệu phù hợp với nhóm ngành hàng</span>
+                    <span className="text-[12.5px] text-gray-400">Thêm trường thông tin phù hợp với nhóm ngành hàng</span>
                 </div>
                 {s.rest.length ? <div className="flex flex-col gap-1.5">{s.rest.map((_, idx) => kdeRow(idx))}</div> : <p className="text-[13px] text-gray-400">Chưa có trường bổ sung.</p>}
-                {ed && <button className={`${btn} mt-2 w-full justify-center border-dashed text-brand-700`} onClick={() => onAddKde(s)}><Plus size={14} /> Thêm trường dữ liệu</button>}
+                {ed && <button className={`${btn} mt-2 w-full justify-center border-dashed text-brand-700`} onClick={() => onAddKde(s)}><Plus size={14} /> Thêm trường thông tin</button>}
                 {visibleCount(s) > 15 && <Banner kind="warn">Công đoạn có {visibleCount(s)} trường hiển thị. Form dài làm tăng tỷ lệ doanh nghiệp khai thiếu; cân nhắc xoá trường tùy chọn không cần thiết.</Banner>}
             </div>
         </>
