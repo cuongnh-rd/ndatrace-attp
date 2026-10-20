@@ -30,7 +30,7 @@ export function AddStepDialog({ p, v, onClose, onAdded }: { p: Proc; v: ProcVers
         if (last) onAdded(last, renamed);
     };
     return (
-        <Dialog open wide onClose={onClose} title="Thêm công đoạn" sub="Chọn sự kiện trọng yếu đang áp dụng. Có thể chọn nhiều."
+        <Dialog open wide onClose={onClose} title="Thêm công đoạn" sub="Có thể thêm 1 hoặc nhiều sự kiện trọng yếu đang hoạt động."
             footer={<><span className="mr-auto text-[13px] text-gray-500">{picked.length ? `Đã chọn ${picked.length}` : "Chưa chọn"}</span><button className={btn} onClick={onClose}>Huỷ</button><button className={btnP} disabled={!picked.length} onClick={add}>Thêm</button></>}>
             <div className="relative mb-3">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -46,16 +46,15 @@ export function AddStepDialog({ p, v, onClose, onAdded }: { p: Proc; v: ProcVers
                         <label key={c.id} className={`grid cursor-pointer grid-cols-[20px_1fr] gap-2.5 rounded-xl border px-3 py-2.5 ${on ? "border-brand-500 bg-brand-50/50" : "border-gray-200 hover:border-gray-300 dark:border-gray-700"}`}>
                             <input type="checkbox" className="mt-1 accent-brand-600" checked={on} onChange={() => setPicked(on ? picked.filter((x) => x !== c.id) : [...picked, c.id])} />
                             <div>
-                                <div className="flex flex-wrap items-center gap-2"><span className="font-medium">{c.name}</span><span className="font-mono text-[12px] text-gray-400">{c.code}</span><Tag cls={T.ok}>v{a.v} Đang áp dụng</Tag></div>
+                                <div className="flex flex-wrap items-center gap-2"><span className="font-medium">{c.name}</span></div>
                                 <div className="text-[12.5px] text-gray-500">{etLabel(c.et)} · {bizLabel(cfg.bizStep)} · {coreOf(cfg).length} trường bắt buộc · {optOf(cfg).length} tùy chọn</div>
                                 {used > 0 && <div className="text-[12px] text-gray-500">Đã có {used} công đoạn dùng sự kiện này. Công đoạn mới cần tên khác.</div>}
                                 {ov.length > 0 && <div className="text-[12px] text-amber-700">Cũng có trong quy trình của {ov.join(", ")} cho cùng nhóm ngành.</div>}
                             </div>
                         </label>
                     );
-                }) : <p className="py-6 text-center text-[13px] text-gray-400">Không tìm thấy sự kiện trọng yếu Đang áp dụng.</p>}
+                }) : <p className="py-6 text-center text-[13px] text-gray-500">Không tìm thấy sự kiện trọng yếu. Sự kiện ở trạng thái Nháp / Chờ áp dụng không dùng được. Quản lý <Link className="font-medium text-brand-700 underline" href="/danh-muc/su-kien-trong-yeu" target="_blank">Sự kiện trọng yếu</Link>.</p>}
             </div>
-            <p className="mt-3 text-[12.5px] text-gray-500">Không thấy sự kiện cần dùng? Sự kiện ở trạng thái Nháp / Chờ áp dụng không chọn được. <Link className="font-medium text-brand-700 underline" href="/danh-muc/su-kien-trong-yeu">Mở Sự kiện trọng yếu</Link></p>
         </Dialog>
     );
 }
