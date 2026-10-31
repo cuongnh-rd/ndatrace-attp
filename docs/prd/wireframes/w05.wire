@@ -1,0 +1,38 @@
+project "Lịch sử phiên bản" {
+  mocks {
+    pb: "4,3,2,1"
+    tt: "Nháp,Chờ áp dụng,Đang áp dụng,Ngừng áp dụng"
+    ad: "—,01/12/2026,01/08/2026,15/03/2026"
+    ng: "—,—,—,01/08/2026"
+    cc: "—,1234/QĐ-BNNMT,0987/QĐ-BNNMT,0456/QĐ-BNNMT"
+    ly: "Bổ sung nhiệt độ,Siết ngưỡng 2-6°C,Thêm mã lô bắt buộc,Ban hành lần đầu"
+  }
+  screen LichSu {
+    layout split(left: 240, gap: none) {
+      layout stack(padding: md) {
+        component SidebarMenu items: "Tổng quan,Sự kiện trọng yếu,Quy trình tiêu chuẩn TXNG,Danh mục chuyên ngành,Nhật ký" icons: "home,layers,git-branch,book,clock" active: 1
+      }
+      layout stack(padding: lg, gap: md) {
+        component Breadcrumbs items: "Sự kiện trọng yếu,Xuất kho thuỷ sản tươi"
+        layout stack(direction: horizontal, justify: spaceBetween) {
+          layout stack(direction: horizontal, gap: sm) {
+            component Heading text: "Xuất kho thuỷ sản tươi" level: h2
+            component Badge text: "Đang áp dụng — phiên bản 2" variant: success
+          }
+          layout stack(direction: horizontal, gap: sm) {
+            component Button text: "Sao chép" icon: copy
+            component Button text: "Ngừng áp dụng" variant: danger
+            component Button text: "Tạo phiên bản mới" variant: primary icon: "git-branch"
+          }
+        }
+        component Tabs items: "Cấu hình 7 bước,Thẩm quyền và phạm vi,Lịch sử phiên bản,Nhật ký,Đang dùng trong Quy trình" active: 2
+        layout stack(direction: horizontal, gap: sm) {
+          component Select label: "So sánh phiên bản" placeholder: "Phiên bản 2"
+          component Select label: "với" placeholder: "Phiên bản 3"
+          component Button text: "So sánh" icon: columns labelSpace: true
+        }
+        component Table columns: "Phiên bản,Trạng thái,Ngày áp dụng,Ngày ngừng,Căn cứ ban hành,Lý do thay đổi" mock: "pb,tt,ad,ng,cc,ly" rows: 4 actions: "eye"
+      }
+    }
+  }
+}

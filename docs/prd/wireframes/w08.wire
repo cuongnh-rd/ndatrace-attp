@@ -1,0 +1,35 @@
+project "Kế thừa cấp trung ương" {
+  mocks {
+    du: "Thời điểm xảy ra,Số lượng theo lô,Địa điểm nghiệp vụ,Mã lô,Chứng nhận VietGAP"
+    muc: "Bắt buộc (khoá),Bắt buộc (khoá),Bắt buộc,Bắt buộc,Bắt buộc"
+    nguon: "Yêu cầu cấp trung ương,Yêu cầu cấp trung ương,Yêu cầu cấp trung ương,Yêu cầu cấp trung ương,Bổ sung cấp địa phương"
+  }
+  screen KeThua {
+    layout split(left: 240, gap: none) {
+      layout stack(padding: md) {
+        component SidebarMenu items: "Tổng quan,Sự kiện trọng yếu,Quy trình tiêu chuẩn TXNG,Danh mục chuyên ngành,Nhật ký" icons: "home,layers,git-branch,book,clock" active: 1
+      }
+      layout stack(padding: lg, gap: md) {
+        component Breadcrumbs items: "Sự kiện trọng yếu,Xuất kho thuỷ sản tươi — Hà Nội,Sửa"
+        layout stack(direction: horizontal, gap: sm) {
+          component Heading text: "Xuất kho thuỷ sản tươi — Hà Nội" level: h3
+          component Badge text: "Kế thừa từ Bộ NN&MT — phiên bản 2" variant: indigo
+        }
+        component Alert variant: danger title: "Không được hạ mức yêu cầu" text: "Dữ liệu Địa điểm nghiệp vụ là bắt buộc theo yêu cầu cấp trung ương. Cấp địa phương chỉ được thêm, không được bớt."
+        component Table columns: "Dữ liệu then chốt,Mức yêu cầu,Nguồn yêu cầu" mock: "du,muc,nguon" rows: 5 actions: "edit"
+        layout card(padding: md, gap: sm, border: true) {
+          component Label text: "Ngưỡng nhiệt độ bảo quản"
+          layout grid(columns: 3, gap: sm) {
+            cell span: 1 { component Input label: "Nhỏ nhất (cấp trung ương: 2)" placeholder: "3" }
+            cell span: 1 { component Input label: "Lớn nhất (cấp trung ương: 8)" placeholder: "6" }
+            cell span: 1 { component Select label: "Đơn vị" placeholder: "°C" disabled: true }
+          }
+        }
+        layout stack(direction: horizontal, justify: end, gap: sm) {
+          component Button text: "Lưu nháp" icon: save
+          component Button text: "Kiểm tra" icon: "check-square"
+        }
+      }
+    }
+  }
+}

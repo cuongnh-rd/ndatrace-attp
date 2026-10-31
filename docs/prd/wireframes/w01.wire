@@ -1,0 +1,36 @@
+project "Danh sách Sự kiện trọng yếu" {
+  mocks {
+    ma: "BNNMT-SK-0012,BNNMT-SK-0011,BNNMT-SK-0010,BNNMT-SK-0009,BNNMT-SK-0008"
+    ten: "Xuất kho thuỷ sản tươi,Thu hoạch tôm nuôi,Sơ chế thuỷ sản,Đóng gói thùng xuất khẩu,Nhận hàng tại cơ sở chế biến"
+    loai: "Theo dõi đối tượng,Theo dõi đối tượng,Chế biến,Đóng gói / gom hàng,Theo dõi đối tượng"
+    buoc: "Xuất hàng,Thu hoạch,Biến đổi,Đóng gói,Nhận hàng"
+    trangthai: "Đang áp dụng,Chờ áp dụng 01/12/2026,Chờ phê duyệt,Nháp,Ngừng áp dụng 15/09/2026"
+    pb: "2,1,1,3,1"
+  }
+  screen DanhSach {
+    layout split(left: 240, gap: none) {
+      layout stack(padding: md) {
+        component SidebarMenu items: "Tổng quan,Sự kiện trọng yếu,Quy trình tiêu chuẩn TXNG,Danh mục chuyên ngành,Nhật ký" icons: "home,layers,git-branch,book,clock" active: 1
+      }
+      layout stack(padding: lg, gap: md) {
+        component Breadcrumbs items: "Trang chủ,Sự kiện trọng yếu"
+        layout stack(direction: horizontal, justify: spaceBetween) {
+          component Heading text: "Sự kiện trọng yếu" level: h2
+          layout stack(direction: horizontal, gap: sm) {
+            component Button text: "Sao chép từ thư viện mẫu" icon: copy
+            component Button text: "Tạo Sự kiện trọng yếu" variant: primary icon: plus
+          }
+        }
+        component Tabs items: "Của đơn vị,Sự kiện cấp trung ương" active: 0
+        layout grid(columns: 6, gap: sm) {
+          cell span: 2 { component Input label: "Tìm kiếm" placeholder: "Tên hoặc mã sự kiện" iconLeft: search }
+          cell span: 1 { component Select label: "Loại sự kiện" placeholder: "Tất cả" }
+          cell span: 1 { component Select label: "Trạng thái" placeholder: "Tất cả" }
+          cell span: 1 { component Select label: "Ngành hàng" placeholder: "Tất cả" }
+          cell span: 1 { component Checkbox label: "Có cảnh báo danh mục" }
+        }
+        component Table columns: "Mã,Tên,Loại sự kiện,Bước nghiệp vụ,Trạng thái,Phiên bản" mock: "ma,ten,loai,buoc,trangthai,pb" rows: 5 pagination: true actions: "eye,copy,more-vertical"
+      }
+    }
+  }
+}

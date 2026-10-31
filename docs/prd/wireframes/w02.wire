@@ -1,0 +1,44 @@
+project "Tạo Sự kiện trọng yếu - bước 1" {
+  screen Buoc1 {
+    layout split(left: 240, gap: none) {
+      layout stack(padding: md) {
+        component SidebarMenu items: "Tổng quan,Sự kiện trọng yếu,Quy trình tiêu chuẩn TXNG,Danh mục chuyên ngành,Nhật ký" icons: "home,layers,git-branch,book,clock" active: 1
+      }
+      layout stack(padding: lg, gap: md) {
+        component Breadcrumbs items: "Sự kiện trọng yếu,Tạo mới"
+        component Heading text: "Tạo Sự kiện trọng yếu" level: h2
+        component Alert variant: info title: "Tóm tắt" text: "Theo dõi đối tượng · chưa chọn hành động · chưa chọn bước nghiệp vụ"
+        layout split(left: 260, gap: lg) {
+          layout card(padding: md, gap: sm, border: true) {
+            component Label text: "Các bước cấu hình"
+            component SidebarMenu items: "Thông tin chung,1. Loại sự kiện,2. Hành động,3. Bước nghiệp vụ,4. Trạng thái hàng hoá,5. Chứng từ giao dịch,6. Dữ liệu then chốt,7. Yêu cầu bổ sung" icons: "check-circle,edit,lock,lock,lock,lock,lock,lock" active: 1
+          }
+          layout stack(gap: md) {
+            component Heading text: "Bước 1 — Chọn loại sự kiện" level: h4
+            component Text text: "Loại sự kiện quyết định toàn bộ các bước sau và không thể thay đổi sau khi tiếp tục."
+            layout card(padding: md, gap: xs, border: true) {
+              component Radio label: "Theo dõi đối tượng — thu hoạch, xuất kho, nhận hàng" checked: true
+            }
+            layout card(padding: md, gap: xs, border: true) {
+              component Radio label: "Đóng gói / gom hàng — đóng thùng, xếp pallet, tháo dỡ"
+            }
+            layout card(padding: md, gap: xs, border: true) {
+              component Radio label: "Chế biến / biến đổi — nguyên liệu thành sản phẩm"
+            }
+            layout card(padding: md, gap: xs, border: true) {
+              component Radio label: "Giao dịch — gắn hàng hoá với chứng từ mua bán"
+            }
+            layout card(padding: md, gap: xs, border: true) {
+              component Radio label: "Liên kết — gắn cảm biến, thiết bị vào hàng hoá"
+            }
+            layout stack(direction: horizontal, justify: end, gap: sm) {
+              component Button text: "Quay lại"
+              component Button text: "Lưu nháp" icon: save
+              component Button text: "Tiếp tục" variant: primary icon: "arrow-right" iconAlign: right
+            }
+          }
+        }
+      }
+    }
+  }
+}

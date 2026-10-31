@@ -1,0 +1,28 @@
+project "Kiểm tra và trình phê duyệt" {
+  mocks {
+    lop: "Thẩm quyền,Cấu trúc,Nghiệp vụ,Nghiệp vụ"
+    muc: "Lỗi,Lỗi,Cảnh báo,Cảnh báo"
+    nd: "Thiếu căn cứ ban hành,Sự kiện giao dịch chưa có loại chứng từ,Bước nghiệp vụ ít dùng với loại sự kiện,2 dữ liệu chưa có hướng dẫn điền"
+    di: "Thẩm quyền và phạm vi,Bước 5,Bước 3,Bước 6"
+  }
+  screen TrinhDuyet {
+    layout stack(padding: lg, gap: md) {
+      component Heading text: "Xuất kho thuỷ sản tươi — phiên bản 3" level: h3
+      layout modal(title: "Kiểm tra trước khi trình phê duyệt", visible: true, closable: true) {
+        body {
+          component Alert variant: danger title: "Còn 2 lỗi" text: "Cần sửa hết lỗi trước khi trình phê duyệt."
+          component Table columns: "Lớp kiểm tra,Mức,Nội dung,Đi tới" mock: "lop,muc,nd,di" rows: 4
+          component Checkbox label: "Tôi đã đọc các cảnh báo"
+          component Input label: "Ngày áp dụng đề xuất" placeholder: "01/12/2026 (mặc định sau 30 ngày)" iconRight: calendar
+          component Textarea label: "Lý do thay đổi" placeholder: "Siết ngưỡng nhiệt độ theo văn bản mới" rows: 2
+          component Textarea label: "Quy tắc chuyển tiếp" placeholder: "Bản ghi xảy ra trước ngày áp dụng giữ theo phiên bản 2" rows: 2
+          component Select label: "Lãnh đạo phê duyệt" placeholder: "Chọn lãnh đạo"
+        }
+        footer {
+          component Button text: "Đóng"
+          component Button text: "Trình phê duyệt" variant: primary disabled: true
+        }
+      }
+    }
+  }
+}

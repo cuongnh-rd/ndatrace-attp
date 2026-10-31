@@ -1,0 +1,38 @@
+project "Phê duyệt" {
+  mocks {
+    buoc: "Bước 4,Bước 6,Bước 6,Bước 7"
+    nd: "Trạng thái duy trì,Mã lô,Nhiệt độ bảo quản,Ngưỡng nhiệt độ"
+    cu: "—,Tuỳ chọn,Không có,2–8°C"
+    moi: "Đạt kiểm tra,Bắt buộc,Bắt buộc,2–6°C"
+    kieu: "Thêm,Thay đổi,Thêm,Thay đổi"
+  }
+  screen PheDuyet {
+    layout split(left: 240, gap: none) {
+      layout stack(padding: md) {
+        component SidebarMenu items: "Tổng quan,Sự kiện trọng yếu,Quy trình tiêu chuẩn TXNG,Danh mục chuyên ngành,Nhật ký" icons: "home,layers,git-branch,book,clock" active: 1
+      }
+      layout stack(padding: lg, gap: md) {
+        component Breadcrumbs items: "Chờ phê duyệt,Xuất kho thuỷ sản tươi"
+        layout stack(direction: horizontal, gap: sm) {
+          component Heading text: "Phê duyệt: Xuất kho thuỷ sản tươi — phiên bản 3" level: h3
+          component Badge text: "Chờ phê duyệt" variant: purple
+        }
+        layout grid(columns: 3, gap: md) {
+          cell span: 1 { component Stat title: "Người trình" value: "Nguyễn Văn A" }
+          cell span: 1 { component Stat title: "Ngày áp dụng đề xuất" value: "01/12/2026" }
+          cell span: 1 { component Stat title: "Kết quả kiểm tra" value: "0 lỗi · 1 cảnh báo" }
+        }
+        component Tabs items: "Thay đổi so với bản đang áp dụng,Cấu hình 7 bước,Thẩm quyền và phạm vi,Kết quả kiểm tra" active: 0
+        component Table columns: "Bước,Nội dung,Đang áp dụng,Phiên bản trình,Loại thay đổi" mock: "buoc,nd,cu,moi,kieu" rows: 4
+        layout grid(columns: 2, gap: md) {
+          cell span: 1 { component Input label: "Ngày áp dụng chốt" placeholder: "01/12/2026" iconRight: calendar }
+          cell span: 1 { component Textarea label: "Ý kiến (bắt buộc khi trả lại)" rows: 2 }
+        }
+        layout stack(direction: horizontal, justify: end, gap: sm) {
+          component Button text: "Trả lại" variant: warning icon: "corner-up-left"
+          component Button text: "Phê duyệt và công bố" variant: success icon: check
+        }
+      }
+    }
+  }
+}

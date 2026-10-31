@@ -1,0 +1,33 @@
+project "Thẩm quyền và phạm vi" {
+  screen ThamQuyen {
+    layout split(left: 240, gap: none) {
+      layout stack(padding: md) {
+        component SidebarMenu items: "Tổng quan,Sự kiện trọng yếu,Quy trình tiêu chuẩn TXNG,Danh mục chuyên ngành,Nhật ký" icons: "home,layers,git-branch,book,clock" active: 1
+      }
+      layout stack(padding: lg, gap: md) {
+        component Breadcrumbs items: "Sự kiện trọng yếu,Xuất kho thuỷ sản tươi"
+        layout stack(direction: horizontal, gap: sm) {
+          component Heading text: "Xuất kho thuỷ sản tươi" level: h2
+          component Badge text: "Nháp" variant: default
+        }
+        component Tabs items: "Cấu hình 7 bước,Thẩm quyền và phạm vi,Lịch sử phiên bản,Nhật ký,Đang dùng trong Quy trình" active: 1
+        layout grid(columns: 2, gap: md) {
+          cell span: 1 { component Input label: "Chủ sở hữu nội dung" placeholder: "Cục Quản lý chất lượng nông lâm sản và thuỷ sản" disabled: true }
+          cell span: 1 { component Input label: "Nhóm chủ thể / Phạm vi địa bàn" placeholder: "2A — Toàn quốc" disabled: true }
+          cell span: 1 { component Input label: "Căn cứ ban hành — số hiệu" placeholder: "Ví dụ: 1234/QĐ-BNNMT" }
+          cell span: 1 { component Input label: "Ngày ban hành" placeholder: "dd/mm/yyyy" iconRight: calendar }
+          cell span: 2 { component Textarea label: "Trích yếu văn bản" placeholder: "Về việc ban hành yêu cầu truy xuất nguồn gốc thuỷ sản" rows: 2 }
+          cell span: 1 { component Select label: "Nhóm sản phẩm áp dụng" placeholder: "Thuỷ sản tươi sống, ướp đá" }
+          cell span: 1 { component Select label: "Vai trò chủ thể phải ghi nhận" placeholder: "Cơ sở nuôi trồng; Cơ sở thu mua" }
+          cell span: 1 { component Checkbox label: "Nhóm sản phẩm thuộc nhiều ngành quản lý" }
+          cell span: 1 { component Select label: "Cơ quan phối hợp" placeholder: "Bộ Y tế" }
+          cell span: 2 { component Button text: "Đính kèm văn bản" icon: paperclip }
+        }
+        layout stack(direction: horizontal, justify: end, gap: sm) {
+          component Button text: "Huỷ"
+          component Button text: "Lưu" variant: primary icon: save
+        }
+      }
+    }
+  }
+}

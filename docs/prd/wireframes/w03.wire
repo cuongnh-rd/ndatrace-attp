@@ -1,0 +1,32 @@
+project "Tạo Sự kiện trọng yếu - bước 6" {
+  mocks {
+    du: "Thời điểm xảy ra,Múi giờ,Số lượng theo lô,Địa điểm nghiệp vụ,Mã lô,Ngày thu hoạch,Nhiệt độ bảo quản"
+    nhom: "Khi nào,Khi nào,Cái gì,Ở đâu,Thông tin lô,Thông tin lô,Như thế nào"
+    muc: "Bắt buộc (khoá),Bắt buộc (khoá),Bắt buộc (khoá),Bắt buộc,Bắt buộc,Bắt buộc có điều kiện,Tuỳ chọn"
+    hd: "—,—,—,Điền mã địa điểm của kho xuất,Theo mã lô in trên bao bì,Khi sản phẩm xuất khẩu,Ghi theo nhiệt kế tại kho"
+  }
+  screen Buoc6 {
+    layout split(left: 240, gap: none) {
+      layout stack(padding: md) {
+        component SidebarMenu items: "Tổng quan,Sự kiện trọng yếu,Quy trình tiêu chuẩn TXNG,Danh mục chuyên ngành,Nhật ký" icons: "home,layers,git-branch,book,clock" active: 1
+      }
+      layout stack(padding: lg, gap: md) {
+        component Breadcrumbs items: "Sự kiện trọng yếu,Xuất kho thuỷ sản tươi,Sửa"
+        component Heading text: "Bước 6 — Dữ liệu then chốt" level: h3
+        component Alert variant: info title: "Tóm tắt" text: "Theo dõi đối tượng · Tạo mới · Thu hoạch → Đang lưu hành · 5 dữ liệu bắt buộc"
+        component Alert variant: warning title: "Lưu ý" text: "Dữ liệu có nhãn (khoá) do chuẩn yêu cầu, không bỏ được. Cần chọn ít nhất 1 dữ liệu khác."
+        layout grid(columns: 4, gap: sm) {
+          cell span: 2 { component Input label: "Tìm dữ liệu then chốt" placeholder: "Nhập tên dữ liệu" iconLeft: search }
+          cell span: 1 { component Select label: "Nhóm câu hỏi" placeholder: "Tất cả" }
+          cell span: 1 { component Button text: "Thêm dữ liệu" icon: plus labelSpace: true }
+        }
+        component Table columns: "Dữ liệu then chốt,Nhóm,Mức yêu cầu,Hướng dẫn điền" mock: "du,nhom,muc,hd" rows: 7 actions: "edit,trash-2"
+        layout stack(direction: horizontal, justify: end, gap: sm) {
+          component Button text: "Quay lại"
+          component Button text: "Lưu nháp" icon: save
+          component Button text: "Tiếp tục" variant: primary
+        }
+      }
+    }
+  }
+}

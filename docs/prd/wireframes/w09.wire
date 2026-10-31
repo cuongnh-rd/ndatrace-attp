@@ -1,0 +1,21 @@
+project "Ngừng áp dụng" {
+  screen Ngung {
+    layout stack(padding: lg, gap: md) {
+      component Heading text: "Xuất kho thuỷ sản tươi — Đang áp dụng phiên bản 2" level: h3
+      layout modal(title: "Ngừng áp dụng Sự kiện trọng yếu", visible: true, closable: true) {
+        body {
+          component Alert variant: warning title: "Ảnh hưởng" text: "Phiên bản 3 đang chờ áp dụng sẽ bị huỷ theo. Doanh nghiệp không thể ghi nhận sự kiện này sau ngày ngừng."
+          component Radio label: "Ngừng ngay" checked: true
+          component Radio label: "Ngừng từ ngày"
+          component Input label: "Ngày ngừng áp dụng" placeholder: "dd/mm/yyyy" iconRight: calendar disabled: true
+          component Input label: "Căn cứ" placeholder: "Số hiệu văn bản"
+          component Textarea label: "Lý do (bắt buộc)" rows: 3
+        }
+        footer {
+          component Button text: "Huỷ"
+          component Button text: "Xác nhận ngừng áp dụng" variant: danger
+        }
+      }
+    }
+  }
+}
