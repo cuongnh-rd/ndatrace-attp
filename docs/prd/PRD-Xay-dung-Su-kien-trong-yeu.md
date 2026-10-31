@@ -4,10 +4,10 @@
 |---|---|
 | Sản phẩm | NDATrace — Nền tảng quốc gia truy xuất nguồn gốc |
 | Phân hệ | Xây dựng Sự kiện trọng yếu |
-| Chức năng tương ứng trong Khung chức năng nghiệp vụ (Quyển 3) | Ban hành và quản lý Mẫu sự kiện trọng yếu và dữ liệu then chốt chuyên ngành — chủ thể Cấp 2 |
+| Chức năng tương ứng trong Khung chức năng nghiệp vụ (Quyển 3) | Ban hành và quản lý Sự kiện trọng yếu và dữ liệu then chốt chuyên ngành — chủ thể Cấp 2 |
 | Khung nghiệp vụ tương ứng (Quyển 2) | Khung Sự kiện trọng yếu và dữ liệu truy xuất nguồn gốc; Khung Yêu cầu nghiệp vụ theo ngành hàng và thị trường |
 | Đối tượng sử dụng chính | Cơ quan quản lý nhà nước chuyên ngành ở trung ương (nhóm 2A) và ở địa phương (nhóm 2B) |
-| Phiên bản tài liệu | 6.0 |
+| Phiên bản tài liệu | 6.1 |
 | Người soạn | Nguyễn Hà Cương — Quản lý sản phẩm |
 | Trạng thái | Bản nháp, chờ rà soát |
 | Căn cứ | Nghị định 37/2025/NĐ-CP; NDATrace Quyển 2 — Khung nghiệp vụ dùng chung (bản 4.2.0); NDATrace Quyển 3 — Khung chức năng nghiệp vụ (bản 4.3.2); chuẩn sự kiện truy xuất quốc tế GS1 EPCIS 2.0 và bộ từ vựng nghiệp vụ CBV 2.0 |
@@ -26,11 +26,11 @@
 
 | Thuật ngữ | Định nghĩa trong tài liệu này |
 |---|---|
-| **Sự kiện trọng yếu** | Một thời điểm trong chuỗi cung ứng mà tại đó tổ chức, cá nhân sản xuất, kinh doanh bắt buộc phải ghi nhận dữ liệu để bảo đảm truy xuất được nguồn gốc, ví dụ thu hoạch, đóng gói, xuất kho, nhận hàng, chế biến. Thuật ngữ này tương ứng với thuật ngữ pháp lý "sự kiện theo dõi trọng yếu". Trong phân hệ này, "Sự kiện trọng yếu" là **bản cấu hình do cơ quan quản lý ban hành**: nó quy định một loại sự kiện phải có những thành phần nào, dữ liệu nào là bắt buộc, điều kiện hợp lệ ra sao. Quyển 2 và Quyển 3 gọi bản cấu hình này là "Mẫu sự kiện trọng yếu và dữ liệu then chốt". |
+| **Sự kiện trọng yếu** | Một thời điểm trong chuỗi cung ứng mà tại đó tổ chức, cá nhân sản xuất, kinh doanh bắt buộc phải ghi nhận dữ liệu để bảo đảm truy xuất được nguồn gốc, ví dụ thu hoạch, đóng gói, xuất kho, nhận hàng, chế biến. Thuật ngữ này tương ứng với thuật ngữ pháp lý "sự kiện theo dõi trọng yếu". Trong phân hệ này, "Sự kiện trọng yếu" là **bản cấu hình do cơ quan quản lý ban hành**: nó quy định một loại sự kiện phải có những thành phần nào, dữ liệu nào là bắt buộc, điều kiện hợp lệ ra sao. Quyển 2 và Quyển 3 gọi bản cấu hình này là "Mẫu CTE/KDE"; tài liệu này dùng tên chính thức theo Nghị định là **Sự kiện trọng yếu**. |
 | **Bản ghi sự kiện** | Dữ liệu thực tế do tổ chức, cá nhân sản xuất, kinh doanh tạo ra khi một sự kiện xảy ra, theo đúng phiên bản Sự kiện trọng yếu đang áp dụng tại thời điểm đó. Bản ghi sự kiện **không** thuộc phạm vi phân hệ này. |
 | **Dữ liệu then chốt** | Từng thông tin cụ thể phải có trong bản ghi sự kiện, ví dụ thời gian, địa điểm, mã lô, ngày sản xuất. Dữ liệu then chốt có thể bắt buộc hoặc bắt buộc có điều kiện. Một bản ghi sự kiện thiếu dữ liệu then chốt bắt buộc thì chưa hợp lệ. |
 | **Thông tin lô / cá thể** | Nhóm dữ liệu then chốt mô tả đặc tính của một lô hàng hoặc một sản phẩm cá thể tại thời điểm nó được tạo ra: mã lô, ngày sản xuất, hạn sử dụng, ngày thu hoạch, xuất xứ. |
-| **Mẫu sự kiện trọng yếu** | Bộ gồm nhiều Sự kiện trọng yếu, được cơ quan quản lý gom lại thành yêu cầu khai báo cho một ngành hàng. Ví dụ: Mẫu "Thuỷ sản tươi" gồm các sự kiện Thu hoạch, Sơ chế, Đóng gói, Xuất kho, Nhận hàng. Mẫu được quản lý ở phân hệ riêng. Mẫu này tương ứng với khái niệm "Bộ quy tắc áp dụng nghiệp vụ" của Quyển 2. |
+| **Quy trình truy xuất tiêu chuẩn** | Bộ gồm nhiều Sự kiện trọng yếu, được cơ quan quản lý gom lại thành yêu cầu khai báo cho một ngành hàng. Ví dụ: Quy trình "Thuỷ sản tươi" gồm các sự kiện Thu hoạch, Sơ chế, Đóng gói, Xuất kho, Nhận hàng. Quy trình được quản lý ở phân hệ riêng. Quy trình này tương ứng với khái niệm "Bộ quy tắc áp dụng nghiệp vụ" của Quyển 2. |
 | **Bộ lõi quốc gia** | Tập yêu cầu tối thiểu áp dụng cho mọi ngành, do Nền tảng quốc gia (Cấp 1) duy trì. Bao gồm danh mục loại sự kiện, bước nghiệp vụ, trạng thái hàng hoá, loại chứng từ, dữ liệu then chốt dùng chung và thư viện sự kiện mẫu. |
 | **Chủ sở hữu nội dung** | Cơ quan có thẩm quyền chuyên ngành chịu trách nhiệm về nội dung của một Sự kiện trọng yếu. Đây là cơ quan ban hành, không phải cá nhân cán bộ soạn thảo. |
 | **Căn cứ ban hành** | Văn bản quy phạm pháp luật, quyết định hoặc văn bản hành chính làm cơ sở để cơ quan ban hành Sự kiện trọng yếu. |
@@ -54,15 +54,15 @@ Tài liệu này dùng mô hình năm cấp và bốn nhóm chủ thể Cấp 2 
 
 ### 0.3. Vị trí của phân hệ trong chuỗi chức năng
 
-Theo Quyển 3, phân hệ này hiện thực hoá chức năng **"Ban hành và quản lý Mẫu sự kiện trọng yếu và dữ liệu then chốt chuyên ngành"** của chủ thể Cấp 2. Chức năng này nằm trong chuỗi liên kết sau:
+Theo Quyển 3, phân hệ này hiện thực hoá chức năng **"Ban hành và quản lý Sự kiện trọng yếu và dữ liệu then chốt chuyên ngành"** của chủ thể Cấp 2. Chức năng này nằm trong chuỗi liên kết sau:
 
 - **Nhận đầu vào từ:**
   - Quản lý bộ quy tắc ngành, chương trình và thị trường (Cấp 2).
   - Quản lý địa điểm, cơ sở chuyên ngành (Cấp 2).
   - Quản lý danh mục, hồ sơ và ánh xạ chuyên ngành (Cấp 2).
-  - Quản lý danh mục tham chiếu Mẫu sự kiện trọng yếu và dữ liệu then chốt (Cấp 1) — nguồn của thư viện sự kiện mẫu và bộ lõi quốc gia.
+  - Quản lý danh mục tham chiếu Sự kiện trọng yếu và dữ liệu then chốt (Cấp 1) — nguồn của thư viện sự kiện mẫu và bộ lõi quốc gia.
 - **Cung cấp đầu ra cho:**
-  - Quản lý danh mục tham chiếu Mẫu sự kiện trọng yếu và dữ liệu then chốt (Cấp 1) — đăng ký phiên bản đã công bố vào danh mục quốc gia.
+  - Quản lý danh mục tham chiếu Sự kiện trọng yếu và dữ liệu then chốt (Cấp 1) — đăng ký phiên bản đã công bố vào danh mục quốc gia.
   - Tiếp nhận, trao đổi và đối soát dữ liệu chuyên ngành (Cấp 2).
   - Cấu hình công cụ hỗ trợ định danh, mẫu sự kiện và bằng chứng (Cấp 3).
   - Ghi nhận và đính chính sự kiện trọng yếu (Cấp 4).
@@ -78,7 +78,7 @@ flowchart LR
     subgraph C2[Cấp 2 - Cơ quan quản lý chuyên ngành]
         B0[Bộ quy tắc ngành và danh mục chuyên ngành]
         B1[Phân hệ Xây dựng Sự kiện trọng yếu]
-        B2[Phân hệ Mẫu sự kiện trọng yếu theo ngành hàng]
+        B2[Phân hệ Quy trình truy xuất tiêu chuẩn theo ngành hàng]
     end
     subgraph C3[Cấp 3 - Đơn vị cung cấp giải pháp]
         D1[Cấu hình công cụ theo phiên bản đã công bố]
@@ -115,7 +115,7 @@ NDATrace chọn chuẩn sự kiện truy xuất quốc tế GS1 EPCIS 2.0 làm h
 
 ### 1.2. Mục đích
 
-Phân hệ này giúp **cán bộ tiêu chuẩn của cơ quan quản lý chuyên ngành** tự xây dựng, phê duyệt, công bố và duy trì các Sự kiện trọng yếu cho ngành hàng mình quản lý, mà không cần đội kỹ thuật hỗ trợ. Một Sự kiện trọng yếu được ban hành qua phân hệ phải đáp ứng đầy đủ yêu cầu của Quyển 2 với một Mẫu sự kiện trọng yếu, gồm:
+Phân hệ này giúp **cán bộ tiêu chuẩn của cơ quan quản lý chuyên ngành** tự xây dựng, phê duyệt, công bố và duy trì các Sự kiện trọng yếu cho ngành hàng mình quản lý, mà không cần đội kỹ thuật hỗ trợ. Một Sự kiện trọng yếu được ban hành qua phân hệ phải đáp ứng đầy đủ yêu cầu của Quyển 2 với một Sự kiện trọng yếu, gồm:
 - có mã, tên;
 - có chủ sở hữu nội dung;
 - có căn cứ ban hành;
@@ -144,7 +144,7 @@ Mỗi Sự kiện trọng yếu được cấu hình qua **7 bước tuần tự
 | 2 | Mỗi đơn vị tự đặt tên bước nghiệp vụ, trạng thái theo thói quen. | Dữ liệu giữa các ngành, các địa phương không liên thông; không truy xuất xuyên chuỗi được. | Cán bộ chỉ được chọn giá trị từ bộ lõi quốc gia và danh mục chuyên ngành đã ánh xạ, không được nhập tự do. |
 | 3 | Tiêu chuẩn thay đổi theo thời gian. | Doanh nghiệp bị "đổi luật giữa chừng". Bản ghi cũ có thể bị coi là sai theo quy định mới. | Hệ thống quản lý phiên bản và bắt buộc ngày áp dụng trong tương lai cho phiên bản mới. Phiên bản mới không có hiệu lực hồi tố: bản ghi cũ vẫn được đánh giá theo phiên bản có hiệu lực tại thời điểm sự kiện xảy ra. |
 | 4 | Địa phương cần yêu cầu chặt hơn trung ương. | Địa phương làm lại từ đầu, hoặc vô tình nới lỏng yêu cầu của trung ương. | Cơ quan địa phương kế thừa Sự kiện trọng yếu của trung ương và chỉ được thêm chặt, không được bớt. Hệ thống tự động chặn mọi thay đổi làm suy giảm yêu cầu. |
-| 5 | Sự kiện và Mẫu sự kiện đang gộp làm một. | Không dùng lại được Sự kiện trọng yếu giữa các ngành hàng. | Phân hệ này chỉ xây dựng từng Sự kiện trọng yếu. Việc gom thành Mẫu theo ngành hàng do phân hệ riêng đảm nhiệm. |
+| 5 | Sự kiện trọng yếu và Quy trình truy xuất tiêu chuẩn đang gộp làm một. | Không dùng lại được Sự kiện trọng yếu giữa các ngành hàng. | Phân hệ này chỉ xây dựng từng Sự kiện trọng yếu. Việc gom thành Quy trình theo ngành hàng do phân hệ riêng đảm nhiệm. |
 | 6 | Sự kiện ban hành thiếu thông tin về căn cứ, chủ sở hữu, phạm vi, thời hạn. **[Theo Quyển 2/3]** | Cấp 1 và doanh nghiệp không xác định được sự kiện có hiệu lực pháp lý không, ai chịu trách nhiệm, áp dụng cho sản phẩm nào. | Hệ thống bắt buộc nhập đủ các thông tin này trước khi trình phê duyệt. |
 
 ### 1.4. Nguyên tắc thiết kế
@@ -233,7 +233,7 @@ Phân hệ tuân thủ các nguyên tắc nền tảng của Quyển 2:
 ### 3.2. Ngoài phạm vi
 | Nội dung | Thuộc về |
 |---|---|
-| Gom Sự kiện trọng yếu thành Mẫu sự kiện trọng yếu theo ngành hàng | Phân hệ Quản lý Mẫu sự kiện trọng yếu |
+| Gom Sự kiện trọng yếu thành Quy trình truy xuất tiêu chuẩn theo ngành hàng | Phân hệ Quản lý Quy trình truy xuất tiêu chuẩn |
 | Quản lý bộ lõi quốc gia: loại sự kiện, thư viện sự kiện mẫu, dữ liệu then chốt, bước nghiệp vụ, trạng thái hàng hoá, loại chứng từ | Các phân hệ quản lý danh mục của Cấp 1 |
 | Quản lý bộ quy tắc ngành, danh mục chuyên ngành | Các phân hệ quản lý của Cấp 2 |
 | Sự kiện trọng yếu do tổ chức chứng nhận (nhóm 2C) và chương trình tự nguyện (nhóm 2D) ban hành | Giai đoạn sau |
@@ -250,7 +250,7 @@ Phân hệ tuân thủ các nguyên tắc nền tảng của Quyển 2:
 
 ### 4.1. Thông tin của một Sự kiện trọng yếu
 
-Theo Quyển 2, mỗi Mẫu sự kiện trọng yếu phải có mã, tên, chủ sở hữu nội dung, nguồn thẩm quyền, phạm vi ngành và sản phẩm, phiên bản, ngày hiệu lực, trạng thái, thời hạn cập nhật và quy tắc chuyển tiếp. Phân hệ quản lý các thông tin sau:
+Theo Quyển 2, mỗi Sự kiện trọng yếu phải có mã, tên, chủ sở hữu nội dung, nguồn thẩm quyền, phạm vi ngành và sản phẩm, phiên bản, ngày hiệu lực, trạng thái, thời hạn cập nhật và quy tắc chuyển tiếp. Phân hệ quản lý các thông tin sau:
 
 | Nhóm | Thông tin | Bắt buộc | Mô tả và quy định |
 |---|---|---|---|
@@ -482,7 +482,7 @@ Mỗi quy tắc dưới đây được viết với đầy đủ chủ thể và
 
 **QT-20. Chỉ bản nháp được sửa và xoá.** **Hệ thống** chỉ cho phép sửa và xoá Sự kiện trọng yếu ở trạng thái Nháp. Với Sự kiện trọng yếu ở trạng thái Chờ phê duyệt, **cán bộ tiêu chuẩn** phải rút lại về Nháp trước khi sửa. Với Sự kiện trọng yếu đã công bố, **cán bộ tiêu chuẩn** phải tạo phiên bản mới.
 
-**QT-21. Không xoá khi đang được dùng.** **Hệ thống** không cho phép xoá bản nháp đang nằm trong một Mẫu sự kiện trọng yếu, kể cả Mẫu ở trạng thái nháp. **Hệ thống** liệt kê tên các Mẫu đang chứa sự kiện đó.
+**QT-21. Không xoá khi đang được dùng.** **Hệ thống** không cho phép xoá bản nháp đang nằm trong một Quy trình truy xuất tiêu chuẩn, kể cả Quy trình ở trạng thái nháp. **Hệ thống** liệt kê tên các Quy trình đang chứa sự kiện đó.
 
 **QT-22. Một người sửa tại một thời điểm.** Khi một **cán bộ tiêu chuẩn** đang sửa bản nháp, **hệ thống** mở bản nháp ở chế độ chỉ xem cho người khác, kèm tên người đang sửa và thời điểm bắt đầu. **Hệ thống** tự mở khoá sau 30 phút không có thao tác. **[Bổ sung]**
 
@@ -502,7 +502,7 @@ Mỗi quy tắc dưới đây được viết với đầy đủ chủ thể và
 
 **QT-29. Đăng ký vào danh mục quốc gia.** Ngay khi một phiên bản chuyển sang Chờ áp dụng hoặc Đang áp dụng, **hệ thống** gửi phiên bản đó, kèm chủ sở hữu nội dung, phạm vi, ngày áp dụng và quy tắc chuyển tiếp, vào danh mục tham chiếu quốc gia của Cấp 1. **[Theo Quyển 2/3]**
 
-**QT-30. Không ngừng áp dụng khi đang trong Mẫu hiệu lực.** **Hệ thống** không cho phép ngừng áp dụng một Sự kiện trọng yếu đang nằm trong Mẫu sự kiện trọng yếu đang áp dụng. **Cán bộ tiêu chuẩn** phải gỡ sự kiện khỏi Mẫu trước. **[Bổ sung]**
+**QT-30. Không ngừng áp dụng khi đang trong Quy trình hiệu lực.** **Hệ thống** không cho phép ngừng áp dụng một Sự kiện trọng yếu đang nằm trong Quy trình truy xuất tiêu chuẩn đang áp dụng. **Cán bộ tiêu chuẩn** phải gỡ sự kiện khỏi Quy trình trước. **[Bổ sung]**
 
 ### 6.6. Nhóm quy tắc về thay đổi bộ lõi quốc gia
 
@@ -623,7 +623,7 @@ flowchart TD
 
 ### 7.2. Khai báo thông tin thẩm quyền và phạm vi **[Theo Quyển 2/3]**
 
-**Mô tả.** Tính năng cho phép cán bộ tiêu chuẩn khai báo các thông tin mà Quyển 2 yêu cầu với mọi Mẫu sự kiện trọng yếu: căn cứ ban hành, nhóm sản phẩm áp dụng, vai trò chủ thể phải ghi nhận, cơ quan chủ trì và cơ quan phối hợp (nếu liên ngành), văn bản uỷ quyền (với nhóm 2B khi kế thừa). Thông tin này nằm ở thẻ "Thẩm quyền và phạm vi" trên trang chi tiết bản nháp. Thẻ này độc lập với 7 bước cấu hình, nên cán bộ có thể cấu hình trước rồi bổ sung căn cứ sau. Hệ thống bắt buộc thẻ này phải đầy đủ trước khi cho trình phê duyệt.
+**Mô tả.** Tính năng cho phép cán bộ tiêu chuẩn khai báo các thông tin mà Quyển 2 yêu cầu với mọi Sự kiện trọng yếu: căn cứ ban hành, nhóm sản phẩm áp dụng, vai trò chủ thể phải ghi nhận, cơ quan chủ trì và cơ quan phối hợp (nếu liên ngành), văn bản uỷ quyền (với nhóm 2B khi kế thừa). Thông tin này nằm ở thẻ "Thẩm quyền và phạm vi" trên trang chi tiết bản nháp. Thẻ này độc lập với 7 bước cấu hình, nên cán bộ có thể cấu hình trước rồi bổ sung căn cứ sau. Hệ thống bắt buộc thẻ này phải đầy đủ trước khi cho trình phê duyệt.
 
 **Câu chuyện người dùng**
 - Là cán bộ tiêu chuẩn, tôi muốn gắn Sự kiện trọng yếu với văn bản làm căn cứ, để doanh nghiệp và các cơ quan khác biết sự kiện này có hiệu lực pháp lý từ đâu.
@@ -661,7 +661,7 @@ Tìm kiếm và lọc:
 
 Trang chi tiết:
 - Thể hiện 7 bước bằng ngôn ngữ dễ đọc.
-- Có các thẻ: "Thẩm quyền và phạm vi", "Lịch sử phiên bản", "Nhật ký", "Đang được dùng trong Mẫu".
+- Có các thẻ: "Thẩm quyền và phạm vi", "Lịch sử phiên bản", "Nhật ký", "Đang được dùng trong Quy trình".
 
 Theo nhóm người dùng:
 - Cán bộ nhóm 2B có thêm thẻ "Sự kiện cấp trung ương" ở chế độ chỉ xem.
@@ -671,7 +671,7 @@ Theo nhóm người dùng:
 - Là cán bộ tiêu chuẩn, tôi muốn tìm và lọc Sự kiện trọng yếu theo nhiều tiêu chí, để nhanh chóng tìm sự kiện cần rà soát.
 - Là cán bộ tiêu chuẩn, tôi muốn xem chi tiết 7 bước của một Sự kiện trọng yếu bằng ngôn ngữ dễ hiểu, để kiểm tra trước khi trình.
 - Là cán bộ tiêu chuẩn, tôi muốn thấy rõ trạng thái kèm ngày áp dụng và ngày ngừng, để biết phiên bản nào đang có hiệu lực.
-- Là cán bộ tiêu chuẩn, tôi muốn biết Sự kiện trọng yếu đang nằm trong những Mẫu nào, để đánh giá ảnh hưởng trước khi thay đổi.
+- Là cán bộ tiêu chuẩn, tôi muốn biết Sự kiện trọng yếu đang nằm trong những Quy trình nào, để đánh giá ảnh hưởng trước khi thay đổi.
 - Là cán bộ cấp địa phương, tôi muốn xem các Sự kiện trọng yếu đang áp dụng của trung ương cùng ngành, để chọn sự kiện kế thừa.
 - Là quản trị nền tảng quốc gia, tôi muốn xem các Sự kiện trọng yếu đã công bố của mọi cơ quan, để giám sát việc áp dụng và đối chiếu bản ghi cũ.
 
@@ -688,7 +688,7 @@ flowchart TD
     F --> G{Có kết quả?}
     G -- Không --> H[Màn hình trống, gợi ý xoá bộ lọc hoặc Tạo mới / Sao chép từ thư viện mẫu]
     G -- Có --> I[Chọn 1 Sự kiện trọng yếu]
-    I --> J[Trang chi tiết: thông tin chung, 7 bước, Thẩm quyền và phạm vi, Lịch sử phiên bản, Nhật ký, Đang được dùng trong Mẫu]
+    I --> J[Trang chi tiết: thông tin chung, 7 bước, Thẩm quyền và phạm vi, Lịch sử phiên bản, Nhật ký, Đang được dùng trong Quy trình]
     J --> K{Quyền và trạng thái?}
     K -- Nháp, người xem là cán bộ của đơn vị --> L[Nút: Sửa, Xoá, Kiểm tra, Trình phê duyệt]
     K -- Chờ phê duyệt, người xem là cán bộ --> L2[Nút: Rút lại]
@@ -743,12 +743,12 @@ flowchart TD
 
 **Mô tả.** Tính năng cho phép cán bộ tiêu chuẩn xoá vĩnh viễn một bản nháp.
 - Nếu bản nháp là phiên bản mới của một Sự kiện trọng yếu đã công bố, hệ thống chỉ xoá bản nháp đó và giữ nguyên các phiên bản khác. **[Bổ sung]**
-- Hệ thống không cho xoá bản đã trình, bản đã công bố, và bản nháp đang nằm trong một Mẫu sự kiện trọng yếu.
+- Hệ thống không cho xoá bản đã trình, bản đã công bố, và bản nháp đang nằm trong một Quy trình truy xuất tiêu chuẩn.
 - Hệ thống lưu toàn bộ nội dung của bản đã xoá vào nhật ký, phục vụ giải trình.
 
 **Câu chuyện người dùng**
 - Là cán bộ tiêu chuẩn, tôi muốn xoá bản nháp không còn dùng, để danh sách gọn gàng, tránh nhầm lẫn.
-- Là cán bộ tiêu chuẩn, tôi muốn biết bản nháp đang nằm trong Mẫu nào khi không xoá được, để xử lý đúng chỗ.
+- Là cán bộ tiêu chuẩn, tôi muốn biết bản nháp đang nằm trong Quy trình nào khi không xoá được, để xử lý đúng chỗ.
 
 **Sơ đồ luồng**
 ```mermaid
@@ -757,8 +757,8 @@ flowchart TD
     B -- Không --> X1[Báo: chỉ bản nháp được xoá; bản đã công bố dùng Ngừng áp dụng nếu cần] --> Z([Kết thúc])
     B -- Có --> C{Thuộc đơn vị của người dùng?}
     C -- Không --> X2[Không hiện nút Xoá] --> Z
-    C -- Có --> D{Đang nằm trong Mẫu sự kiện trọng yếu?}
-    D -- Có --> X3[Chặn, liệt kê tên các Mẫu đang chứa] --> Z
+    C -- Có --> D{Đang nằm trong Quy trình truy xuất tiêu chuẩn?}
+    D -- Có --> X3[Chặn, liệt kê tên các Quy trình đang chứa] --> Z
     D -- Không --> E{Là phiên bản mới của sự kiện đã công bố?}
     E -- Có --> F[Hỏi: Xoá bản nháp phiên bản n, các phiên bản khác giữ nguyên?]
     E -- Không --> G[Hỏi: Xoá Sự kiện trọng yếu, không khôi phục được?]
@@ -953,7 +953,7 @@ flowchart TD
     E --> F{Chuyển thành công cả hai bước?}
     F -- Không --> G[Hoàn tác, giữ nguyên trạng thái cũ, báo bộ phận vận hành, thử lại lượt sau]
     F -- Có --> H[Cập nhật danh mục tham chiếu quốc gia Cấp 1]
-    H --> I[Cập nhật sự kiện trong các Mẫu sự kiện trọng yếu theo quy định của phân hệ Mẫu]
+    H --> I[Cập nhật sự kiện trong các Quy trình truy xuất tiêu chuẩn theo quy định của phân hệ Quy trình truy xuất tiêu chuẩn]
     I --> J[Thông báo đơn vị sở hữu, Cấp 3, Cấp 4 đang áp dụng, nhóm 2B đã kế thừa]
     J --> K[Ghi nhật ký, người thực hiện là Hệ thống]
     G --> Z
@@ -1012,7 +1012,7 @@ flowchart TD
 
 1. **Ngừng áp dụng chủ động.** Lãnh đạo phê duyệt chấm dứt hiệu lực một Sự kiện trọng yếu mà không có phiên bản thay thế, ví dụ khi văn bản mới bỏ yêu cầu ghi nhận công đoạn này.
    - Lãnh đạo chọn ngừng ngay hoặc theo một ngày trong tương lai, và bắt buộc nêu lý do cùng căn cứ.
-   - Hệ thống không cho thực hiện khi Sự kiện trọng yếu đang nằm trong Mẫu sự kiện trọng yếu đang áp dụng.
+   - Hệ thống không cho thực hiện khi Sự kiện trọng yếu đang nằm trong Quy trình truy xuất tiêu chuẩn đang áp dụng.
    - Hệ thống huỷ theo phiên bản Chờ áp dụng, nếu có.
    - Cán bộ tiêu chuẩn được đề xuất ngừng áp dụng; lãnh đạo là người quyết định.
 2. **Khi bộ lõi quốc gia ngừng sử dụng một giá trị.** Hệ thống xử lý theo quy tắc QT-31: bản nháp và bản chờ phê duyệt bị đánh dấu lỗi; bản đã công bố giữ nguyên hiệu lực, chỉ bị gắn cảnh báo.
@@ -1027,8 +1027,8 @@ flowchart TD
 **Sơ đồ luồng — Ngừng áp dụng chủ động**
 ```mermaid
 flowchart TD
-    A([Lãnh đạo nhấn Ngừng áp dụng trên Sự kiện trọng yếu Đang áp dụng]) --> B{Đang nằm trong Mẫu sự kiện trọng yếu đang áp dụng?}
-    B -- Có --> X1[Chặn, liệt kê các Mẫu; yêu cầu gỡ khỏi Mẫu trước] --> Z([Kết thúc])
+    A([Lãnh đạo nhấn Ngừng áp dụng trên Sự kiện trọng yếu Đang áp dụng]) --> B{Đang nằm trong Quy trình truy xuất tiêu chuẩn đang áp dụng?}
+    B -- Có --> X1[Chặn, liệt kê các Quy trình; yêu cầu gỡ khỏi Quy trình trước] --> Z([Kết thúc])
     B -- Không --> C[Nhập lý do và căn cứ - bắt buộc; chọn thời điểm: Ngay / Ngày trong tương lai]
     C --> D{Có phiên bản Chờ áp dụng?}
     D -- Có --> E[Cảnh báo: phiên bản đang chờ cũng bị huỷ]
@@ -1073,7 +1073,7 @@ flowchart TD
 | TB-09 | Sửa bản đã công bố | Cán bộ | Sự kiện trọng yếu đã công bố không sửa trực tiếp. Hãy dùng "Tạo phiên bản mới". |
 | TB-10 | Sửa bản đang trình | Cán bộ | Bản này đang chờ phê duyệt. Hãy rút lại về Nháp trước khi sửa. |
 | TB-11 | Xoá bản không phải nháp | Cán bộ | Chỉ bản nháp được xoá. Sự kiện trọng yếu đã công bố có thể được đề xuất ngừng áp dụng. |
-| TB-12 | Xoá khi đang trong Mẫu | Cán bộ | Sự kiện trọng yếu đang nằm trong Mẫu sự kiện trọng yếu: [danh sách]. |
+| TB-12 | Xoá khi đang trong Quy trình | Cán bộ | Sự kiện trọng yếu đang nằm trong Quy trình truy xuất tiêu chuẩn: [danh sách]. |
 | TB-13 | Địa phương bớt dữ liệu bắt buộc | Cán bộ 2B | Dữ liệu "[x]" là bắt buộc theo yêu cầu cấp trung ương. Cấp địa phương chỉ được thêm, không được bớt. |
 | TB-14 | Địa phương đổi nội dung cốt lõi | Cán bộ 2B | Không được thay đổi loại sự kiện, hành động, bước nghiệp vụ hoặc trạng thái hàng hoá của Sự kiện trọng yếu kế thừa từ trung ương. |
 | TB-15 | Địa phương nới ngưỡng cảm biến | Cán bộ 2B | Ngưỡng cấp địa phương phải nằm trong khoảng [a–b] của yêu cầu cấp trung ương. |
@@ -1117,7 +1117,7 @@ Hệ thống ghi nhật ký mọi thao tác trên Sự kiện trọng yếu. Nh�
 
 | Quan hệ | Chức năng / phân hệ liên quan | Cấp | Nội dung |
 |---|---|---|---|
-| Cần dữ liệu từ | Quản lý danh mục tham chiếu Mẫu sự kiện trọng yếu và dữ liệu then chốt | Cấp 1 | Thư viện sự kiện mẫu quốc gia để sao chép; danh mục tham chiếu quốc gia để đăng ký phiên bản đã công bố |
+| Cần dữ liệu từ | Quản lý danh mục tham chiếu Sự kiện trọng yếu và dữ liệu then chốt | Cấp 1 | Thư viện sự kiện mẫu quốc gia để sao chép; danh mục tham chiếu quốc gia để đăng ký phiên bản đã công bố |
 | Cần dữ liệu từ | Duy trì danh mục, từ điển dữ liệu và quan hệ ánh xạ dùng chung | Cấp 1 | Loại sự kiện, bước nghiệp vụ, trạng thái hàng hoá, loại chứng từ, dữ liệu then chốt, đơn vị đo, bảng gợi ý |
 | Cần dữ liệu từ | Quản lý danh mục, hồ sơ và ánh xạ chuyên ngành | Cấp 2 | Danh mục ngành hàng, nhóm sản phẩm chuyên ngành đã ánh xạ với bộ lõi |
 | Cần dữ liệu từ | Quản lý bộ quy tắc ngành, chương trình và thị trường | Cấp 2 | Căn cứ ban hành, yêu cầu ngành làm cơ sở cấu hình |
@@ -1125,8 +1125,8 @@ Hệ thống ghi nhật ký mọi thao tác trên Sự kiện trọng yếu. Nh�
 | Cần dữ liệu từ | Quản lý phạm vi thẩm quyền, vai trò và tư cách chuyên ngành | Cấp 2 | Nhóm chủ thể 2A, 2B; quan hệ trung ương – địa phương theo ngành; văn bản uỷ quyền; quyền phê duyệt |
 | Cần dữ liệu từ | Quản lý vai trò, uỷ quyền và trạng thái tham gia | Cấp 1 | Tài khoản, vai trò cán bộ tiêu chuẩn, lãnh đạo phê duyệt |
 | Cần được báo từ | Ngừng sử dụng giá trị trong các danh mục trên | Cấp 1 | Để gắn lỗi, cảnh báo (mục 7.10) |
-| Hai chiều | Quản lý Mẫu sự kiện trọng yếu theo ngành hàng | Cấp 2 | Mẫu chỉ gom Sự kiện trọng yếu Đang áp dụng; phân hệ này hỏi Mẫu để biết sự kiện có đang nằm trong Mẫu không trước khi xoá, ngừng áp dụng |
-| Cung cấp đầu ra cho | Quản lý danh mục tham chiếu Mẫu sự kiện trọng yếu và dữ liệu then chốt | Cấp 1 | Phiên bản đã công bố kèm chủ sở hữu, phạm vi, ngày áp dụng, quy tắc chuyển tiếp |
+| Hai chiều | Quản lý Quy trình truy xuất tiêu chuẩn theo ngành hàng | Cấp 2 | Quy trình chỉ gom Sự kiện trọng yếu Đang áp dụng; phân hệ này hỏi Quy trình để biết sự kiện có đang nằm trong Quy trình không trước khi xoá, ngừng áp dụng |
+| Cung cấp đầu ra cho | Quản lý danh mục tham chiếu Sự kiện trọng yếu và dữ liệu then chốt | Cấp 1 | Phiên bản đã công bố kèm chủ sở hữu, phạm vi, ngày áp dụng, quy tắc chuyển tiếp |
 | Cung cấp đầu ra cho | Tiếp nhận, trao đổi và đối soát dữ liệu chuyên ngành | Cấp 2 | Sự kiện trọng yếu đang áp dụng để đối soát dữ liệu ngành |
 | Cung cấp đầu ra cho | Cấu hình công cụ hỗ trợ định danh, mẫu sự kiện và bằng chứng | Cấp 3 | Phiên bản, ngày áp dụng, quy tắc chuyển tiếp để đơn vị cung cấp giải pháp cấu hình công cụ |
 | Cung cấp đầu ra cho | Ghi nhận và đính chính sự kiện trọng yếu | Cấp 4 | Yêu cầu khai báo, hướng dẫn điền |
