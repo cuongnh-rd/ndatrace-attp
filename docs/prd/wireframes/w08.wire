@@ -15,7 +15,7 @@ project "Kế thừa cấp trung ương" {
           component Heading text: "Xuất kho thuỷ sản tươi — Hà Nội" level: h3
           component Badge text: "Kế thừa từ Bộ NN&MT — phiên bản 2" variant: indigo
         }
-        component Alert variant: danger title: "Không được hạ mức yêu cầu" text: "Dữ liệu Địa điểm nghiệp vụ là bắt buộc theo yêu cầu cấp trung ương. Cấp địa phương chỉ được thêm, không được bớt."
+        component Alert variant: danger title: "Không được hạ mức yêu cầu" text: "Trường thông tin Địa điểm nghiệp vụ là bắt buộc theo yêu cầu cấp trung ương. Cấp địa phương chỉ được thêm, không được bớt."
         component Table columns: "Trường thông tin,Mức yêu cầu,Nguồn yêu cầu" mock: "du,muc,nguon" rows: 5 actions: "edit"
         layout card(padding: md, gap: sm, border: true) {
           component Label text: "Ngưỡng nhiệt độ bảo quản"
