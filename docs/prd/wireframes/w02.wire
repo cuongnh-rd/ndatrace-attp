@@ -11,7 +11,7 @@ project "Tạo Sự kiện trọng yếu - bước 1" {
         layout split(left: 260, gap: lg) {
           layout card(padding: md, gap: sm, border: true) {
             component Label text: "Các bước cấu hình"
-            component SidebarMenu items: "Thông tin chung,1. Loại sự kiện,2. Bước nghiệp vụ,3. Hành động (gợi ý),4. Trạng thái hàng hoá,5. Chứng từ giao dịch,6. Dữ liệu then chốt,7. Yêu cầu bổ sung" icons: "check-circle,edit,lock,lock,lock,lock,lock,lock" active: 1
+            component SidebarMenu items: "Thông tin chung,1. Loại sự kiện,2. Bước nghiệp vụ,3. Hành động (gợi ý),4. Trạng thái hàng hoá,5. Chứng từ giao dịch,6. Trường thông tin,7. Yêu cầu bổ sung" icons: "check-circle,edit,lock,lock,lock,lock,lock,lock" active: 1
           }
           layout stack(gap: md) {
             component Heading text: "Bước 1 — Chọn loại sự kiện" level: h4

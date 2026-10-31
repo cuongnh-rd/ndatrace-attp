@@ -2,7 +2,7 @@ project "Kiểm tra và trình phê duyệt" {
   mocks {
     lop: "Thẩm quyền,Cấu trúc,Nghiệp vụ,Nghiệp vụ"
     muc: "Lỗi,Lỗi,Cảnh báo,Cảnh báo"
-    nd: "Thiếu căn cứ ban hành,Sự kiện giao dịch chưa có loại chứng từ,Bước nghiệp vụ ít dùng với loại sự kiện,2 dữ liệu chưa có hướng dẫn điền"
+    nd: "Thiếu căn cứ ban hành,Sự kiện giao dịch chưa có loại chứng từ,Bước nghiệp vụ ít dùng với loại sự kiện,2 trường thông tin chưa có hướng dẫn điền"
     di: "Thẩm quyền và phạm vi,Bước 5,Bước 3,Bước 6"
   }
   screen TrinhDuyet {

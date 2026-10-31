@@ -548,7 +548,7 @@ project "Tạo Sự kiện trọng yếu - bước 1" {
         layout split(left: 260, gap: lg) {
           layout card(padding: md, gap: sm, border: true) {
             component Label text: "Các bước cấu hình"
-            component SidebarMenu items: "Thông tin chung,1. Loại sự kiện,2. Bước nghiệp vụ,3. Hành động (gợi ý),4. Trạng thái hàng hoá,5. Chứng từ giao dịch,6. Dữ liệu then chốt,7. Yêu cầu bổ sung" icons: "check-circle,edit,lock,lock,lock,lock,lock,lock" active: 1
+            component SidebarMenu items: "Thông tin chung,1. Loại sự kiện,2. Bước nghiệp vụ,3. Hành động (gợi ý),4. Trạng thái hàng hoá,5. Chứng từ giao dịch,6. Trường thông tin,7. Yêu cầu bổ sung" icons: "check-circle,edit,lock,lock,lock,lock,lock,lock" active: 1
           }
           layout stack(gap: md) {
             component Heading text: "Bước 1 — Chọn loại sự kiện" level: h4
@@ -598,15 +598,15 @@ project "Tạo Sự kiện trọng yếu - bước 6" {
       }
       layout stack(padding: lg, gap: md) {
         component Breadcrumbs items: "Sự kiện trọng yếu,Xuất kho thuỷ sản tươi,Sửa"
-        component Heading text: "Bước 6 — Dữ liệu then chốt" level: h3
-        component Alert variant: info title: "Tóm tắt" text: "Theo dõi đối tượng · Thu hoạch · Tạo mới (gợi ý) → Đang lưu hành · 5 dữ liệu bắt buộc"
-        component Alert variant: warning title: "Lưu ý" text: "Dữ liệu có nhãn (khoá) do chuẩn yêu cầu, không bỏ được. Cần chọn ít nhất 1 dữ liệu khác."
+        component Heading text: "Bước 6 — Trường thông tin" level: h3
+        component Alert variant: info title: "Tóm tắt" text: "Theo dõi đối tượng · Thu hoạch · Tạo mới (gợi ý) → Đang lưu hành · 5 trường thông tin bắt buộc"
+        component Alert variant: warning title: "Lưu ý" text: "Trường thông tin có nhãn (khoá) do chuẩn yêu cầu, không bỏ được. Cần chọn ít nhất 1 trường thông tin khác."
         layout grid(columns: 4, gap: sm) {
-          cell span: 2 { component Input label: "Tìm dữ liệu then chốt" placeholder: "Nhập tên dữ liệu" iconLeft: search }
+          cell span: 2 { component Input label: "Tìm trường thông tin" placeholder: "Nhập tên trường thông tin" iconLeft: search }
           cell span: 1 { component Select label: "Nhóm câu hỏi" placeholder: "Tất cả" }
-          cell span: 1 { component Button text: "Thêm dữ liệu" icon: plus labelSpace: true }
+          cell span: 1 { component Button text: "Thêm trường thông tin" icon: plus labelSpace: true }
         }
-        component Table columns: "Dữ liệu then chốt,Nhóm,Mức yêu cầu,Hướng dẫn điền" mock: "du,nhom,muc,hd" rows: 7 actions: "edit,trash-2"
+        component Table columns: "Trường thông tin,Nhóm,Mức yêu cầu,Hướng dẫn điền" mock: "du,nhom,muc,hd" rows: 7 actions: "edit,trash-2"
         layout stack(direction: horizontal, justify: end, gap: sm) {
           component Button text: "Quay lại"
           component Button text: "Lưu nháp" icon: save
@@ -878,7 +878,7 @@ project "Kế thừa cấp trung ương" {
           component Badge text: "Kế thừa từ Bộ NN&MT — phiên bản 2" variant: indigo
         }
         component Alert variant: danger title: "Không được hạ mức yêu cầu" text: "Dữ liệu Địa điểm nghiệp vụ là bắt buộc theo yêu cầu cấp trung ương. Cấp địa phương chỉ được thêm, không được bớt."
-        component Table columns: "Dữ liệu then chốt,Mức yêu cầu,Nguồn yêu cầu" mock: "du,muc,nguon" rows: 5 actions: "edit"
+        component Table columns: "Trường thông tin,Mức yêu cầu,Nguồn yêu cầu" mock: "du,muc,nguon" rows: 5 actions: "edit"
         layout card(padding: md, gap: sm, border: true) {
           component Label text: "Ngưỡng nhiệt độ bảo quản"
           layout grid(columns: 3, gap: sm) {
@@ -1080,7 +1080,7 @@ project "Kiểm tra và trình phê duyệt" {
   mocks {
     lop: "Thẩm quyền,Cấu trúc,Nghiệp vụ,Nghiệp vụ"
     muc: "Lỗi,Lỗi,Cảnh báo,Cảnh báo"
-    nd: "Thiếu căn cứ ban hành,Sự kiện giao dịch chưa có loại chứng từ,Bước nghiệp vụ ít dùng với loại sự kiện,2 dữ liệu chưa có hướng dẫn điền"
+    nd: "Thiếu căn cứ ban hành,Sự kiện giao dịch chưa có loại chứng từ,Bước nghiệp vụ ít dùng với loại sự kiện,2 trường thông tin chưa có hướng dẫn điền"
     di: "Thẩm quyền và phạm vi,Bước 5,Bước 3,Bước 6"
   }
   screen TrinhDuyet {
