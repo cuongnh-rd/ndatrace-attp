@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2220" height="330" viewBox="0 0 2220 330" font-family="Arial, sans-serif" font-size="12">
+<defs><marker id="ar" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#333"/></marker></defs>
+<rect width="2220" height="330" fill="white"/>
+<text x="10" y="24" font-size="15" font-weight="bold">LC-06 — Kế thừa cấp trung ương và các ngoại lệ</text>
+<rect x="0.5" y="40" width="2219" height="140" fill="#E3F2FD" stroke="#555"/>
+<rect x="0.5" y="40" width="150" height="140" fill="#CFD8DC" stroke="#555"/>
+<text x="75.0" y="99.0" text-anchor="middle" font-weight="bold">Cán bộ tiêu</text>
+<text x="75.0" y="114.0" text-anchor="middle" font-weight="bold">chuẩn cấp địa</text>
+<text x="75.0" y="129.0" text-anchor="middle" font-weight="bold">phương</text>
+<rect x="0.5" y="180" width="2219" height="140" fill="#F5F5F5" stroke="#555"/>
+<rect x="0.5" y="180" width="150" height="140" fill="#CFD8DC" stroke="#555"/>
+<text x="75.0" y="254.0" text-anchor="middle" font-weight="bold">Hệ thống</text>
+<path d="M252,133 L252,250 L398,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<path d="M516,250 L588,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="531.5" y="230.0" width="41" height="16" fill="white" opacity="0.9"/><text x="552.0" y="242.0" text-anchor="middle" font-size="11" fill="#B71C1C">Không</text>
+<path d="M458,210 L458,110 L792,110" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="615.0" y="101.0" width="20" height="16" fill="white" opacity="0.9"/><text x="625.0" y="113.0" text-anchor="middle" font-size="11" fill="#B71C1C">Có</text>
+<path d="M868,142 L868,250 L1014,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<path d="M1132,250 L1202,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="1146.5" y="230.0" width="41" height="16" fill="white" opacity="0.9"/><text x="1167.0" y="242.0" text-anchor="middle" font-size="11" fill="#B71C1C">Không</text>
+<path d="M1072,210 L1072,192 L1482,192 L1482,218" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="1267.5" y="183.0" width="20" height="16" fill="white" opacity="0.9"/><text x="1277.5" y="195.0" text-anchor="middle" font-size="11" fill="#B71C1C">Có</text>
+<path d="M1558,250 L1628,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<path d="M1746,250 L1818,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="1772.0" y="230.0" width="20" height="16" fill="white" opacity="0.9"/><text x="1782.0" y="242.0" text-anchor="middle" font-size="11" fill="#B71C1C">Có</text>
+<path d="M1892,218 L1892,110 L2038,110" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<path d="M1688,210 L1688,110 L2038,110" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="1842.0" y="101.0" width="41" height="16" fill="white" opacity="0.9"/><text x="1862.5" y="113.0" text-anchor="middle" font-size="11" fill="#B71C1C">Không</text>
+<rect x="192.5" y="87.0" width="120" height="46" rx="23" fill="white" stroke="#2E7D32" stroke-width="2"/>
+<text x="252.5" y="107.5" text-anchor="middle" font-size="11.5">Mở thẻ Sự kiện cấp</text>
+<text x="252.5" y="120.5" text-anchor="middle" font-size="11.5">trung ương</text>
+<polygon points="457.5,210.0 516.5,250.0 457.5,290.0 398.5,250.0" fill="#FFF8E1" stroke="#F57F17" stroke-width="1.4"/>
+<text x="457.5" y="247.5" text-anchor="middle" font-size="11">Có uỷ quyền còn</text>
+<text x="457.5" y="260.5" text-anchor="middle" font-size="11">hiệu lực?</text>
+<rect x="587.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="662.5" y="247.5" text-anchor="middle" font-size="11.5">Ẩn nút Kế thừa, báo</text>
+<text x="662.5" y="260.5" text-anchor="middle" font-size="11.5">lý do</text>
+<rect x="792.5" y="78.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="867.5" y="114.0" text-anchor="middle" font-size="11.5">Nhấn Kế thừa</text>
+<polygon points="1072.5,210.0 1131.5,250.0 1072.5,290.0 1013.5,250.0" fill="#FFF8E1" stroke="#F57F17" stroke-width="1.4"/>
+<text x="1072.5" y="247.5" text-anchor="middle" font-size="11">Nguồn còn đang</text>
+<text x="1072.5" y="260.5" text-anchor="middle" font-size="11">áp dụng?</text>
+<rect x="1202.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="1277.5" y="247.5" text-anchor="middle" font-size="11.5">Báo nguồn không khả</text>
+<text x="1277.5" y="260.5" text-anchor="middle" font-size="11.5">dụng</text>
+<rect x="1407.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="1482.5" y="234.5" text-anchor="middle" font-size="11.5">Sao chép; khoá nội</text>
+<text x="1482.5" y="247.5" text-anchor="middle" font-size="11.5">dung cốt lõi; gắn</text>
+<text x="1482.5" y="260.5" text-anchor="middle" font-size="11.5">nhãn; gắn văn bản uỷ</text>
+<text x="1482.5" y="273.5" text-anchor="middle" font-size="11.5">quyền</text>
+<polygon points="1687.5,210.0 1746.5,250.0 1687.5,290.0 1628.5,250.0" fill="#FFF8E1" stroke="#F57F17" stroke-width="1.4"/>
+<text x="1687.5" y="247.5" text-anchor="middle" font-size="11">Có giá trị đã</text>
+<text x="1687.5" y="260.5" text-anchor="middle" font-size="11">ngừng sử dụng?</text>
+<rect x="1817.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="1892.5" y="254.0" text-anchor="middle" font-size="11.5">Đánh dấu lỗi tại ô</text>
+<rect x="2037.5" y="87.0" width="120" height="46" rx="23" fill="white" stroke="#C62828" stroke-width="2"/>
+<text x="2097.5" y="114.0" text-anchor="middle" font-size="11.5">Mở màn hình sửa</text>
+</svg>

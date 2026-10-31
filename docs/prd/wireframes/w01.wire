@@ -26,7 +26,7 @@ project "Danh sách Sự kiện trọng yếu" {
           cell span: 2 { component Input label: "Tìm kiếm" placeholder: "Tên hoặc mã sự kiện" iconLeft: search }
           cell span: 1 { component Select label: "Loại sự kiện" placeholder: "Tất cả" }
           cell span: 1 { component Select label: "Trạng thái" placeholder: "Tất cả" }
-          cell span: 1 { component Select label: "Ngành hàng" placeholder: "Tất cả" }
+          cell span: 1 { component Select label: "Nguồn tạo" placeholder: "Tất cả" }
           cell span: 1 { component Checkbox label: "Có cảnh báo danh mục" }
         }
         component Table columns: "Mã,Tên,Loại sự kiện,Bước nghiệp vụ,Trạng thái,Phiên bản" mock: "ma,ten,loai,buoc,trangthai,pb" rows: 5 pagination: true actions: "eye,copy,more-vertical"

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1810" height="330" viewBox="0 0 1810 330" font-family="Arial, sans-serif" font-size="12">
+<defs><marker id="ar" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#333"/></marker></defs>
+<rect width="1810" height="330" fill="white"/>
+<text x="10" y="24" font-size="15" font-weight="bold">LC-03 — Luồng thay thế và ngoại lệ</text>
+<rect x="0.5" y="40" width="1809" height="140" fill="#E3F2FD" stroke="#555"/>
+<rect x="0.5" y="40" width="150" height="140" fill="#CFD8DC" stroke="#555"/>
+<text x="75.0" y="114.0" text-anchor="middle" font-weight="bold">Người dùng</text>
+<rect x="0.5" y="180" width="1809" height="140" fill="#F5F5F5" stroke="#555"/>
+<rect x="0.5" y="180" width="150" height="140" fill="#CFD8DC" stroke="#555"/>
+<text x="75.0" y="254.0" text-anchor="middle" font-weight="bold">Hệ thống</text>
+<path d="M252,133 L252,250 L398,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<path d="M516,250 L588,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="542.0" y="230.0" width="20" height="16" fill="white" opacity="0.9"/><text x="552.0" y="242.0" text-anchor="middle" font-size="11" fill="#B71C1C">Có</text>
+<path d="M458,210 L458,192 L868,192 L868,210" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="642.0" y="183.0" width="41" height="16" fill="white" opacity="0.9"/><text x="662.5" y="195.0" text-anchor="middle" font-size="11" fill="#B71C1C">Không</text>
+<path d="M926,250 L998,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="941.5" y="230.0" width="41" height="16" fill="white" opacity="0.9"/><text x="962.0" y="242.0" text-anchor="middle" font-size="11" fill="#B71C1C">Không</text>
+<path d="M868,210 L868,192 L1278,192 L1278,210" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="1062.5" y="183.0" width="20" height="16" fill="white" opacity="0.9"/><text x="1072.5" y="195.0" text-anchor="middle" font-size="11" fill="#B71C1C">Có</text>
+<path d="M1336,250 L1408,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="1362.0" y="230.0" width="20" height="16" fill="white" opacity="0.9"/><text x="1372.0" y="242.0" text-anchor="middle" font-size="11" fill="#B71C1C">Có</text>
+<path d="M1482,218 L1482,110 L1628,110" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="192.5" y="87.0" width="120" height="46" rx="23" fill="white" stroke="#2E7D32" stroke-width="2"/>
+<text x="252.5" y="114.0" text-anchor="middle" font-size="11.5">Đang ở danh sách</text>
+<polygon points="457.5,210.0 516.5,250.0 457.5,290.0 398.5,250.0" fill="#FFF8E1" stroke="#F57F17" stroke-width="1.4"/>
+<text x="457.5" y="247.5" text-anchor="middle" font-size="11">Là 2B, mở thẻ</text>
+<text x="457.5" y="260.5" text-anchor="middle" font-size="11">cấp trung ương?</text>
+<rect x="587.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="662.5" y="234.5" text-anchor="middle" font-size="11.5">Hiển thị sự kiện 2A</text>
+<text x="662.5" y="247.5" text-anchor="middle" font-size="11.5">cùng ngành quản lý,</text>
+<text x="662.5" y="260.5" text-anchor="middle" font-size="11.5">chỉ đọc; nút Kế thừa</text>
+<text x="662.5" y="273.5" text-anchor="middle" font-size="11.5">nếu có uỷ quyền</text>
+<polygon points="867.5,210.0 926.5,250.0 867.5,290.0 808.5,250.0" fill="#FFF8E1" stroke="#F57F17" stroke-width="1.4"/>
+<text x="867.5" y="254.0" text-anchor="middle" font-size="11">Có quyền xem?</text>
+<rect x="997.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="1072.5" y="254.0" text-anchor="middle" font-size="11.5">Từ chối truy cập</text>
+<polygon points="1277.5,210.0 1336.5,250.0 1277.5,290.0 1218.5,250.0" fill="#FFF8E1" stroke="#F57F17" stroke-width="1.4"/>
+<text x="1277.5" y="254.0" text-anchor="middle" font-size="11">Kết quả rỗng?</text>
+<rect x="1407.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="1482.5" y="247.5" text-anchor="middle" font-size="11.5">Màn hình trống, gợi ý</text>
+<text x="1482.5" y="260.5" text-anchor="middle" font-size="11.5">thao tác</text>
+<rect x="1627.5" y="87.0" width="120" height="46" rx="23" fill="white" stroke="#C62828" stroke-width="2"/>
+<text x="1687.5" y="114.0" text-anchor="middle" font-size="11.5">Kết thúc</text>
+</svg>

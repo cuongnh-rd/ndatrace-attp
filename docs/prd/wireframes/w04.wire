@@ -17,10 +17,8 @@ project "Thẩm quyền và phạm vi" {
           cell span: 1 { component Input label: "Căn cứ ban hành — số hiệu" placeholder: "Ví dụ: 1234/QĐ-BNNMT" }
           cell span: 1 { component Input label: "Ngày ban hành" placeholder: "dd/mm/yyyy" iconRight: calendar }
           cell span: 2 { component Textarea label: "Trích yếu văn bản" placeholder: "Về việc ban hành yêu cầu truy xuất nguồn gốc thuỷ sản" rows: 2 }
-          cell span: 1 { component Select label: "Nhóm sản phẩm áp dụng" placeholder: "Thuỷ sản tươi sống, ướp đá" }
-          cell span: 1 { component Select label: "Vai trò chủ thể phải ghi nhận" placeholder: "Cơ sở nuôi trồng; Cơ sở thu mua" }
-          cell span: 1 { component Checkbox label: "Nhóm sản phẩm thuộc nhiều ngành quản lý" }
-          cell span: 1 { component Select label: "Cơ quan phối hợp" placeholder: "Bộ Y tế" }
+          cell span: 2 { component Select label: "Vai trò chủ thể phải ghi nhận" placeholder: "Cơ sở nuôi trồng; Cơ sở thu mua" }
+          cell span: 2 { component Alert variant: info title: "Phạm vi áp dụng" text: "Sự kiện trọng yếu không gắn ngành hàng. Ngành hàng, nhóm sản phẩm được xác định khi ghép vào Quy trình tiêu chuẩn TXNG." }
           cell span: 2 { component Button text: "Đính kèm văn bản" icon: paperclip }
         }
         layout stack(direction: horizontal, justify: end, gap: sm) {

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2220" height="330" viewBox="0 0 2220 330" font-family="Arial, sans-serif" font-size="12">
+<defs><marker id="ar" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#333"/></marker></defs>
+<rect width="2220" height="330" fill="white"/>
+<text x="10" y="24" font-size="15" font-weight="bold">LC-04 — Luồng thay thế và ngoại lệ</text>
+<rect x="0.5" y="40" width="2219" height="140" fill="#E3F2FD" stroke="#555"/>
+<rect x="0.5" y="40" width="150" height="140" fill="#CFD8DC" stroke="#555"/>
+<text x="75.0" y="106.5" text-anchor="middle" font-weight="bold">Cán bộ tiêu</text>
+<text x="75.0" y="121.5" text-anchor="middle" font-weight="bold">chuẩn</text>
+<rect x="0.5" y="180" width="2219" height="140" fill="#F5F5F5" stroke="#555"/>
+<rect x="0.5" y="180" width="150" height="140" fill="#CFD8DC" stroke="#555"/>
+<text x="75.0" y="254.0" text-anchor="middle" font-weight="bold">Hệ thống</text>
+<path d="M252,133 L252,250 L398,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<path d="M516,250 L588,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="514.0" y="230.0" width="76" height="16" fill="white" opacity="0.9"/><text x="552.0" y="242.0" text-anchor="middle" font-size="11" fill="#B71C1C">Đã công bố</text>
+<path d="M458,210 L458,192 L868,192 L868,218" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="628.0" y="183.0" width="69" height="16" fill="white" opacity="0.9"/><text x="662.5" y="195.0" text-anchor="middle" font-size="11" fill="#B71C1C">Chờ duyệt</text>
+<path d="M458,290 L458,308 L1072,308 L1072,290" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="748.0" y="299.0" width="34" height="16" fill="white" opacity="0.9"/><text x="765.0" y="311.0" text-anchor="middle" font-size="11" fill="#B71C1C">Nháp</text>
+<path d="M1132,250 L1202,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="1157.0" y="230.0" width="20" height="16" fill="white" opacity="0.9"/><text x="1167.0" y="242.0" text-anchor="middle" font-size="11" fill="#B71C1C">Có</text>
+<path d="M1072,210 L1072,110 L1408,110" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="1219.5" y="101.0" width="41" height="16" fill="white" opacity="0.9"/><text x="1240.0" y="113.0" text-anchor="middle" font-size="11" fill="#B71C1C">Không</text>
+<path d="M1482,142 L1482,250 L1628,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<path d="M1746,250 L1818,250" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="1772.0" y="230.0" width="20" height="16" fill="white" opacity="0.9"/><text x="1782.0" y="242.0" text-anchor="middle" font-size="11" fill="#B71C1C">Có</text>
+<path d="M1688,210 L1688,192 L2098,192 L2098,218" fill="none" stroke="#333" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="1872.0" y="183.0" width="41" height="16" fill="white" opacity="0.9"/><text x="1892.5" y="195.0" text-anchor="middle" font-size="11" fill="#B71C1C">Không</text>
+<rect x="192.5" y="87.0" width="120" height="46" rx="23" fill="white" stroke="#2E7D32" stroke-width="2"/>
+<text x="252.5" y="114.0" text-anchor="middle" font-size="11.5">Nhấn Sửa</text>
+<polygon points="457.5,210.0 516.5,250.0 457.5,290.0 398.5,250.0" fill="#FFF8E1" stroke="#F57F17" stroke-width="1.4"/>
+<text x="457.5" y="254.0" text-anchor="middle" font-size="11">Trạng thái?</text>
+<rect x="587.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="662.5" y="247.5" text-anchor="middle" font-size="11.5">Báo: dùng Tạo phiên</text>
+<text x="662.5" y="260.5" text-anchor="middle" font-size="11.5">bản mới</text>
+<rect x="792.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="867.5" y="254.0" text-anchor="middle" font-size="11.5">Báo: cần Rút lại</text>
+<polygon points="1072.5,210.0 1131.5,250.0 1072.5,290.0 1013.5,250.0" fill="#FFF8E1" stroke="#F57F17" stroke-width="1.4"/>
+<text x="1072.5" y="247.5" text-anchor="middle" font-size="11">Người khác đang</text>
+<text x="1072.5" y="260.5" text-anchor="middle" font-size="11">sửa?</text>
+<rect x="1202.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="1277.5" y="254.0" text-anchor="middle" font-size="11.5">Mở chế độ chỉ xem</text>
+<rect x="1407.5" y="78.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="1482.5" y="114.0" text-anchor="middle" font-size="11.5">Sửa yêu cầu kế thừa</text>
+<polygon points="1687.5,210.0 1746.5,250.0 1687.5,290.0 1628.5,250.0" fill="#FFF8E1" stroke="#F57F17" stroke-width="1.4"/>
+<text x="1687.5" y="241.0" text-anchor="middle" font-size="11">Làm suy giảm</text>
+<text x="1687.5" y="254.0" text-anchor="middle" font-size="11">yêu cầu trung</text>
+<text x="1687.5" y="267.0" text-anchor="middle" font-size="11">ương?</text>
+<rect x="1817.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="1892.5" y="247.5" text-anchor="middle" font-size="11.5">Chặn tại ô, nêu yêu</text>
+<text x="1892.5" y="260.5" text-anchor="middle" font-size="11.5">cầu gốc</text>
+<rect x="2022.5" y="218.0" width="150" height="64" rx="6" fill="white" stroke="#1565C0" stroke-width="1.4"/>
+<text x="2097.5" y="241.0" text-anchor="middle" font-size="11.5">Chấp nhận, gắn nhãn</text>
+<text x="2097.5" y="254.0" text-anchor="middle" font-size="11.5">Bổ sung cấp địa</text>
+<text x="2097.5" y="267.0" text-anchor="middle" font-size="11.5">phương</text>
+</svg>

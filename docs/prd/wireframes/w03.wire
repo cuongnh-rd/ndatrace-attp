@@ -13,7 +13,7 @@ project "Tạo Sự kiện trọng yếu - bước 6" {
       layout stack(padding: lg, gap: md) {
         component Breadcrumbs items: "Sự kiện trọng yếu,Xuất kho thuỷ sản tươi,Sửa"
         component Heading text: "Bước 6 — Dữ liệu then chốt" level: h3
-        component Alert variant: info title: "Tóm tắt" text: "Theo dõi đối tượng · Tạo mới · Thu hoạch → Đang lưu hành · 5 dữ liệu bắt buộc"
+        component Alert variant: info title: "Tóm tắt" text: "Theo dõi đối tượng · Thu hoạch · Tạo mới (gợi ý) → Đang lưu hành · 5 dữ liệu bắt buộc"
         component Alert variant: warning title: "Lưu ý" text: "Dữ liệu có nhãn (khoá) do chuẩn yêu cầu, không bỏ được. Cần chọn ít nhất 1 dữ liệu khác."
         layout grid(columns: 4, gap: sm) {
           cell span: 2 { component Input label: "Tìm dữ liệu then chốt" placeholder: "Nhập tên dữ liệu" iconLeft: search }
