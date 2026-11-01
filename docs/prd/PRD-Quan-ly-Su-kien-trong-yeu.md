@@ -8,16 +8,39 @@
 | Khung nghiệp vụ tương ứng (Quyển 2) | Khung quản lý sự kiện trọng yếu và dữ liệu truy xuất nguồn gốc; Khung yêu cầu nghiệp vụ theo ngành hàng và thị trường |
 | Tài liệu liên quan | Tài liệu yêu cầu sản phẩm — Quy trình tiêu chuẩn truy xuất nguồn gốc (viết riêng) |
 | Đối tượng sử dụng chính | Cơ quan quản lý nhà nước chuyên ngành ở trung ương (nhóm 2A) và ở địa phương (nhóm 2B) |
-| Phiên bản tài liệu | 7.1 |
+| Phiên bản tài liệu | 1.0 |
 | Người soạn | Nguyễn Hà Cương — Quản lý sản phẩm |
-| Trạng thái | Bản nháp, chờ rà soát |
+| Trạng thái | Hoạt động |
 | Căn cứ | Nghị định 37/2025/NĐ-CP; NDATrace Quyển 2 — Khung nghiệp vụ dùng chung (bản 4.2.0); NDATrace Quyển 3 — Khung chức năng nghiệp vụ (bản 4.3.2); chuẩn sự kiện truy xuất quốc tế GS1 EPCIS 2.0 và bộ từ vựng nghiệp vụ CBV 2.0 |
 
-> **Quy ước đánh dấu:**
-> - **[Bổ sung]**: nội dung nhóm phát triển sản phẩm đề xuất thêm để khép kín nghiệp vụ.
-> - **[Theo Quyển 2/3]**: nội dung được điều chỉnh để thống nhất với Quyển 2 (Khung nghiệp vụ dùng chung) và Quyển 3 (Khung chức năng nghiệp vụ).
->
-> Cả hai loại nội dung đều cần được xác nhận trong buổi rà soát.
+
+### Mục lục
+
+| Mục | Nội dung |
+|---|---|
+| 0 | Thuật ngữ và đối chiếu với kiến trúc nghiệp vụ |
+| 1 | Tổng quan |
+| 2 | Người dùng và vai trò |
+| 3 | Phạm vi |
+| 4 | Mô hình nghiệp vụ |
+| 5 | Quy định cấu hình 7 bước |
+| 6 | Quy tắc nghiệp vụ (QT-01 → QT-31) |
+| 7 | Đặc tả tính năng |
+| 7.1 | Tạo Sự kiện trọng yếu mới |
+| 7.2 | Khai báo thông tin thẩm quyền và phạm vi |
+| 7.3 | Xem và tra cứu Sự kiện trọng yếu |
+| 7.4 | Sửa bản nháp |
+| 7.5 | Xoá bản nháp |
+| 7.6 | Sao chép và kế thừa Sự kiện trọng yếu |
+| 7.7 | Kiểm tra tổng thể và trình phê duyệt |
+| 7.8 | Phê duyệt và công bố |
+| 7.9 | Quản lý phiên bản |
+| 7.10 | Ngừng áp dụng và xử lý thay đổi bộ lõi quốc gia |
+| 8 | Danh mục thông báo |
+| 9 | Nhật ký thao tác |
+| 10 | Phụ thuộc |
+| 11 | Điều kiện sẵn sàng (DoR) |
+| 12 | Điều kiện hoàn thành (DoD) |
 
 ---
 
@@ -25,9 +48,9 @@
 
 ### 0.1. Thuật ngữ
 
-Tài liệu dùng thuật ngữ theo Nghị định 37/2025/NĐ-CP. Quyển 2 và Quyển 3 dùng tên gọi "Mẫu CTE/KDE" cho cùng đối tượng mà tài liệu này gọi là **Sự kiện trọng yếu**. Từ phiên bản 7.0, tài liệu thống nhất như sau:
+Tài liệu dùng thuật ngữ theo Nghị định 37/2025/NĐ-CP. Quyển 2 và Quyển 3 dùng tên gọi "Mẫu CTE/KDE" cho cùng đối tượng mà tài liệu này gọi là **Sự kiện trọng yếu**. Tài liệu thống nhất như sau:
 
-> **Ghi chú thuật ngữ theo Nghị định 37/2025/NĐ-CP:** Nghị định dùng tên **"Trường thông tin"** cho từng thông tin phải ghi nhận tại một sự kiện trọng yếu. Bản 4 của tài liệu, Quyển 2 và Quyển 3 gọi khái niệm này là "dữ liệu then chốt" (KDE). Từ phiên bản 7.1, tài liệu dùng thống nhất tên **Trường thông tin**.
+> **Ghi chú thuật ngữ theo Nghị định 37/2025/NĐ-CP:** Nghị định dùng tên **"Trường thông tin"** cho từng thông tin phải ghi nhận tại một sự kiện trọng yếu. Bản trước của tài liệu, Quyển 2 và Quyển 3 gọi khái niệm này là "dữ liệu then chốt" (KDE). Tài liệu này dùng thống nhất tên **Trường thông tin**.
 
 | Thuật ngữ | Định nghĩa |
 |---|---|
@@ -46,7 +69,7 @@ Tài liệu dùng thuật ngữ theo Nghị định 37/2025/NĐ-CP. Quyển 2 v�
 
 ### 0.2. Đối chiếu với mô hình năm cấp của NDATrace
 
-Bảng dưới đây quy đổi các ký hiệu C1, C2, C3 của bản 4 sang cách gọi chính thức trong Quyển 2 và Quyển 3. **[Theo Quyển 2/3]**
+Bảng dưới đây quy đổi các ký hiệu C1, C2, C3 của bản 4 sang cách gọi chính thức trong Quyển 2 và Quyển 3.
 
 | Ký hiệu bản 4 | Cấp chính thức | Chủ thể | Vai trò đối với phân hệ này |
 |---|---|---|---|
@@ -152,7 +175,7 @@ Mỗi Sự kiện trọng yếu được cấu hình qua **7 bước tuần tự
 | 3 | Tiêu chuẩn thay đổi theo thời gian. | Doanh nghiệp bị "đổi luật giữa chừng". Bản ghi cũ có thể bị coi là sai theo quy định mới. | Hệ thống quản lý phiên bản; phiên bản mới phải có ngày áp dụng tương lai; không hồi tố. |
 | 4 | Địa phương cần yêu cầu chặt hơn trung ương. | Địa phương làm lại từ đầu, hoặc vô tình nới lỏng yêu cầu của trung ương. | Địa phương kế thừa và chỉ được thêm chặt. Hệ thống chặn mọi thay đổi làm suy giảm yêu cầu. |
 | 5 | Sự kiện trọng yếu và Quy trình tiêu chuẩn TXNG đang gộp làm một. | Không dùng lại được Sự kiện trọng yếu giữa các ngành hàng. | Phân hệ này chỉ quản lý từng Sự kiện trọng yếu. Quy trình tiêu chuẩn TXNG được quản lý ở phân hệ riêng. |
-| 6 | Sự kiện ban hành thiếu căn cứ, chủ sở hữu, phạm vi, thời hạn. **[Theo Quyển 2/3]** | Không xác định được hiệu lực pháp lý, trách nhiệm và đối tượng áp dụng. | Hệ thống bắt buộc khai báo đủ thông tin này trước khi trình phê duyệt. |
+| 6 | Sự kiện ban hành thiếu căn cứ, chủ sở hữu, phạm vi, thời hạn. | Không xác định được hiệu lực pháp lý, trách nhiệm và đối tượng áp dụng. | Hệ thống bắt buộc khai báo đủ thông tin này trước khi trình phê duyệt. |
 | 7 | Sự kiện trọng yếu bị gắn cứng với một ngành hàng ngay từ khi tạo. | Cùng một sự kiện (ví dụ "Xuất kho") phải tạo lặp lại cho từng ngành hàng; khó thống nhất và khó bảo trì. | Sự kiện trọng yếu không gắn ngành hàng. Ngành hàng, nhóm sản phẩm chỉ được xác định khi ghép vào Quy trình tiêu chuẩn TXNG. |
 
 ### 1.4. Nguyên tắc thiết kế
@@ -170,8 +193,8 @@ Mỗi Sự kiện trọng yếu được cấu hình qua **7 bước tuần tự
 | Vai trò | Mô tả | Nhu cầu chính | Hành vi điển hình |
 |---|---|---|---|
 | **Cán bộ tiêu chuẩn cấp trung ương (2A)** | Chuyên viên Cục, Vụ thuộc Bộ quản lý ngành. Am hiểu ngành hàng, không quen thuật ngữ chuẩn truy xuất quốc tế. | Soạn Sự kiện trọng yếu áp dụng toàn quốc; làm nhanh, đúng chuẩn, giải trình được. | Sao chép từ thư viện mẫu rồi tinh chỉnh; làm theo đợt ban hành văn bản; cần lưu nháp để tham vấn. |
-| **Cán bộ tiêu chuẩn cấp địa phương (2B)** | Chuyên viên Sở chuyên ngành hoặc cơ quan chuyên môn thuộc Uỷ ban nhân dân tỉnh, thành phố. | Triển khai Sự kiện trọng yếu của trung ương tại địa phương, bổ sung yêu cầu riêng. | Chủ yếu kế thừa; thêm chứng nhận, siết ngưỡng bảo quản. Chỉ được thực hiện khi đơn vị có văn bản uỷ quyền. **[Theo Quyển 2/3]** |
-| **Lãnh đạo phê duyệt** **[Theo Quyển 2/3]** | Lãnh đạo phòng, Cục, Vụ hoặc Sở được giao thẩm quyền phê duyệt, công bố. | Xem nội dung, căn cứ, kết quả kiểm tra và thay đổi so với phiên bản trước; phê duyệt hoặc trả lại có ý kiến. | Xử lý theo đợt; cần màn hình so sánh thay đổi để quyết định nhanh. |
+| **Cán bộ tiêu chuẩn cấp địa phương (2B)** | Chuyên viên Sở chuyên ngành hoặc cơ quan chuyên môn thuộc Uỷ ban nhân dân tỉnh, thành phố. | Triển khai Sự kiện trọng yếu của trung ương tại địa phương, bổ sung yêu cầu riêng. | Chủ yếu kế thừa; thêm chứng nhận, siết ngưỡng bảo quản. Chỉ được thực hiện khi đơn vị có văn bản uỷ quyền. |
+| **Lãnh đạo phê duyệt** | Lãnh đạo phòng, Cục, Vụ hoặc Sở được giao thẩm quyền phê duyệt, công bố. | Xem nội dung, căn cứ, kết quả kiểm tra và thay đổi so với phiên bản trước; phê duyệt hoặc trả lại có ý kiến. | Xử lý theo đợt; cần màn hình so sánh thay đổi để quyết định nhanh. |
 | **Quản trị nền tảng quốc gia (Cấp 1)** | Đơn vị vận hành bộ lõi quốc gia và thư viện mẫu. | Tiếp nhận Sự kiện trọng yếu đã công bố; giám sát; tra phiên bản có hiệu lực theo ngày. | Chỉ xem; không tạo, không sửa, không phê duyệt nội dung chuyên ngành. |
 | **Đơn vị cung cấp giải pháp (Cấp 3)** | Doanh nghiệp công nghệ cung cấp phần mềm truy xuất. | Nhận phiên bản mới cùng ngày áp dụng và quy tắc chuyển tiếp để cấu hình công cụ. | Không thao tác trên phân hệ; nhận dữ liệu và thông báo. |
 | **Tổ chức, cá nhân sản xuất, kinh doanh (Cấp 4)** | Doanh nghiệp, hợp tác xã, hộ kinh doanh, cá nhân. | Biết chính xác phải khai báo gì; được báo trước khi yêu cầu thay đổi. | Không thao tác trên phân hệ; nhận thông báo. |
@@ -183,10 +206,10 @@ Mỗi Sự kiện trọng yếu được cấu hình qua **7 bước tuần tự
 
 ### 3.1. Trong phạm vi
 1. Cán bộ tiêu chuẩn tạo Sự kiện trọng yếu qua 7 bước tuần tự, lưu nháp, sửa và xoá bản nháp.
-2. Cán bộ tiêu chuẩn khai báo thông tin thẩm quyền: căn cứ ban hành, vai trò chủ thể phải ghi nhận, văn bản uỷ quyền. **[Theo Quyển 2/3]**
+2. Cán bộ tiêu chuẩn khai báo thông tin thẩm quyền: căn cứ ban hành, vai trò chủ thể phải ghi nhận, văn bản uỷ quyền.
 3. Cán bộ tiêu chuẩn sao chép Sự kiện trọng yếu từ thư viện mẫu quốc gia, từ chính đơn vị; cán bộ nhóm 2B kế thừa Sự kiện trọng yếu của nhóm 2A.
 4. Hệ thống kiểm tra tổng thể; cán bộ trình phê duyệt hoặc rút lại.
-5. Lãnh đạo phê duyệt và công bố, hoặc trả lại. **[Theo Quyển 2/3]**
+5. Lãnh đạo phê duyệt và công bố, hoặc trả lại.
 6. Hệ thống quản lý vòng đời 5 trạng thái: Nháp, Chờ phê duyệt, Chờ áp dụng, Đang áp dụng, Ngừng áp dụng.
 7. Cán bộ tiêu chuẩn tạo phiên bản mới, xem lịch sử, so sánh hai phiên bản.
 8. Lãnh đạo phê duyệt huỷ phiên bản chờ áp dụng, ngừng áp dụng Sự kiện trọng yếu.
@@ -217,7 +240,7 @@ Mỗi Sự kiện trọng yếu được cấu hình qua **7 bước tuần tự
 | Định danh | Mã sự kiện | Hệ thống sinh | Định dạng `{mã đơn vị}-SK-{4 chữ số}`. Giữ nguyên qua mọi phiên bản. |
 | | Tên sự kiện | Có | Không trùng trong cùng đơn vị. |
 | | Tên tiếng Anh, mô tả | Không | |
-| Thẩm quyền **[Theo Quyển 2/3]** | Chủ sở hữu nội dung | Hệ thống điền | Cơ quan của người tạo. |
+| Thẩm quyền | Chủ sở hữu nội dung | Hệ thống điền | Cơ quan của người tạo. |
 | | Nhóm chủ thể, phạm vi địa bàn | Hệ thống điền | 2A — toàn quốc; 2B — tỉnh, thành phố. |
 | | Căn cứ ban hành | Có khi trình | Số hiệu, ngày ban hành, trích yếu, tệp đính kèm. |
 | | Văn bản uỷ quyền | Có với 2B khi kế thừa | Hệ thống tự gắn từ hồ sơ thẩm quyền của đơn vị. |
@@ -231,7 +254,7 @@ Mỗi Sự kiện trọng yếu được cấu hình qua **7 bước tuần tự
 | Trách nhiệm | Người soạn, người trình, người phê duyệt, thời điểm | Hệ thống sinh | |
 | Nội dung | Cấu hình 7 bước | Có | Mục 5. |
 
-### 4.2. Ba lớp đối tượng **[Theo Quyển 2/3]**
+### 4.2. Ba lớp đối tượng
 
 1. **Sự kiện trọng yếu**: bản quy định do cơ quan quản lý ban hành qua phân hệ này.
 2. **Bản ghi sự kiện**: do Cấp 4 tạo khi sự kiện thực sự xảy ra. Mỗi bản ghi mang theo mã và phiên bản Sự kiện trọng yếu đã dùng. Trạng thái của bản ghi không làm thay đổi trạng thái của Sự kiện trọng yếu.
@@ -313,7 +336,7 @@ stateDiagram-v2
 - Hệ thống tự chọn sẵn hành động gợi ý theo cặp loại sự kiện + bước nghiệp vụ (bảng 5.4). Cán bộ giữ nguyên hoặc đổi sang Tạo mới, Ghi nhận hoặc Kết thúc.
 - Với sự kiện chế biến, hệ thống bỏ qua bước này vì loại sự kiện chế biến không có hành động.
 - Hành động quyết định phần thông tin lô / cá thể ở bước 6 có được mở hay không.
-- Khi cán bộ quay lại đổi bước nghiệp vụ, hệ thống tính lại hành động gợi ý. Nếu hành động đang chọn khác gợi ý mới, hệ thống đánh dấu vàng để cán bộ xác nhận lại. **[Bổ sung]**
+- Khi cán bộ quay lại đổi bước nghiệp vụ, hệ thống tính lại hành động gợi ý. Nếu hành động đang chọn khác gợi ý mới, hệ thống đánh dấu vàng để cán bộ xác nhận lại.
 
 **Bước 4 — Trạng thái hàng hoá và trạng thái duy trì.**
 - Hệ thống chọn sẵn trạng thái hàng hoá gợi ý theo loại sự kiện, bước nghiệp vụ và hành động; cán bộ giữ hoặc đổi.
@@ -333,7 +356,7 @@ stateDiagram-v2
 **Bước 7 — Yêu cầu bổ sung (tuỳ chọn).**
 - **Ngưỡng cảm biến**: chỉ mở khi cán bộ đã chọn trường thông tin cảm biến ở bước 6.
 - **Yêu cầu chứng nhận**: chỉ mở khi cán bộ đã chọn trường thông tin chứng nhận.
-- **Yêu cầu bằng chứng** (ảnh, phiếu kiểm nghiệm, biên bản giao nhận). **[Theo Quyển 2/3]**
+- **Yêu cầu bằng chứng** (ảnh, phiếu kiểm nghiệm, biên bản giao nhận).
 - **Mô tả khi nào phải áp dụng sự kiện.**
 
 ### 5.3. Ràng buộc bắt buộc theo loại sự kiện
@@ -346,7 +369,7 @@ stateDiagram-v2
 | Giao dịch | Gắn hàng hoá với giao dịch | Có | Thời điểm, múi giờ, **chứng từ giao dịch**, mã đối tượng hoặc số lượng | Đầu vào / đầu ra | Không | **Bắt buộc ≥ 1** |
 | Liên kết | Gắn thiết bị, tài sản với nhau | Có | Thời điểm, múi giờ, đối tượng chính, đối tượng được gắn | Đối tượng đơn lẻ, đầu vào / đầu ra | Không | Tuỳ chọn |
 
-### 5.4. Gợi ý hành động theo bước nghiệp vụ **[Bổ sung]**
+### 5.4. Gợi ý hành động theo bước nghiệp vụ
 
 Bảng dưới đây là quy tắc gợi ý mặc định. Hệ thống dùng bảng này để tự chọn sẵn hành động ở bước 3; cán bộ được đổi sang hành động khác. Bảng đầy đủ do phân hệ Quản lý danh mục Bước nghiệp vụ của Cấp 1 duy trì và cần chuyên gia nghiệp vụ duyệt.
 
@@ -369,15 +392,15 @@ Mỗi quy tắc được viết với đầy đủ chủ thể và hành động
 
 ### 6.1. Thẩm quyền và trách nhiệm
 
-**QT-01. Chủ sở hữu nội dung.** **Hệ thống** ghi nhận cơ quan của người tạo làm chủ sở hữu nội dung ngay khi Sự kiện trọng yếu được lưu lần đầu. **Hệ thống** không cho phép bất kỳ người dùng nào thay đổi chủ sở hữu nội dung sau đó. Khi một Sự kiện trọng yếu được sao chép sang đơn vị khác, **hệ thống** gán chủ sở hữu nội dung của bản sao là đơn vị thực hiện sao chép. **[Theo Quyển 2/3]**
+**QT-01. Chủ sở hữu nội dung.** **Hệ thống** ghi nhận cơ quan của người tạo làm chủ sở hữu nội dung ngay khi Sự kiện trọng yếu được lưu lần đầu. **Hệ thống** không cho phép bất kỳ người dùng nào thay đổi chủ sở hữu nội dung sau đó. Khi một Sự kiện trọng yếu được sao chép sang đơn vị khác, **hệ thống** gán chủ sở hữu nội dung của bản sao là đơn vị thực hiện sao chép.
 
-**QT-02. Cấp 1 không phê duyệt thay Cấp 2.** **Quản trị nền tảng quốc gia** chỉ tiếp nhận, kiểm tra tính tương thích với bộ lõi và đăng ký vào danh mục tham chiếu quốc gia các Sự kiện trọng yếu đã được Cấp 2 phê duyệt. **Quản trị nền tảng quốc gia** không được sửa, không được phê duyệt và không được từ chối nội dung chuyên ngành. **[Theo Quyển 2/3]**
+**QT-02. Cấp 1 không phê duyệt thay Cấp 2.** **Quản trị nền tảng quốc gia** chỉ tiếp nhận, kiểm tra tính tương thích với bộ lõi và đăng ký vào danh mục tham chiếu quốc gia các Sự kiện trọng yếu đã được Cấp 2 phê duyệt. **Quản trị nền tảng quốc gia** không được sửa, không được phê duyệt và không được từ chối nội dung chuyên ngành.
 
-**QT-03. Căn cứ ban hành.** **Cán bộ tiêu chuẩn** phải khai báo căn cứ ban hành và vai trò chủ thể phải ghi nhận trước khi trình phê duyệt. **Hệ thống** chặn thao tác trình phê duyệt khi thiếu bất kỳ thông tin nào trong số này. **[Theo Quyển 2/3]**
+**QT-03. Căn cứ ban hành.** **Cán bộ tiêu chuẩn** phải khai báo căn cứ ban hành và vai trò chủ thể phải ghi nhận trước khi trình phê duyệt. **Hệ thống** chặn thao tác trình phê duyệt khi thiếu bất kỳ thông tin nào trong số này.
 
-**QT-04. Địa phương phải được uỷ quyền.** **Cán bộ tiêu chuẩn nhóm 2B** chỉ được kế thừa Sự kiện trọng yếu của nhóm 2A khi đơn vị của mình có văn bản uỷ quyền còn hiệu lực cho ngành đó. **Hệ thống** ẩn nút Kế thừa khi đơn vị chưa được uỷ quyền, và hiển thị lý do khi cán bộ mở thẻ "Sự kiện cấp trung ương". **[Theo Quyển 2/3]**
+**QT-04. Địa phương phải được uỷ quyền.** **Cán bộ tiêu chuẩn nhóm 2B** chỉ được kế thừa Sự kiện trọng yếu của nhóm 2A khi đơn vị của mình có văn bản uỷ quyền còn hiệu lực cho ngành đó. **Hệ thống** ẩn nút Kế thừa khi đơn vị chưa được uỷ quyền, và hiển thị lý do khi cán bộ mở thẻ "Sự kiện cấp trung ương".
 
-**QT-05. Tách người soạn và người phê duyệt.** **Hệ thống** không cho phép một người dùng phê duyệt bản trình do chính mình soạn hoặc trình, kể cả khi người dùng đó được giao cả hai vai trò. **[Bổ sung]**
+**QT-05. Tách người soạn và người phê duyệt.** **Hệ thống** không cho phép một người dùng phê duyệt bản trình do chính mình soạn hoặc trình, kể cả khi người dùng đó được giao cả hai vai trò.
 
 **QT-06. Sự kiện trọng yếu không gắn ngành hàng.** **Hệ thống** không yêu cầu và không cho phép cán bộ gắn ngành hàng hay nhóm sản phẩm vào Sự kiện trọng yếu. **Cán bộ tiêu chuẩn** chỉ xác định ngành hàng, nhóm sản phẩm áp dụng khi ghép Sự kiện trọng yếu vào một Quy trình tiêu chuẩn TXNG (phân hệ riêng). **Hệ thống** cho phép một Sự kiện trọng yếu đang áp dụng được dùng trong nhiều Quy trình tiêu chuẩn TXNG của nhiều ngành hàng.
 
@@ -397,7 +420,7 @@ Mỗi quy tắc được viết với đầy đủ chủ thể và hành động
 
 **QT-13. Ngưỡng cảm biến hợp lệ.** **Hệ thống** không cho phép lưu ngưỡng cảm biến có giá trị nhỏ nhất lớn hơn hoặc bằng giá trị lớn nhất, hoặc thiếu đơn vị đo.
 
-**QT-14. Tên không trùng.** **Hệ thống** không cho phép hai mã Sự kiện trọng yếu khác nhau trong cùng một đơn vị có tên trùng nhau. Hệ thống so sánh tên không phân biệt chữ hoa, chữ thường và bỏ qua khoảng trắng thừa. **[Bổ sung]**
+**QT-14. Tên không trùng.** **Hệ thống** không cho phép hai mã Sự kiện trọng yếu khác nhau trong cùng một đơn vị có tên trùng nhau. Hệ thống so sánh tên không phân biệt chữ hoa, chữ thường và bỏ qua khoảng trắng thừa.
 
 ### 6.3. Kế thừa giữa trung ương và địa phương
 
@@ -409,13 +432,13 @@ Mỗi quy tắc được viết với đầy đủ chủ thể và hành động
 
 Mỗi lần chặn, **hệ thống** nêu rõ yêu cầu gốc của trung ương.
 
-**QT-16. Ngành chỉ thêm chặt hơn bộ lõi.** **Hệ thống** chặn mọi cấu hình làm suy giảm yêu cầu tối thiểu của bộ lõi quốc gia. **[Theo Quyển 2/3]**
+**QT-16. Ngành chỉ thêm chặt hơn bộ lõi.** **Hệ thống** chặn mọi cấu hình làm suy giảm yêu cầu tối thiểu của bộ lõi quốc gia.
 
-**QT-17. Phân biệt yêu cầu gốc và yêu cầu bổ sung.** **Hệ thống** gắn nhãn "Yêu cầu cấp trung ương" cho yêu cầu kế thừa, và nhãn "Bổ sung cấp địa phương" cho yêu cầu do nhóm 2B thêm. **[Bổ sung]**
+**QT-17. Phân biệt yêu cầu gốc và yêu cầu bổ sung.** **Hệ thống** gắn nhãn "Yêu cầu cấp trung ương" cho yêu cầu kế thừa, và nhãn "Bổ sung cấp địa phương" cho yêu cầu do nhóm 2B thêm.
 
-**QT-18. Báo địa phương khi trung ương thay đổi.** Khi **lãnh đạo phê duyệt nhóm 2A** công bố phiên bản mới, huỷ phiên bản chờ áp dụng hoặc ngừng áp dụng một Sự kiện trọng yếu, **hệ thống** gửi thông báo cho mọi đơn vị nhóm 2B đã kế thừa sự kiện đó. **Hệ thống** không tự động thay đổi Sự kiện trọng yếu của nhóm 2B. **[Bổ sung]**
+**QT-18. Báo địa phương khi trung ương thay đổi.** Khi **lãnh đạo phê duyệt nhóm 2A** công bố phiên bản mới, huỷ phiên bản chờ áp dụng hoặc ngừng áp dụng một Sự kiện trọng yếu, **hệ thống** gửi thông báo cho mọi đơn vị nhóm 2B đã kế thừa sự kiện đó. **Hệ thống** không tự động thay đổi Sự kiện trọng yếu của nhóm 2B.
 
-**QT-19. Kiểm tra lại khi địa phương trình.** Khi **cán bộ nhóm 2B** trình phê duyệt Sự kiện trọng yếu kế thừa, **hệ thống** đối chiếu QT-15 với phiên bản đang áp dụng mới nhất của sự kiện gốc. Nếu trung ương đã siết chặt hơn sau thời điểm kế thừa, hệ thống báo lỗi. **[Bổ sung]**
+**QT-19. Kiểm tra lại khi địa phương trình.** Khi **cán bộ nhóm 2B** trình phê duyệt Sự kiện trọng yếu kế thừa, **hệ thống** đối chiếu QT-15 với phiên bản đang áp dụng mới nhất của sự kiện gốc. Nếu trung ương đã siết chặt hơn sau thời điểm kế thừa, hệ thống báo lỗi.
 
 ### 6.4. Sửa, xoá, kiểm tra
 
@@ -423,7 +446,7 @@ Mỗi lần chặn, **hệ thống** nêu rõ yêu cầu gốc của trung ươn
 
 **QT-21. Không xoá khi đang được dùng.** **Hệ thống** không cho phép xoá bản nháp đang nằm trong một Quy trình tiêu chuẩn TXNG, kể cả quy trình ở trạng thái nháp. **Hệ thống** liệt kê tên các quy trình đang chứa sự kiện đó.
 
-**QT-22. Một người sửa tại một thời điểm.** Khi một **cán bộ tiêu chuẩn** đang sửa bản nháp, **hệ thống** mở bản nháp ở chế độ chỉ xem cho người khác, kèm tên người đang sửa và thời điểm bắt đầu. **Hệ thống** tự mở khoá sau 30 phút không thao tác. **[Bổ sung]**
+**QT-22. Một người sửa tại một thời điểm.** Khi một **cán bộ tiêu chuẩn** đang sửa bản nháp, **hệ thống** mở bản nháp ở chế độ chỉ xem cho người khác, kèm tên người đang sửa và thời điểm bắt đầu. **Hệ thống** tự mở khoá sau 30 phút không thao tác.
 
 **QT-23. Kiểm tra tổng thể trước khi trình.** **Hệ thống** chạy kiểm tra tổng thể mỗi khi cán bộ trình phê duyệt. **Hệ thống** chặn trình khi còn lỗi. **Hệ thống** chỉ cho trình khi còn cảnh báo nếu cán bộ đã xác nhận đã đọc cảnh báo.
 
@@ -433,22 +456,22 @@ Mỗi lần chặn, **hệ thống** nêu rõ yêu cầu gốc của trung ươn
 
 **QT-25. Phiên bản 1 áp dụng ngay.** Khi **lãnh đạo phê duyệt** phê duyệt một Sự kiện trọng yếu chưa từng có phiên bản Đang áp dụng, **hệ thống** chuyển phiên bản đó sang Đang áp dụng ngay tại thời điểm phê duyệt.
 
-**QT-26. Phiên bản 2 trở đi có ngày áp dụng tương lai.** Khi trình phiên bản 2 trở đi, **cán bộ tiêu chuẩn** phải đề xuất ngày áp dụng, lý do thay đổi và quy tắc chuyển tiếp. Ngày áp dụng phải từ ngày mai trở đi; **hệ thống** gợi ý mặc định là 30 ngày sau ngày trình. **Lãnh đạo phê duyệt** được điều chỉnh ngày áp dụng khi phê duyệt, với cùng điều kiện ngày tương lai. **[Bổ sung]**
+**QT-26. Phiên bản 2 trở đi có ngày áp dụng tương lai.** Khi trình phiên bản 2 trở đi, **cán bộ tiêu chuẩn** phải đề xuất ngày áp dụng, lý do thay đổi và quy tắc chuyển tiếp. Ngày áp dụng phải từ ngày mai trở đi; **hệ thống** gợi ý mặc định là 30 ngày sau ngày trình. **Lãnh đạo phê duyệt** được điều chỉnh ngày áp dụng khi phê duyệt, với cùng điều kiện ngày tương lai.
 
 **QT-27. Phiên bản mới thay bản đang chờ.** Khi **lãnh đạo phê duyệt** công bố phiên bản mới trong lúc đã có phiên bản Chờ áp dụng, **hệ thống** chuyển phiên bản Chờ áp dụng cũ sang Ngừng áp dụng, ghi chú "Bị thay thế trước khi áp dụng".
 
-**QT-28. Không hồi tố.** **Hệ thống** không đánh giá lại bản ghi sự kiện phát sinh trước ngày áp dụng của phiên bản mới. **Hệ thống** cung cấp cho Cấp 1 và Cấp 3 đầy đủ các phiên bản cũ kèm khoảng thời gian hiệu lực. **[Theo Quyển 2/3]**
+**QT-28. Không hồi tố.** **Hệ thống** không đánh giá lại bản ghi sự kiện phát sinh trước ngày áp dụng của phiên bản mới. **Hệ thống** cung cấp cho Cấp 1 và Cấp 3 đầy đủ các phiên bản cũ kèm khoảng thời gian hiệu lực.
 
-**QT-29. Đăng ký vào danh mục quốc gia.** Ngay khi một phiên bản chuyển sang Chờ áp dụng, Đang áp dụng hoặc Ngừng áp dụng, **hệ thống** gửi phiên bản đó vào danh mục tham chiếu quốc gia của Cấp 1, kèm chủ sở hữu nội dung, phạm vi, ngày áp dụng, ngày ngừng và quy tắc chuyển tiếp. **[Theo Quyển 2/3]**
+**QT-29. Đăng ký vào danh mục quốc gia.** Ngay khi một phiên bản chuyển sang Chờ áp dụng, Đang áp dụng hoặc Ngừng áp dụng, **hệ thống** gửi phiên bản đó vào danh mục tham chiếu quốc gia của Cấp 1, kèm chủ sở hữu nội dung, phạm vi, ngày áp dụng, ngày ngừng và quy tắc chuyển tiếp.
 
-**QT-30. Không ngừng áp dụng khi đang trong quy trình hiệu lực.** **Hệ thống** không cho phép ngừng áp dụng một Sự kiện trọng yếu đang nằm trong Quy trình tiêu chuẩn TXNG đang áp dụng. **Cán bộ tiêu chuẩn** phải gỡ sự kiện khỏi quy trình trước. **[Bổ sung]**
+**QT-30. Không ngừng áp dụng khi đang trong quy trình hiệu lực.** **Hệ thống** không cho phép ngừng áp dụng một Sự kiện trọng yếu đang nằm trong Quy trình tiêu chuẩn TXNG đang áp dụng. **Cán bộ tiêu chuẩn** phải gỡ sự kiện khỏi quy trình trước.
 
 ### 6.6. Thay đổi bộ lõi quốc gia
 
 **QT-31. Bộ lõi ngừng sử dụng một giá trị.** Khi **quản trị nền tảng quốc gia** ngừng sử dụng một giá trị trong bộ lõi:
 - **Hệ thống** đánh dấu lỗi trên mọi bản Nháp và Chờ phê duyệt đang dùng giá trị đó, và chặn trình, chặn phê duyệt.
 - **Hệ thống** giữ nguyên hiệu lực của mọi phiên bản Đang áp dụng và Chờ áp dụng đang dùng giá trị đó, gắn nhãn cảnh báo và thông báo cho đơn vị sở hữu.
-- **Hệ thống** không tự sửa nội dung của bất kỳ phiên bản đã công bố nào. **[Bổ sung]**
+- **Hệ thống** không tự sửa nội dung của bất kỳ phiên bản đã công bố nào.
 
 ---
 
@@ -469,7 +492,7 @@ Mỗi tính năng gồm:
   - danh sách bước bên trái, mỗi bước có trạng thái chưa mở / đang làm / xong / có lỗi / không áp dụng;
   - nội dung bước hiện tại ở giữa;
   - ô tóm tắt phía trên, diễn đạt Sự kiện trọng yếu bằng một câu tự nhiên.
-- Cán bộ được lưu nháp ở bất kỳ bước nào sau khi đã chọn loại sự kiện. Bản nháp chưa đủ bước bắt buộc mang nhãn "Chưa hoàn thiện". **[Bổ sung]**
+- Cán bộ được lưu nháp ở bất kỳ bước nào sau khi đã chọn loại sự kiện. Bản nháp chưa đủ bước bắt buộc mang nhãn "Chưa hoàn thiện".
 
 **Câu chuyện người dùng**
 - Là cán bộ tiêu chuẩn, tôi muốn được dẫn dắt qua từng bước, mỗi bước chỉ hiển thị lựa chọn phù hợp, để tạo được Sự kiện trọng yếu đúng chuẩn mà không phải thuộc lòng chuẩn quốc tế.
@@ -500,7 +523,9 @@ Mỗi tính năng gồm:
 9. Cán bộ chọn "Lưu nháp".
 10. Hệ thống kiểm tra tên và số trường thông tin tối thiểu, sinh mã, lưu bản nháp, ghi nhật ký, mở trang chi tiết.
 
-![Swimlane sl-01](swimlane/sl-01.svg)
+**Sơ đồ swimlane: Tạo và lưu nháp Sự kiện trọng yếu — luồng chính**
+
+![Sơ đồ swimlane: Tạo và lưu nháp Sự kiện trọng yếu — luồng chính](swimlane/sl-01.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-01.drawio](swimlane/sl-01.drawio)*
 
@@ -511,8 +536,8 @@ Mỗi tính năng gồm:
 | LT-01.1 | Sự kiện chế biến | Cán bộ, Hệ thống | Cán bộ chọn loại "Chế biến" ở bước 1 | Đang ở bước 1 | Sau khi cán bộ chọn bước nghiệp vụ, hệ thống bỏ qua bước 3, đánh dấu "Không áp dụng", thông báo TB-02, mở bước 4; ở bước 6, hệ thống mở thông tin lô cho đầu ra | Luồng tiếp tục từ bước 4 của LC-01 | QT-07, QT-11 |
 | LT-01.2 | Chọn bước nghiệp vụ "ít dùng" | Cán bộ, Hệ thống | Cán bộ chọn bước nghiệp vụ có biểu tượng cảnh báo | Đang ở bước 2 | Hệ thống hỏi xác nhận; cán bộ chọn "Vẫn chọn" để tiếp tục hoặc "Chọn lại" để ở lại bước 2 | Bước nghiệp vụ được ghi nhận kèm cờ "ít dùng" để hiển thị cảnh báo khi kiểm tra tổng thể | QT-09 |
 | LT-01.3 | Đổi hành động hoặc trạng thái khác gợi ý | Cán bộ | Cán bộ bỏ giá trị chọn sẵn ở bước 3 hoặc bước 4 | Đang ở bước 3 hoặc 4 | Cán bộ chọn giá trị khác; hệ thống chấp nhận, không chặn | Giá trị được lưu; kiểm tra tổng thể sẽ có cảnh báo "khác gợi ý" | QT-09 |
-| LT-01.4 | Quay lại sửa bước trước **[Bổ sung]** | Cán bộ, Hệ thống | Cán bộ chọn một bước đã xong (2–6) trên danh sách bước | Đã đi qua bước được chọn | Cán bộ đổi lựa chọn; hệ thống tính lại gợi ý các bước sau, đánh dấu vàng lựa chọn khác gợi ý, đánh dấu đỏ trường thông tin không còn phù hợp | Các bước sau ở trạng thái "cần xác nhận lại" cho tới khi cán bộ xử lý xong | QT-07, QT-11 |
-| LT-01.5 | Lưu nháp chưa hoàn thiện **[Bổ sung]** | Cán bộ, Hệ thống | Cán bộ nhấn "Lưu nháp" khi chưa xong bước 6 | Đã chọn loại sự kiện; tên hợp lệ | Hệ thống lưu bản nháp, gắn nhãn "Chưa hoàn thiện" | Bản nháp được lưu, không trình phê duyệt được | QT-12 |
+| LT-01.4 | Quay lại sửa bước trước | Cán bộ, Hệ thống | Cán bộ chọn một bước đã xong (2–6) trên danh sách bước | Đã đi qua bước được chọn | Cán bộ đổi lựa chọn; hệ thống tính lại gợi ý các bước sau, đánh dấu vàng lựa chọn khác gợi ý, đánh dấu đỏ trường thông tin không còn phù hợp | Các bước sau ở trạng thái "cần xác nhận lại" cho tới khi cán bộ xử lý xong | QT-07, QT-11 |
+| LT-01.5 | Lưu nháp chưa hoàn thiện | Cán bộ, Hệ thống | Cán bộ nhấn "Lưu nháp" khi chưa xong bước 6 | Đã chọn loại sự kiện; tên hợp lệ | Hệ thống lưu bản nháp, gắn nhãn "Chưa hoàn thiện" | Bản nháp được lưu, không trình phê duyệt được | QT-12 |
 
 #### Luồng ngoại lệ
 
@@ -524,9 +549,11 @@ Mỗi tính năng gồm:
 | NL-01.4 | Sự kiện giao dịch thiếu chứng từ | Cán bộ, Hệ thống | Cán bộ nhấn "Tiếp tục" ở bước 5 | Loại sự kiện là giao dịch, chưa chọn chứng từ | Hệ thống báo TB-03, giữ ở bước 5 | Bước 5 ở trạng thái "có lỗi" | QT-10 |
 | NL-01.5 | Ngưỡng cảm biến sai | Cán bộ, Hệ thống | Cán bộ lưu ngưỡng ở bước 7 | Giá trị nhỏ nhất ≥ giá trị lớn nhất hoặc thiếu đơn vị | Hệ thống báo lỗi tại ô ngưỡng, không lưu | Ngưỡng không được lưu | QT-13 |
 | NL-01.6 | Danh mục không tải được | Hệ thống | Mở một bước | Dịch vụ danh mục không phản hồi | Hệ thống báo lỗi tại bước, cung cấp nút "Thử lại", giữ nguyên dữ liệu đã nhập | Dữ liệu các bước khác không bị mất | — |
-| NL-01.7 | Rời trang hoặc hết phiên khi chưa lưu **[Bổ sung]** | Cán bộ, Hệ thống | Cán bộ đóng trang hoặc phiên đăng nhập hết hạn | Có thay đổi chưa lưu | Hệ thống hỏi xác nhận rời trang; nếu hết phiên thì giữ bản tạm và hỏi khôi phục sau khi đăng nhập lại | Cán bộ không mất dữ liệu ngoài ý muốn | — |
+| NL-01.7 | Rời trang hoặc hết phiên khi chưa lưu | Cán bộ, Hệ thống | Cán bộ đóng trang hoặc phiên đăng nhập hết hạn | Có thay đổi chưa lưu | Hệ thống hỏi xác nhận rời trang; nếu hết phiên thì giữ bản tạm và hỏi khôi phục sau khi đăng nhập lại | Cán bộ không mất dữ liệu ngoài ý muốn | — |
 
-![Swimlane sl-02](swimlane/sl-02.svg)
+**Sơ đồ swimlane: Tạo Sự kiện trọng yếu — luồng thay thế và ngoại lệ**
+
+![Sơ đồ swimlane: Tạo Sự kiện trọng yếu — luồng thay thế và ngoại lệ](swimlane/sl-02.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-02.drawio](swimlane/sl-02.drawio)*
 
@@ -620,7 +647,7 @@ project "Tạo Sự kiện trọng yếu - bước 6" {
 
 ---
 
-### 7.2. Khai báo thông tin thẩm quyền và phạm vi **[Theo Quyển 2/3]**
+### 7.2. Khai báo thông tin thẩm quyền và phạm vi
 
 **Mô tả.**
 - Cán bộ khai báo các thông tin mà Quyển 2 yêu cầu với mọi Sự kiện trọng yếu:
@@ -651,7 +678,9 @@ project "Tạo Sự kiện trọng yếu - bước 6" {
 4. Cán bộ nhấn "Lưu".
 5. Hệ thống kiểm tra đủ thông tin bắt buộc, lưu, đánh dấu thẻ "Đầy đủ", ghi nhật ký.
 
-![Swimlane sl-03](swimlane/sl-03.svg)
+**Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng chính**
+
+![Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng chính](swimlane/sl-03.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-03.drawio](swimlane/sl-03.drawio)*
 
@@ -663,7 +692,9 @@ project "Tạo Sự kiện trọng yếu - bước 6" {
 | NL-02.1 | Ngoại lệ | Văn bản uỷ quyền hết hiệu lực | Hệ thống | Mở thẻ hoặc trình phê duyệt | Văn bản uỷ quyền của đơn vị 2B đã hết hạn | Hệ thống đánh dấu lỗi "Văn bản uỷ quyền hết hiệu lực", chặn trình | Bản nháp không trình được tới khi đơn vị được uỷ quyền lại | QT-04 |
 | NL-02.2 | Ngoại lệ | Thiếu thông tin bắt buộc | Hệ thống | Cán bộ nhấn "Lưu" | Thiếu căn cứ hoặc vai trò chủ thể | Hệ thống vẫn lưu phần đã nhập, đánh dấu ô còn thiếu, đánh dấu thẻ "Chưa đầy đủ" | Bản nháp chưa trình được | QT-03 |
 
-![Swimlane sl-04](swimlane/sl-04.svg)
+**Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng thay thế và ngoại lệ**
+
+![Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng thay thế và ngoại lệ](swimlane/sl-04.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-04.drawio](swimlane/sl-04.drawio)*
 
@@ -744,7 +775,9 @@ project "Thẩm quyền và phạm vi" {
 5. Người dùng chọn một Sự kiện trọng yếu.
 6. Hệ thống hiển thị trang chi tiết và các nút thao tác phù hợp với quyền và trạng thái.
 
-![Swimlane sl-05](swimlane/sl-05.svg)
+**Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng chính**
+
+![Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng chính](swimlane/sl-05.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-05.drawio](swimlane/sl-05.drawio)*
 
@@ -757,7 +790,9 @@ project "Thẩm quyền và phạm vi" {
 | NL-03.1 | Ngoại lệ | Không có kết quả | Hệ thống | Kết quả lọc rỗng | — | Hệ thống hiển thị màn hình trống, gợi ý xoá bộ lọc, tạo mới hoặc sao chép từ thư viện mẫu | — | — |
 | NL-03.2 | Ngoại lệ | Truy cập sự kiện ngoài quyền | Hệ thống | Người dùng mở đường dẫn của Sự kiện trọng yếu thuộc đơn vị khác cùng cấp | Không có quyền xem | Hệ thống từ chối, hiển thị "Bạn không có quyền xem Sự kiện trọng yếu này" | Không lộ nội dung | Mục 4.4 |
 
-![Swimlane sl-06](swimlane/sl-06.svg)
+**Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng thay thế và ngoại lệ**
+
+![Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng thay thế và ngoại lệ](swimlane/sl-06.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-06.drawio](swimlane/sl-06.drawio)*
 
@@ -837,7 +872,9 @@ project "Danh sách Sự kiện trọng yếu" {
 4. Cán bộ nhấn "Lưu".
 5. Hệ thống lưu, ghi nhật ký giá trị trước và sau, nhả quyền sửa.
 
-![Swimlane sl-07](swimlane/sl-07.svg)
+**Sơ đồ swimlane: Sửa bản nháp — luồng chính**
+
+![Sơ đồ swimlane: Sửa bản nháp — luồng chính](swimlane/sl-07.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-07.drawio](swimlane/sl-07.drawio)*
 
@@ -851,7 +888,9 @@ project "Danh sách Sự kiện trọng yếu" {
 | NL-04.3 | Ngoại lệ | Vi phạm chỉ thêm chặt | Hệ thống | Cán bộ 2B hạ mức, bỏ yêu cầu hoặc nới ngưỡng | Bản nháp là kế thừa | Hệ thống chặn tại ô, báo TB-13 / TB-14 / TB-15, khôi phục giá trị trước | Yêu cầu gốc được giữ nguyên | QT-15 |
 | NL-04.4 | Ngoại lệ | Người khác đang sửa | Hệ thống | Cán bộ nhấn "Sửa" | Bản nháp đang bị khoá bởi người khác | Hệ thống mở chế độ chỉ xem, báo TB-19 | Không có thay đổi | QT-22 |
 
-![Swimlane sl-08](swimlane/sl-08.svg)
+**Sơ đồ swimlane: Sửa bản nháp — luồng thay thế và ngoại lệ**
+
+![Sơ đồ swimlane: Sửa bản nháp — luồng thay thế và ngoại lệ](swimlane/sl-08.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-08.drawio](swimlane/sl-08.drawio)*
 
@@ -927,7 +966,9 @@ project "Kế thừa cấp trung ương" {
 3. Cán bộ xác nhận.
 4. Hệ thống xoá, ghi nhật ký, quay về danh sách.
 
-![Swimlane sl-09](swimlane/sl-09.svg)
+**Sơ đồ swimlane: Xoá bản nháp — luồng chính**
+
+![Sơ đồ swimlane: Xoá bản nháp — luồng chính](swimlane/sl-09.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-09.drawio](swimlane/sl-09.drawio)*
 
@@ -940,7 +981,9 @@ project "Kế thừa cấp trung ương" {
 | NL-05.1 | Ngoại lệ | Đang nằm trong quy trình | Hệ thống | Cán bộ nhấn "Xoá" | Bản nháp nằm trong ít nhất một Quy trình tiêu chuẩn TXNG | Hệ thống chặn, báo TB-12 kèm danh sách quy trình | Không có thay đổi | QT-21 |
 | NL-05.2 | Ngoại lệ | Không phải bản nháp | Hệ thống | Cán bộ thao tác xoá | Trạng thái khác Nháp | Hệ thống ẩn nút Xoá; nếu gọi trực tiếp thì báo TB-11 | Không có thay đổi | QT-20 |
 
-![Swimlane sl-10](swimlane/sl-10.svg)
+**Sơ đồ swimlane: Xoá bản nháp — luồng thay thế và ngoại lệ**
+
+![Sơ đồ swimlane: Xoá bản nháp — luồng thay thế và ngoại lệ](swimlane/sl-10.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-10.drawio](swimlane/sl-10.drawio)*
 
@@ -956,7 +999,7 @@ project "Kế thừa cấp trung ương" {
 | Sự kiện trọng yếu của nhóm 2A cùng ngành (kế thừa, dành cho 2B) | Đang áp dụng; đơn vị 2B có uỷ quyền còn hiệu lực | Áp dụng quy tắc chỉ thêm chặt |
 | Sự kiện trọng yếu của chính đơn vị | Bất kỳ phiên bản nào | Sửa tự do bước 2–7; loại sự kiện khoá |
 
-- Thông tin thẩm quyền và phạm vi không được sao chép, vì căn cứ của nguồn không phải căn cứ của đơn vị sao chép. **[Theo Quyển 2/3]**
+- Thông tin thẩm quyền và phạm vi không được sao chép, vì căn cứ của nguồn không phải căn cứ của đơn vị sao chép.
 - Riêng khi kế thừa, hệ thống tự gắn văn bản uỷ quyền.
 
 **Bảng "chỉ thêm chặt" khi 2B kế thừa 2A**
@@ -992,7 +1035,9 @@ project "Kế thừa cấp trung ương" {
 4. Hệ thống sao chép 7 bước, tạo bản nháp, khoá loại sự kiện, ghi nguồn, ghi nhật ký.
 5. Hệ thống mở màn hình sửa bản nháp.
 
-![Swimlane sl-11](swimlane/sl-11.svg)
+**Sơ đồ swimlane: Sao chép từ thư viện mẫu quốc gia — luồng chính**
+
+![Sơ đồ swimlane: Sao chép từ thư viện mẫu quốc gia — luồng chính](swimlane/sl-11.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-11.drawio](swimlane/sl-11.drawio)*
 
@@ -1006,7 +1051,9 @@ project "Kế thừa cấp trung ương" {
 | NL-06.2 | Ngoại lệ | Nguồn dùng giá trị đã ngừng sử dụng | Hệ thống | Hoàn tất sao chép | Nguồn có giá trị bộ lõi đã ngừng sử dụng | Hệ thống vẫn tạo bản nháp, đánh dấu lỗi tại các ô liên quan | Bản nháp có lỗi, phải sửa trước khi trình | QT-31 |
 | NL-06.3 | Ngoại lệ | Nguồn không còn khả dụng | Hệ thống | Cán bộ nhấn "Sao chép" | Mẫu vừa bị ngừng, hoặc sự kiện 2A vừa ngừng áp dụng | Hệ thống báo "Sự kiện nguồn không còn khả dụng" | Không tạo bản nháp | — |
 
-![Swimlane sl-12](swimlane/sl-12.svg)
+**Sơ đồ swimlane: Kế thừa Sự kiện trọng yếu cấp trung ương và các ngoại lệ**
+
+![Sơ đồ swimlane: Kế thừa Sự kiện trọng yếu cấp trung ương và các ngoại lệ](swimlane/sl-12.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-12.drawio](swimlane/sl-12.drawio)*
 
@@ -1053,7 +1100,9 @@ project "Kế thừa cấp trung ương" {
 5. Cán bộ chọn lãnh đạo phê duyệt, nhập ghi chú trình, nhấn "Trình".
 6. Hệ thống chuyển trạng thái Chờ phê duyệt, khoá chỉnh sửa, gửi thông báo cho lãnh đạo, ghi nhật ký.
 
-![Swimlane sl-13](swimlane/sl-13.svg)
+**Sơ đồ swimlane: Trình phê duyệt — luồng chính**
+
+![Sơ đồ swimlane: Trình phê duyệt — luồng chính](swimlane/sl-13.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-13.drawio](swimlane/sl-13.drawio)*
 
@@ -1067,7 +1116,9 @@ project "Kế thừa cấp trung ương" {
 | NL-07.2 | Ngoại lệ | Ngày áp dụng không hợp lệ | Hệ thống | Cán bộ nhập ngày | Ngày ≤ hôm nay | Hệ thống báo TB-17 | Chưa trình được | QT-26 |
 | NL-07.3 | Ngoại lệ | Trung ương đã siết chặt sau khi kế thừa | Hệ thống | Kiểm tra bản kế thừa | Phiên bản trung ương mới nhất chặt hơn bản kế thừa | Hệ thống báo lỗi tại các yêu cầu cần nâng | Vẫn ở Nháp | QT-19 |
 
-![Swimlane sl-14](swimlane/sl-14.svg)
+**Sơ đồ swimlane: Kiểm tra, rút lại bản trình — luồng thay thế và ngoại lệ**
+
+![Sơ đồ swimlane: Kiểm tra, rút lại bản trình — luồng thay thế và ngoại lệ](swimlane/sl-14.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-14.drawio](swimlane/sl-14.drawio)*
 
@@ -1108,7 +1159,7 @@ project "Kiểm tra và trình phê duyệt" {
 
 ---
 
-### 7.8. Phê duyệt và công bố **[Theo Quyển 2/3]**
+### 7.8. Phê duyệt và công bố
 
 **Mô tả.** Lãnh đạo phê duyệt xem bản trình và quyết định:
 - **Phê duyệt và công bố.**
@@ -1154,7 +1205,9 @@ Phần này cũng mô tả luồng hệ thống tự chuyển trạng thái khi 
 7. Nền tảng quốc gia kiểm tra tương thích với bộ lõi và đăng ký phiên bản.
 8. Hệ thống gửi thông báo TB-23 cho cán bộ soạn, TB-25 cho Cấp 3 và Cấp 4, TB-28 cho 2B đã kế thừa; ghi nhật ký.
 
-![Swimlane sl-15](swimlane/sl-15.svg)
+**Sơ đồ swimlane: Phê duyệt và công bố — luồng chính**
+
+![Sơ đồ swimlane: Phê duyệt và công bố — luồng chính](swimlane/sl-15.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-15.drawio](swimlane/sl-15.drawio)*
 
@@ -1177,7 +1230,9 @@ Phần này cũng mô tả luồng hệ thống tự chuyển trạng thái khi 
 | NL-08.4 | Chuyển trạng thái tự động thất bại | Hệ thống | Lịch chạy định kỳ | Lỗi trong giao dịch chuyển trạng thái | Hệ thống hoàn tác, giữ nguyên trạng thái cũ, báo bộ phận vận hành, thử lại lượt sau | Không có thời điểm nào có 0 hoặc 2 bản Đang áp dụng | QT-24 |
 | NL-08.5 | Đăng ký danh mục quốc gia thất bại | Hệ thống, Nền tảng quốc gia | Gửi phiên bản sang Cấp 1 | Cấp 1 không phản hồi hoặc báo không tương thích | Hệ thống giữ trạng thái đã công bố, đánh dấu "Chưa đồng bộ danh mục quốc gia", thử gửi lại; nếu không tương thích thì thông báo cho cán bộ soạn và lãnh đạo | Phiên bản không bị huỷ; cần xử lý đồng bộ | QT-02, QT-29 |
 
-![Swimlane sl-16](swimlane/sl-16.svg)
+**Sơ đồ swimlane: Trả lại, huỷ chờ áp dụng, tự chuyển trạng thái — luồng thay thế và ngoại lệ**
+
+![Sơ đồ swimlane: Trả lại, huỷ chờ áp dụng, tự chuyển trạng thái — luồng thay thế và ngoại lệ](swimlane/sl-16.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-16.drawio](swimlane/sl-16.drawio)*
 
@@ -1235,7 +1290,7 @@ project "Phê duyệt" {
 - Phiên bản mới ở trạng thái Nháp, sao chép 7 bước và thông tin thẩm quyền từ bản gốc.
 - Với mỗi mã sự kiện, chỉ có một bản đang soạn tại một thời điểm.
 - Thẻ "Lịch sử phiên bản" hiển thị trạng thái, ngày áp dụng, ngày ngừng, căn cứ, lý do thay đổi của từng phiên bản.
-- Cán bộ được xem chi tiết phiên bản cũ và so sánh hai phiên bản. **[Bổ sung]**
+- Cán bộ được xem chi tiết phiên bản cũ và so sánh hai phiên bản.
 
 **Câu chuyện người dùng**
 - Là cán bộ tiêu chuẩn, tôi muốn tạo phiên bản mới khi tiêu chuẩn cần điều chỉnh mà không ảnh hưởng phiên bản đang có hiệu lực.
@@ -1257,7 +1312,9 @@ project "Phê duyệt" {
 3. Hệ thống tạo bản nháp phiên bản mới, sao chép 7 bước và thông tin thẩm quyền.
 4. Hệ thống ghi nhật ký, mở màn hình sửa bản nháp.
 
-![Swimlane sl-17](swimlane/sl-17.svg)
+**Sơ đồ swimlane: Tạo phiên bản mới — luồng chính**
+
+![Sơ đồ swimlane: Tạo phiên bản mới — luồng chính](swimlane/sl-17.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-17.drawio](swimlane/sl-17.drawio)*
 
@@ -1270,7 +1327,9 @@ project "Phê duyệt" {
 | LT-09.3 | Thay thế | Xem phiên bản đã ngừng | Cán bộ, quản trị Cấp 1 | Chọn một phiên bản Ngừng áp dụng | — | Hệ thống hiển thị chi tiết chỉ đọc, kèm thông tin "Ngừng áp dụng từ [ngày], thay thế bởi phiên bản [n]" hoặc "Đã huỷ trước khi áp dụng" | — | QT-28 |
 | NL-09.1 | Ngoại lệ | Đã có bản đang soạn | Hệ thống | Nhấn "Tạo phiên bản mới" | Đã có bản Nháp hoặc Chờ phê duyệt | Hệ thống báo TB-18 | Không tạo bản mới | QT-24 |
 
-![Swimlane sl-18](swimlane/sl-18.svg)
+**Sơ đồ swimlane: Chọn bản gốc, so sánh phiên bản — luồng thay thế và ngoại lệ**
+
+![Sơ đồ swimlane: Chọn bản gốc, so sánh phiên bản — luồng thay thế và ngoại lệ](swimlane/sl-18.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-18.drawio](swimlane/sl-18.drawio)*
 
@@ -1321,7 +1380,7 @@ project "Lịch sử phiên bản" {
 
 ---
 
-### 7.10. Ngừng áp dụng và xử lý thay đổi bộ lõi quốc gia **[Bổ sung]**
+### 7.10. Ngừng áp dụng và xử lý thay đổi bộ lõi quốc gia
 
 **Mô tả.**
 - **Ngừng áp dụng chủ động.** Lãnh đạo chấm dứt hiệu lực một Sự kiện trọng yếu mà không có phiên bản thay thế.
@@ -1352,7 +1411,9 @@ project "Lịch sử phiên bản" {
 3. Lãnh đạo chọn "Ngừng ngay", nhập căn cứ và lý do, xác nhận.
 4. Hệ thống chuyển trạng thái, cập nhật danh mục quốc gia, gửi thông báo, ghi nhật ký.
 
-![Swimlane sl-19](swimlane/sl-19.svg)
+**Sơ đồ swimlane: Ngừng áp dụng chủ động — luồng chính**
+
+![Sơ đồ swimlane: Ngừng áp dụng chủ động — luồng chính](swimlane/sl-19.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-19.drawio](swimlane/sl-19.drawio)*
 
@@ -1368,7 +1429,9 @@ project "Lịch sử phiên bản" {
 | NL-10.1 | Ngoại lệ | Đang trong quy trình hiệu lực | Hệ thống | Lãnh đạo nhấn "Ngừng áp dụng" | Sự kiện nằm trong Quy trình tiêu chuẩn TXNG đang áp dụng | Hệ thống chặn, liệt kê các quy trình, yêu cầu gỡ khỏi quy trình trước | Không có thay đổi | QT-30 |
 | NL-10.2 | Ngoại lệ | Thiếu lý do hoặc căn cứ | Hệ thống | Lãnh đạo xác nhận | Ô lý do hoặc căn cứ trống | Hệ thống báo lỗi tại ô | Chưa thực hiện | — |
 
-![Swimlane sl-20](swimlane/sl-20.svg)
+**Sơ đồ swimlane: Bộ lõi ngừng sử dụng một giá trị, hẹn ngày ngừng — luồng thay thế**
+
+![Sơ đồ swimlane: Bộ lõi ngừng sử dụng một giá trị, hẹn ngày ngừng — luồng thay thế](swimlane/sl-20.svg)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-20.drawio](swimlane/sl-20.drawio)*
 
@@ -1470,7 +1533,7 @@ Hệ thống ghi nhật ký mọi thao tác; nhật ký lưu vĩnh viễn, khôn
 ## 11. Điều kiện sẵn sàng (DoR)
 
 - [ ] Quản lý sản phẩm đã duyệt câu chuyện người dùng, bảng đặc tả luồng, sơ đồ swimlane và wireframe của tính năng.
-- [ ] Đơn vị chủ trì dự án đã xác nhận các nội dung **[Theo Quyển 2/3]** và **[Bổ sung]** liên quan.
+- [ ] Đơn vị chủ trì dự án đã xác nhận các nội dung liên quan đến tính năng.
 - [ ] Chuyên gia nghiệp vụ đã duyệt bảng gợi ý, bảng ràng buộc theo loại sự kiện (5.3) và bảng chỉ thêm chặt (7.6).
 - [ ] Chức năng phụ thuộc (mục 10) đã sẵn sàng hoặc có dữ liệu giả lập thống nhất.
 - [ ] Giao diện chi tiết trên Figma đã duyệt, dựa trên wireframe.
