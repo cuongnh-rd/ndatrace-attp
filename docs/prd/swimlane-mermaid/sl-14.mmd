@@ -1,0 +1,24 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Nhấn Kiểm tra hoặc Trình"])
+    c1["Sửa theo danh sách lỗi"]
+    c2["Nhấn Rút lại, nhập lý do"]
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Còn lỗi?"}
+    h1["Hiển thị lỗi theo lớp, khoá nút Trình"]
+    d2{"Ngày áp dụng hợp lệ?"}
+    h2["Báo ngày phải là ngày tương lai"]
+    h3["Chuyển về Nháp, mở khoá"]
+  end
+  subgraph LD["Lãnh đạo phê duyệt"]
+    l1(["Nhận thông báo bản trình bị rút"])
+  end
+  s --> d1
+  d1 -->|Có| h1
+  h1 --> c1
+  c1 --> d1
+  d1 -->|Không| d2
+  d2 -->|Không| h2
+  c2 --> h3
+  h3 --> l1

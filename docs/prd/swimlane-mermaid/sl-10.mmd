@@ -1,0 +1,18 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Nhấn Xoá"])
+    c1["Nhấn Huỷ"]
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Đang trong quy trình?"}
+    h1["Chặn, liệt kê quy trình"]
+    d2{"Là phiên bản mới?"}
+    h2["Hỏi: chỉ xoá bản nháp phiên bản n"]
+    h3(["Đóng hộp, không thay đổi"])
+  end
+  s --> d1
+  d1 -->|Có| h1
+  d1 -->|Không| d2
+  d2 -->|Có| h2
+  h2 --> c1
+  c1 --> h3

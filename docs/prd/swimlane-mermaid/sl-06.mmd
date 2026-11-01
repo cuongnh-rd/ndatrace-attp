@@ -1,0 +1,20 @@
+swimlane-beta LR
+  subgraph ND["Người dùng"]
+    s(["Đang ở danh sách"])
+    c1(["Kết thúc"])
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Là 2B, mở thẻ cấp trung ương?"}
+    h1["Hiển thị sự kiện 2A cùng ngành quản lý, chỉ đọc; nút Kế thừa nếu có uỷ quyền"]
+    d2{"Có quyền xem?"}
+    h2["Từ chối truy cập"]
+    d3{"Kết quả rỗng?"}
+    h3["Màn hình trống, gợi ý thao tác"]
+  end
+  s --> d1
+  d1 -->|Có| h1
+  d1 -->|Không| d2
+  d2 -->|Không| h2
+  d2 -->|Có| d3
+  d3 -->|Có| h3
+  h3 --> c1

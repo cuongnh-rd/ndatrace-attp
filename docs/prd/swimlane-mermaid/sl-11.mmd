@@ -1,0 +1,18 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Nhấn Sao chép từ thư viện mẫu"])
+    c1["Chọn mẫu, đặt tên mới"]
+    e(["Mở màn hình sửa"])
+  end
+  subgraph HT["Hệ thống"]
+    h1["Hiển thị danh sách mẫu"]
+    h2["Sao chép 7 bước; tạo Nháp; khoá loại sự kiện; ghi nguồn"]
+  end
+  subgraph C1["Nền tảng quốc gia (Cấp 1)"]
+    n1["Cung cấp thư viện mẫu đang hiệu lực"]
+  end
+  s --> n1
+  n1 --> h1
+  h1 --> c1
+  c1 --> h2
+  h2 --> e

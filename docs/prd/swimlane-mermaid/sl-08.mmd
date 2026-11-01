@@ -1,0 +1,24 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Nhấn Sửa"])
+    c1["Sửa yêu cầu kế thừa"]
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Trạng thái?"}
+    h1["Báo: dùng Tạo phiên bản mới"]
+    h2["Báo: cần Rút lại"]
+    d2{"Người khác đang sửa?"}
+    h3["Mở chế độ chỉ xem"]
+    d3{"Làm suy giảm yêu cầu trung ương?"}
+    h4["Chặn tại ô, nêu yêu cầu gốc"]
+    h5["Chấp nhận, gắn nhãn Bổ sung cấp địa phương"]
+  end
+  s --> d1
+  d1 -->|Đã công bố| h1
+  d1 -->|Chờ duyệt| h2
+  d1 -->|Nháp| d2
+  d2 -->|Có| h3
+  d2 -->|Không| c1
+  c1 --> d3
+  d3 -->|Có| h4
+  d3 -->|Không| h5

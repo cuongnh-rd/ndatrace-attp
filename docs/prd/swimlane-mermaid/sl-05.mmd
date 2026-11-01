@@ -1,0 +1,20 @@
+swimlane-beta LR
+  subgraph ND["Người dùng"]
+    s(["Mở menu Sự kiện trọng yếu"])
+    c1["Tìm kiếm, lọc"]
+    c2["Chọn một Sự kiện trọng yếu"]
+    e(["Kết thúc"])
+  end
+  subgraph HT["Hệ thống"]
+    h1["Xác định vai trò, đơn vị, phạm vi xem"]
+    h2["Hiển thị danh sách theo phạm vi"]
+    h3["Trả kết quả"]
+    h4["Hiển thị chi tiết và nút thao tác theo quyền, trạng thái"]
+  end
+  s --> h1
+  h1 --> h2
+  h2 --> c1
+  c1 --> h3
+  h3 --> c2
+  c2 --> h4
+  h4 --> e

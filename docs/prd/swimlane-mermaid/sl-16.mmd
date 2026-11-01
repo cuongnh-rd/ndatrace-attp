@@ -1,0 +1,28 @@
+swimlane-beta LR
+  subgraph LD["Lãnh đạo phê duyệt"]
+    s(["Mở bản trình"])
+    l1["Nhấn Trả lại, nhập ý kiến"]
+    l2["Nhấn Huỷ chờ áp dụng, nhập lý do"]
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Lãnh đạo là người soạn/trình?"}
+    h1["Ẩn nút phê duyệt"]
+    h2["Chuyển về Nháp, gửi ý kiến"]
+    h3["Bản chờ chuyển Ngừng áp dụng"]
+    t(["Lịch hằng giờ: tới ngày áp dụng"])
+    d2{"Chuyển trạng thái thành công?"}
+    h4["Bản cũ Ngừng, bản mới Đang áp dụng"]
+    h5["Hoàn tác, báo vận hành, thử lại"]
+  end
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    k1(["Nhận ý kiến trả lại"])
+  end
+  s --> d1
+  d1 -->|Có| h1
+  d1 -->|Không| l1
+  l1 --> h2
+  h2 --> k1
+  l2 --> h3
+  t --> d2
+  d2 -->|Có| h4
+  d2 -->|Không| h5

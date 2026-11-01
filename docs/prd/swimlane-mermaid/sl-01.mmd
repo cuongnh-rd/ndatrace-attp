@@ -1,0 +1,34 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Bắt đầu"])
+    c1["Nhập tên, mô tả"]
+    c2["Bước 1: chọn loại sự kiện"]
+    c3["Bước 2: chọn bước nghiệp vụ"]
+    c4["Bước 3: giữ hoặc đổi hành động"]
+    c5["Bước 4–5: trạng thái, chứng từ"]
+    c6["Bước 6–7: trường thông tin, yêu cầu bổ sung; Lưu nháp"]
+  end
+  subgraph HT["Hệ thống"]
+    h1["Hiển thị loại sự kiện đang hiệu lực"]
+    h2["Khoá loại sự kiện; lọc bước nghiệp vụ"]
+    h3["Gợi ý hành động theo bước nghiệp vụ"]
+    h4["Gợi ý trạng thái hàng hoá"]
+    h5["Lọc trường thông tin; khoá trường bắt buộc"]
+    d1{"Tên hợp lệ, đủ trường thông tin?"}
+    h6["Sinh mã, lưu Nháp phiên bản 1, ghi nhật ký"]
+    e(["Mở trang chi tiết"])
+  end
+  s --> c1
+  c1 --> h1
+  h1 --> c2
+  c2 --> h2
+  h2 --> c3
+  c3 --> h3
+  h3 --> c4
+  c4 --> h4
+  h4 --> c5
+  c5 --> h5
+  h5 --> c6
+  c6 --> d1
+  d1 -->|Có| h6
+  h6 --> e

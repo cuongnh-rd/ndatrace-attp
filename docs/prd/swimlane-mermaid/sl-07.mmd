@@ -1,0 +1,20 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Nhấn Sửa"])
+    c1["Sửa nội dung"]
+    c2["Nhấn Lưu"]
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Nháp, thuộc đơn vị, không ai đang sửa?"}
+    h1["Giữ quyền sửa; hiển thị ý kiến trả lại"]
+    h2["Kiểm tra phù hợp giữa các bước"]
+    h3["Lưu; ghi nhật ký trước/sau; nhả quyền sửa"]
+    e(["Kết thúc"])
+  end
+  s --> d1
+  d1 -->|Có| h1
+  h1 --> c1
+  c1 --> h2
+  h2 --> c2
+  c2 --> h3
+  h3 --> e

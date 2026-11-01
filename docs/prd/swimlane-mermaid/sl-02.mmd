@@ -1,0 +1,28 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Đang ở một bước cấu hình"])
+    c1["Quay lại đổi bước nghiệp vụ"]
+    c2["Nhấn Lưu nháp / Tiếp tục"]
+    c3(["Sửa theo thông báo rồi thử lại"])
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Loại = Chế biến?"}
+    h1["Bỏ qua bước 3; mở thông tin lô cho đầu ra"]
+    h2["Tính lại hành động, trạng thái gợi ý; đánh dấu cần xác nhận lại"]
+    d2{"Có lỗi?"}
+    h3["Báo lỗi: trùng tên, thiếu chứng từ, thiếu trường, ngưỡng sai"]
+    d3{"Đã xong bước 6?"}
+    h4["Lưu, nhãn Chưa hoàn thiện"]
+    h5(["Lưu hoàn thiện"])
+  end
+  s --> d1
+  d1 -->|Có| h1
+  s --> c1
+  c1 --> h2
+  s --> c2
+  c2 --> d2
+  d2 -->|Có| h3
+  h3 --> c3
+  d2 -->|Không| d3
+  d3 -->|Chưa| h4
+  d3 -->|Rồi| h5

@@ -1,0 +1,20 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Mở thẻ / nhấn Lưu"])
+    c1(["Bổ sung sau"])
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Bản nháp kế thừa?"}
+    d2{"Uỷ quyền còn hiệu lực?"}
+    h1["Tự gắn văn bản uỷ quyền"]
+    h2["Báo uỷ quyền hết hiệu lực; chặn trình"]
+    d3{"Thiếu căn cứ hoặc vai trò?"}
+    h3["Lưu phần đã nhập; đánh dấu Chưa đầy đủ"]
+  end
+  s --> d1
+  d1 -->|Có| d2
+  d2 -->|Có| h1
+  d2 -->|Không| h2
+  d1 -->|Không| d3
+  d3 -->|Có| h3
+  h3 --> c1

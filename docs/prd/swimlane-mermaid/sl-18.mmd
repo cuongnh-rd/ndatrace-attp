@@ -1,0 +1,19 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Nhấn Tạo phiên bản mới"])
+    c1["Chọn bản gốc"]
+    c2["Chọn hai phiên bản, nhấn So sánh"]
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Đã có bản đang soạn?"}
+    h1["Báo đã có phiên bản đang soạn/trình"]
+    d2{"Có cả bản đang và chờ áp dụng?"}
+    h2["Hỏi chọn bản gốc"]
+    h3(["Hiển thị khác biệt theo từng bước"])
+  end
+  s --> d1
+  d1 -->|Có| h1
+  d1 -->|Không| d2
+  d2 -->|Có| h2
+  h2 --> c1
+  c2 --> h3

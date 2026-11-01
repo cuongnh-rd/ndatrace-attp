@@ -1,0 +1,24 @@
+swimlane-beta LR
+  subgraph LD["Lãnh đạo phê duyệt"]
+    s(["Nhấn Ngừng áp dụng"])
+    l1["Chọn thời điểm, nhập căn cứ và lý do, xác nhận"]
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Đang trong quy trình đang áp dụng?"}
+    h1["Hiển thị hộp ngừng áp dụng"]
+    h2["Chuyển Ngừng áp dụng; huỷ bản chờ nếu có"]
+    h3["Gửi thông báo; ghi nhật ký"]
+  end
+  subgraph C1["Nền tảng quốc gia (Cấp 1)"]
+    n1["Cập nhật danh mục quốc gia"]
+  end
+  subgraph NH["Cấp 3, Cấp 4, địa phương kế thừa"]
+    m1(["Nhận thông báo ngừng áp dụng"])
+  end
+  s --> d1
+  d1 -->|Không| h1
+  h1 --> l1
+  l1 --> h2
+  h2 --> n1
+  n1 --> h3
+  h3 --> m1

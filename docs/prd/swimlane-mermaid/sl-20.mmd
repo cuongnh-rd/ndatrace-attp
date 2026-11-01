@@ -1,0 +1,24 @@
+swimlane-beta LR
+  subgraph QC["Quản trị nền tảng quốc gia"]
+    s(["Ngừng sử dụng một giá trị bộ lõi"])
+  end
+  subgraph HT["Hệ thống"]
+    h1["Tìm Sự kiện trọng yếu đang dùng giá trị"]
+    d1{"Trạng thái?"}
+    h2["Đánh dấu lỗi; chặn trình, phê duyệt"]
+    h3["Giữ hiệu lực; gắn nhãn cảnh báo"]
+    h4["Thông báo đơn vị sở hữu"]
+    t(["Lịch hằng giờ: tới ngày hẹn ngừng"])
+    h5(["Chuyển Ngừng áp dụng, cập nhật danh mục, thông báo"])
+  end
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    k1(["Tạo phiên bản mới thay giá trị bị ngừng"])
+  end
+  s --> h1
+  h1 --> d1
+  d1 -->|Nháp/Chờ duyệt| h2
+  d1 -->|Đã công bố| h3
+  h2 --> h4
+  h3 --> h4
+  h4 --> k1
+  t --> h5

@@ -1,0 +1,16 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Nhấn Tạo phiên bản mới"])
+    e(["Sửa bản nháp mới"])
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Đã công bố, chưa có bản đang soạn?"}
+    h1["Xác định bản gốc"]
+    h2["Tạo Nháp n+1; sao chép 7 bước và thẩm quyền"]
+    h3["Ghi nhật ký; mở màn hình sửa"]
+  end
+  s --> d1
+  d1 -->|Có| h1
+  h1 --> h2
+  h2 --> h3
+  h3 --> e

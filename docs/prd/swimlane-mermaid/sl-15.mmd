@@ -1,0 +1,29 @@
+swimlane-beta LR
+  subgraph LD["Lãnh đạo phê duyệt"]
+    s(["Mở bản Chờ phê duyệt"])
+    l1["Xem; giữ hoặc chỉnh ngày áp dụng; nhấn Phê duyệt"]
+  end
+  subgraph HT["Hệ thống"]
+    h1["Hiển thị bản trình, bảng thay đổi, kết quả kiểm tra"]
+    h2["Chạy lại kiểm tra tổng thể"]
+    d1{"Phiên bản 1?"}
+    h3["Đang áp dụng ngay"]
+    h4["Chờ áp dụng theo ngày đã chốt"]
+    h5["Gửi thông báo; ghi nhật ký"]
+  end
+  subgraph C1["Nền tảng quốc gia (Cấp 1)"]
+    n1["Kiểm tra tương thích, đăng ký vào danh mục quốc gia"]
+  end
+  subgraph NH["Cấp 3, Cấp 4, địa phương kế thừa"]
+    m1(["Nhận thông báo"])
+  end
+  s --> h1
+  h1 --> l1
+  l1 --> h2
+  h2 --> d1
+  d1 -->|Có| h3
+  d1 -->|Không| h4
+  h3 --> n1
+  h4 --> n1
+  n1 --> h5
+  h5 --> m1

@@ -1,0 +1,25 @@
+swimlane-beta LR
+  subgraph CB2["Cán bộ tiêu chuẩn cấp địa phương"]
+    s(["Mở thẻ Sự kiện cấp trung ương"])
+    c1["Nhấn Kế thừa"]
+    e(["Mở màn hình sửa"])
+  end
+  subgraph HT["Hệ thống"]
+    d1{"Có uỷ quyền còn hiệu lực?"}
+    h1["Ẩn nút Kế thừa, báo lý do"]
+    d2{"Nguồn còn đang áp dụng?"}
+    h2["Báo nguồn không khả dụng"]
+    h3["Sao chép; khoá nội dung cốt lõi; gắn nhãn; gắn văn bản uỷ quyền"]
+    d3{"Có giá trị đã ngừng sử dụng?"}
+    h4["Đánh dấu lỗi tại ô"]
+  end
+  s --> d1
+  d1 -->|Không| h1
+  d1 -->|Có| c1
+  c1 --> d2
+  d2 -->|Không| h2
+  d2 -->|Có| h3
+  h3 --> d3
+  d3 -->|Có| h4
+  h4 --> e
+  d3 -->|Không| e

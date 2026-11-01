@@ -1,0 +1,22 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Nhấn Trình phê duyệt"])
+    c1["Xác nhận đã đọc cảnh báo"]
+    c2["Nhập ngày áp dụng, lý do, quy tắc chuyển tiếp (phiên bản 2+)"]
+    c3["Chọn lãnh đạo, ghi chú; nhấn Trình"]
+  end
+  subgraph HT["Hệ thống"]
+    h1["Kiểm tra tổng thể theo lớp"]
+    d1{"Có lỗi?"}
+    h2["Chuyển Chờ phê duyệt; khoá; ghi nhật ký"]
+  end
+  subgraph LD["Lãnh đạo phê duyệt"]
+    l1(["Nhận thông báo bản trình"])
+  end
+  s --> h1
+  h1 --> d1
+  d1 -->|Không| c1
+  c1 --> c2
+  c2 --> c3
+  c3 --> h2
+  h2 --> l1

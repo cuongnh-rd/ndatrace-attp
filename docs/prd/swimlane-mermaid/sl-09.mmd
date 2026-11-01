@@ -1,0 +1,22 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Nhấn Xoá"])
+    c1["Xác nhận xoá"]
+    e(["Về danh sách"])
+  end
+  subgraph HT["Hệ thống"]
+    h1["Kiểm tra trạng thái, quyền"]
+    d1{"Được phép xoá?"}
+    h2["Hiển thị hộp xác nhận phù hợp"]
+    h3["Xoá; ghi nhật ký toàn bộ nội dung"]
+  end
+  subgraph QT["Phân hệ Quy trình tiêu chuẩn TXNG"]
+    q1["Trả lời: sự kiện có trong quy trình nào không"]
+  end
+  s --> h1
+  h1 --> q1
+  q1 --> d1
+  d1 -->|Có| h2
+  h2 --> c1
+  c1 --> h3
+  h3 --> e

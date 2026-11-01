@@ -1,0 +1,18 @@
+swimlane-beta LR
+  subgraph CB["Cán bộ tiêu chuẩn"]
+    s(["Mở thẻ Thẩm quyền và phạm vi"])
+    c1["Nhập căn cứ ban hành, đính kèm văn bản"]
+    c2["Chọn vai trò chủ thể phải ghi nhận; nhấn Lưu"]
+  end
+  subgraph HT["Hệ thống"]
+    h1["Tự điền chủ sở hữu, nhóm chủ thể, địa bàn"]
+    d1{"Đủ thông tin bắt buộc?"}
+    h2["Lưu, đánh dấu Đầy đủ, ghi nhật ký"]
+    e(["Kết thúc"])
+  end
+  s --> h1
+  h1 --> c1
+  c1 --> c2
+  c2 --> d1
+  d1 -->|Có| h2
+  h2 --> e
