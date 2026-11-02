@@ -479,7 +479,7 @@ Mỗi lần chặn, **hệ thống** nêu rõ yêu cầu gốc của trung ươn
 
 Mỗi tính năng gồm:
 - mô tả;
-- câu chuyện người dùng;
+- yêu cầu người sử dụng;
 - đặc tả luồng chính, luồng thay thế, luồng ngoại lệ — mỗi luồng có bảng mô tả: tác nhân, sự kiện kích hoạt, điều kiện trước, các bước hành động, điều kiện sau, quy tắc nghiệp vụ áp dụng;
 - sơ đồ swimlane, chia làn theo tác nhân;
 - wireframe vẽ bằng Wire DSL.
@@ -494,12 +494,13 @@ Mỗi tính năng gồm:
   - ô tóm tắt phía trên, diễn đạt Sự kiện trọng yếu bằng một câu tự nhiên.
 - Cán bộ được lưu nháp ở bất kỳ bước nào sau khi đã chọn loại sự kiện. Bản nháp chưa đủ bước bắt buộc mang nhãn "Chưa hoàn thiện".
 
-**Câu chuyện người dùng**
-- Là cán bộ tiêu chuẩn, tôi muốn được dẫn dắt qua từng bước, mỗi bước chỉ hiển thị lựa chọn phù hợp, để tạo được Sự kiện trọng yếu đúng chuẩn mà không phải thuộc lòng chuẩn quốc tế.
-- Là cán bộ tiêu chuẩn, tôi muốn hệ thống gợi ý sẵn trạng thái hàng hoá phù hợp với bước nghiệp vụ, để tiết kiệm thời gian và tránh chọn sai.
-- Là cán bộ tiêu chuẩn, tôi muốn được cảnh báo khi chọn bước nghiệp vụ ít dùng, để cân nhắc lại trước khi tiếp tục.
-- Là cán bộ tiêu chuẩn, tôi muốn đặt mức bắt buộc và viết hướng dẫn điền cho từng trường thông tin, để doanh nghiệp biết chính xác phải khai báo gì.
-- Là cán bộ tiêu chuẩn, tôi muốn lưu nháp giữa chừng, để tham vấn chuyên môn rồi quay lại hoàn thiện.
+**Yêu cầu người sử dụng**
+
+- **US-01** — Là cán bộ tiêu chuẩn, tôi muốn được dẫn dắt qua từng bước, mỗi bước chỉ hiển thị lựa chọn phù hợp, để tạo được Sự kiện trọng yếu đúng chuẩn mà không phải thuộc lòng chuẩn quốc tế.
+- **US-02** — Là cán bộ tiêu chuẩn, tôi muốn hệ thống gợi ý sẵn trạng thái hàng hoá phù hợp với bước nghiệp vụ, để tiết kiệm thời gian và tránh chọn sai.
+- **US-03** — Là cán bộ tiêu chuẩn, tôi muốn được cảnh báo khi chọn bước nghiệp vụ ít dùng, để cân nhắc lại trước khi tiếp tục.
+- **US-04** — Là cán bộ tiêu chuẩn, tôi muốn đặt mức bắt buộc và viết hướng dẫn điền cho từng trường thông tin, để doanh nghiệp biết chính xác phải khai báo gì.
+- **US-05** — Là cán bộ tiêu chuẩn, tôi muốn lưu nháp giữa chừng, để tham vấn chuyên môn rồi quay lại hoàn thiện.
 
 #### Luồng chính — LC-01: Tạo và lưu nháp Sự kiện trọng yếu
 
@@ -527,7 +528,7 @@ Mỗi tính năng gồm:
 
 ![Sơ đồ swimlane: Tạo và lưu nháp Sự kiện trọng yếu — luồng chính](swimlane/sl-01.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-01.drawio](swimlane/sl-01.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Luồng thay thế
 
@@ -555,7 +556,7 @@ Mỗi tính năng gồm:
 
 ![Sơ đồ swimlane: Tạo Sự kiện trọng yếu — luồng thay thế và ngoại lệ](swimlane/sl-02.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-02.drawio](swimlane/sl-02.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Wireframe
 
@@ -657,9 +658,10 @@ project "Tạo Sự kiện trọng yếu - bước 6" {
 - Thông tin nằm ở thẻ "Thẩm quyền và phạm vi" trên trang chi tiết, độc lập với 7 bước. Cán bộ có thể cấu hình trước rồi bổ sung căn cứ sau.
 - Hệ thống chỉ cho trình phê duyệt khi thẻ này đầy đủ.
 
-**Câu chuyện người dùng**
-- Là cán bộ tiêu chuẩn, tôi muốn gắn Sự kiện trọng yếu với văn bản làm căn cứ, để các bên biết sự kiện có hiệu lực pháp lý từ đâu.
-- Là cán bộ tiêu chuẩn, tôi muốn chỉ rõ vai trò chủ thể nào trong chuỗi phải ghi nhận sự kiện, để doanh nghiệp không áp dụng nhầm khâu.
+**Yêu cầu người sử dụng**
+
+- **US-06** — Là cán bộ tiêu chuẩn, tôi muốn gắn Sự kiện trọng yếu với văn bản làm căn cứ, để các bên biết sự kiện có hiệu lực pháp lý từ đâu.
+- **US-07** — Là cán bộ tiêu chuẩn, tôi muốn chỉ rõ vai trò chủ thể nào trong chuỗi phải ghi nhận sự kiện, để doanh nghiệp không áp dụng nhầm khâu.
 
 #### Luồng chính — LC-02: Khai báo thẩm quyền và phạm vi
 
@@ -682,7 +684,7 @@ project "Tạo Sự kiện trọng yếu - bước 6" {
 
 ![Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng chính](swimlane/sl-03.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-03.drawio](swimlane/sl-03.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Luồng thay thế và ngoại lệ
 
@@ -696,7 +698,7 @@ project "Tạo Sự kiện trọng yếu - bước 6" {
 
 ![Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng thay thế và ngoại lệ](swimlane/sl-04.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-04.drawio](swimlane/sl-04.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Wireframe
 
@@ -751,11 +753,12 @@ project "Thẩm quyền và phạm vi" {
   - Đang dùng trong Quy trình tiêu chuẩn TXNG.
 - Cán bộ nhóm 2B có thêm thẻ "Sự kiện cấp trung ương". Quản trị Cấp 1 xem được Sự kiện trọng yếu đã công bố của mọi đơn vị.
 
-**Câu chuyện người dùng**
-- Là cán bộ tiêu chuẩn, tôi muốn tìm và lọc Sự kiện trọng yếu theo nhiều tiêu chí, để nhanh chóng tìm sự kiện cần rà soát.
-- Là cán bộ tiêu chuẩn, tôi muốn biết Sự kiện trọng yếu đang nằm trong những Quy trình tiêu chuẩn TXNG nào, để đánh giá ảnh hưởng trước khi thay đổi.
-- Là cán bộ cấp địa phương, tôi muốn xem Sự kiện trọng yếu đang áp dụng của trung ương cùng ngành, để chọn sự kiện kế thừa.
-- Là quản trị nền tảng quốc gia, tôi muốn xem phiên bản có hiệu lực tại một ngày bất kỳ, để đối chiếu bản ghi sự kiện cũ.
+**Yêu cầu người sử dụng**
+
+- **US-08** — Là cán bộ tiêu chuẩn, tôi muốn tìm và lọc Sự kiện trọng yếu theo nhiều tiêu chí, để nhanh chóng tìm sự kiện cần rà soát.
+- **US-09** — Là cán bộ tiêu chuẩn, tôi muốn biết Sự kiện trọng yếu đang nằm trong những Quy trình tiêu chuẩn TXNG nào, để đánh giá ảnh hưởng trước khi thay đổi.
+- **US-10** — Là cán bộ cấp địa phương, tôi muốn xem Sự kiện trọng yếu đang áp dụng của trung ương cùng ngành, để chọn sự kiện kế thừa.
+- **US-11** — Là quản trị nền tảng quốc gia, tôi muốn xem phiên bản có hiệu lực tại một ngày bất kỳ, để đối chiếu bản ghi sự kiện cũ.
 
 #### Luồng chính — LC-03: Tra cứu và xem chi tiết
 
@@ -779,7 +782,7 @@ project "Thẩm quyền và phạm vi" {
 
 ![Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng chính](swimlane/sl-05.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-05.drawio](swimlane/sl-05.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Luồng thay thế và ngoại lệ
 
@@ -794,7 +797,7 @@ project "Thẩm quyền và phạm vi" {
 
 ![Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng thay thế và ngoại lệ](swimlane/sl-06.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-06.drawio](swimlane/sl-06.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Wireframe
 
@@ -850,10 +853,11 @@ project "Danh sách Sự kiện trọng yếu" {
 - Bản nháp kế thừa từ trung ương vẫn chịu quy tắc chỉ thêm chặt.
 - Mỗi lần lưu, hệ thống ghi giá trị trước và sau.
 
-**Câu chuyện người dùng**
-- Là cán bộ tiêu chuẩn, tôi muốn sửa bản nháp theo ý kiến lãnh đạo và thấy ý kiến đó ngay trên màn hình sửa.
-- Là cán bộ tiêu chuẩn, tôi muốn biết đồng nghiệp đang sửa cùng sự kiện, để tránh ghi đè lẫn nhau.
-- Là cán bộ cấp địa phương, tôi muốn được chặn ngay khi vô tình nới lỏng yêu cầu của trung ương.
+**Yêu cầu người sử dụng**
+
+- **US-12** — Là cán bộ tiêu chuẩn, tôi muốn sửa bản nháp theo ý kiến lãnh đạo và thấy ý kiến đó ngay trên màn hình sửa.
+- **US-13** — Là cán bộ tiêu chuẩn, tôi muốn biết đồng nghiệp đang sửa cùng sự kiện, để tránh ghi đè lẫn nhau.
+- **US-14** — Là cán bộ cấp địa phương, tôi muốn được chặn ngay khi vô tình nới lỏng yêu cầu của trung ương.
 
 #### Luồng chính — LC-04: Sửa bản nháp
 
@@ -876,7 +880,7 @@ project "Danh sách Sự kiện trọng yếu" {
 
 ![Sơ đồ swimlane: Sửa bản nháp — luồng chính](swimlane/sl-07.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-07.drawio](swimlane/sl-07.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Luồng thay thế và ngoại lệ
 
@@ -892,7 +896,7 @@ project "Danh sách Sự kiện trọng yếu" {
 
 ![Sơ đồ swimlane: Sửa bản nháp — luồng thay thế và ngoại lệ](swimlane/sl-08.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-08.drawio](swimlane/sl-08.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Wireframe
 
@@ -946,9 +950,10 @@ project "Kế thừa cấp trung ương" {
 - Hệ thống không cho xoá bản đã trình, bản đã công bố, hoặc bản nháp đang nằm trong một Quy trình tiêu chuẩn TXNG.
 - Toàn bộ nội dung bị xoá được lưu vào nhật ký để giải trình.
 
-**Câu chuyện người dùng**
-- Là cán bộ tiêu chuẩn, tôi muốn xoá bản nháp không còn dùng, để danh sách gọn gàng.
-- Là cán bộ tiêu chuẩn, tôi muốn biết bản nháp đang nằm trong Quy trình tiêu chuẩn TXNG nào khi không xoá được, để xử lý đúng chỗ.
+**Yêu cầu người sử dụng**
+
+- **US-15** — Là cán bộ tiêu chuẩn, tôi muốn xoá bản nháp không còn dùng, để danh sách gọn gàng.
+- **US-16** — Là cán bộ tiêu chuẩn, tôi muốn biết bản nháp đang nằm trong Quy trình tiêu chuẩn TXNG nào khi không xoá được, để xử lý đúng chỗ.
 
 #### Luồng chính — LC-05: Xoá bản nháp
 
@@ -970,7 +975,7 @@ project "Kế thừa cấp trung ương" {
 
 ![Sơ đồ swimlane: Xoá bản nháp — luồng chính](swimlane/sl-09.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-09.drawio](swimlane/sl-09.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Luồng thay thế và ngoại lệ
 
@@ -985,7 +990,7 @@ project "Kế thừa cấp trung ương" {
 
 ![Sơ đồ swimlane: Xoá bản nháp — luồng thay thế và ngoại lệ](swimlane/sl-10.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-10.drawio](swimlane/sl-10.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 ---
 
@@ -1013,10 +1018,11 @@ project "Kế thừa cấp trung ương" {
 | Thêm trạng thái duy trì | Đổi trạng thái hàng hoá, bỏ trạng thái duy trì của trung ương |
 | Bổ sung hướng dẫn điền, mô tả áp dụng, đặt tên theo địa phương | Đổi loại sự kiện, hành động, bước nghiệp vụ |
 
-**Câu chuyện người dùng**
-- Là cán bộ tiêu chuẩn, tôi muốn sao chép Sự kiện trọng yếu mẫu từ thư viện quốc gia, để có điểm khởi đầu đúng chuẩn.
-- Là cán bộ cấp địa phương được uỷ quyền, tôi muốn kế thừa Sự kiện trọng yếu của trung ương và bổ sung yêu cầu địa phương, để tiêu chuẩn tỉnh luôn tuân thủ tiêu chuẩn trung ương.
-- Là cán bộ cấp địa phương, tôi muốn phân biệt yêu cầu của trung ương với phần địa phương bổ sung, để giải trình khi được hỏi.
+**Yêu cầu người sử dụng**
+
+- **US-17** — Là cán bộ tiêu chuẩn, tôi muốn sao chép Sự kiện trọng yếu mẫu từ thư viện quốc gia, để có điểm khởi đầu đúng chuẩn.
+- **US-18** — Là cán bộ cấp địa phương được uỷ quyền, tôi muốn kế thừa Sự kiện trọng yếu của trung ương và bổ sung yêu cầu địa phương, để tiêu chuẩn tỉnh luôn tuân thủ tiêu chuẩn trung ương.
+- **US-19** — Là cán bộ cấp địa phương, tôi muốn phân biệt yêu cầu của trung ương với phần địa phương bổ sung, để giải trình khi được hỏi.
 
 #### Luồng chính — LC-06: Sao chép từ thư viện mẫu quốc gia
 
@@ -1039,7 +1045,7 @@ project "Kế thừa cấp trung ương" {
 
 ![Sơ đồ swimlane: Sao chép từ thư viện mẫu quốc gia — luồng chính](swimlane/sl-11.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-11.drawio](swimlane/sl-11.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Luồng thay thế và ngoại lệ
 
@@ -1055,7 +1061,7 @@ project "Kế thừa cấp trung ương" {
 
 ![Sơ đồ swimlane: Kế thừa Sự kiện trọng yếu cấp trung ương và các ngoại lệ](swimlane/sl-12.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-12.drawio](swimlane/sl-12.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 ---
 
@@ -1078,9 +1084,10 @@ project "Kế thừa cấp trung ương" {
 | Phiên bản | Lỗi | Phiên bản 2 trở đi thiếu ngày áp dụng, lý do thay đổi, quy tắc chuyển tiếp |
 | Nghiệp vụ | Cảnh báo | Bước nghiệp vụ ít dùng; hành động hoặc trạng thái khác gợi ý; trường thông tin chưa có hướng dẫn điền; phiên bản mới không khác phiên bản đang áp dụng; thời hạn chuyển tiếp dưới 30 ngày |
 
-**Câu chuyện người dùng**
-- Là cán bộ tiêu chuẩn, tôi muốn hệ thống chỉ rõ lỗi ở bước nào, để không trình lên lãnh đạo một bản sai chuẩn.
-- Là cán bộ tiêu chuẩn, tôi muốn rút lại bản đã trình khi phát hiện sai sót.
+**Yêu cầu người sử dụng**
+
+- **US-20** — Là cán bộ tiêu chuẩn, tôi muốn hệ thống chỉ rõ lỗi ở bước nào, để không trình lên lãnh đạo một bản sai chuẩn.
+- **US-21** — Là cán bộ tiêu chuẩn, tôi muốn rút lại bản đã trình khi phát hiện sai sót.
 
 #### Luồng chính — LC-07: Trình phê duyệt
 
@@ -1104,7 +1111,7 @@ project "Kế thừa cấp trung ương" {
 
 ![Sơ đồ swimlane: Trình phê duyệt — luồng chính](swimlane/sl-13.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-13.drawio](swimlane/sl-13.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Luồng thay thế và ngoại lệ
 
@@ -1120,7 +1127,7 @@ project "Kế thừa cấp trung ương" {
 
 ![Sơ đồ swimlane: Kiểm tra, rút lại bản trình — luồng thay thế và ngoại lệ](swimlane/sl-14.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-14.drawio](swimlane/sl-14.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Wireframe
 
@@ -1178,12 +1185,13 @@ Trang phê duyệt hiển thị:
 
 Phần này cũng mô tả luồng hệ thống tự chuyển trạng thái khi tới ngày áp dụng, và luồng lãnh đạo huỷ phiên bản chờ áp dụng.
 
-**Câu chuyện người dùng**
-- Là lãnh đạo phê duyệt, tôi muốn xem các thay đổi so với phiên bản đang áp dụng trên cùng màn hình, để quyết định nhanh và có cơ sở.
-- Là lãnh đạo phê duyệt, tôi muốn điều chỉnh ngày áp dụng cho khớp ngày hiệu lực của văn bản.
-- Là lãnh đạo phê duyệt, tôi muốn trả lại bản trình kèm ý kiến cụ thể.
-- Là đơn vị cung cấp giải pháp, tôi muốn nhận phiên bản mới kèm ngày áp dụng và quy tắc chuyển tiếp ngay khi công bố.
-- Là doanh nghiệp, tôi muốn được báo trước khi Sự kiện trọng yếu tôi đang khai báo sắp thay đổi.
+**Yêu cầu người sử dụng**
+
+- **US-22** — Là lãnh đạo phê duyệt, tôi muốn xem các thay đổi so với phiên bản đang áp dụng trên cùng màn hình, để quyết định nhanh và có cơ sở.
+- **US-23** — Là lãnh đạo phê duyệt, tôi muốn điều chỉnh ngày áp dụng cho khớp ngày hiệu lực của văn bản.
+- **US-24** — Là lãnh đạo phê duyệt, tôi muốn trả lại bản trình kèm ý kiến cụ thể.
+- **US-25** — Là đơn vị cung cấp giải pháp, tôi muốn nhận phiên bản mới kèm ngày áp dụng và quy tắc chuyển tiếp ngay khi công bố.
+- **US-26** — Là doanh nghiệp, tôi muốn được báo trước khi Sự kiện trọng yếu tôi đang khai báo sắp thay đổi.
 
 #### Luồng chính — LC-08: Phê duyệt và công bố
 
@@ -1209,7 +1217,7 @@ Phần này cũng mô tả luồng hệ thống tự chuyển trạng thái khi 
 
 ![Sơ đồ swimlane: Phê duyệt và công bố — luồng chính](swimlane/sl-15.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-15.drawio](swimlane/sl-15.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Luồng thay thế
 
@@ -1234,7 +1242,7 @@ Phần này cũng mô tả luồng hệ thống tự chuyển trạng thái khi 
 
 ![Sơ đồ swimlane: Trả lại, huỷ chờ áp dụng, tự chuyển trạng thái — luồng thay thế và ngoại lệ](swimlane/sl-16.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-16.drawio](swimlane/sl-16.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Wireframe
 
@@ -1292,9 +1300,10 @@ project "Phê duyệt" {
 - Thẻ "Lịch sử phiên bản" hiển thị trạng thái, ngày áp dụng, ngày ngừng, căn cứ, lý do thay đổi của từng phiên bản.
 - Cán bộ được xem chi tiết phiên bản cũ và so sánh hai phiên bản.
 
-**Câu chuyện người dùng**
-- Là cán bộ tiêu chuẩn, tôi muốn tạo phiên bản mới khi tiêu chuẩn cần điều chỉnh mà không ảnh hưởng phiên bản đang có hiệu lực.
-- Là cán bộ tiêu chuẩn, tôi muốn so sánh hai phiên bản, để giải trình thay đổi khi được thanh tra, kiểm tra.
+**Yêu cầu người sử dụng**
+
+- **US-27** — Là cán bộ tiêu chuẩn, tôi muốn tạo phiên bản mới khi tiêu chuẩn cần điều chỉnh mà không ảnh hưởng phiên bản đang có hiệu lực.
+- **US-28** — Là cán bộ tiêu chuẩn, tôi muốn so sánh hai phiên bản, để giải trình thay đổi khi được thanh tra, kiểm tra.
 
 #### Luồng chính — LC-09: Tạo phiên bản mới
 
@@ -1316,7 +1325,7 @@ project "Phê duyệt" {
 
 ![Sơ đồ swimlane: Tạo phiên bản mới — luồng chính](swimlane/sl-17.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-17.drawio](swimlane/sl-17.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Luồng thay thế và ngoại lệ
 
@@ -1331,7 +1340,7 @@ project "Phê duyệt" {
 
 ![Sơ đồ swimlane: Chọn bản gốc, so sánh phiên bản — luồng thay thế và ngoại lệ](swimlane/sl-18.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-18.drawio](swimlane/sl-18.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Wireframe
 
@@ -1390,10 +1399,11 @@ project "Lịch sử phiên bản" {
 - **Bộ lõi ngừng sử dụng một giá trị.** Hệ thống phát hiện các Sự kiện trọng yếu bị ảnh hưởng và xử lý theo QT-31.
 - **Trung ương ngừng áp dụng.** Các đơn vị 2B đã kế thừa được thông báo; sự kiện của 2B không bị tự động ngừng.
 
-**Câu chuyện người dùng**
-- Là lãnh đạo phê duyệt, tôi muốn ngừng áp dụng một Sự kiện trọng yếu không còn phù hợp, và hẹn ngày ngừng cho khớp văn bản.
-- Là cán bộ tiêu chuẩn, tôi muốn được cảnh báo khi bộ lõi ngừng sử dụng giá trị mà Sự kiện trọng yếu của tôi đang dùng.
-- Là cán bộ cấp địa phương, tôi muốn được báo khi trung ương ngừng áp dụng sự kiện mà địa phương đang kế thừa.
+**Yêu cầu người sử dụng**
+
+- **US-29** — Là lãnh đạo phê duyệt, tôi muốn ngừng áp dụng một Sự kiện trọng yếu không còn phù hợp, và hẹn ngày ngừng cho khớp văn bản.
+- **US-30** — Là cán bộ tiêu chuẩn, tôi muốn được cảnh báo khi bộ lõi ngừng sử dụng giá trị mà Sự kiện trọng yếu của tôi đang dùng.
+- **US-31** — Là cán bộ cấp địa phương, tôi muốn được báo khi trung ương ngừng áp dụng sự kiện mà địa phương đang kế thừa.
 
 #### Luồng chính — LC-10: Ngừng áp dụng chủ động
 
@@ -1415,7 +1425,7 @@ project "Lịch sử phiên bản" {
 
 ![Sơ đồ swimlane: Ngừng áp dụng chủ động — luồng chính](swimlane/sl-19.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-19.drawio](swimlane/sl-19.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Luồng thay thế và ngoại lệ
 
@@ -1433,7 +1443,7 @@ project "Lịch sử phiên bản" {
 
 ![Sơ đồ swimlane: Bộ lõi ngừng sử dụng một giá trị, hẹn ngày ngừng — luồng thay thế](swimlane/sl-20.svg)
 
-*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io: [swimlane/sl-20.drawio](swimlane/sl-20.drawio)*
+*Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
 #### Wireframe
 
@@ -1532,7 +1542,7 @@ Hệ thống ghi nhật ký mọi thao tác; nhật ký lưu vĩnh viễn, khôn
 
 ## 11. Điều kiện sẵn sàng (DoR)
 
-- [ ] Quản lý sản phẩm đã duyệt câu chuyện người dùng, bảng đặc tả luồng, sơ đồ swimlane và wireframe của tính năng.
+- [ ] Quản lý sản phẩm đã duyệt yêu cầu người sử dụng, bảng đặc tả luồng, sơ đồ swimlane và wireframe của tính năng.
 - [ ] Đơn vị chủ trì dự án đã xác nhận các nội dung liên quan đến tính năng.
 - [ ] Chuyên gia nghiệp vụ đã duyệt bảng gợi ý, bảng ràng buộc theo loại sự kiện (5.3) và bảng chỉ thêm chặt (7.6).
 - [ ] Chức năng phụ thuộc (mục 10) đã sẵn sàng hoặc có dữ liệu giả lập thống nhất.
