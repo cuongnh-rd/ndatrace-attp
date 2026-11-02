@@ -526,7 +526,7 @@ Mỗi tính năng gồm:
 
 **Sơ đồ swimlane: Tạo và lưu nháp Sự kiện trọng yếu — luồng chính**
 
-![Sơ đồ swimlane: Tạo và lưu nháp Sự kiện trọng yếu — luồng chính](swimlane/sl-01.svg)
+![Sơ đồ swimlane: Tạo và lưu nháp Sự kiện trọng yếu — luồng chính](swimlane-mermaid/sl-01.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -554,7 +554,7 @@ Mỗi tính năng gồm:
 
 **Sơ đồ swimlane: Tạo Sự kiện trọng yếu — luồng thay thế và ngoại lệ**
 
-![Sơ đồ swimlane: Tạo Sự kiện trọng yếu — luồng thay thế và ngoại lệ](swimlane/sl-02.svg)
+![Sơ đồ swimlane: Tạo Sự kiện trọng yếu — luồng thay thế và ngoại lệ](swimlane-mermaid/sl-02.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -682,7 +682,7 @@ project "Tạo Sự kiện trọng yếu - bước 6" {
 
 **Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng chính**
 
-![Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng chính](swimlane/sl-03.svg)
+![Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng chính](swimlane-mermaid/sl-03.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -696,7 +696,7 @@ project "Tạo Sự kiện trọng yếu - bước 6" {
 
 **Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng thay thế và ngoại lệ**
 
-![Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng thay thế và ngoại lệ](swimlane/sl-04.svg)
+![Sơ đồ swimlane: Khai báo thẩm quyền và phạm vi — luồng thay thế và ngoại lệ](swimlane-mermaid/sl-04.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -780,7 +780,7 @@ project "Thẩm quyền và phạm vi" {
 
 **Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng chính**
 
-![Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng chính](swimlane/sl-05.svg)
+![Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng chính](swimlane-mermaid/sl-05.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -795,7 +795,7 @@ project "Thẩm quyền và phạm vi" {
 
 **Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng thay thế và ngoại lệ**
 
-![Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng thay thế và ngoại lệ](swimlane/sl-06.svg)
+![Sơ đồ swimlane: Tra cứu và xem chi tiết — luồng thay thế và ngoại lệ](swimlane-mermaid/sl-06.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -878,7 +878,7 @@ project "Danh sách Sự kiện trọng yếu" {
 
 **Sơ đồ swimlane: Sửa bản nháp — luồng chính**
 
-![Sơ đồ swimlane: Sửa bản nháp — luồng chính](swimlane/sl-07.svg)
+![Sơ đồ swimlane: Sửa bản nháp — luồng chính](swimlane-mermaid/sl-07.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -894,7 +894,7 @@ project "Danh sách Sự kiện trọng yếu" {
 
 **Sơ đồ swimlane: Sửa bản nháp — luồng thay thế và ngoại lệ**
 
-![Sơ đồ swimlane: Sửa bản nháp — luồng thay thế và ngoại lệ](swimlane/sl-08.svg)
+![Sơ đồ swimlane: Sửa bản nháp — luồng thay thế và ngoại lệ](swimlane-mermaid/sl-08.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -973,7 +973,7 @@ project "Kế thừa cấp trung ương" {
 
 **Sơ đồ swimlane: Xoá bản nháp — luồng chính**
 
-![Sơ đồ swimlane: Xoá bản nháp — luồng chính](swimlane/sl-09.svg)
+![Sơ đồ swimlane: Xoá bản nháp — luồng chính](swimlane-mermaid/sl-09.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -988,7 +988,7 @@ project "Kế thừa cấp trung ương" {
 
 **Sơ đồ swimlane: Xoá bản nháp — luồng thay thế và ngoại lệ**
 
-![Sơ đồ swimlane: Xoá bản nháp — luồng thay thế và ngoại lệ](swimlane/sl-10.svg)
+![Sơ đồ swimlane: Xoá bản nháp — luồng thay thế và ngoại lệ](swimlane-mermaid/sl-10.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -1043,7 +1043,7 @@ project "Kế thừa cấp trung ương" {
 
 **Sơ đồ swimlane: Sao chép từ thư viện mẫu quốc gia — luồng chính**
 
-![Sơ đồ swimlane: Sao chép từ thư viện mẫu quốc gia — luồng chính](swimlane/sl-11.svg)
+![Sơ đồ swimlane: Sao chép từ thư viện mẫu quốc gia — luồng chính](swimlane-mermaid/sl-11.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -1059,7 +1059,7 @@ project "Kế thừa cấp trung ương" {
 
 **Sơ đồ swimlane: Kế thừa Sự kiện trọng yếu cấp trung ương và các ngoại lệ**
 
-![Sơ đồ swimlane: Kế thừa Sự kiện trọng yếu cấp trung ương và các ngoại lệ](swimlane/sl-12.svg)
+![Sơ đồ swimlane: Kế thừa Sự kiện trọng yếu cấp trung ương và các ngoại lệ](swimlane-mermaid/sl-12.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -1109,7 +1109,7 @@ project "Kế thừa cấp trung ương" {
 
 **Sơ đồ swimlane: Trình phê duyệt — luồng chính**
 
-![Sơ đồ swimlane: Trình phê duyệt — luồng chính](swimlane/sl-13.svg)
+![Sơ đồ swimlane: Trình phê duyệt — luồng chính](swimlane-mermaid/sl-13.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -1125,7 +1125,7 @@ project "Kế thừa cấp trung ương" {
 
 **Sơ đồ swimlane: Kiểm tra, rút lại bản trình — luồng thay thế và ngoại lệ**
 
-![Sơ đồ swimlane: Kiểm tra, rút lại bản trình — luồng thay thế và ngoại lệ](swimlane/sl-14.svg)
+![Sơ đồ swimlane: Kiểm tra, rút lại bản trình — luồng thay thế và ngoại lệ](swimlane-mermaid/sl-14.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -1215,7 +1215,7 @@ Phần này cũng mô tả luồng hệ thống tự chuyển trạng thái khi 
 
 **Sơ đồ swimlane: Phê duyệt và công bố — luồng chính**
 
-![Sơ đồ swimlane: Phê duyệt và công bố — luồng chính](swimlane/sl-15.svg)
+![Sơ đồ swimlane: Phê duyệt và công bố — luồng chính](swimlane-mermaid/sl-15.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -1240,7 +1240,7 @@ Phần này cũng mô tả luồng hệ thống tự chuyển trạng thái khi 
 
 **Sơ đồ swimlane: Trả lại, huỷ chờ áp dụng, tự chuyển trạng thái — luồng thay thế và ngoại lệ**
 
-![Sơ đồ swimlane: Trả lại, huỷ chờ áp dụng, tự chuyển trạng thái — luồng thay thế và ngoại lệ](swimlane/sl-16.svg)
+![Sơ đồ swimlane: Trả lại, huỷ chờ áp dụng, tự chuyển trạng thái — luồng thay thế và ngoại lệ](swimlane-mermaid/sl-16.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -1323,7 +1323,7 @@ project "Phê duyệt" {
 
 **Sơ đồ swimlane: Tạo phiên bản mới — luồng chính**
 
-![Sơ đồ swimlane: Tạo phiên bản mới — luồng chính](swimlane/sl-17.svg)
+![Sơ đồ swimlane: Tạo phiên bản mới — luồng chính](swimlane-mermaid/sl-17.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -1338,7 +1338,7 @@ project "Phê duyệt" {
 
 **Sơ đồ swimlane: Chọn bản gốc, so sánh phiên bản — luồng thay thế và ngoại lệ**
 
-![Sơ đồ swimlane: Chọn bản gốc, so sánh phiên bản — luồng thay thế và ngoại lệ](swimlane/sl-18.svg)
+![Sơ đồ swimlane: Chọn bản gốc, so sánh phiên bản — luồng thay thế và ngoại lệ](swimlane-mermaid/sl-18.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -1423,7 +1423,7 @@ project "Lịch sử phiên bản" {
 
 **Sơ đồ swimlane: Ngừng áp dụng chủ động — luồng chính**
 
-![Sơ đồ swimlane: Ngừng áp dụng chủ động — luồng chính](swimlane/sl-19.svg)
+![Sơ đồ swimlane: Ngừng áp dụng chủ động — luồng chính](swimlane-mermaid/sl-19.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
@@ -1441,7 +1441,7 @@ project "Lịch sử phiên bản" {
 
 **Sơ đồ swimlane: Bộ lõi ngừng sử dụng một giá trị, hẹn ngày ngừng — luồng thay thế**
 
-![Sơ đồ swimlane: Bộ lõi ngừng sử dụng một giá trị, hẹn ngày ngừng — luồng thay thế](swimlane/sl-20.svg)
+![Sơ đồ swimlane: Bộ lõi ngừng sử dụng một giá trị, hẹn ngày ngừng — luồng thay thế](swimlane-mermaid/sl-20.png)
 
 *Sơ đồ swimlane — tệp chỉnh sửa trên Draw.io:*
 
