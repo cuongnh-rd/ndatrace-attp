@@ -140,7 +140,7 @@ Mỗi quy trình ban hành qua phân hệ đáp ứng đủ yêu cầu của Quy
 | 3   | Yêu cầu ngành (vùng nuôi, kiểm dịch…) không có chỗ đặt mà không làm thay đổi Sự kiện trọng yếu dùng chung. | Phải nhân bản Sự kiện trọng yếu cho từng ngành. | Trường thông tin bổ sung ngành đặt ở cấp quy trình, không sửa sự kiện gốc. |
 | 4   | Không phân biệt dữ liệu quản lý và dữ liệu công khai. | Lộ bí mật kinh doanh, hoặc người tiêu dùng thấy quá ít. | Mức công khai đặt theo từng trường thông tin trong từng quy trình. |
 | 5   | Sự kiện trọng yếu thay đổi phiên bản trong khi quy trình đang áp dụng. | Quy trình tự thay đổi ngầm; doanh nghiệp bị "đổi luật giữa chừng". | Quy trình cố định phiên bản sự kiện; chỉ cập nhật qua phiên bản quy trình mới có ngày áp dụng. |
-| 6   | Trùng lặp quy trình cho cùng ngành hàng. | Doanh nghiệp không biết theo quy trình nào. | Cảnh báo trùng GPC Class; ưu tiên tạo phiên bản mới. |
+| 6   | Trùng lặp quy trình cho cùng ngành hàng trong một cơ quan; hoặc nhiều cơ quan cùng quản lý một ngành hàng ở các công đoạn khác nhau mà không biết quy trình của nhau. | Doanh nghiệp không biết theo quy trình nào; các cơ quan ban hành chồng chéo công đoạn. | Cảnh báo trùng GPC Class trong cùng cơ quan, ưu tiên tạo phiên bản mới; hiển thị thông tin tham khảo quy trình của cơ quan khác cùng ngành hàng. |
 
 ### 1.4. Nguyên tắc thiết kế
 
@@ -248,7 +248,7 @@ Ba lớp đối tượng liên quan:
 | Đang áp dụng | Đang có hiệu lực | Có hiệu lực | Xanh lá | Đơn vị sở hữu, 2B cùng ngành, đơn vị 2A khác, Cấp 1, Cấp 3 | **Có** | Không / Không |
 | Ngừng áp dụng | Hết hiệu lực, bị thay thế, bị huỷ | Hết hiệu lực / thay thế | Xám | Đơn vị sở hữu, Cấp 1 | Không dùng cho bản ghi mới; vẫn dùng để kiểm tra bản ghi cũ | Không / Không |
 
-**Giới hạn đồng thời:** với mỗi mã quy trình, tại một thời điểm, có tối đa 1 phiên bản Đang áp dụng, 1 phiên bản Chờ áp dụng, 1 phiên bản đang soạn (Nháp hoặc Chờ phê duyệt). Với mỗi GPC Class trong một đơn vị, khuyến nghị một quy trình Đang áp dụng (cảnh báo, không chặn — QQ-04).
+**Giới hạn đồng thời:** với mỗi mã quy trình, tại một thời điểm, có tối đa 1 phiên bản Đang áp dụng, 1 phiên bản Chờ áp dụng, 1 phiên bản đang soạn (Nháp hoặc Chờ phê duyệt). Với mỗi GPC Class trong **một cơ quan cấp 2**, khuyến nghị một quy trình Đang áp dụng (cảnh báo, không chặn — QQ-04). Giữa các cơ quan cấp 2 khác nhau, một GPC Class có thể có nhiều quy trình, mỗi quy trình bao các công đoạn thuộc thẩm quyền của cơ quan ban hành.
 
 Phiên bản đã Ngừng áp dụng **không được kích hoạt lại**. Muốn dùng lại, cán bộ tạo phiên bản mới từ phiên bản đó và trình duyệt như bình thường.
 
@@ -333,7 +333,7 @@ Mỗi quy tắc được viết với đầy đủ chủ thể và hành động
 
 **QQ-03. Căn cứ ban hành.** **Cán bộ tiêu chuẩn** phải khai báo căn cứ ban hành trước khi trình phê duyệt. **Hệ thống** chặn trình khi thiếu.
 
-**QQ-04. Cảnh báo trùng ngành hàng.** Khi **cán bộ tiêu chuẩn** tạo quy trình cho GPC Class đã có quy trình Đang áp dụng, Chờ áp dụng hoặc đang soạn trong cùng đơn vị, **hệ thống** cảnh báo, gợi ý tạo phiên bản mới, và chỉ cho tiếp tục khi cán bộ xác nhận và nhập lý do.
+**QQ-04. Cảnh báo trùng ngành hàng trong một cơ quan cấp 2.** Phạm vi kiểm tra trùng là **một cơ quan quản lý cấp 2 (một đơn vị)**. Khi **cán bộ tiêu chuẩn** tạo quy trình cho GPC Class mà chính đơn vị đã có quy trình Đang áp dụng, Chờ áp dụng hoặc đang soạn, **hệ thống** cảnh báo, gợi ý tạo phiên bản mới, và chỉ cho tiếp tục khi cán bộ xác nhận và nhập lý do. Nhiều cơ quan cấp 2 khác nhau được cùng ban hành quy trình cho một GPC Class, vì mỗi cơ quan quản lý các công đoạn khác nhau của chuỗi (ví dụ cơ quan quản lý nuôi trồng và cơ quan quản lý chế biến, lưu thông); trường hợp này **hệ thống** không cảnh báo, chỉ hiển thị thông tin tham khảo các quy trình của cơ quan khác.
 
 **QQ-05. Tách người soạn và người phê duyệt.** **Hệ thống** không cho phép một người dùng phê duyệt bản do chính mình soạn, trình hoặc đề xuất, kể cả khi được giao cả hai vai trò.
 
@@ -400,7 +400,7 @@ Mỗi quy tắc được viết với đầy đủ chủ thể và hành động
 - Khi Sự kiện trọng yếu có **phiên bản mới được công bố**, **hệ thống** gắn nhãn "Có phiên bản mới" trên mọi quy trình đang dùng, thông báo đơn vị sở hữu quy trình; không tự cập nhật.
 - Khi phiên bản sự kiện đang gắn **chuyển Ngừng áp dụng**, **hệ thống** giữ hiệu lực của quy trình Đang áp dụng, Chờ áp dụng, gắn cảnh báo "Đang dùng phiên bản sự kiện đã ngừng"; đánh dấu lỗi trên bản Nháp, Chờ phê duyệt, chặn trình và chặn phê duyệt.
 - Khi **quản trị nền tảng quốc gia** ngừng một GPC Class hoặc trường thông tin đang được dùng, **hệ thống** xử lý tương tự: bản đã công bố giữ hiệu lực kèm cảnh báo; bản đang soạn bị đánh lỗi.
-- **Phân hệ Sự kiện trọng yếu** hỏi phân hệ này trước khi cho xoá bản nháp sự kiện hoặc ngừng áp dụng chủ động sự kiện; **hệ thống** trả về danh sách quy trình đang chứa sự kiện.
+- **Phân hệ Sự kiện trọng yếu** hỏi phân hệ này trước khi cho xoá bản nháp sự kiện hoặc ngừng áp dụng chủ động sự kiện; **hệ thống** trả về danh sách quy trình đang chứa sự kiện kèm trạng thái. Phân hệ đó chặn xoá nếu sự kiện nằm trong bất kỳ quy trình nào, chặn ngừng áp dụng nếu sự kiện nằm trong quy trình Đang áp dụng.
 - **Hệ thống** không tự sửa nội dung của bất kỳ phiên bản quy trình đã công bố nào.
 
 ---
@@ -417,7 +417,7 @@ Mỗi tính năng được đặc tả chi tiết ở **một trang con riêng**
 
 | Mục | Tính năng (trang con) | Nội dung chính | Luồng chính | Tác nhân chính | Quy tắc chính |
 | --- | --- | --- | --- | --- | --- |
-| 7.1 | Tạo khung quy trình | Tạo quy trình gắn GPC Class, nhập tên, mô tả, đối tượng, căn cứ; cảnh báo trùng ngành | LQ-01: Tạo khung quy trình | Cán bộ tiêu chuẩn 2A | QQ-01 → QQ-04 |
+| 7.1 | Tạo khung quy trình | Tạo quy trình gắn GPC Class, nhập tên, mô tả, đối tượng, căn cứ; cảnh báo trùng ngành trong cùng cơ quan cấp 2, tham khảo quy trình của cơ quan khác | LQ-01: Tạo khung quy trình | Cán bộ tiêu chuẩn 2A | QQ-01 → QQ-04 |
 | 7.2 | Cấu hình danh sách sự kiện | Thêm sự kiện có sẵn, tạo mới trong luồng, nhập từ quy trình khác; sắp xếp; bắt buộc / tuỳ chọn | LQ-02: Thêm sự kiện có sẵn và sắp xếp | Cán bộ tiêu chuẩn 2A; phân hệ Sự kiện trọng yếu | QQ-06 → QQ-12 |
 | 7.3 | Cấu hình trường thông tin và mức công khai | Thêm, bớt, nâng mức trường; đặt Công khai / Chỉ phục vụ quản lý; xem trước như người tiêu dùng | LQ-03: Cấu hình trường thông tin của một sự kiện | Cán bộ tiêu chuẩn 2A | QQ-13 → QQ-19 |
 | 7.4 | Xem và tra cứu Quy trình tiêu chuẩn TXNG | Danh sách, bộ lọc theo cây GPC, chi tiết, tra theo ngày hiệu lực, xuất tệp | LQ-04: Tra cứu và xem chi tiết | Cán bộ, lãnh đạo, 2B, quản trị Cấp 1 | 4.4, QQ-28 |
@@ -437,7 +437,7 @@ Tệp `.drawio` của các sơ đồ swimlane được lưu ở repo `cuongnh-rd
 | --- | --- | --- | --- |
 | TB-Q01 | Trùng tên | Cán bộ | Tên quy trình đã tồn tại trong đơn vị. Vui lòng đặt tên khác. |
 | TB-Q02 | Không có quyền | Người dùng | Chỉ cán bộ tiêu chuẩn cấp trung ương được tạo Quy trình tiêu chuẩn TXNG trong giai đoạn này. |
-| TB-Q03 | Trùng ngành hàng | Cán bộ | Ngành hàng "\[Class\]" đã có quy trình "\[tên\]" (\[trạng thái\]). Nên tạo phiên bản mới cho quy trình này. |
+| TB-Q03 | Trùng ngành hàng trong đơn vị | Cán bộ | Đơn vị của bạn đã có quy trình "\[tên\]" (\[trạng thái\]) cho ngành hàng "\[Class\]". Nên tạo phiên bản mới cho quy trình này. |
 | TB-Q04 | Thứ tự bất hợp lý | Cán bộ | Sự kiện "\[x\]" (\[hành động\]) đang đứng trước "\[y\]". Vui lòng kiểm tra lại thứ tự. |
 | TB-Q05 | Thiếu sự kiện bắt buộc | Cán bộ | Quy trình phải có ít nhất 1 sự kiện bắt buộc. |
 | TB-Q06 | Sự kiện không còn hiệu lực | Cán bộ | Sự kiện "\[x\]" không còn ở trạng thái Đang áp dụng. |
@@ -486,7 +486,7 @@ Hệ thống ghi nhật ký mọi thao tác; nhật ký lưu vĩnh viễn, khôn
 | Cần dữ liệu từ | Duy trì danh mục, từ điển dữ liệu và quan hệ ánh xạ dùng chung | Cấp 1 | Cây GPC; thư viện trường thông tin; ràng buộc theo loại sự kiện |
 | Cần dữ liệu từ | Quản lý bộ quy tắc ngành, chương trình và thị trường | Cấp 2 | Căn cứ, phạm vi ngành |
 | Cần dữ liệu từ | Quản lý phạm vi thẩm quyền, vai trò và tư cách chuyên ngành | Cấp 2 | Nhóm 2A, ngành được giao, người có quyền phê duyệt |
-| Hai chiều | Quản lý Sự kiện trọng yếu | Cấp 2 | Phân hệ đó hỏi phân hệ này trước khi xoá bản nháp, ngừng áp dụng sự kiện |
+| Hai chiều | Quản lý Sự kiện trọng yếu | Cấp 2 | Phân hệ đó hỏi phân hệ này trước khi xoá bản nháp (chặn nếu sự kiện nằm trong bất kỳ quy trình nào) và trước khi ngừng áp dụng sự kiện (chặn nếu nằm trong quy trình Đang áp dụng) |
 | Cần được báo từ | Ngừng sử dụng giá trị trong bộ lõi | Cấp 1 | Gắn lỗi, cảnh báo |
 | Cung cấp đầu ra cho | Quản lý danh mục tham chiếu sự kiện trọng yếu và trường thông tin | Cấp 1 | Phiên bản quy trình đã công bố, kèm cờ công khai |
 | Cung cấp đầu ra cho | Cấu hình công cụ hỗ trợ định danh, sự kiện trọng yếu và bằng chứng | Cấp 3 | Quy trình có cấu trúc, ngày áp dụng, quy tắc chuyển tiếp |
