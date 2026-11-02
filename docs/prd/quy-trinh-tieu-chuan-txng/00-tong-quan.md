@@ -13,24 +13,6 @@
 | Trạng thái | Hoạt động |
 | Căn cứ | Nghị định 37/2025/NĐ-CP; NDATrace Quyển 2 — Khung nghiệp vụ dùng chung (bản 4.2.0); NDATrace Quyển 3 — Khung chức năng nghiệp vụ (bản 4.3.2); chuẩn sự kiện truy xuất quốc tế GS1 EPCIS 2.0, bộ từ vựng nghiệp vụ CBV 2.0; bộ phân loại sản phẩm toàn cầu GS1 GPC |
 
-### Mục lục
-
-| Mục | Nội dung |
-| --- | --- |
-| 0   | Thuật ngữ và đối chiếu với kiến trúc nghiệp vụ — 0.1 Thuật ngữ · 0.2 Đối chiếu mô hình năm cấp · 0.3 Vị trí phân hệ |
-| 1   | Tổng quan — 1.1 Bối cảnh · 1.2 Mục đích · 1.3 Vấn đề cần giải quyết · 1.4 Nguyên tắc thiết kế |
-| 2   | Người dùng và vai trò |
-| 3   | Phạm vi — 3.1 Trong phạm vi · 3.2 Ngoài phạm vi |
-| 4   | Mô hình nghiệp vụ — 4.1 Thông tin Quy trình · 4.2 Sự kiện trong quy trình · 4.3 Vòng đời trạng thái · 4.4 Phân quyền |
-| 5   | Quy định cấu hình — 5.1 Ngành hàng · 5.2 Danh sách sự kiện · 5.3 Trường thông tin và mức công khai |
-| 6   | Quy tắc nghiệp vụ (QQ-01 → QQ-30) |
-| 7   | Đặc tả tính năng — tổng hợp; chi tiết từng tính năng 7.1 → 7.9 nằm ở các trang con của trang này |
-| 8   | Danh mục thông báo |
-| 9   | Nhật ký thao tác |
-| 10  | Phụ thuộc |
-| 11  | Điều kiện sẵn sàng (DoR) |
-| 12  | Điều kiện hoàn thành (DoD) |
-
 ---
 
 ## 0. Thuật ngữ và đối chiếu với kiến trúc nghiệp vụ
