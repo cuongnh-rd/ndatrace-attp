@@ -1,10 +1,8 @@
 # Đề xuất cơ hội kinh doanh C3P Premier trong ngành thuốc và thiết bị y tế
 
-**Tài liệu đề xuất quyết định · Cập nhật 17/11/2026 · Thay thế cách trình bày của báo cáo nghiên cứu sơ bộ cùng ngày**
+**Tài liệu đề xuất quyết định · Cập nhật 17/11/2026**
 
-Quy ước độ tin cậy: **[Có nguồn]** là số liệu hoặc sự kiện có nguồn công khai nêu rõ. **[Thứ cấp]** là nguồn báo chí hoặc trang tổng hợp, chưa đối chiếu văn bản hay báo cáo gốc. **[Giả định]** là con số tôi đặt ra để tính toán, không phải dữ kiện. **[Chưa xác minh]** là nhận định chưa có bằng chứng.
-
-Các dữ liệu nội bộ tôi không có và đã để trống hoặc ghi giả định: đặc tả của trace3, nguồn gốc của mức tham chiếu 25 tỷ/năm (tôi không biết là doanh thu mỗi khách hàng hay tổng doanh thu, nên tính cả hai cách ở mục 6), thỏa thuận phí công nghệ giữa C3P và PILA, và mọi thông tin tiếp cận khách hàng.
+Các nội dung đánh dấu **[Giả định]** là số đặt ra để tính toán, chưa có dữ liệu nội bộ để kiểm chứng: đặc tả của trace3, nguồn gốc mức tham chiếu 25 tỷ/năm (chưa rõ là doanh thu mỗi khách hàng hay tổng doanh thu, nên mục 6 tính cả hai cách), thỏa thuận phí công nghệ giữa C3P và PILA, và thông tin tiếp cận khách hàng.
 
 ---
 
@@ -36,30 +34,30 @@ Các con số lớn dưới đây là quy mô ngành. **Không số nào là th�
 | --- | --- | --- |
 | Khách hàng | Tập đoàn có ERP/WMS riêng, nhiều kho, ngân sách công nghệ thông tin riêng | Nhà bán buôn nhỏ, nhà thuốc lẻ, dùng phần mềm bán hàng thông dụng |
 | Cách cung cấp | Xây hệ thống riêng, tích hợp trace3 và ERP/WMS, hợp đồng riêng | Nền tảng dùng chung, đăng ký số lượng lớn, giá thấp |
-| Quy mô nhóm | Chưa biết, ước lượng ở mục 2.4 | Khoảng 8.000 nhà bán buôn, hơn 95.600 điểm bán lẻ **[Thứ cấp]** |
-| Doanh thu mỗi khách hàng | Hàng tỷ đồng/năm **[Giả định]** | Vài triệu đến vài chục triệu đồng/năm **[Chưa xác minh]** |
+| Quy mô nhóm | Chưa biết, ước lượng ở mục 2.4 | Khoảng 8.000 nhà bán buôn, hơn 95.600 điểm bán lẻ |
+| Doanh thu mỗi khách hàng | Hàng tỷ đồng/năm **[Giả định]** | Vài triệu đến vài chục triệu đồng/năm |
 
 ## 2.2 Kim ngạch và cơ cấu thị trường
 
 | Chỉ tiêu | Số liệu | Nguồn và nhận xét |
 | --- | --- | --- |
-| Thị trường thuốc 2025 | Khoảng 7 đến 8 tỷ USD (IMARC 7,98 tỷ). Một nguồn dẫn IQVIA 8,88 tỷ USD năm 2024 | [IMARC](https://www.imarcgroup.com/vietnam-pharmaceuticals-market). Các nguồn lệch nhau, không dùng làm số chính xác. **[Thứ cấp]** |
-| **Nhập khẩu dược phẩm 2025** | **Gần 4,3 tỷ USD, giảm 2,4%** so với 2024 | Số sơ bộ của Cục Hải quan, qua [Vinanet](https://vinanet.vn/thuong-mai-cha/kim-ngach-nhap-khau-duoc-pham-nam-2025-tri-gia-gan-43-ty-usd-805364.html). **[Có nguồn]** |
-| Cơ cấu nguồn nhập khẩu | EU 54,3% (2,33 tỷ USD). Hoa Kỳ 12% (514,9 triệu USD). Pháp 11,3%, Đức 9,3%, Italia 7,2%, Ấn Độ 7,1% | Cùng nguồn trên, thứ hạng Hoa Kỳ và Pháp đổi chỗ tùy kỳ số liệu. Nguyên liệu dược chủ yếu từ Trung Quốc, Ấn Độ. **[Có nguồn]** |
-| Xuất khẩu dược phẩm 2025 | 312 triệu USD, hạng 4 Đông Nam Á | [The Investor](https://theinvestor.vn/vietnams-pharma-export-hits-312-mln-in-2025-ranking-4th-in-southeast-asia-d17991.html). **[Thứ cấp]** |
-| Thị trường TTBYT 2025 | Khoảng 1,77 tỷ USD, dự báo 2,89 tỷ USD năm 2031. Trên 90% nhập khẩu | [Vietnam Briefing](https://vietnam-briefing.com/news/vietnam-medical-devices-market-outlook-projections-insights.html), [Kenresearch](https://www.kenresearch.com/industry-reports/vietnam-medical-devices-industry.md). **[Thứ cấp]** |
-| Nhập khẩu TTBYT 2025 | **Không tìm được tổng kim ngạch.** Chỉ có 3 mã HS thiết bị bức xạ và máy CT: 140,3 triệu USD, gấp 4,6 lần năm 2022. Bài khác ghi 225,6 triệu USD cho cùng 3 mã | [Tiền Phong](https://tienphong.vn/tu-vu-an-cong-ty-viet-my-he-lo-thi-truong-nhap-khau-thiet-bi-y-te-tram-trieu-usd-post1877782.tpo). Hai số không khớp, nguồn không giải thích. **[Thứ cấp]** |
-| Giá trị trúng thầu của một doanh nghiệp (Việt Mỹ) | 246 gói trên 276 gói tham gia, tổng khoảng 5.947 tỷ đồng, giai đoạn 2018 đến 2026 | [Tuổi Trẻ](https://tuoitre.vn/vu-cong-ty-viet-my-va-mang-luoi-cong-ty-con-nang-gia-thuoc-va-thiet-bi-y-te-100260815151524353.htm), [Dân Việt](https://danviet.vn/vach-tran-he-sinh-thai-buon-lau-nang-khong-gia-thiet-bi-y-te-vua-khoi-to-so-tien-trung-thau-khung-gan-10000-ty-d1446368.html). Tiêu đề bài báo ghi gần 10.000 tỷ, nội dung chỉ ghi 5.947 tỷ. **[Thứ cấp]** |
+| Thị trường thuốc 2025 | Khoảng 7 đến 8 tỷ USD (IMARC 7,98 tỷ). Một nguồn dẫn IQVIA 8,88 tỷ USD năm 2024 | [IMARC](https://www.imarcgroup.com/vietnam-pharmaceuticals-market). Các nguồn lệch nhau, không dùng làm số chính xác. |
+| **Nhập khẩu dược phẩm 2025** | **Gần 4,3 tỷ USD, giảm 2,4%** so với 2024 | Số sơ bộ của Cục Hải quan, qua [Vinanet](https://vinanet.vn/thuong-mai-cha/kim-ngach-nhap-khau-duoc-pham-nam-2025-tri-gia-gan-43-ty-usd-805364.html). |
+| Cơ cấu nguồn nhập khẩu | EU 54,3% (2,33 tỷ USD). Hoa Kỳ 12% (514,9 triệu USD). Pháp 11,3%, Đức 9,3%, Italia 7,2%, Ấn Độ 7,1% | Cùng nguồn trên, thứ hạng Hoa Kỳ và Pháp đổi chỗ tùy kỳ số liệu. Nguyên liệu dược chủ yếu từ Trung Quốc, Ấn Độ. |
+| Xuất khẩu dược phẩm 2025 | 312 triệu USD, hạng 4 Đông Nam Á | [The Investor](https://theinvestor.vn/vietnams-pharma-export-hits-312-mln-in-2025-ranking-4th-in-southeast-asia-d17991.html). |
+| Thị trường TTBYT 2025 | Khoảng 1,77 tỷ USD, dự báo 2,89 tỷ USD năm 2031. Trên 90% nhập khẩu | [Vietnam Briefing](https://vietnam-briefing.com/news/vietnam-medical-devices-market-outlook-projections-insights.html), [Kenresearch](https://www.kenresearch.com/industry-reports/vietnam-medical-devices-industry.md). |
+| Nhập khẩu TTBYT 2025 | **Không tìm được tổng kim ngạch.** Chỉ có 3 mã HS thiết bị bức xạ và máy CT: 140,3 triệu USD, gấp 4,6 lần năm 2022. Bài khác ghi 225,6 triệu USD cho cùng 3 mã | [Tiền Phong](https://tienphong.vn/tu-vu-an-cong-ty-viet-my-he-lo-thi-truong-nhap-khau-thiet-bi-y-te-tram-trieu-usd-post1877782.tpo). Hai số không khớp, nguồn không giải thích. |
+| Giá trị trúng thầu của một doanh nghiệp (Việt Mỹ) | 246 gói trên 276 gói tham gia, tổng khoảng 5.947 tỷ đồng, giai đoạn 2018 đến 2026 | [Tuổi Trẻ](https://tuoitre.vn/vu-cong-ty-viet-my-va-mang-luoi-cong-ty-con-nang-gia-thuoc-va-thiet-bi-y-te-100260815151524353.htm), [Dân Việt](https://danviet.vn/vach-tran-he-sinh-thai-buon-lau-nang-khong-gia-thiet-bi-y-te-vua-khoi-to-so-tien-trung-thau-khung-gan-10000-ty-d1446368.html). Tiêu đề bài báo ghi gần 10.000 tỷ, nội dung chỉ ghi 5.947 tỷ. |
 
 ## 2.3 Cơ cấu người chơi
 
 | Khâu | Cấu trúc | Hệ quả cho C3P |
 | --- | --- | --- |
-| Phân phối thuốc | Nhà phân phối nước ngoài chiếm khoảng 67%, trong nước khoảng 33% (số khoảng 2022). Ba nhà bán buôn lớn nhất, đều là nước ngoài, giữ khoảng 40% theo một phân tích cũ. Danh sách nhắc tới Zuellig, DKSH, Diethelm, Mega Products | [DI-GEST](https://www.dreamincubator.co.jp/wp-content/uploads/2022/02/DIV_Pharmaceutical-Vietnam.pdf), [VietNamNet](https://vietnamnet.vn/en/alliances-aim-to-control-drug-distribution-market-E199978.html). **Số cũ, cần cập nhật.** **[Thứ cấp]** |
-| Bán lẻ thuốc | FPT Long Châu có 2.517 nhà thuốc quý I/2026, khoảng 16% thị phần cuối 2025 và gần 20% quý I/2026. An Khang 417, Pharmacity hơn 1.000. Hơn 95.600 điểm bán lẻ | [Diễn đàn Doanh nghiệp](https://diendandoanhnghiep.vn/buoc-tien-moi-cua-fpt-retail-frt-10161908.html), [Báo Pháp Luật](https://doanhnhan.baophapluat.vn/chuoi-nha-thuoc-long-chau-chiem-20-thi-phan-ganh-96-loi-nhuan-fpt-retail.html). Thị phần các nguồn lệch nhau. **[Thứ cấp]** |
-| Phân phối TTBYT | Trên 90% hàng nhập khẩu. Phân phối theo hãng, nhiều đơn vị tự giới thiệu là nhà phân phối độc quyền (GE, Siemens Healthineers, Getinge, Medtronic, Fujifilm). **Không có số liệu thị phần độc lập** | [VMED Group](https://vmedgroup.com/phan-phoi-thiet-bi-vat-tu-y-te/), [iMED](https://imed.com.vn/en/). Nguồn tự giới thiệu. **[Thứ cấp]** |
+| Phân phối thuốc | Nhà phân phối nước ngoài chiếm khoảng 67%, trong nước khoảng 33% (số khoảng 2022). Ba nhà bán buôn lớn nhất, đều là nước ngoài, giữ khoảng 40% theo một phân tích cũ. Danh sách nhắc tới Zuellig, DKSH, Diethelm, Mega Products | [DI-GEST](https://www.dreamincubator.co.jp/wp-content/uploads/2022/02/DIV_Pharmaceutical-Vietnam.pdf), [VietNamNet](https://vietnamnet.vn/en/alliances-aim-to-control-drug-distribution-market-E199978.html). **Số cũ, cần cập nhật.** |
+| Bán lẻ thuốc | FPT Long Châu có 2.517 nhà thuốc quý I/2026, khoảng 16% thị phần cuối 2025 và gần 20% quý I/2026. An Khang 417, Pharmacity hơn 1.000. Hơn 95.600 điểm bán lẻ | [Diễn đàn Doanh nghiệp](https://diendandoanhnghiep.vn/buoc-tien-moi-cua-fpt-retail-frt-10161908.html), [Báo Pháp Luật](https://doanhnhan.baophapluat.vn/chuoi-nha-thuoc-long-chau-chiem-20-thi-phan-ganh-96-loi-nhuan-fpt-retail.html). Thị phần các nguồn lệch nhau. |
+| Phân phối TTBYT | Trên 90% hàng nhập khẩu. Phân phối theo hãng, nhiều đơn vị tự giới thiệu là nhà phân phối độc quyền (GE, Siemens Healthineers, Getinge, Medtronic, Fujifilm). **Không có số liệu thị phần độc lập** | [VMED Group](https://vmedgroup.com/phan-phoi-thiet-bi-vat-tu-y-te/), [iMED](https://imed.com.vn/en/). Nguồn tự giới thiệu. |
 
-**Phát hiện cho ranh giới Premier và Mass.** Phân phối thuốc nhập khẩu tập trung ở đỉnh vào vài tập đoàn lớn, trong khi bán lẻ rất phân mảnh. Cấu trúc này khớp mô hình hai kênh: ít khách hàng lớn cho Premier, hàng chục nghìn điểm nhỏ cho Mass. Điểm khác với sầu riêng: chưa có bằng chứng người dẫn đầu của ngành này có nhu cầu chưa được đáp ứng, và cơ cấu 67% nước ngoài nghĩa là quyết định mua có thể nằm ngoài Việt Nam.
+**Phát hiện cho ranh giới Premier và Mass.** Phân phối thuốc nhập khẩu tập trung ở đỉnh vào vài tập đoàn lớn, trong khi bán lẻ rất phân mảnh. Cấu trúc này khớp mô hình hai kênh: ít khách hàng lớn cho Premier, hàng chục nghìn điểm nhỏ cho Mass. Chưa có bằng chứng người dẫn đầu của ngành này có nhu cầu chưa được đáp ứng, và cơ cấu 67% nước ngoài nghĩa là quyết định mua có thể nằm ngoài Việt Nam.
 
 ## 2.4 TAM, SAM, SOM cho riêng C3P
 
@@ -80,20 +78,20 @@ Công thức: số doanh nghiệp × ngân sách dịch vụ truy xuất. Số d
 
 **Nguyên tắc dùng bằng chứng.** Chỉ dùng bằng chứng từ chính ngành thuốc và TTBYT, đối với đúng nhóm khách hàng Premier. Không mượn bằng chứng từ ngành sữa, nông sản.
 
-| Điều khách hàng đang mất hoặc đối mặt | Bằng chứng | Mức độ bằng chứng |
+| Điều khách hàng đang mất hoặc đối mặt | Bằng chứng | Nhận định |
 | --- | --- | --- |
-| **Nghĩa vụ liên thông dữ liệu đã hiện hữu.** Phải khởi tạo dữ liệu từ 01/01/2026, đăng ký tài khoản định danh, kết nối theo đặc tả API | Quyết định 1867/QĐ-BYT ngày 24/06/2026, [Công văn 934/TTYQG-DA ngày 12/08/2026](https://www.misaeshop.vn/47067/cong-van-934-ttyqg-ban-hanh-ngay-12-08-2026) | **[Thứ cấp]** nghĩa vụ có. Khó khăn thực tế của tập đoàn **chưa kiểm chứng** |
-| **Rủi ro thu hồi** | Năm 2025, 82 lô thuốc vi phạm, 11 lô thu hồi. Thuốc không đạt chất lượng 0,60%, thuốc giả 0,024% ([VnEconomy](https://vneconomy.vn/nam-2025-da-xu-ly-82-lo-thuoc-vi-pham-thu-hoi-11-lo-tren-toan-quoc.htm)). Thông tư 30/2025/TT-BYT quy định Cục Quản lý Dược ra quyết định thu hồi trong 24 giờ kể từ khi nhận thông tin | **[Thứ cấp]**. **Tần suất thấp**, nên thiệt hại kỳ vọng của một doanh nghiệp nhỏ |
-| **Rủi ro bị xử phạt** | Nghị định 90/2026/NĐ-CP, hiệu lực 15/05/2026, mức tối đa chung 150 triệu đồng cá nhân, 300 triệu đồng tổ chức. Nhập khẩu thuốc hết hạn bị phạt tối đa khoảng 70 đến 80 triệu đồng. Phạt không liên thông bán lẻ: nguồn nêu 3 đến 5 triệu đồng, nguồn khác nêu 10 triệu đồng ([LuatVietnam](https://luatvietnam.vn/tin-van-ban-moi/tu-15-5-2026-nhap-khau-thuoc-het-han-su-dung-phat-den-80-trieu-dong-186-108804-article.html), [Cục Quản lý thị trường Sơn La](https://sonla.dms.gov.vn/en/tin-chi-tiet/-/chi-tiet/tang-cuong-xu-ly-vi-pham-hanh-chinh-trong-linh-vuc-y-te-theo-quy-dinh-tai-nghi-dinh-so-902026nd-cp-14363-2607.html)) | **[Thứ cấp]**. **Mức phạt nhỏ so với hợp đồng hàng tỷ đồng.** Tuân thủ đơn thuần không tạo ngân sách lớn |
-| **Rủi ro bị kéo vào vụ việc giá và nguồn gốc TTBYT** | Vụ Việt Mỹ: khởi tố ngày 24/07/2026, 9 bị can, mạng lưới 3 công ty Việt Nam, 5 Singapore, 3 Hồng Kông. Nâng khống giá 2 đến 3 lần. Thiệt hại bước đầu hơn 105 tỷ đồng, đã thu hồi 118,05 tỷ đồng và 261.000 USD ([Viettimes](https://viettimes.vn/cong-ty-viet-my-bi-nang-khong-gia-thiet-bi-y-te-2-3-lan-post206516.html), [VOV](http://vov.vn/phap-luat/bo-y-te-thong-tin-ve-vu-an-nang-khong-gia-thiet-bi-y-te-tai-cong-ty-viet-my-post1338182.vov)) | **[Thứ cấp]**. Đây là thiệt hại của Nhà nước, không phải của nhà phân phối khác. Giá trị với C3P là **tác động lên chính sách** |
-| **Điều kiện tham gia thị trường sắp tới** | Bộ Y tế nghiên cứu quản lý TTBYT gắn mã định danh, cơ sở dữ liệu quốc gia, niêm yết giá có UDI. Dự án Luật sửa 6 luật y tế (trình 21/10/2026) sửa Điều 113 về vòng đời và truy xuất. Lộ trình UDI 2028 và 2030 theo một bài báo ([Thẩm tra](https://xaydungchinhsach.chinhphu.vn/tham-tra-du-an-luat-sua-doi-bo-sung-mot-so-dieu-cua-6-luat-thuoc-linh-vuc-y-te-119261021101904205.htm), [Báo Đấu thầu](https://baodauthau.vn/hoi-nghi-doi-thoai-doanh-nghiep-thiet-bi-y-te-quyet-tam-khai-thong-nut-that-the-che-va-day-manh-so-hoa-post202654.html)) | **[Có nguồn]** chính sách đang vận động. Chưa là nghĩa vụ, chưa gắn đấu thầu |
-| **Yêu cầu của hãng sản xuất với nhà phân phối** (tương đương "yêu cầu của thị trường nhập khẩu") | Không tìm thấy | **[Chưa xác minh]**. Phải hỏi trực tiếp |
+| **Nghĩa vụ liên thông dữ liệu đã hiện hữu.** Phải khởi tạo dữ liệu từ 01/01/2026, đăng ký tài khoản định danh, kết nối theo đặc tả API | Quyết định 1867/QĐ-BYT ngày 24/06/2026, [Công văn 934/TTYQG-DA ngày 12/08/2026](https://www.misaeshop.vn/47067/cong-van-934-ttyqg-ban-hanh-ngay-12-08-2026) | Nghĩa vụ có. Khó khăn thực tế của tập đoàn chưa kiểm chứng |
+| **Rủi ro thu hồi** | Năm 2025, 82 lô thuốc vi phạm, 11 lô thu hồi. Thuốc không đạt chất lượng 0,60%, thuốc giả 0,024% ([VnEconomy](https://vneconomy.vn/nam-2025-da-xu-ly-82-lo-thuoc-vi-pham-thu-hoi-11-lo-tren-toan-quoc.htm)). Thông tư 30/2025/TT-BYT quy định Cục Quản lý Dược ra quyết định thu hồi trong 24 giờ kể từ khi nhận thông tin | **Tần suất thấp**, nên thiệt hại kỳ vọng của một doanh nghiệp nhỏ |
+| **Rủi ro bị xử phạt** | Nghị định 90/2026/NĐ-CP, hiệu lực 15/05/2026, mức tối đa chung 150 triệu đồng cá nhân, 300 triệu đồng tổ chức. Nhập khẩu thuốc hết hạn bị phạt tối đa khoảng 70 đến 80 triệu đồng. Phạt không liên thông bán lẻ: nguồn nêu 3 đến 5 triệu đồng, nguồn khác nêu 10 triệu đồng ([LuatVietnam](https://luatvietnam.vn/tin-van-ban-moi/tu-15-5-2026-nhap-khau-thuoc-het-han-su-dung-phat-den-80-trieu-dong-186-108804-article.html), [Cục Quản lý thị trường Sơn La](https://sonla.dms.gov.vn/en/tin-chi-tiet/-/chi-tiet/tang-cuong-xu-ly-vi-pham-hanh-chinh-trong-linh-vuc-y-te-theo-quy-dinh-tai-nghi-dinh-so-902026nd-cp-14363-2607.html)) | **Mức phạt nhỏ so với hợp đồng hàng tỷ đồng.** Tuân thủ đơn thuần không tạo ngân sách lớn |
+| **Rủi ro bị kéo vào vụ việc giá và nguồn gốc TTBYT** | Vụ Việt Mỹ: khởi tố ngày 24/07/2026, 9 bị can, mạng lưới 3 công ty Việt Nam, 5 Singapore, 3 Hồng Kông. Nâng khống giá 2 đến 3 lần. Thiệt hại bước đầu hơn 105 tỷ đồng, đã thu hồi 118,05 tỷ đồng và 261.000 USD ([Viettimes](https://viettimes.vn/cong-ty-viet-my-bi-nang-khong-gia-thiet-bi-y-te-2-3-lan-post206516.html), [VOV](http://vov.vn/phap-luat/bo-y-te-thong-tin-ve-vu-an-nang-khong-gia-thiet-bi-y-te-tai-cong-ty-viet-my-post1338182.vov)) | Đây là thiệt hại của Nhà nước, không phải của nhà phân phối khác. Giá trị với C3P là **tác động lên chính sách** |
+| **Điều kiện tham gia thị trường sắp tới** | Bộ Y tế nghiên cứu quản lý TTBYT gắn mã định danh, cơ sở dữ liệu quốc gia, niêm yết giá có UDI. Dự án Luật sửa 6 luật y tế (trình 21/10/2026) sửa Điều 113 về vòng đời và truy xuất. Lộ trình UDI 2028 và 2030 theo một bài báo ([Thẩm tra](https://xaydungchinhsach.chinhphu.vn/tham-tra-du-an-luat-sua-doi-bo-sung-mot-so-dieu-cua-6-luat-thuoc-linh-vuc-y-te-119261021101904205.htm), [Báo Đấu thầu](https://baodauthau.vn/hoi-nghi-doi-thoai-doanh-nghiep-thiet-bi-y-te-quyet-tam-khai-thong-nut-that-the-che-va-day-manh-so-hoa-post202654.html)) | Chính sách đang vận động. Chưa là nghĩa vụ, chưa gắn đấu thầu |
+| **Yêu cầu của hãng sản xuất với nhà phân phối** (tương đương "yêu cầu của thị trường nhập khẩu") | Không tìm thấy | Không tìm thấy bằng chứng, phải hỏi trực tiếp |
 
 **Vì sao giải pháp hiện tại chưa đủ.**
-- Hệ thống nhà nước còn hạn chế: tờ trình ngày 15/06/2026 của Bộ Y tế nhận định cổng dịch vụ công TTBYT (từ 2018) chỉ phục vụ một số chức năng và chưa có hệ thống đọc, xác thực, khai thác dữ liệu ([Tờ trình](https://imda.moh.gov.vn/documents/10182/10030600/Duthaototrinh.15.06.2026/db844d21-f1d8-493e-914e-130b24ab9812)) **[Có nguồn]**.
-- Doanh nghiệp bán lẻ lớn đã tự phát triển: FPT Retail xây lại hoàn toàn phần mềm quản lý hàng hóa cho Long Châu ([BNews](https://bnews.vn/fpt-retail-va-tham-vong-dan-dau-nganh-ban-le-duoc-pham/205279.html)) **[Thứ cấp]**. Không thấy bằng chứng họ cần bên thứ ba.
-- Doanh nghiệp nhỏ đã có phần mềm kết nối: Sapo có hướng dẫn đăng ký tài khoản hệ thống cơ sở dữ liệu dược **[Thứ cấp]**. Đây là kênh Mass và là đối thủ của VNChain, không phải của C3P.
-- Tập đoàn đa quốc gia có thể dùng hệ thống khu vực **[Chưa xác minh]**.
+- Hệ thống nhà nước còn hạn chế: tờ trình ngày 15/06/2026 của Bộ Y tế nhận định cổng dịch vụ công TTBYT (từ 2018) chỉ phục vụ một số chức năng và chưa có hệ thống đọc, xác thực, khai thác dữ liệu ([Tờ trình](https://imda.moh.gov.vn/documents/10182/10030600/Duthaototrinh.15.06.2026/db844d21-f1d8-493e-914e-130b24ab9812)).
+- Doanh nghiệp bán lẻ lớn đã tự phát triển: FPT Retail xây lại hoàn toàn phần mềm quản lý hàng hóa cho Long Châu ([BNews](https://bnews.vn/fpt-retail-va-tham-vong-dan-dau-nganh-ban-le-duoc-pham/205279.html)). Không thấy bằng chứng họ cần bên thứ ba.
+- Doanh nghiệp nhỏ đã có phần mềm kết nối: Sapo có hướng dẫn đăng ký tài khoản hệ thống cơ sở dữ liệu dược. Đây là kênh Mass và là đối thủ của VNChain, không phải của C3P.
+- Tập đoàn đa quốc gia có thể dùng hệ thống khu vực.
 
 **Nhận định thẳng.** Bằng chứng mạnh nhất nằm ở phía chính sách, không phải ở thiệt hại hiện tại của doanh nghiệp lớn. Nếu đề xuất này được bán như "giảm lô bị trả về" thì thiếu căn cứ: không tìm thấy dữ liệu lô thuốc hay TTBYT bị trả về hoặc giữ ở cửa khẩu vì thiếu truy xuất.
 
@@ -101,7 +99,7 @@ Công thức: số doanh nghiệp × ngân sách dịch vụ truy xuất. Số d
 
 # 4. Khách hàng mục tiêu có tên
 
-**Trạng thái chung: chưa liên hệ doanh nghiệp nào.** Cột "người ra quyết định" là vai trò dự kiến, không phải người đã xác nhận. Không có tên cá nhân nào được kiểm chứng.
+**Chưa liên hệ doanh nghiệp nào.** Cột "người ra quyết định" là vai trò dự kiến, không phải người đã xác nhận. Không có tên cá nhân nào được kiểm chứng.
 
 | Doanh nghiệp | Quy mô | Thị trường, kênh | Hệ thống hiện có | Người ra quyết định (vai trò dự kiến) | Phù hợp và rủi ro |
 | --- | --- | --- | --- | --- | --- |
@@ -113,24 +111,62 @@ Công thức: số doanh nghiệp × ngân sách dịch vụ truy xuất. Số d
 
 **Danh sách chờ.** Pharmacity (hơn 1.000 nhà thuốc, đang mở rộng lại sau tái cơ cấu theo [The Investor](https://theinvestor.vn/pharmacity-returns-to-expansion-after-turnaround-but-vietnams-pharmacy-market-has-changed-d19526.html)), iMED, VIMEC, nhà phân phối TTBYT hãng Nhật, Đức. **Chưa có tên nhà phân phối TTBYT nào có dữ liệu quy mô.**
 
-**Thứ tự ưu tiên tiếp cận [Ý kiến của tôi].** Zuellig Pharma (nếu có thẩm quyền địa phương), VMED Group, DKSH, Long Châu, Vimedimex. Long Châu để cuối vì khả năng tự làm, Vimedimex vì khả năng trả.
+**Thứ tự ưu tiên tiếp cận (đề xuất):** Zuellig Pharma (nếu có thẩm quyền địa phương), VMED Group, DKSH, Long Châu, Vimedimex. Long Châu để cuối vì khả năng tự làm, Vimedimex vì khả năng trả.
 
 ---
 
 # 5. Giải pháp và giá trị cung cấp
 
-**C3P làm gì.** (1) Xây hệ thống truy xuất riêng cho khách hàng trên nền Premier. (2) Tích hợp trace3 và ERP/WMS của khách hàng. (3) Đồng bộ dữ liệu đủ điều kiện lên hệ thống quốc gia: với thuốc là Hệ thống cơ sở dữ liệu về dược, với TTBYT là cơ sở dữ liệu thiết bị khi có. Phạm vi đồng bộ và trách nhiệm xử lý lỗi chốt trong hợp đồng. Tôi chưa có đặc tả trace3, nên phần tích hợp mô tả ở mức chức năng.
+**C3P làm gì.** (1) Xây hệ thống truy xuất riêng cho khách hàng trên nền Premier. (2) Tích hợp trace3 và ERP/WMS của khách hàng. (3) Đồng bộ dữ liệu đủ điều kiện lên hệ thống quốc gia: với thuốc là Hệ thống cơ sở dữ liệu về dược, với TTBYT là cơ sở dữ liệu thiết bị khi có. Phạm vi đồng bộ và trách nhiệm xử lý lỗi chốt trong hợp đồng. Đặc tả trace3 chưa có, nên phần tích hợp mô tả ở mức chức năng. Sơ đồ đọc từ trên xuống: mỗi cột là một bên, mũi tên ngang là bàn giao giữa các bên.
 
 ```mermaid
-flowchart LR
-    A["ERP và WMS của tập đoàn"] --> B["Hệ thống riêng của C3P Premier, tích hợp trace3"]
-    B --> C["Hệ thống quốc gia: cơ sở dữ liệu dược, cơ sở dữ liệu TTBYT, Nền tảng truy xuất"]
-    B --> D["Hồ sơ cho bệnh viện, hãng, cơ quan quản lý"]
+block-beta
+    columns 7
+    h1["KHÁCH HÀNG"] space h2["C3P PREMIER"] space h3["PILA"] space h4["QUỐC GIA"]
+    space space space space space space space
+    k1["Cung cấp dữ liệu mẫu từ ERP/WMS"] space c1["Khảo sát, đánh giá dữ liệu, thử nghiệm"] space space space space
+    space space space space space space space
+    k2["Ký hợp đồng, trả phí xây dựng"] space c2["Xây hệ thống riêng, tích hợp trace3"] space p1["Cung cấp NDATrace, hỗ trợ nền tảng"] space space
+    space space space space space space space
+    k3["Nghiệm thu, xác nhận ngày vận hành"] space space space space space space
+    space space space space space space space
+    k4["Vận hành: nhập, xuất, giao nhận theo lô"] space c3["Theo dõi chất lượng dữ liệu, đối soát"] space space space space
+    space space space space space space space
+    space space c4["Đồng bộ dữ liệu đủ điều kiện"] space space space q1["Tiếp nhận dữ liệu"]
+    space space space space space space space
+    k5["Rà soát, xác nhận, gửi cơ quan có thẩm quyền"] space c5["Lập hồ sơ truy xuất khi có yêu cầu"] space space space q2["Yêu cầu hồ sơ khi kiểm tra hoặc sự cố"]
+    space space space space space space space
+    space space c6["Trả phí công nghệ định kỳ"] space p2["Thu phí công nghệ"] space space
+
+    k1 --> c1
+    c1 --> k2
+    k2 --> c2
+    p1 --> c2
+    c2 --> k3
+    k3 --> k4
+    k4 --> c3
+    c3 --> c4
+    c4 --> q1
+    q2 --> c5
+    c5 --> k5
+    c5 --> c6
+    c6 --> p2
+
+    classDef lane fill:#1f2937,color:#ffffff,stroke:#1f2937
+    classDef kh fill:#dbeafe,stroke:#2563eb
+    classDef cp fill:#dcfce7,stroke:#16a34a
+    classDef pl fill:#fef3c7,stroke:#d97706
+    classDef qg fill:#fce7f3,stroke:#db2777
+    class h1,h2,h3,h4 lane
+    class k1,k2,k3,k4,k5 kh
+    class c1,c2,c3,c4,c5,c6 cp
+    class p1,p2 pl
+    class q1,q2 qg
 ```
 
 **Kết quả khách hàng mua, bằng ngôn ngữ kinh doanh.** Mỗi kết quả kèm trạng thái chứng minh:
 
-| Kết quả | Dành cho | Đo bằng | Trạng thái |
+| Kết quả | Dành cho | Đo bằng | Hiện trạng |
 | --- | --- | --- | --- |
 | **Giữ được quyền dự thầu và bán** khi UDI, truy xuất trở thành điều kiện | Nhà phân phối TTBYT | Tỷ lệ model có UDI chuẩn, số gói thầu đáp ứng điều kiện | Giả thuyết. Chưa có điều kiện bắt buộc |
 | **Hồ sơ sạch khi cơ quan hoặc bệnh viện kiểm tra** hợp đồng, lô, giá | Nhà phân phối TTBYT, thuốc | Thời gian trả lời một yêu cầu, tỷ lệ lô đủ hồ sơ | Giả thuyết, kiểm chứng ở thử nghiệm |
@@ -167,7 +203,7 @@ flowchart LR
 
 ## 6.3 Cơ cấu phí và giá giả định [Giả định]
 
-Tôi không tìm được báo giá hay mức giá tham chiếu công khai cho truy xuất doanh nghiệp lớn. Số dưới đây là giả định để dựng kịch bản, phải thay bằng báo giá thật.
+Chưa có báo giá hay mức giá tham chiếu công khai cho truy xuất doanh nghiệp lớn. Số dưới đây là **[Giả định]** để dựng kịch bản, cần thay bằng báo giá thật.
 
 | Khoản | Mức giả định | Cách tính |
 | --- | --- | --- |
@@ -246,7 +282,7 @@ Mỗi khách hàng, đơn vị tỷ đồng. **[Giả định]**
 | **H4. Tập đoàn có tự làm hay mua ngoài.** Long Châu tự xây hệ thống. Tập đoàn đa quốc gia có thể dùng hệ thống khu vực | Giảm số khách thật | Hỏi từng doanh nghiệp về kế hoạch nội bộ, nhà cung cấp ERP hiện tại | Ít nhất 3 doanh nghiệp chưa có kế hoạch tự làm | Hầu hết đã có kế hoạch |
 | **H5. Số doanh nghiệp đủ tiêu chí Premier** | Quyết định mục tiêu 25 tỷ có khả thi không (mục 2.4) | Lọc danh sách nhà bán buôn, nhập khẩu, phân phối TTBYT hạng C, D theo doanh thu và số kho | Từ 60 doanh nghiệp (SOM khi đó bằng khoảng 44% SAM, vẫn khó). Từ 90 trở lên mới thoải mái đạt 8 khách | Dưới 40 |
 | **H6. Giá chấp nhận được** | Mô hình dựa vào 4,0 tỷ một lần và 2,2 tỷ/năm. Chưa có báo giá tham chiếu | Chào thăm dò khung giá với từng doanh nghiệp | Chấp nhận khung giá, hoặc đề xuất cao hơn | Giá sẵn sàng trả dưới một nửa |
-| **H7. GTIN gốc của hãng có dùng lại được** | Quyết định chi phí chuẩn hóa UDI | Kiểm tra mẫu 20 đến 30 model của một nhà phân phối | Từ 60% model đã có GTIN. Ngưỡng này là đề xuất của tôi | Dưới 30% |
+| **H7. GTIN gốc của hãng có dùng lại được** | Quyết định chi phí chuẩn hóa UDI | Kiểm tra mẫu 20 đến 30 model của một nhà phân phối | Từ 60% model đã có GTIN. Ngưỡng này là đề xuất, chưa có căn cứ | Dưới 30% |
 | **H8. Hãng sản xuất có yêu cầu nhà phân phối truy xuất** | Có thể là động lực mua lớn hơn quy định Việt Nam | Hỏi nhà phân phối có hãng nào đưa vào hợp đồng, hợp đồng đại lý | Ít nhất 2 hãng có điều khoản | Không hãng nào có |
 
 ## 8.2 Rủi ro chính
@@ -256,7 +292,7 @@ Mỗi khách hàng, đơn vị tỷ đồng. **[Giả định]**
 - **Phụ thuộc Bộ Y tế** về đặc tả, đổi đặc tả làm tăng chi phí bảo trì.
 - **Khả năng thanh toán của khách hàng.** Vimedimex có ý kiến kiểm toán ngoại trừ về phải thu.
 - **Nhầm ranh giới Premier và Mass:** khách hàng có mạng lưới đại lý nhỏ sẽ kéo C3P vào việc của VNChain.
-- **Số liệu nền yếu:** hơn một nửa số liệu mục 2 và 3 ở mức thứ cấp, nhiều số cũ.
+- **Số liệu nền yếu:** phần lớn số liệu mục 2 và 3 lấy từ báo chí và trang tổng hợp, chưa đối chiếu báo cáo gốc, nhiều số cũ.
 
 ## 8.3 Bước tiếp theo
 
@@ -288,4 +324,3 @@ Mỗi khách hàng, đơn vị tỷ đồng. **[Giả định]**
 - Giá trị trúng thầu Việt Mỹ: tiêu đề nêu gần 10.000 tỷ, nội dung nêu 5.947 tỷ.
 - Mức phạt không liên thông: 3 đến 5 triệu đồng hay 10 triệu đồng.
 - Doanh thu Vimedimex 2025 chưa đối chiếu với báo cáo gốc.
-- Một số trang mạng chặn trong phiên này (`thuvienphapluat.vn`, `suckhoedoisong.vn`, `baodauthau.vn`, `nbc.gov.vn`), nên văn bản gốc chưa được đọc trực tiếp.
